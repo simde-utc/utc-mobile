@@ -4,6 +4,7 @@
 
 * [À propos](#à-propos)
 * [Utilisation](#utilisation)
+* [Organisation des fichiers](#organisation-des-fichiers)
 
 ## À propos
 
@@ -18,4 +19,19 @@ Il est nécessaire d'avoir node installé sur sa machine.
 	* `npm start` pour lancer le serveur [expo](https://expo.io/tools) ;
 	* `npm run android` pour lancer sur un émulateur android ou sur un appareil android en debug USB ;
 	* `npm run ios` pour lancer sur un émulateur ios (uniquement sous mac)
+
+## Organisation des fichiers
+Toutes les features qu'on code doivent être dans un de ces dossiers:
+* `/components`
+* `/scenes`
+* `/services`
+
+Chaque composant, scène ou service (en gros, une feature), doit avoir son propre dossier qui contient tout ce dont elle a besoin pour fonctionner (ses styles, images, strings traduits, événements, tests unitaires etc.). Ils doivent constituer des bouts de code indépendants qui seront utilisés dans l'application.
+Voici des règles qui définissent quelle entité doit être créée pour quels besoins:
+* Un `component` peut définir des `components` ou `services` **imbriqués** (*nested*). Il ne peut pas utiliser ou définir des `scenes`.
+* Une `scene` peut définir des `components`, des `scenes` ou des `services` **imbriqués**.
+* Un `service` peut définir des `services` **imbriqués**. Il ne peut pas utiliser ou définir des `components` ou des `scenes`.
+* Les fonctionnalités **imbriquées** ne peuvent être utilisées **que par leurs parents** (père, grand-père, arrière-grand-père etc.).
+
+[Pour plus d'informations sur cette convention, voir cet article.](https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1)
 
