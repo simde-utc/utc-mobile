@@ -33,5 +33,7 @@ Voici des règles qui définissent quelle entité doit être créée pour quels 
 * Un `service` peut définir des `services` **imbriqués**. Il ne peut pas utiliser ou définir des `components` ou des `scenes`.
 * Les fonctionnalités **imbriquées** ne peuvent être utilisées **que par leurs parents** (père, grand-père, arrière-grand-père etc.).
 
+En revanche, une feature non imbriquée peut être utilisée de n'importe où.
+
 [Pour plus d'informations sur cette convention, voir cet article.](https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1)
 
