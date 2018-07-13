@@ -20,6 +20,10 @@ Il est nécessaire d'avoir node installé sur sa machine.
 	* `npm run android` pour lancer sur un émulateur android ou sur un appareil android en debug USB ;
 	* `npm run ios` pour lancer sur un émulateur ios (uniquement sous mac)
 
+
+En cas de problème de connexion au serveur expo avec Windows, pensez à désactiver VirtualBox Network dans : Panneau de Configuration > Réseau et Internet > Centre Réseau et Partage > Modifier les paramètres de la carte (menu à gauche) > clic droit sur VirtualBox Network > Désactiver.
+
+
 ## Organisation des fichiers
 [Convention, voir cet article.](https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1)
 
