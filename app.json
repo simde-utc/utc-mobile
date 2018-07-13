@@ -1,5 +1,10 @@
 {
-  "expo": {
-    "sdkVersion": "27.0.0"
-  }
+	"expo": {
+		"name": "UTC",
+		"slug": "portail-utc",
+		"primaryColor": "#FFFFFF",
+		"icon": "./icon.png",
+		"githubUrl": "https://github.com/simde-utc/portail-mobile",
+		"sdkVersion": "27.0.0"
+	}
 }
