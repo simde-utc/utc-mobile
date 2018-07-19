@@ -13,6 +13,7 @@ export const backColors = Object.keys(colors).reduce((acc, color) => {
 export const textSizes = {
 	largeText: { fontSize: 20 },
 	hugeText: { fontSize: 30 },
+	bigText : {fontSize: 15}
 }
 
 const styles = StyleSheet.create({
