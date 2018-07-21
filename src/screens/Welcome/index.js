@@ -12,12 +12,12 @@ import SetPreferencesScreen from './SetPreferences';
 export default class WelcomeScreen extends React.Component {
 	render() {
 		return (
-			<Carousel 
+			<Carousel
 				indicatorOffset={0}
 				inactiveIndicatorColor={colors.gray}
 				indicatorColor={colors.yellow}
 				animate={false}
-				indicatorSize={70}
+				indicatorSize={50}
 			>
 				<WelcomeMessageScreen />
 				<AppPurposeScreen />
@@ -40,7 +40,7 @@ export default class WelcomeScreen extends React.Component {
 				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
 				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
 				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-			</ScrollView>			
+			</ScrollView>
 		)
 		*/
 	}

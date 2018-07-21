@@ -17,18 +17,15 @@ const PurposeTabs = createMaterialTopTabNavigator({
 		screen: ForInterested
 	}
 }, {
-	// tabBarOptions: {
-	// 	style: styles.tabbar,
-	// 	indicatorStyle: styles.indicator,
-	// 	labelStyle: styles.tablabel,
-	// 	activeTintColor: '#222',
-	// 	inactiveTintColor: '#222',
-	// },
-	// backBehavior: 'none',
+	tabBarOptions: {
+		style: styles.tabBar,
+		indicatorStyle: styles.indicator,
+		labelStyle: styles.tablabel,
+	},
+	backBehavior: 'none',
 	initialRouteName: 'Members',
 	order: ['Members', 'Interested'],
 });
-
 
 export default class AppPurposeScreen extends React.Component {
 	render() {
@@ -37,7 +34,7 @@ export default class AppPurposeScreen extends React.Component {
 				<HeaderView
 					flexSize={3}
 					title="A quoi ça sert ?"
-					subtitle="Cette application est destinée à la fois aux étudiants, aux enseignants et chercheurs, aux futurs étudiants ainsi qu'aux entreprises"
+					subtitle="Cette application est destinée à la fois aux étudiants, aux enseignant-chercheurs, aux futurs étudiants ainsi qu'aux entreprises et aux personnes interessées par l'UTC et ses associations"
 				/>
 				<View style={{flex: 7}}>
 					<PurposeTabs />
