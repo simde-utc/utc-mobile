@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { colors } from './variables';
+import { bigCheckBox } from './bigCheckBox';
+import { tabBar } from './tabBar';
 
 export const textColors = Object.keys(colors).reduce((acc, color) => {
 	acc[color+'Text'] = { color: colors[color] }
@@ -31,7 +33,10 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'stretch'
-	}
+	},
+
+	bigCheckBox: bigCheckBox,
+	tabBar: tabBar,
 });
 
 export default styles;
