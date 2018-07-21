@@ -8,7 +8,6 @@ import HeaderView from '../../components/HeaderView';
 
 export default class SetPreferencesScreen extends React.Component {
 	render() {
-		const BigCheckBoxStyle = [ styles.grayText, {textAlign: 'center'} ]
 		return (
 			<View style={styles.containerStretched}>
 				<HeaderView
@@ -16,12 +15,12 @@ export default class SetPreferencesScreen extends React.Component {
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
 				/>
 				<View style={[styles.container, styles.whiteBg, {flex: 6, justifyContent: 'center'}]}>
-					<BigCheckBox checked={true} style={BigCheckBoxStyle} 
+					<BigCheckBox checked={true} style={styles.bigCheckBox}
 						label={"Afficher la vie associative"} width={250}
 						onChange={(checked) => console.log('I am checked', checked)}/>
-					<BigCheckBox style={BigCheckBoxStyle} 
+					<BigCheckBox style={styles.bigCheckBox}
 						label={"Afficher les actualités UTC"} width={250} />
-					<BigCheckBox style={BigCheckBoxStyle} 
+					<BigCheckBox style={styles.bigCheckBox}
 						label={"Etes-vous cotisant BDE?"} width={250} />
 				</View>
 			</View>
