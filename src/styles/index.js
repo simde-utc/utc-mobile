@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	containerStretched: {
+		flex: 1,
+		backgroundColor: colors.white,
+		justifyContent: 'flex-start',
+		alignItems: 'stretch'
+	}
 });
 
 export default styles;
