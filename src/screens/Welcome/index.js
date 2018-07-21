@@ -6,6 +6,7 @@ import { colors } from '../../styles/variables';
 var Carousel = require('react-native-carousel');
 
 import WelcomeMessageScreen from './WelcomeMessage';
+import AppPurposeScreen from './AppPurpose';
 import SetPreferencesScreen from './SetPreferences';
 
 export default class WelcomeScreen extends React.Component {
@@ -19,6 +20,7 @@ export default class WelcomeScreen extends React.Component {
 				indicatorSize={70}
 			>
 				<WelcomeMessageScreen />
+				<AppPurposeScreen />
 				<SetPreferencesScreen />
 				<View style={styles.container}>
 					<Text>Connexion</Text>

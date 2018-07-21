@@ -10,7 +10,7 @@ export default class SetPreferencesScreen extends React.Component {
 	render() {
 		const BigCheckBoxStyle = [ styles.grayText, {textAlign: 'center'} ]
 		return (
-			<View style={[styles.container, {justifyContent: 'flex-start', alignItems: 'stretch'}, {flex: 1}]}>
+			<View style={styles.containerStretched}>
 				<HeaderView
 					title="Nous aimerions mieux vous connaître"
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
