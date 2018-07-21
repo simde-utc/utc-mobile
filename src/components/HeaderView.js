@@ -7,9 +7,9 @@ export default class HeaderView extends React.Component {
 		const { title, subtitle } = this.props;
 		const titleStyle = [ styles.yellowText , styles.hugeText, { textAlign: 'center', paddingBottom: 10 } ];
 		const subtitleStyle = [ styles.whiteText, styles.bigText, { textAlign: 'center' } ];
-		
+
 		return (
-			<View style={[styles.container, styles.lightBlueBg, { flex: this.props.flexSize || 4, justifyContent : 'center', padding: 4 }]}>
+			<View style={[styles.container, styles.lightBlueBg, { flex: this.props.flexSize || 4, justifyContent : 'center', padding: 10 }]}>
 				{ title && <Text style={titleStyle}>{ title } </Text> }
 				{ subtitle && <Text style={subtitleStyle}>{ subtitle }</Text>}
 				{ this.props.children }
