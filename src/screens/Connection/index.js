@@ -32,14 +32,18 @@ export default class ConnectionScreen extends React.Component {
 		PortailApi.login(this.state.emailOrLogin, this.state.password)
 	}
 
-	render () {
+	render() {
+		const viewStyle = [
+			styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'),
+			{ flex: 7 }
+		];
 		return (
-			<View style={styles.containerStretched}>
+			<View style={styles.container.default}>
 				<HeaderView
 					title="Connectez-vous"
 					subtitle="Il est nécessaire pour le bon fonctionnement de l'application que vous vous connectiez au Portail des Assos. Si vous ne vous y êtes jamais connecté, veuillez vous connecter en tant que CAS"
 				/>
-				<View style={[styles.container, styles.whiteBg, {flex: 7, justifyContent: 'center', marginTop: 50, marginBottom: 75 }]}>
+				<View style={ viewStyle }>
 					<TextInput style={ styles.bigButton }
 						placeHolder="Email / Login CAS"
 						value={ this.state.emailOrLogin }
@@ -57,7 +61,7 @@ export default class ConnectionScreen extends React.Component {
 						secureTextEntry={ true }
 					/>
 					<BigButton label={ "Se connecter" }
-						style={{ marginTop: 25, marginBottom: 15 }}
+						style={ styles.get('mt.lg', 'mb.md') }
 						onPress={() => this.connect()}
 					/>
 					<Button style={ styles.lightBlueText }

@@ -1,54 +1,32 @@
-import { StyleSheet } from 'react-native';
-import { colors } from './variables';
+// General styles
+import layout from './layout';
+import text from './text';
+
+// Component styles
 import { bigCheckBox } from './bigCheckBox';
 import { bigButton } from './bigButton';
 import { tabBar } from './tabBar';
 
-export const textColors = Object.keys(colors).reduce((acc, color) => {
-	acc[color+'Text'] = { color: colors[color] }
-	return acc
-}, {})
-export const backColors = Object.keys(colors).reduce((acc, color) => {
-	acc[color+'Bg'] = { backgroundColor: colors[color] }
-	return acc
-}, {})
-
-export const textSizes = {
-	h0: { fontSize: 38 },
-	h1: { fontSize: 32 },
-	h2: { fontSize: 24 },
-	h3: { fontSize: 20 },
-	h4: { fontSize: 16 },
-	h5: { fontSize: 12 },
-	p: { fontSize: 10 },
-}
-
-export const textAlign = {
-	textCenter: { textAlign: 'center' }
-}
-
-const styles = StyleSheet.create({
-	...textColors,
-	...backColors,
-	...textSizes,
-	...tabBar,
-	...textAlign,
+const styles = {
+	// General styles
+	...layout,
+	text,
 	
-	container: {
-		flex: 1,
-		backgroundColor: colors.white,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	containerStretched: {
-		flex: 1,
-		backgroundColor: colors.white,
-		justifyContent: 'flex-start',
-		alignItems: 'stretch'
-	},
-
+	// Component styles
+	tabBar,
 	bigCheckBox,
 	bigButton,
-});
+
+
+	// Getter function
+	get: function(...paths) {
+		return paths.map(path => path.split('.').reduce((acc, step) => {
+				if (acc.hasOwnProperty(step))
+					return acc[step];
+				throw new Error(`'${path}' introuvable dans styles, arrêt à ${step}`);
+			}, this)
+		)
+	}
+};
 
 export default styles;
