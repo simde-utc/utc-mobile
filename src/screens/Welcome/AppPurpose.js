@@ -32,8 +32,8 @@ const PurposeTabs = createMaterialTopTabNavigator({
 	}
 }, {
 	tabBarOptions: {
-		style: styles.tabBarStyle,
-		labelStyle: styles.tabBarLabelStyle,
+		style: styles.tabBar.style,
+		labelStyle: styles.tabBar.label,
 	},
 	backBehavior: 'none',
 	initialRouteName: 'Members',
@@ -42,8 +42,9 @@ const PurposeTabs = createMaterialTopTabNavigator({
 
 export default class AppPurposeScreen extends React.Component {
 	render() {
+		const endMessageStyle = styles.get('text.yellow', 'text.center', 'text.h4')
 		return (
-			<View style={styles.containerStretched}>
+			<View style={styles.container.default}>
 				<HeaderView
 					style={{ flex: 3 }}
 					title="A quoi ça sert ?"
@@ -54,7 +55,7 @@ export default class AppPurposeScreen extends React.Component {
 						<PurposeTabs />
 					</View>
 					<View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 15, marginBottom: 40 }}>
-						<Text style={[ styles.yellowText, styles.textCenter, styles.h4 ]}>
+						<Text style={ endMessageStyle }>
 							Et bien d'autres fonctionnalités à découvrir dans l'application !
 						</Text>
 					</View>

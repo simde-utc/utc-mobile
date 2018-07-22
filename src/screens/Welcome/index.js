@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
-import styles from '../../styles'
+// import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
+// import styles from '../../styles'
 import { colors } from '../../styles/variables';
 
 import Carousel from 'react-native-carousel';

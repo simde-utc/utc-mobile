@@ -6,10 +6,9 @@ import styles from '../styles'
 
 export default class BigButton extends React.Component {
 	render() {
+		const btnStyle = [ styles.get('bigButton', 'bg.lightBlue', 'text.white'), this.props.style ];
 		return (
-			<Button	style={[ styles.bigButton, styles.lightBlueBg, styles.whiteText, this.props.style ]}
-				onPress={ (checked) => this.props.onPress(checked) }
-			>
+			<Button	style={ btnStyle } onPress={ (checked) => this.props.onPress(checked) }>
 				{ this.props.label }
 			</Button>
 		);

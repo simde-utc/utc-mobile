@@ -1,10 +1,10 @@
 import { colors } from './variables';
 
 export const tabBar = {
-	tabBarStyle: {
+	style: {
 		backgroundColor: colors.lightBlue,
 	},
-	tabBarLabelStyle: {
+	label: {
 		color: colors.yellow
 	}
 };
