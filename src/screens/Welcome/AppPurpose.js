@@ -35,8 +35,9 @@ export default class AppPurposeScreen extends React.Component {
 					title="A quoi ça sert ?"
 					subtitle="Cette application est destinée à la fois aux étudiants, aux enseignant-chercheurs, aux futurs étudiants ainsi qu'aux entreprises et aux personnes interessées par l'UTC et ses associations"
 				/>
-				<View style={{flex: 7}}>
-					<PurposeTabs />
+				<View style={{ flex: 7 }}>
+					<PurposeTabs style= {{ flex: 3 }}/>
+					<Text style={[ styles.yellowText, { flex: 1 } ]}>Et bien d'autres fonctionnalités à découvrir dnas l'application !</Text>
 				</View>
 			</View>
 		);
