@@ -32,7 +32,10 @@ export default class SetPreferencesScreen extends React.Component {
 	}
 
 	validate() {
-		return
+		if (this.state.checked.utcMember)
+			this.props.navigation.navigate('Connection')
+		else
+			this.props.navigation.navigate('Connected')
 	}
 
 	render() {
