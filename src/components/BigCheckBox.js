@@ -8,24 +8,14 @@ import styles from '../styles'
 
 export default class BigCheckBox extends React.Component {
 	render() {
-		const viewStyle = {
-			borderColor: colors.gray,
-			borderWidth: 1,
-			borderRadius: 50,
-			padding: 15,
-			margin: 5,
-			alignItems: 'center',
-			justifyContent: 'center',
-			width: this.props.width || 250
-		}
 		return (
 			<TouchableHighlight onPress={this.onPressButton} underlayColor={"#fff0"}>
-				<View style={viewStyle}>
+				<View style={ styles.bigButton }>
 					<CheckBox
-						checked={ this.props.checked } 
+						checked={ this.props.checked }
 						onChange={ (checked) => this.props.onChange(checked) }
 						label={ this.props.label }
-						labelBefore={ true }
+						labelBefore={ false }
 						style={ this.props.style }
 					/>
 				</View>
