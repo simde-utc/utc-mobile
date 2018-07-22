@@ -9,26 +9,14 @@ export default class WelcomeMessageScreen extends React.Component {
 			height: 150,
 			marginBottom: 20
 		}
-		const titleStyle = [
-			styles.yellowText,
-			styles.h0,
-			{
-				textAlign: 'center',
-				marginBottom: 10
-			}
-		]
-		const subtitleStyle = [
-			styles.grayText,
-			styles.h4,
-			{
-				textAlign: 'center'
-			}
-		]
+		const titleStyle = styles.get('text.yellow', 'text.h0', 'text.center', 'mb.sm');
+		const subtitleStyle = styles.get('text.gray', 'text.h4', 'text.center', 'mb.xl');
+
 		return (
-			<View style={styles.container}>
+			<View style={ styles.container.center }>
 				<Image source={require('../../img/logo_utc.png')} style={ logoStyle } resizeMode={'center'} />
 				<Text style={ titleStyle }>Bienvenue !</Text>
-				<Text style={[ subtitleStyle, { marginBottom: 50 } ]}>Découvrons ensemble l'application</Text>
+				<Text style={ subtitleStyle }>Découvrons ensemble l'application</Text>
 			</View>
 		);
 	}

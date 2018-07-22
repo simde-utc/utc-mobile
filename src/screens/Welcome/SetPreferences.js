@@ -3,9 +3,9 @@ import { View, Image, Text } from 'react-native';
 import styles from '../../styles'
 
 // Components
+import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
 import BigButton from '../../components/BigButton';
-import HeaderView from '../../components/HeaderView';
 
 export default class SetPreferencesScreen extends React.Component {
 	constructor(props) {
@@ -41,30 +41,38 @@ export default class SetPreferencesScreen extends React.Component {
 	}
 
 	render() {
+		const viewStyle = [
+			styles.get('container.center', 'mt.xl', 'mb.xxl'),
+			{ flex: 7, justifyContent: 'center' }
+		]
 		return (
-			<View style={styles.containerStretched}>
+			<View style={ styles.container.default }>
 				<HeaderView
 					title="Nous aimerions mieux vous connaître"
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
 				/>
-				<View style={[styles.container, styles.whiteBg, {flex: 7, justifyContent: 'center', marginTop: 50, marginBottom: 75 }]}>
-					<BigCheckBox checked={ this.state.checked.utcNews }
-						labelStyle={styles.h5}
+				<View style={ viewStyle}>
+					<BigCheckBox 
+						checked={ this.state.checked.utcNews }
+						labelStyle={ styles.text.h5 }
 						label={"Afficher les actualités UTC"}
 						onChange={() => this.toggleCheck('utcNews')}
 					/>
-					<BigCheckBox checked={ this.state.checked.assoLife }
-						labelStyle={styles.h5}
+					<BigCheckBox 
+						checked={ this.state.checked.assoLife }
+						labelStyle={ styles.text.h5 }
 						label={"Afficher la vie associative"}
 						onChange={() => this.toggleCheck('assoLife')}
 					/>
-					<BigCheckBox checked={ this.state.checked.utcMember }
-						labelStyle={styles.h5}
-						label={"Je suis un membre UTC/BDE-UTC"}
+					<BigCheckBox 
+						checked={ this.state.checked.utcMember }
+						labelStyle={ styles.text.h5 }
+						label={"Etes-vous un membre UTC/BDE ?"}
 						onChange={() => this.toggleCheck('utcMember')}
 					/>
-					<BigButton label={ "Valider" }
-						style={{ marginTop: 25}}
+					<BigButton
+						label={ "Valider" }
+						style={ styles.mt.lg }
 						onPress={() => this.validate()}
 					/>
 				</View>
