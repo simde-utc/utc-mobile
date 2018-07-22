@@ -10,6 +10,13 @@ import AppPurposeScreen from './AppPurpose';
 import SetPreferencesScreen from './SetPreferences';
 
 export default class WelcomeScreen extends React.Component {
+	static navigationOptions = {
+		title: 'Bienvenue',
+		headerStyle: {
+			display: 'none',
+		}
+	};
+
 	render() {
 		return (
 			<Carousel
@@ -21,7 +28,7 @@ export default class WelcomeScreen extends React.Component {
 			>
 				<WelcomeMessageScreen />
 				<AppPurposeScreen />
-				<SetPreferencesScreen />
+				<SetPreferencesScreen navigation={ this.props.navigation }/>
 			</Carousel>
 		);
 
