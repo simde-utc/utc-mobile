@@ -26,15 +26,13 @@ export default class BigCheckBox extends React.Component {
 			borderWidth: 1,
 			borderRadius: 50,
 			padding: 15,
-			alignItems: 'center',
-			justifyContent: 'center',
 			width: this.props.width
 		}
 		return (
-			<TouchableHighlight onPress={this.onPressButton} underlayColor={"#fff0"}>	
+			<TouchableHighlight onPress={this.onPressButton} underlayColor={"#fff0"}>
 				<View style={viewStyle}>
-					<CheckBox onChange={this.onPressButton} checked={this.props.checked} 
-						label={this.props.label} labelBefore={true} style={this.props.style}/>
+					<CheckBox onChange={this.onPressButton} checked={this.props.checked}
+						label={this.props.label} labelStyle={this.props.labelStyle} style={this.props.style}/>
 				</View>
 			</TouchableHighlight>
 		);
