@@ -1,14 +1,9 @@
 import React from 'react';
 import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
 import Button from 'react-native-button';
+import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
-
-const resetAction = StackActions.reset({
-	index: 0,
-	actions: [NavigationActions.navigate({ routeName: "Home" })],
-});
 
 export default class ConnectedScreen extends React.Component {
 	static navigationOptions = {
@@ -22,7 +17,7 @@ export default class ConnectedScreen extends React.Component {
 		return (
 			<View>
 				<Text> Connecté en tant que... </Text>
-				<Button onPress={ (checked) => this.props.navigation.dispatch(resetAction) }>
+				<Button onPress={ () => resetNavigation(this.props.navigation) }>
 					Aller à la page d'accueil
 				</Button>
 			</View>
