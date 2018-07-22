@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Text, TextInput } from 'react-native'
 import Button from 'react-native-button'
+import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
 
 // Components
@@ -29,7 +30,10 @@ export default class ConnectionScreen extends React.Component {
 	}
 
 	connect () {
-		PortailApi.login(this.state.emailOrLogin, this.state.password)
+		PortailApi.login(
+			this.state.emailOrLogin,
+			this.state.password
+		).then(() => resetNavigation(this.props.navigation, 'Connected'))
 	}
 
 	render () {
