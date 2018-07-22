@@ -13,11 +13,11 @@ export default class WelcomeScreen extends React.Component {
 	render() {
 		return (
 			<Carousel
-				indicatorOffset={0}
+				indicatorOffset={-10}
 				inactiveIndicatorColor={colors.gray}
 				indicatorColor={colors.yellow}
 				animate={false}
-				indicatorSize={50}
+				indicatorSize={65}
 			>
 				<WelcomeMessageScreen />
 				<AppPurposeScreen />
