@@ -18,9 +18,8 @@ const PurposeTabs = createMaterialTopTabNavigator({
 	}
 }, {
 	tabBarOptions: {
-		style: styles.tabBar,
-		indicatorStyle: styles.indicator,
-		labelStyle: styles.tablabel,
+		style: styles.tabBarStyle,
+		labelStyle: styles.tabBarLabelStyle,
 	},
 	backBehavior: 'none',
 	initialRouteName: 'Members',
