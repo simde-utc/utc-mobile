@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 	...backColors,
 	...textSizes,
 	...tabBar,
+	
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch'
 	},
 
-	bigCheckBox: bigCheckBox,
+	bigCheckBox,
 });
 
 export default styles;
