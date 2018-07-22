@@ -11,15 +11,16 @@ export default class HeaderView extends React.Component {
 			styles.container,
 			styles.lightBlueBg,
 			{
-				flex: this.props.flexSize,
+				flex: 4,
 				justifyContent : 'center',
 				padding: 20
-			}
+			},
+			this.props.style
 		]
 
 		return (
 			<View style={ viewStyle }>
-				{ title && <Text style={titleStyle}>{ title } </Text> }
+				{ title && <Text style={titleStyle}>{ title }</Text> }
 				{ subtitle && <Text style={subtitleStyle}>{ subtitle }</Text>}
 				{ this.props.children }
 			</View>
