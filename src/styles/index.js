@@ -20,7 +20,11 @@ export const textSizes = {
 	h3: { fontSize: 20 },
 	h4: { fontSize: 16 },
 	h5: { fontSize: 12 },
-	h6: { fontSize: 10 },
+	p: { fontSize: 10 },
+}
+
+export const textAlign = {
+	textCenter: { textAlign: 'center' }
 }
 
 const styles = StyleSheet.create({
@@ -28,7 +32,8 @@ const styles = StyleSheet.create({
 	...backColors,
 	...textSizes,
 	...tabBar,
-
+	...textAlign,
+	
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,

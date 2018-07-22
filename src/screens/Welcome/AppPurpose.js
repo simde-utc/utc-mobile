@@ -1,20 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
+import List from '../../components/List';
+
 
 import styles from '../../styles'
 import HeaderView from '../../components/HeaderView';
 
-const ForMember = () => (<Text>For Member</Text>)
-const ForInterested = () => (<Text>For Interested</Text>)
+
+const forMembersData = [
+	{ icon: "news",			text: "Suivre et être notifié des actualités de vos associations préférées" },
+	{ icon: "map",			text: "Se repérer dans le campus" },
+	{ icon: "bell",			text: "Etre notifié des résultats des examens" },
+	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire et associatif" },
+]
+const forInterestedData = [
+	{ icon: "news",			text: "AAAAAAAAAAAh bon" },
+	{ icon: "map",			text: "Se repérer dans le campus" },
+	{ icon: "bell",			text: "Etre notifié des résultats des examens" },
+	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire et associatif" },
+]
+
 
 // Tab Navigator
 const PurposeTabs = createMaterialTopTabNavigator({
 	Members: {
-		screen: ForMember
+		screen: () => (<List data={ forMembersData } />)
 	},
 	Interested: {
-		screen: ForInterested
+		screen: () => (<List data={ forInterestedData } />)
 	}
 }, {
 	tabBarOptions: {
@@ -31,13 +45,18 @@ export default class AppPurposeScreen extends React.Component {
 		return (
 			<View style={styles.containerStretched}>
 				<HeaderView
-					flexSize={3}
 					title="A quoi ça sert ?"
 					subtitle="Cette application est destinée à la fois aux étudiants, aux enseignant-chercheurs, aux futurs étudiants ainsi qu'aux entreprises et aux personnes interessées par l'UTC et ses associations"
 				/>
-				<View style={{ flex: 7 }}>
-					<PurposeTabs style= {{ flex: 3 }}/>
-					<Text style={[ styles.yellowText, { flex: 1 } ]}>Et bien d'autres fonctionnalités à découvrir dnas l'application !</Text>
+				<View style={{ flex: 7, justifyContent: 'space-between' }}>
+					<View style={{ flex: 6 }}>
+						<PurposeTabs />
+					</View>
+					<View style={{ flex: 4, justifyContent: 'center', paddingHorizontal: 15 }}>
+						<Text style={[ styles.yellowText, styles.textCenter, styles.h4 ]}>
+							Et bien d'autres fonctionnalités à découvrir dans l'application !
+						</Text>
+					</View>
 				</View>
 			</View>
 		);
