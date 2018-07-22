@@ -28,7 +28,7 @@ export default class WelcomeMessageScreen extends React.Component {
 			<View style={styles.container}>
 				<Image source={require('../../img/logo_utc.png')} style={ logoStyle } resizeMode={'center'} />
 				<Text style={ titleStyle }>Bienvenue !</Text>
-				<Text style={ subtitleStyle }>Découvrons ensemble l'application</Text>
+				<Text style={[ subtitleStyle, { marginBottom: 50 } ]}>Découvrons ensemble l'application</Text>
 			</View>
 		);
 	}

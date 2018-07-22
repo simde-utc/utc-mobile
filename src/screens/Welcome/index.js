@@ -3,7 +3,7 @@ import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
 
-var Carousel = require('react-native-carousel');
+import Carousel from 'react-native-carousel';
 
 import WelcomeMessageScreen from './WelcomeMessage';
 import AppPurposeScreen from './AppPurpose';
@@ -22,9 +22,6 @@ export default class WelcomeScreen extends React.Component {
 				<WelcomeMessageScreen />
 				<AppPurposeScreen />
 				<SetPreferencesScreen />
-				<View style={styles.container}>
-					<Text>Connexion</Text>
-				</View>
 			</Carousel>
 		);
 
