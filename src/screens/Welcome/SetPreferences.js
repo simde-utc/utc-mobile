@@ -10,6 +10,7 @@ import HeaderView from '../../components/HeaderView';
 export default class SetPreferencesScreen extends React.Component {
 	constructor(props) {
 		super(props)
+
 		this.state = {
 			checked: {
 				utcNews: true,
@@ -17,6 +18,7 @@ export default class SetPreferencesScreen extends React.Component {
 				utcMember: false,
 			}
 		};
+		
 		this.toggleCheck = this.toggleCheck.bind(this);
 	}
 
@@ -58,7 +60,7 @@ export default class SetPreferencesScreen extends React.Component {
 					/>
 					<BigCheckBox checked={ this.state.checked.utcMember }
 						labelStyle={styles.h5}
-						label={"Etes-vous un membre UTC/BDE?"}
+						label={"Je suis un membre UTC/BDE-UTC"}
 						onChange={() => this.toggleCheck('utcMember')}
 					/>
 					<BigButton label={ "Valider" }
