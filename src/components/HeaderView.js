@@ -5,11 +5,10 @@ import styles from '../styles'
 export default class HeaderView extends React.Component {
 	render() {
 		const { title, subtitle } = this.props;
-		const titleStyle = [ styles.yellowText , styles.h2, { textAlign: 'center', padding: 10 } ];
-		const subtitleStyle = [ styles.whiteText, styles.h4, { textAlign: 'center' } ];
+		const titleStyle = styles.get('text.yellow', 'text.h2', 'text.center', 'p.sm');
+		const subtitleStyle = styles.get('text.white', 'text.h4', 'text.center');
 		const viewStyle = [
-			styles.container,
-			styles.lightBlueBg,
+			styles.get('container.default', 'bg.lightBlue'),
 			{
 				flex: 4,
 				justifyContent : 'center',
@@ -20,8 +19,8 @@ export default class HeaderView extends React.Component {
 
 		return (
 			<View style={ viewStyle }>
-				{ title && <Text style={titleStyle}>{ title }</Text> }
-				{ subtitle && <Text style={subtitleStyle}>{ subtitle }</Text>}
+				{ title && <Text style={ titleStyle }>{ title }</Text> }
+				{ subtitle && <Text style={ subtitleStyle }>{ subtitle }</Text>}
 				{ this.props.children }
 			</View>
 		);
