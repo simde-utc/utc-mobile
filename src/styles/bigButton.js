@@ -1,7 +1,7 @@
 import { colors } from './variables';
 
 export const bigButton = {
-	borderColor: colors.gray,
+	borderColor: colors.lightGray,
 	borderWidth: 1,
 	borderRadius: 50,
 	padding: 15,
