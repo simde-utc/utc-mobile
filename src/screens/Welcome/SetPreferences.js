@@ -14,7 +14,7 @@ export default class SetPreferencesScreen extends React.Component {
 			checked: {
 				utcNews: true,
 				assoLife: true,
-				bdeContributor: false,
+				utcMember: false,
 			}
 		};
 		this.toggleCheck = this.toggleCheck.bind(this);
@@ -31,6 +31,10 @@ export default class SetPreferencesScreen extends React.Component {
 		);
 	}
 
+	validate() {
+		return
+	}
+
 	render() {
 		return (
 			<View style={styles.containerStretched}>
@@ -38,25 +42,25 @@ export default class SetPreferencesScreen extends React.Component {
 					title="Nous aimerions mieux vous connaître"
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
 				/>
-				<View style={[styles.container, styles.whiteBg, {flex: 7, justifyContent: 'center', marginTop: 50, marginBottom: 50 }]}>
+				<View style={[styles.container, styles.whiteBg, {flex: 7, justifyContent: 'center', marginTop: 50, marginBottom: 75 }]}>
 					<BigCheckBox checked={ this.state.checked.utcNews }
-						labelStyle={styles.h4}
+						labelStyle={styles.h5}
 						label={"Afficher les actualités UTC"}
 						onChange={() => this.toggleCheck('utcNews')}
 					/>
 					<BigCheckBox checked={ this.state.checked.assoLife }
-						labelStyle={styles.h4}
+						labelStyle={styles.h5}
 						label={"Afficher la vie associative"}
 						onChange={() => this.toggleCheck('assoLife')}
 					/>
-					<BigCheckBox checked={ this.state.checked.bdeContributor }
-						labelStyle={styles.h4}
-						label={"Etes-vous cotisant BDE?"}
-						onChange={() => this.toggleCheck('bdeContributor')}
+					<BigCheckBox checked={ this.state.checked.utcMember }
+						labelStyle={styles.h5}
+						label={"Etes-vous un membre UTC/BDE?"}
+						onChange={() => this.toggleCheck('utcMember')}
 					/>
 					<BigButton label={ "Valider" }
 						style={{ marginTop: 25}}
-						onPress={() => console.log('Lol')}
+						onPress={() => this.validate()}
 					/>
 				</View>
 			</View>

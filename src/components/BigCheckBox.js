@@ -17,6 +17,7 @@ export default class BigCheckBox extends React.Component {
 						label={ this.props.label }
 						labelBefore={ false }
 						style={ this.props.style }
+						labelStyle={ this.props.labelStyle }
 					/>
 				</View>
 			</TouchableHighlight>
