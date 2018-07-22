@@ -13,15 +13,20 @@ export const backColors = Object.keys(colors).reduce((acc, color) => {
 }, {})
 
 export const textSizes = {
-	largeText: { fontSize: 20 },
-	hugeText: { fontSize: 30 },
-	bigText : {fontSize: 15}
+	h0: { fontSize: 38 },
+	h1: { fontSize: 32 },
+	h2: { fontSize: 24 },
+	h3: { fontSize: 20 },
+	h4: { fontSize: 16 },
+	h5: { fontSize: 12 },
+	h6: { fontSize: 10 },
 }
 
 const styles = StyleSheet.create({
 	...textColors,
 	...backColors,
 	...textSizes,
+	...tabBar,
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
@@ -36,7 +41,6 @@ const styles = StyleSheet.create({
 	},
 
 	bigCheckBox: bigCheckBox,
-	tabBar: tabBar,
 });
 
 export default styles;
