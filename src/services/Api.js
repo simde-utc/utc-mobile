@@ -9,6 +9,10 @@ export default class Api {
         'Content-Type': 'application/json',
     }
 
+    static VALID_STATUS = [
+        200, 201, 204
+    ]
+
     constructor (url) {
         this.baseUrl = url
     }
@@ -25,18 +29,25 @@ export default class Api {
     }
 
     urlWithQueries (url, queries) {
-        if (queries.length === 0)
+        if (queries === undefined || queries.length === 0)
             return url
 
         return url + '?' + this.serialize(queries)
     }
 
-    call (request, method, queries, body, headers) {
+    call (request, method, queries, body, headers, validStatus) {
         return fetch(this.urlWithQueries(this.baseUrl + request, queries), {
             method: method || Api.GET,
             headers: headers || {},
             body: JSON.stringify(body)
-        }).then((response) => response.json())
-            .catch((response) => console.log('A gérer !')) // TODO
+        })
+        .then(response => Promise.all([response.json(), response.status]))
+        .catch(response => console.log('A gérer !')) // TODO
+        .then(([response, status]) => {
+            if ((validStatus || Api.VALID_STATUS).includes(status))
+                return Promise.all([response, status])
+            else
+                return Promise.reject([response, status])
+        })
     }
 }
