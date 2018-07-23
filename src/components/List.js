@@ -12,6 +12,7 @@ const listStyle = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginVertical: 8,
+		marginHorizontal: 20,
 	},
 	icon: {
 		backgroundColor: '#444',

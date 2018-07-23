@@ -30,7 +30,7 @@ export default class App extends React.Component {
 		);
 	}
 }
-/*
+{/***
 export default class App extends React.Component {
 	render() {
 		return (
@@ -40,4 +40,4 @@ export default class App extends React.Component {
 		);
 	}
 }
-*/
+***/}
