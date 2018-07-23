@@ -43,8 +43,8 @@ export default class ConnectedScreen extends React.Component {
 					subtitle={ this.subTitle }
 				/>
 				<View style={ viewStyle }>
-					<Text style={[ styles.get('text.h3', 'text.center'), { marginVertical: 25 } ]}>
-						Vous pouvez dès à présent utiliser toutes les fonctionnalités de l'application { this.more }
+					<Text style={[ styles.get('text.h2', 'text.center'), { margin: 20 } ]}>
+						Vous pouvez dès à présent utiliser toutes les fonctionnalités de l'application { this.more }!
 					</Text>
 					<BigButton
 						label="Aller à la page d'accueil"
