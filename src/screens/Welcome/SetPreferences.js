@@ -43,8 +43,9 @@ export default class SetPreferencesScreen extends React.Component {
 	render() {
 		const viewStyle = [
 			styles.get('container.center', 'mt.xl', 'mb.xxl'),
-			{ flex: 7, justifyContent: 'center' }
+			{ flex: 7, justifyContent: 'center', marginTop: 0 } 
 		]
+{/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
 		return (
 			<View style={ styles.container.default }>
 				<HeaderView
