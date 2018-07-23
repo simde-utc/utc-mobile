@@ -46,14 +46,13 @@ export class Portail extends Api {
             Portail.token = response
             // Peut-être chercher les infos user ?
             return this.getUserData()
-        }).catch(() => console.log("Les informations entrées sont incorrectes")) // Si on a une erreur d'entrée
+        })
     }
 
     getUserData () {
         return this.call(
             Portail.API_V1 + 'user',
-        ).then(([response, status]) => Portail.user = response
-        ).catch(() => console.log("Une erreur a été rencontré lors de la récupération du login"))
+        ).then(([response, status]) => Portail.user = response)
     }
 }
 
