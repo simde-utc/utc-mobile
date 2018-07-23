@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Image, Text, TextInput } from 'react-native'
+import { View, Image, Text, TextInput, Alert } from 'react-native'
 import Button from 'react-native-button'
 import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 // Components
 import BigCheckBox from '../../components/BigCheckBox'
@@ -25,15 +26,38 @@ export default class ConnectionScreen extends React.Component {
 
 		this.state = {
 			emailOrLogin: '',
-			password: ''
+			password: '',
+			loading: false
 		}
 	}
 
 	connect () {
+		this.setState(prevState => {
+			prevState.loading = true
+
+			return prevState
+		})
+
 		PortailApi.login(
 			this.state.emailOrLogin,
 			this.state.password
-		).then(() => resetNavigation(this.props.navigation, 'Connected'))
+		).then(() => resetNavigation(this.props.navigation, 'Connected')
+		).catch(() => {
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			Alert.alert(
+				'Connexion',
+				'Votre adresse email et/ou votre mot de passe est incorrect',
+				[
+					{ text: 'Continuer' },
+				],
+				{ cancelable: true }
+			)
+		})
 	}
 
 	render() {
@@ -41,14 +65,19 @@ export default class ConnectionScreen extends React.Component {
 			styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'),
 			{ flex: 7 }
 		];
+
 		return (
 			<View style={styles.container.default}>
+				<View>
+					<Spinner visible={this.state.loading} textContent="Connexion en cours..." textStyle={{color: '#FFF'}} />
+				</View>
 				<HeaderView
 					title="Connectez-vous"
 					subtitle="Il est nécessaire pour le bon fonctionnement de l'application que vous vous connectiez au Portail des Assos. Si vous ne vous y êtes jamais connecté, veuillez vous connecter en tant que CAS"
 				/>
 				<View style={ viewStyle }>
 					<TextInput style={ styles.bigButton }
+						underlineColorAndroid='transparent'
 						placeHolder="Email / Login CAS"
 						value={ this.state.emailOrLogin }
 						onChangeText={(text) => this.setState(() => { return { emailOrLogin: text } })}
@@ -57,6 +86,7 @@ export default class ConnectionScreen extends React.Component {
 						autoCorrect={ false }
 					/>
 					<TextInput style={ styles.bigButton }
+						underlineColorAndroid='transparent'
 						placeHolder="Mot de passe"
 						value={ this.state.password }
 						onChangeText={(text) => this.setState(() => { return { password: text } })}
