@@ -10,6 +10,7 @@ export const containers = StyleSheet.create({
 		flex: 1,
 		backgroundColor: colors.white,
 		alignItems: 'center',
+		width: "100%"
 	},
 	center: {
 		flex: 1,
@@ -52,4 +53,3 @@ export default layout = {
 	...padding,
 	...margin,
 };
-
