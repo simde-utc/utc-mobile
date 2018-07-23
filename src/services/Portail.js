@@ -4,6 +4,9 @@ export class Portail extends Api {
     static OAUTH = 'oauth/'
     static API_V1 = 'api/v1/'
 
+    static token = {}
+    static user = {}
+
     constructor () {
         super(process.env.PORTAIL_URL)
     }
@@ -11,10 +14,18 @@ export class Portail extends Api {
     call (request, method, queries, body, validStatus) {
         headers = Api.HEADER_JSON
 
-        if (this.token)
-            headers.Authorization = this.token.token_type + ' ' + this.token.access_token
+        if (Object.keys(Portail.token).length !== 0)
+            headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token
 
         return super.call(request, method, queries, body, headers, validStatus)
+    }
+
+    isConnected() {
+        return (Object.keys(Portail.token).length !== 0) && (Object.keys(Portail.user).length !== 0)
+    }
+
+    getUser() {
+        return Portail.user
     }
 
     // Définitions des routes:
@@ -32,7 +43,7 @@ export class Portail extends Api {
                 scope: ''
             }
         ).then(([response, status]) => { // Si on a une 20x
-            this.token = response
+            Portail.token = response
             // Peut-être chercher les infos user ?
             return this.getUserData()
         }).catch(() => console.log("Les informations entrées sont incorrectes")) // Si on a une erreur d'entrée
@@ -41,7 +52,7 @@ export class Portail extends Api {
     getUserData () {
         return this.call(
             Portail.API_V1 + 'user',
-        ).then(([response, status]) => this.user = response
+        ).then(([response, status]) => Portail.user = response
         ).catch(() => console.log("Une erreur a été rencontré lors de la récupération du login"))
     }
 }
