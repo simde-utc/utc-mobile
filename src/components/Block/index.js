@@ -1,48 +1,81 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { ScrollView, Text } from 'react-native'
 
-import BlockRow from './Row'
+import BlockManager from './Manager'
 
 import styles from '../../styles'
 
-const config = [
-    {
-        children: (
-            <Text>Samy tu es un génie !!</Text>
-        ),
-        extend: true,
-        style: styles.bg.lightGray
-    }
-]
-
-const config2 = [
-    {
-        children: (
-            <Text>Je lavoue, il est si beau, si charmant, si, si, si, si, si</Text>
-        ),
-        style: styles.bg.lightGray
-    }
-]
-
-export default class BlockManager extends React.Component {
+export default class BlockHandler extends React.Component {
     constructor (props) {
         super(props)
 
         this.state = {
-            editMode: this.props.editMode || false
+            editMode: this.props.editMode || false,
+            blocks: this.props.blocks || {}
         }
     }
 
+    manager (config, index) {
+        return <BlockManager key={ index }
+            style={ this.props.style }
+            editMode={ this.state.editMode }
+            blocks={ config }
+        />
+    }
+
+    managers (config) {
+        index = 0
+        managers = []
+        blocks = []
+        count = 0
+
+        // Un manager ne supporte que 2 lignes de 2 blocks chacun max
+        for (i = 0; i < config.length; i++) {
+            if (config[i].extend) {
+                count += 2
+
+                if (count > 4) {
+                    managers.push(this.manager(blocks, index++))
+
+                    blocks = []
+                    count = 2
+                }
+
+                blocks.push(config[i])
+            }
+            else {
+                blocks.push(config[i])
+
+                count++
+            }
+
+            if (count < 4)
+                continue
+
+            managers.push(this.manager(blocks, index++))
+
+            blocks = []
+            count = 0
+        }
+
+        if (blocks.length > 0)
+            managers.push(this.manager(blocks, index++))
+
+        return managers
+    }
+
     render() {
+        const style = [
+            {
+                paddingVertical: 5
+            },
+            this.props.style
+        ]
+
 		return (
-            <View>
-                <BlockRow style={ styles.bg.lightBlue }
-                    blocks={ config }
-                />
-                <BlockRow style={ styles.bg.lightBlue }
-                    blocks={ config2 }
-                />
-            </View>
+            <ScrollView style={ style }>
+                { this.managers(this.props.blocks) }
+            </ScrollView>
 		)
 	}
 }
