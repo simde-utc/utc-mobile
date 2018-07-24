@@ -23,11 +23,10 @@ export default class ConnectedScreen extends React.Component {
 		super(props)
 
 		if (PortailApi.isConnected()) {
-			this.subTitle = "Vous êtes maintenant connecté(e) sous " + PortailApi.getUser().name + " !"
+			this.subTitle = "Vous êtes maintenant connecté.e sous " + PortailApi.getUser().name + " !"
 			this.more = "et tout ceci, de manière personnalisée"
-		}
-		else
-			this.subTitle = "Vous n'êtes connecté(e) sous aucun compte"
+		} else
+			this.subTitle = "Vous n'êtes connecté.e sous aucun compte"
 	}
 
 	render () {
