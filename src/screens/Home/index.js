@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
+
+import BlockManager from '../../components/Block'
+
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
 
@@ -8,9 +11,11 @@ export default class HomeScreen extends React.Component {
 		title: 'Accueil',
 	};
 
-	render() {
+	render () {
 		return (
-			<Text> Home </Text>
+			<BlockManager
+				style={ styles.bg.yellow }
+			/>
 		);
 	}
 }
