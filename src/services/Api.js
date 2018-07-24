@@ -13,11 +13,11 @@ export default class Api {
         200, 201, 204
     ]
 
-    constructor (url) {
+    constructor(url) {
         this.baseUrl = url
     }
 
-    serialize (queries) {
+    serialize(queries) {
         var str = [];
 
         for (var query in queries) {
@@ -28,22 +28,22 @@ export default class Api {
         return str.join("&")
     }
 
-    urlWithQueries (url, queries) {
+    urlWithQueries(url, queries) {
         if (queries === undefined || queries.length === 0)
             return url
 
         return url + '?' + this.serialize(queries)
     }
 
-    call (request, method, queries, body, headers, validStatus) {
+    call(request, method, queries, body, headers, validStatus) {
         return fetch(this.urlWithQueries(this.baseUrl + request, queries), {
             method: method || Api.GET,
             headers: headers || {},
             body: JSON.stringify(body)
         })
-        .then(response => Promise.all([response.json(), response.status]))
+        .then(response => Promise.all([ response.json(), response.status ]))
         .catch(response => console.log('A gérer !')) // TODO
-        .then(([response, status]) => {
+        .then(([ response, status ]) => {
             if ((validStatus || Api.VALID_STATUS).includes(status))
                 return Promise.all([response, status])
             else

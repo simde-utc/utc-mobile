@@ -7,11 +7,11 @@ export class Portail extends Api {
     static token = {}
     static user = {}
 
-    constructor () {
+    constructor() {
         super(process.env.PORTAIL_URL)
     }
 
-    call (request, method, queries, body, validStatus) {
+    call(request, method, queries, body, validStatus) {
         headers = Api.HEADER_JSON
 
         if (Object.keys(Portail.token).length !== 0)
@@ -29,7 +29,7 @@ export class Portail extends Api {
     }
 
     // Définitions des routes:
-    login (emailOrLogin, password) {
+    login(emailOrLogin, password) {
         return this.call(
             Portail.OAUTH + 'token',
             Api.POST,
@@ -49,7 +49,7 @@ export class Portail extends Api {
         })
     }
 
-    getUserData () {
+    getUserData() {
         return this.call(
             Portail.API_V1 + 'user',
         ).then(([response, status]) => Portail.user = response)

@@ -25,10 +25,16 @@ const forInterestedData = [
 // Tab Navigator
 const PurposeTabs = createMaterialTopTabNavigator({
 	Members: {
-		screen: () => (<List data={ forMembersData } />)
+		screen: () => (<List data={ forMembersData } />),
+		navigationOptions: ({ nav }) => ({
+			title: 'Membre UTC'
+		})
 	},
 	Interested: {
-		screen: () => (<List data={ forInterestedData } />)
+		screen: () => (<List data={ forInterestedData } />),
+		navigationOptions: ({ nav }) => ({
+			title: 'Intéressé'
+		})
 	}
 }, {
 	tabBarOptions: {
