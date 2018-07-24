@@ -1,7 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Button from 'react-native-button';
-import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
 
 // Components
