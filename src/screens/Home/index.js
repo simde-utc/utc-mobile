@@ -12,7 +12,10 @@ const config = [
             <Text style={ styles.bg.yellow }>Lorem Ipsum !!</Text>
         ),
         extend: true,
-        style: styles.bg.lightGray
+        style: styles.bg.lightGray,
+		onPress: () => {
+			console.log('Lorem Ipsum')
+		}
     },
     {
         text: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
@@ -20,21 +23,18 @@ const config = [
     },
     [
         {
-            children: (
-                <Text>0</Text>
-            ),
+            text: 'SiMDE',
             style: styles.bg.lightGray
         },
 		{
-            children: (
-                <Text>1</Text>
-            ),
+            text: 'MapUTC',
             style: styles.bg.lightGray
         },
         {
             children: (
-                <Text>2</Text>
-            ),
+				<Text style={[ styles.text.h2, styles.text.center ]}>12 €</Text>
+			),
+			image: require('../../img/payutc.png'),
 			extend: true,
             style: styles.bg.lightGray
         },
