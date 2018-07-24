@@ -39,7 +39,15 @@ export default class ConnectionScreen extends React.Component {
 		PortailApi.login(
 			this.state.emailOrLogin,
 			this.state.password
-		).then(() => this.props.navigation.navigate('Connected')
+		).then(() => {
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			this.props.navigation.navigate('Connected')
+		}
 		).catch(() => {
 			this.setState(prevState => {
 				prevState.loading = false
