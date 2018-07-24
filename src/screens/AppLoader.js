@@ -15,8 +15,9 @@ export default class AppLoaderScreen extends React.Component {
 	}
 
 	onAppLoaded(data) {
-		let to = data.isConnected ? 'Main' : 'Welcome';
-		this.props.navigation.navigate(to);
+		this.props.navigation.navigate(
+			data.isConnected ? 'Main' : 'Welcome'
+		);
 	}
 
 	render() {
