@@ -2,11 +2,12 @@ import React from 'react'
 import { View, Text } from 'react-native'
 
 import Block from './Block'
+import BlockManager from './Manager'
 import VoidBlock from './Void'
 
 import styles from '../../styles'
 
-export default class BlockRow extends React.Component {
+export default class RowBlock extends React.Component {
     constructor (props) {
         super(props)
 
@@ -35,10 +36,29 @@ export default class BlockRow extends React.Component {
     }
 
     block (config, index) {
+        const blockManagerStyle = [
+            styles.block['2-2'],
+            styles.bg.lightBlue,
+            {
+        		justifyContent: 'space-between',
+        		alignContent: 'space-between',
+            },
+            this.props.style,
+        ]
+
+        const rowStyle = {
+            justifyContent: 'space-between',
+            alignContent: 'space-between',
+            paddingHorizontal: 0,
+            paddingBottom: 0,
+            backgroundColor: '#F00'
+        }
+
         if (Array.isArray(config)) {
             return (
-                <Row key={ index }
-                    style={ this.props.stye }
+                <BlockManager key={ index }
+                    style={ blockManagerStyle }
+                    rowStyle={ rowStyle }
                     blocks={ config }
                 />
             )
@@ -55,6 +75,8 @@ export default class BlockRow extends React.Component {
                     style={ style }
                     editStyle={ config.editStyle }
                     editMode={ this.state.editMode }
+                    text={ config.text }
+                    image={ config.image }
                 >
                 { config.children }
                 </Block>
@@ -76,7 +98,7 @@ export default class BlockRow extends React.Component {
 
     render() {
 		return (
-            <View style={[ styles.block.row, this.props.style ]}>
+            <View style={[ styles.block.row, styles.bg.yellow, this.props.style ]}>
                 { this.blocks(this.props.blocks) }
             </View>
 		)
