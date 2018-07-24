@@ -24,6 +24,37 @@ export const containers = StyleSheet.create({
 	}
 })
 
+// Block
+export const blocks = StyleSheet.create({
+	row: {
+		width: "100%",
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-evenly',
+		alignContent: 'space-between',
+		alignItems: 'center',
+		marginVertical: '5%'
+	},
+	'1-1': {
+		width: "100%",
+		aspectRatio: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	'1-2': {
+		width: 80 + (20 / 3) + '%',
+		aspectRatio: 2,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	'2-2': {
+		width: "40%",
+		aspectRatio: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+})
+
 // Paddings
 export const padding = {
 	p: createStyleFromList(spaces, 'padding'),
@@ -49,6 +80,7 @@ export const margin = {
 
 export default layout = {
 	container: containers,
+	block: blocks,
 	bg: bgColors,
 	...padding,
 	...margin,
