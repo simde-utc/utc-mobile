@@ -48,7 +48,7 @@ export default class ConnectedScreen extends React.Component {
 					<BigButton
 						label="Aller à la page d'accueil"
 						style={ styles.mt.lg }
-						onPress={ () => resetNavigation(this.props.navigation) }
+						onPress={ () => this.props.navigation.navigate('Main') }
 					/>
 				</View>
 			</View>

@@ -74,7 +74,7 @@ export default class SetPreferencesScreen extends React.Component {
 					<BigButton
 						label={ "Valider" }
 						style={ styles.mt.lg }
-						onPress={() => this.validate()}
+						onPress={ this.validate.bind(this) }
 					/>
 				</View>
 			</View>
