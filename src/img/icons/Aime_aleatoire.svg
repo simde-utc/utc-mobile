@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63.006 63.006">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #007d94;
+      }
+
+      .cls-2 {
+        fill: #ffd515;
+        fill-rule: evenodd;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="J_aime" data-name="J&apos;aime" transform="translate(-233 -502)">
+    <ellipse id="Ellipse_3" data-name="Ellipse 3" class="cls-1" cx="31.503" cy="31.503" rx="31.503" ry="31.503" transform="translate(233 502)"/>
+    <g id="Heart" transform="translate(-551 -16)">
+      <path id="Heart-2" data-name="Heart" class="cls-2" d="M34.6,3.029a10.1,10.1,0,0,0-14.373,0L18.815,4.443,17.4,3.029A10.163,10.163,0,1,0,3.029,17.4L18.815,33.188,34.6,17.4a10.1,10.1,0,0,0,0-14.373" transform="translate(796.975 534.975)"/>
+      <rect id="Rectangle_1450" data-name="Rectangle 1450" class="cls-3" width="16" height="16" transform="translate(796 542)"/>
+    </g>
+  </g>
+</svg>
