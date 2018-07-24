@@ -24,16 +24,19 @@ export const containers = StyleSheet.create({
 	}
 })
 
+const blockSize = 46
+
 // Block
 export const blocks = StyleSheet.create({
 	row: {
 		width: "100%",
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		justifyContent: 'space-evenly',
+		justifyContent: 'space-between',
 		alignContent: 'space-between',
 		alignItems: 'center',
-		marginVertical: '5%'
+		paddingHorizontal: (2 * (100 - (blockSize * 2)) / 3) + '%',
+		paddingBottom: '5%'
 	},
 	'1-1': {
 		width: "100%",
@@ -42,13 +45,13 @@ export const blocks = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	'1-2': {
-		width: 80 + (20 / 3) + '%',
-		aspectRatio: 2,
+		width: '100%',
+		aspectRatio: (2 * (100 / (blockSize * 2))),
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	'2-2': {
-		width: "40%",
+		width: blockSize + '%',
 		aspectRatio: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
