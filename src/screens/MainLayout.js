@@ -1,10 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator  } from 'react-navigation';
-import { View, Text } from 'react-native';
-import styles from '../styles/'
 
 // import HomeScreen from './Home/';
-
+import { View, Text } from 'react-native';
+import styles from '../styles/'
 const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0}>{ text }</Text></View>
 const HomeScreen = () => show('Home')
 const EventsScreen = () => show('Events')
