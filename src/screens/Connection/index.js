@@ -1,12 +1,10 @@
 import React from 'react'
 import { View, Image, Text, TextInput, Alert } from 'react-native'
 import Button from 'react-native-button'
-import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 // Components
-import BigCheckBox from '../../components/BigCheckBox'
 import BigButton from '../../components/BigButton'
 import HeaderView from '../../components/HeaderView'
 
@@ -41,7 +39,7 @@ export default class ConnectionScreen extends React.Component {
 		PortailApi.login(
 			this.state.emailOrLogin,
 			this.state.password
-		).then(() => resetNavigation(this.props.navigation, 'Connected')
+		).then(() => this.props.navigation.navigate('Connected')
 		).catch(() => {
 			this.setState(prevState => {
 				prevState.loading = false
