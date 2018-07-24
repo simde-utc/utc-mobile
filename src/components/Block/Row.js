@@ -71,12 +71,13 @@ export default class RowBlock extends React.Component {
 
             return (
                 <Block key={ index }
-                    onPress={ config.callback }
+                    onPress={ config.onPress }
                     style={ style }
                     editStyle={ config.editStyle }
                     editMode={ this.state.editMode }
                     text={ config.text }
                     image={ config.image }
+                    extend={ config.extend }
                 >
                 { config.children }
                 </Block>

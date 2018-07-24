@@ -5,21 +5,49 @@ import styles from '../../styles'
 
 export default class Block extends React.Component {
     children (text, image, element) {
-        if (text) {
+        if (image) {
+            if (this.props.extend && (text || element)) {
+                if (text) {
+                    return (
+                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
+                            <Image style={{ flex: 4, height: '100%' }}
+                                source={ image }
+                            />
+                            <Text style={[{ flex: 6 }, styles.text.center ]}>
+                                { text }
+                            </Text>
+                        </View>
+                    )
+                }
+                else {
+                    return (
+                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
+                            <Image style={{ flex: 4, height: '100%' }}
+                                source={ image }
+                            />
+                            <View style={{ flex: 6 }}>
+                                { element }
+                            </View>
+                        </View>
+                    )
+                }
+            }
+            else {
+                return (
+        			<Image style={{ width: '90%' }}
+                        source={ image }
+                        resizeMode='center'
+                    />
+        		)
+            }
+        }
+        else if (text) {
             return (
                 <Text style={ styles.text.center }
                 >
                     { text }
                 </Text>
             )
-        }
-        else if (image) {
-            return (
-    			<Image style={{ width: '100%' }}
-                    source={ image }
-                    resizeMode='center'
-                />
-    		)
         }
         else if (element) {
             return element
@@ -42,6 +70,7 @@ export default class Block extends React.Component {
 		return (
 			<TouchableHighlight underlayColor={"#fff0"}
                 style={ style }
+                onPress={ this.props.onPress }
             >
                 { this.children(this.props.text, this.props.image, this.props.children) }
 			</TouchableHighlight>
