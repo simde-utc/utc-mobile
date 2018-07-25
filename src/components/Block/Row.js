@@ -21,7 +21,6 @@ export default class RowBlock extends React.Component {
     block (config, index) {
         const blockManagerStyle = [
             styles.block['2-2'],
-            styles.bg.lightBlue,
             {
         		justifyContent: 'space-between',
         		alignContent: 'space-between',
@@ -34,7 +33,6 @@ export default class RowBlock extends React.Component {
             alignContent: 'space-between',
             paddingHorizontal: 0,
             paddingBottom: 0,
-            backgroundColor: '#F00'
         }
 
         if (Array.isArray(config)) {
@@ -90,7 +88,7 @@ export default class RowBlock extends React.Component {
 
     render() {
 		return (
-            <View style={[ styles.block.row, styles.bg.yellow, this.props.style ]}>
+            <View style={[ styles.block.row, this.props.style ]}>
                 { this.blocks(this.props.blocks) }
             </View>
 		)
