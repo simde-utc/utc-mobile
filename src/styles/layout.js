@@ -21,6 +21,19 @@ export const containers = StyleSheet.create({
 	padded: {
 		paddingHorizontal: spaces.md,
 		paddingVertical: spaces.sm
+	},
+	grid: {
+		flex: 1,
+	}
+})
+
+export const blocks = StyleSheet.create({
+	default: {
+		flex: 1,
+		margin: '3%',
+		borderRadius: 5,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 })
 
@@ -49,6 +62,7 @@ export const margin = {
 
 export default layout = {
 	container: containers,
+	block: blocks,
 	bg: bgColors,
 	...padding,
 	...margin,

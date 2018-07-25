@@ -1,32 +1,35 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Text } from 'react-native'
 import SortableGrid from 'react-native-sortable-grid';
 
+import styles from '../../styles'
+
+import Block from './Block'
 
 export default class Grid extends React.Component {
-
 	mapDataToChildren() {
 		return this.props.data.map((item, index) => (
-			<View key={ index }>
-				<Text>{ index }</Text>
-			</View>
+			<Block key={ index }
+				content={ () => <Text>{ item }</Text> }
+			>
+			</Block>
 		))
 	}
 
 	render() {
-		return (
-			const containerStyle = [
-				styles.py.sm,
-				this.props.containerStyle
-			]
+		const style = [
+			styles.container.grid,
+			this.props.style
+		]
 
+		return (
 			<SortableGrid
-				style={ containerStyle }
+				style={ style }
 				blockTransitionDuration={ 400 }
 				activeBlockCenteringDuration={ 200 }
-				itemsPerRow={ 4 }
+				itemsPerRow={ 2 }
 				dragActivationTreshold={ 200 }
-				onDragRelease={ (itemOrder) => this.props.onDragRelease(itemOrder) }
+				onDragRelease={ (itemOrder) => {} }
 			>
 				{ this.props.children ? this.props.children : this.mapDataToChildren() }
 			</SortableGrid>
