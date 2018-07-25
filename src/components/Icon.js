@@ -1,16 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
 import styles from '../styles/';
-import { Svg } from 'expo';
-// import Svg from 'react-native-svg';
+import SvgUri from 'react-native-svg-uri';
 
+// Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 export default class Icon extends React.Component {
 	render() {
 		return (
-			<View style={ styles.container.center }>
-				<Svg width={80} height={80}>
-					<Svg.Image href={ this.props.image } />
-				</Svg>
+			<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+				<SvgUri width='30' height='30' source={ this.props.image } />
 			</View>
 		);
 	}

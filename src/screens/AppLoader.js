@@ -7,7 +7,7 @@ export default class AppLoaderScreen extends React.Component {
 	componentDidMount() {
 		// Fetch tokens...
 		let data = {
-			isConnected: false
+			isConnected: true
 		}
 
 		// DEBUG
