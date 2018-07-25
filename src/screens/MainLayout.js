@@ -51,8 +51,7 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: HomeScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? HomeOn : HomeOff }
-				/>
+				<Icon image={ focused ? HomeOn : HomeOff } />
 			)
 		})
 	},
@@ -60,8 +59,7 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: NewsScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? NewsOn : NewsOff }
-				/>
+				<Icon image={ focused ? NewsOn : NewsOff } />
 			)
 		})
 	},
@@ -69,8 +67,7 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: EventsScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? EventsOn : EventsOff }
-				/>
+				<Icon image={ focused ? EventsOn : EventsOff } />
 			)
 		})
 	},
@@ -78,8 +75,7 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: NotificationsScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? NotificationsOn : NotificationsOff }
-				/>
+				<Icon image={ focused ? NotificationsOn : NotificationsOff } />
 			)
 		})
 	},
@@ -87,11 +83,11 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: HamburgerScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? HamburgerOn : HamburgerOff }
-				/>
+				<Icon image={ focused ? HamburgerOn : HamburgerOff } />
 			),
-			tabBarOnPress: ({ navigationOptions }) => {
+			tabBarOnPress: ({ navigation }) => {
 				console.log('Coucou je suis le hamburger')
+				navigation.toggleDrawer();
 			}
 		})
 	},
