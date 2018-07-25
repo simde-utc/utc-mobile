@@ -25,10 +25,17 @@ export default class HomeScreen extends React.Component {
 					navigation.navigate('Welcome')
 				}
 		    },
-		    {
-		        text: 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
-		        style: styles.bg.lightGray
-		    },
+		    [
+				{
+
+				},
+				{
+					text: "Samy je te jure <3",
+					style: {
+						backgroundColor: '#2F2'
+					}
+				}
+			],
 		    [
 		        {
 		            text: 'SiMDE',
@@ -57,6 +64,7 @@ export default class HomeScreen extends React.Component {
 			<BlockHandler
 				style={{ backgroundColor: '#0f0' }}
 				blocks={ config }
+				editMode={ true }
 			/>
 		);
 	}
