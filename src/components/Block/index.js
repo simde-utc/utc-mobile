@@ -10,8 +10,7 @@ export default class BlockHandler extends React.Component {
         super(props)
 
         this.state = {
-            editMode: this.props.editMode || false,
-            blocks: this.props.blocks || {}
+            editMode: this.props.editMode
         }
     }
 
@@ -19,8 +18,21 @@ export default class BlockHandler extends React.Component {
         return <BlockManager key={ index }
             style={ this.props.style }
             editMode={ this.state.editMode }
+            onEditMode={ this.onEditModeChange.bind(this) }
             blocks={ config }
         />
+    }
+
+    onEditModeChange (editMode) {
+        console.log(editMode)
+        if (this.props.onEditMode)
+            this.props.onEditMode(editMode)
+
+        this.setState((prevState) => {
+            prevState.editMode = editMode
+
+            return prevState
+        })
     }
 
     managers (config) {

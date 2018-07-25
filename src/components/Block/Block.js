@@ -60,17 +60,21 @@ export default class Block extends React.Component {
     }
 
     render() {
-        const style = [
+        var style = [
             {
                 borderRadius: 5,
             },
             this.props.style
         ]
 
+        if (this.props.editMode)
+            style.push(this.props.editStyle)
+
 		return (
 			<TouchableHighlight underlayColor={"#fff0"}
                 style={ style }
                 onPress={ this.props.onPress }
+                onLongPress={ () => this.props.onEditMode && this.props.onEditMode(!this.props.editMode) }
             >
                 { this.children(this.props.text, this.props.image, this.props.children) }
 			</TouchableHighlight>
