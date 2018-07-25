@@ -1,6 +1,7 @@
 // General styles
 import layout from './layout';
 import text from './text';
+import img from './image';
 
 // Component styles
 import { bigCheckBox } from './bigCheckBox';
@@ -11,6 +12,7 @@ const styles = {
 	// General styles
 	...layout,
 	text,
+	img,
 	
 	// Component styles
 	tabBar,
