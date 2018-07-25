@@ -34,8 +34,9 @@ export default class Void extends React.Component {
             <Block style={ style }
                 editStyle={ editStyle }
                 editMode={ this.props.editMode }
+                onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
             >
-            <Text style={ labelStyle }>+</Text>
+                <Text style={ labelStyle }>+</Text>
             </Block>
 		);
 	}

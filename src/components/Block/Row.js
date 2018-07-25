@@ -8,31 +8,14 @@ import VoidBlock from './Void'
 import styles from '../../styles'
 
 export default class RowBlock extends React.Component {
-    constructor (props) {
-        super(props)
-
-        this.state = {
-            editMode: this.props.editMode || false
-        }
-    }
-
     voidBlock (visible, index) {
-        if (visible) {
-            return (
-                <VoidBlock key={ index }
-                    style={[ styles.block['2-2'], { opacity: 1 }]}
-                    editMode={ this.state.editMode }
-                />
-            )
-        }
-        else {
-            return (
-                <VoidBlock key={ index }
-                    style={[ styles.block['2-2'], { opacity: 1 }]}
-                    editMode={ this.state.editMode }
-                />
-            )
-        }
+        return (
+            <VoidBlock key={ index }
+                style={ styles.block['2-2'] }
+                editMode={ this.props.editMode || visible }
+                onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+            />
+        )
     }
 
     block (config, index) {
@@ -60,6 +43,9 @@ export default class RowBlock extends React.Component {
                     style={ blockManagerStyle }
                     rowStyle={ rowStyle }
                     blocks={ config }
+                    editMode={ this.props.editMode }
+                    onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                    plainEmpty={ true }
                 />
             )
         }
@@ -69,19 +55,24 @@ export default class RowBlock extends React.Component {
                 styles.block[(config.extend ? '1' : '2') + '-2']
             ]
 
-            return (
-                <Block key={ index }
-                    onPress={ config.onPress }
-                    style={ style }
-                    editStyle={ config.editStyle }
-                    editMode={ this.state.editMode }
-                    text={ config.text }
-                    image={ config.image }
-                    extend={ config.extend }
-                >
-                { config.children }
-                </Block>
-            )
+            if (config.text || config.image || config.children) {
+                return (
+                    <Block key={ index }
+                        onPress={ config.onPress }
+                        style={ style }
+                        editStyle={ config.editStyle }
+                        editMode={ this.props.editMode }
+                        onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                        text={ config.text }
+                        image={ config.image }
+                        extend={ config.extend }
+                    >
+                        { config.children }
+                    </Block>
+                )
+            }
+            else
+                return this.voidBlock(false, index)
         }
     }
 
