@@ -85,10 +85,7 @@ export default MainLayout = createBottomTabNavigator ({
 			tabBarIcon: ({ focused }) => (
 				<Icon image={ focused ? HamburgerOn : HamburgerOff } />
 			),
-			tabBarOnPress: ({ navigation }) => {
-				console.log('Coucou je suis le hamburger')
-				navigation.toggleDrawer();
-			}
+			tabBarOnPress: ({ navigation }) => navigation.toggleDrawer()
 		})
 	},
 }, {
