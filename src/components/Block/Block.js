@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableHighlight, View, Text, Image } from 'react-native';
 
 import styles from '../../styles'
+import { colors } from '../../styles/variables';
 
 export default class Block extends React.Component {
     children (text, image, element) {
@@ -12,6 +13,7 @@ export default class Block extends React.Component {
                         <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
                             <Image style={{ flex: 4, height: '100%' }}
                                 source={ image }
+                                resizeMode="contain"
                             />
                             <Text style={[{ flex: 6 }, styles.text.center ]}>
                                 { text }
@@ -24,6 +26,7 @@ export default class Block extends React.Component {
                         <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
                             <Image style={{ flex: 4, height: '100%' }}
                                 source={ image }
+                                resizeMode="contain"
                             />
                             <View style={{ flex: 6 }}>
                                 { element }
@@ -62,7 +65,9 @@ export default class Block extends React.Component {
     render() {
         var style = [
             {
-                borderRadius: 5,
+                borderRadius: 3,
+                borderWidth: 1,
+                borderColor: colors.lightGray
             },
             this.props.style
         ]

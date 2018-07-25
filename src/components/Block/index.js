@@ -24,7 +24,6 @@ export default class BlockHandler extends React.Component {
     }
 
     onEditModeChange (editMode) {
-        console.log(editMode)
         if (this.props.onEditMode)
             this.props.onEditMode(editMode)
 

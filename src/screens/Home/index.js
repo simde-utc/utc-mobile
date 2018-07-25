@@ -17,10 +17,9 @@ export default class HomeScreen extends React.Component {
 		const config = [
 		    {
 		        children: (
-		            <Text style={ styles.bg.yellow }>Je veux voir mon intro !!</Text>
+		            <Text>Je veux voir mon intro !!</Text>
 		        ),
 		        extend: true,
-		        style: styles.bg.lightGray,
 				onPress: function () {
 					navigation.navigate('Welcome')
 				}
@@ -31,19 +30,14 @@ export default class HomeScreen extends React.Component {
 				},
 				{
 					text: "Samy je te jure <3",
-					style: {
-						backgroundColor: '#2F2'
-					}
 				}
 			],
 		    [
 		        {
 		            text: 'SiMDE',
-		            style: styles.bg.lightGray
 		        },
 				{
 		            text: 'MapUTC',
-		            style: styles.bg.lightGray
 		        },
 		        {
 		            children: (
@@ -51,18 +45,15 @@ export default class HomeScreen extends React.Component {
 					),
 					image: require('../../img/payutc.png'),
 					extend: true,
-		            style: styles.bg.lightGray
 		        },
 		    ],
 			{
 				image: require('../../img/logo_utc.png'),
-				style: styles.bg.lightGray
 			},
 		]
 
 		return (
 			<BlockHandler
-				style={{ backgroundColor: '#0f0' }}
 				blocks={ config }
 				editMode={ true }
 			/>

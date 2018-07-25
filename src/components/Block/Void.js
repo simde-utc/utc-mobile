@@ -10,9 +10,7 @@ export default class Void extends React.Component {
     render() {
         const style = [
             {
-                borderWidth: 2,
                 borderStyle: 'dashed',
-                borderColor: colors.lightGray,
                 opacity: 0
             },
             this.props.style
