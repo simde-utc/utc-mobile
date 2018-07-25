@@ -24,15 +24,22 @@ export const containers = StyleSheet.create({
 	},
 	grid: {
 		flex: 1,
+		alignItems: 'center',
+		width: "100%"
 	}
 })
 
 export const blocks = StyleSheet.create({
 	default: {
 		flex: 1,
-		margin: '3%',
+		margin: 5,
 		borderRadius: 5,
 		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	folder: {
+		flex: 1,
+		justifyContent: 'space-between',
 		alignItems: 'center'
 	}
 })
