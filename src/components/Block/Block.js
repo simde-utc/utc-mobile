@@ -10,7 +10,7 @@ export default class Block extends React.Component {
             if (this.props.extend && (text || element)) {
                 if (text) {
                     return (
-                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '80%' }}>
                             <Image style={{ flex: 4, height: '100%' }}
                                 source={ image }
                                 resizeMode="contain"
@@ -23,7 +23,7 @@ export default class Block extends React.Component {
                 }
                 else {
                     return (
-                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '90%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent:'center', alignItems: 'center', height: '80%', width: '80%' }}>
                             <Image style={{ flex: 4, height: '100%' }}
                                 source={ image }
                                 resizeMode="contain"
@@ -46,7 +46,7 @@ export default class Block extends React.Component {
         }
         else if (text) {
             return (
-                <Text style={ styles.text.center }
+                <Text style={[ styles.text.center, { padding: '2%' } ]}
                 >
                     { text }
                 </Text>
@@ -69,6 +69,7 @@ export default class Block extends React.Component {
                 borderWidth: 1,
                 borderColor: colors.lightGray
             },
+            styles.bg.white,
             this.props.style
         ]
 
