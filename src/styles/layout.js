@@ -17,6 +17,8 @@ export const containers = StyleSheet.create({
 		backgroundColor: colors.white,
 		alignItems: 'center',
 		justifyContent: 'center',
+		width: '100%',
+		height: '100%'
 	},
 	padded: {
 		paddingHorizontal: spaces.md,
@@ -24,7 +26,7 @@ export const containers = StyleSheet.create({
 	}
 })
 
-const blockSize = 46
+const blockSize = 47
 
 // Block
 export const blocks = StyleSheet.create({
@@ -36,7 +38,7 @@ export const blocks = StyleSheet.create({
 		alignContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: (2 * (100 - (blockSize * 2)) / 3) + '%',
-		paddingBottom: '5%'
+		paddingBottom: '3%'
 	},
 	'1-1': {
 		width: "100%",
