@@ -2,35 +2,38 @@ import React from 'react'
 import { View, Text } from 'react-native'
 
 import Block from './Block'
-import BlockManager from './Manager'
+import BlockFolder from './Folder'
 import VoidBlock from './Void'
 
 import styles from '../../styles'
 
-export default class RowBlock extends React.Component {
+export default class GridBlock extends React.Component {
     voidBlock (visible, index) {
         return (
             <VoidBlock key={ index }
+                id={ index }
                 style={ styles.block['2-2'] }
                 editMode={ this.props.editMode || visible }
                 onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
                 deleteMode={ false }
                 onDeleteMode={ () => {} }
+                onPress={ (index) => { this.props.onPressNewBlock && this.props.onPressNewBlock(index) } }
             />
         )
     }
 
     block (config, index) {
-        const blockManagerStyle = [
+        const blockFolderStyle = [
             styles.block['2-2'],
             {
         		justifyContent: 'space-between',
         		alignContent: 'space-between',
+                marginBottom: 0,
             },
             this.props.style,
         ]
 
-        const rowStyle = {
+        const gridStyle = {
             justifyContent: 'space-between',
             alignContent: 'space-between',
             paddingHorizontal: 0,
@@ -39,14 +42,16 @@ export default class RowBlock extends React.Component {
 
         if (Array.isArray(config)) {
             return (
-                <BlockManager key={ index }
-                    style={ blockManagerStyle }
-                    rowStyle={ rowStyle }
+                <BlockFolder key={ index }
+                    id={ index }
+                    style={ blockFolderStyle }
+                    gridStyle={ gridStyle }
                     blocks={ config }
                     editMode={ this.props.editMode }
                     onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
                     deleteMode={ this.props.deleteMode }
                     onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
+                    onPressNewBlock={ (index) => { this.props.onPressNewBlock && this.props.onPressNewBlock(index) } }
                     plainEmpty={ true }
                 />
             )
@@ -58,9 +63,11 @@ export default class RowBlock extends React.Component {
             ]
 
             if (config.text || config.image || config.children) {
+                console.log('Block', index)
+
                 return (
                     <Block key={ index }
-                        id={ config.id }
+                        id={ index }
                         onPress={ config.onPress }
                         style={ style }
                         editStyle={ config.editStyle }
@@ -84,20 +91,22 @@ export default class RowBlock extends React.Component {
     }
 
     blocks (config) {
-        var blocks = config.map((block, index) => this.block(block, index));
+        var blocks = config.map((block, index) => {
+            return this.block(block, index)
+        });
 
         if (config.length === 0)
             blocks.push(this.voidBlock(true, 0))
-
+/*
         if (config.length === 1 && !config[0].extend)
             blocks.push(this.voidBlock(false, 1))
-
+*/
         return blocks
     }
 
     render() {
 		return (
-            <View style={[ styles.block.row, this.props.style ]}>
+            <View style={[ styles.block.grid, this.props.style ]}>
                 { this.blocks(this.props.blocks) }
             </View>
 		)
