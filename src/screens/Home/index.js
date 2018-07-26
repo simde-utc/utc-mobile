@@ -26,7 +26,6 @@ export default class HomeScreen extends React.Component {
 		    },
 		    [
 				{
-
 				},
 				{
 					text: "Samy je te jure <3",
@@ -56,6 +55,7 @@ export default class HomeScreen extends React.Component {
 			<BlockHandler
 				blocks={ config }
 				editMode={ true }
+				deleteMode={ true }
 			/>
 		);
 	}
