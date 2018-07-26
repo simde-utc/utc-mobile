@@ -1,5 +1,10 @@
+# Services
+
+
+## Storage
+
 ```
-import Storage from "./src/utils/Storage/";
+import Storage from "./src/service/Storage";
 ```
 puis, dans une fonction JSX synchrone
 ```
