@@ -9,13 +9,19 @@ export default class Storage {
 		if (!key)	throw "Clef non définie!";
 		if (!value)	throw "Valeur non définie!";
 
-		return AsyncStorage.setItem(key, value);
+		const data = await stringifyData(value)
+		return AsyncStorage.setItem(key, data);
 	}
 
 	getItem = async (key) => {
 		if (!key)	throw "Clef non définie!";
 
-		return AsyncStorage.getItem(key);
+		try {
+			const data = await AsyncStorage.getItem(key);
+		} catch (err) {
+			throw "Impossible de récupérer les données"
+		}
+		return parseData(data);
 	}
 
 	// ========== Encrypted Storage ==========
@@ -24,27 +30,37 @@ export default class Storage {
 		if (!key)	throw "Clef non définie!";
 		if (!value)	throw "Valeur non définie!";
 
-		console.log("value before", value)
 		try {
-			const data = JSON.stringify(value);
-		} catch (error) {
-			return "Impossible de convertir les données en string."
+			const data = await stringifyData(value)
+		} catch (err) {
+			throw "Impossible de récupérer les données"
 		}
-		console.log("value after", data)
-
-		return await SecureStore.setItemAsync(key, data);
+		return SecureStore.setItemAsync(key, data);
 	}
 
 	getSensitiveData = async (key) => {
 		if (!key)	throw "Clef non définie!";
 
 		const data = await SecureStore.getItemAsync(key);
+		return parseData(data);
+	}
+	
+	// ========== JSON Helpers ==========
+
+	stringifyData = async (data) => {
+		try {
+			return JSON.stringify(value);
+		} catch (error) {
+			throw "Impossible de convertir les données en string."
+		}
+	}
+
+	parseData = async (data) => {
 		try {
 			return JSON.parse(data)
 		} catch (error) {
 			throw  "Impossible de parser les données récupérées."
 		}
 	}
-	
 
 }
