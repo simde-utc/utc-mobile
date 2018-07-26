@@ -7,7 +7,6 @@ export default class Block extends React.Component {
 	render() {
 		const style = [
 			styles.block.default,
-			styles.bg.yellow,
 			this.props.style
 		]
 

@@ -34,12 +34,15 @@ export const blocks = StyleSheet.create({
 		flex: 1,
 		margin: 5,
 		borderRadius: 5,
+		borderWidth: 1,
+		borderColor: colors.lightGray,
+		backgroundColor: colors.white,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	folder: {
 		flex: 1,
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center'
 	}
 })
