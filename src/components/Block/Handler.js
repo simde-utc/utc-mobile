@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, View, Text } from 'react-native'
 
-import BlockManager from './Manager'
+import BlockGrid from './Grid'
 
 import styles from '../../styles'
 
@@ -13,17 +13,6 @@ export default class BlockHandler extends React.Component {
             editMode: this.props.editMode,
             deleteMode: this.props.deleteMode,
         }
-    }
-
-    manager (config, index) {
-        return <BlockManager key={ index }
-            style={ this.props.style }
-            editMode={ this.state.editMode }
-            onEditMode={ this.onEditModeChange.bind(this) }
-            deleteMode={ this.state.deleteMode }
-            onDeleteMode={ this.onDeleteModeChange.bind(this) }
-            blocks={ config }
-        />
     }
 
     onEditModeChange (editMode) {
@@ -48,22 +37,12 @@ export default class BlockHandler extends React.Component {
         })
     }
 
-    managers (_config) {
+    _getConfig (_config) {
         config = _config.slice(0)
-        index = 0
-        managers = []
-        blocks = []
-        count = 0
 
         if (this.props.addTools !== false) {
             const toolBlocks = [
-                {
-                    children: (
-                        <Text style={[ styles.text.h0, styles.text.lightGray ]}>+</Text>
-                    ),
-                    editable: false,
-                    deletable: false,
-                },
+                {},
                 {
                     text: 'Nouveau dossier',
                     editable: false,
@@ -98,39 +77,7 @@ export default class BlockHandler extends React.Component {
             config.push(toolBlocks)
         }
 
-        // Un manager ne supporte que 2 lignes de 2 blocks chacun max
-        for (i = 0; i < config.length; i++) {
-            if (config[i].extend) {
-                count += 2
-
-                if (count > 4) {
-                    managers.push(this.manager(blocks, index++))
-
-                    blocks = []
-                    count = 2
-                }
-
-                blocks.push(config[i])
-            }
-            else {
-                blocks.push(config[i])
-
-                count++
-            }
-
-            if (count < 4)
-                continue
-
-            managers.push(this.manager(blocks, index++))
-
-            blocks = []
-            count = 0
-        }
-
-        if (blocks.length > 0)
-            managers.push(this.manager(blocks, index++))
-
-        return managers
+        return config
     }
 
     render() {
@@ -143,7 +90,23 @@ export default class BlockHandler extends React.Component {
 
 		return (
             <ScrollView style={ style }>
-                { this.managers(this.props.blocks) }
+                <BlockGrid
+                    style={ this.props.style }
+                    editMode={ this.state.editMode }
+                    onEditMode={ this.onEditModeChange.bind(this) }
+                    deleteMode={ this.state.deleteMode }
+                    onDeleteMode={ this.onDeleteModeChange.bind(this) }
+                    blocks={ this._getConfig(this.props.blocks) }
+                    onPressNewBlock={ (index) => {
+                        // Si on demande d'ajouter un block via l'utlitaire, on ajoute un block dans la grille global,
+                        // pas dans le dossier d'outils
+                        if (this.props.addTools !== false && index[0] === this.props.blocks.length)
+                            index = [ index[0] ]
+
+                        if (this.props.onPressNewBlock)
+                            this.props.onPressNewBlock(index)
+                    }}
+                />
             </ScrollView>
 		)
 	}
