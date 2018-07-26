@@ -1,9 +1,10 @@
 import React from 'react'
 import { ScrollView, View, Text, Image } from 'react-native'
-import { createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
+import { createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 
-import styles from '../styles/'
+import PortailApi from '../services/Portail'
 import { colors } from '../styles/variables'
+import styles from '../styles/'
 
 import MainLayout from './MainLayout'
 // DEBUG
@@ -19,7 +20,7 @@ class CustomDrawerContentComponent extends React.Component {
 		const headerColor = isConnected ? 'bg.yellow' : 'bg.lightBlue'
 		const textColor = isConnected ? 'text.gray' : 'text.white'
 		const headerStyle = styles.get('container.center', 'p.sm', headerColor)
-		const headerImagePath = isConnected ? require('../../icon.png') : require('../../icon.png')
+		const headerImagePath = isConnected ? require('../img/icon.png') : require('../img/icon.png')
 		const headerImageStyle = isConnected ? styles.img.bigAvatar : styles.img.bigThumbnail
 		const headerText = isConnected ? "My Super Name" : "Application UTC"
 		const headerTextStyle = styles.get(textColor, 'text.h1')
