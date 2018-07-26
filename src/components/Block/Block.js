@@ -1,10 +1,85 @@
 import React from 'react';
-import { TouchableHighlight, View, Text, Image } from 'react-native';
+import { TouchableHighlight, View, Text, Image, Animated, Easing } from 'react-native';
+import Button from 'react-native-button';
 
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
 
+const deleteStyle = {
+    position: 'absolute',
+    backgroundColor: '#F00',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: colors.lightGray,
+    top: 0,
+    right: 0,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
+}
+
+const resizeStyle = {
+    position: 'absolute',
+    backgroundColor: colors.lightGray,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: colors.lightGray,
+    bottom: 0,
+    left: 0,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
+}
+
 export default class Block extends React.Component {
+    constructor (props) {
+        super(props)
+
+        this.editableValue = new Animated.Value(0)
+
+        this.editableRotation = this.editableValue.interpolate({
+            inputRange: [0, 0.25, 0.75, 1],
+            outputRange: ['0deg', '1.5deg', '-1.5deg', '0deg']
+        })
+    }
+
+    animateEditMode () {
+        // Animation des blocs en editMode
+        if (this.props.editMode) {
+            this.animatedEditMode = Animated.loop(
+                Animated.timing(
+                    this.editableValue,
+                    {
+                        toValue: 1,
+                        duration: 150,
+                        easing: Easing.linear
+                    }
+                ),
+            )
+
+            this.animatedEditMode.start()
+        }
+        else if (this.animatedEditMode) {
+            this.animatedEditMode.stop()
+
+            // On fini l'animation
+            Animated.timing(
+                this.editableValue,
+                {
+                    toValue: 1,
+                    duration: 150,
+                    easing: Easing.linear
+                }
+            ).start()
+
+            this.animatedEditMode = undefined
+        }
+    }
+
     children (text, image, element) {
         if (image) {
             if (this.props.extend && (text || element)) {
@@ -62,28 +137,59 @@ export default class Block extends React.Component {
         }
     }
 
+    editTools () {
+        if (this.props.editMode && this.props.editable !== false) {
+            return [(
+                <TouchableHighlight underlayColor={ '#eee' }
+                    key='delete'
+                    style={ deleteStyle }
+                    onPress={ this.props.onPress }
+                >
+                    <Text>x</Text>
+    			</TouchableHighlight>
+            ), (
+                <TouchableHighlight underlayColor={ '#eee' }
+                    key='resize'
+                    style={ resizeStyle }
+                    onPress={ this.props.onPress }
+                >
+                    <Text>r</Text>
+    			</TouchableHighlight>
+            )]
+        }
+    }
+
     render() {
         var style = [
             {
-                borderRadius: 3,
-                borderWidth: 1,
-                borderColor: colors.lightGray
+                borderRadius: 5,
+                transform: [{ rotate: this.editableRotation }],
+                overflow: 'visible',
             },
             styles.bg.white,
-            this.props.style
+            this.props.style,
         ]
 
+        // Animation des blocs en editMode
         if (this.props.editMode)
             style.push(this.props.editStyle)
 
+        if (this.props.editable !== false)
+            this.animateEditMode()
+
 		return (
-			<TouchableHighlight underlayColor={"#fff0"}
+            <Animated.View
                 style={ style }
-                onPress={ this.props.onPress }
-                onLongPress={ () => this.props.onEditMode && this.props.onEditMode(!this.props.editMode) }
             >
-                { this.children(this.props.text, this.props.image, this.props.children) }
-			</TouchableHighlight>
+    			<TouchableHighlight underlayColor={ '#eee' }
+                    style={[ styles.container.center ]}
+                    onPress={ this.props.onPress }
+                    onLongPress={ () => this.props.onEditMode && this.props.onEditMode(!this.props.editMode) }
+                >
+                    { this.children(this.props.text, this.props.image, this.props.children) }
+    			</TouchableHighlight>
+                { this.editTools() }
+            </Animated.View>
 		);
 	}
 }
