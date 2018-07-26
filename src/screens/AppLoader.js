@@ -26,7 +26,6 @@ export default class AppLoaderScreen extends React.Component {
 	// Load async data and store it in the App store
 	bootstrap = async () => {
 		// Fetch tokens from SecureStore...
-		console.log("=== App Bootstrapping")
 		this.setState(prevState => ({
 			...prevState,
 			isConnected: PortailApi.isConnected()
@@ -36,14 +35,12 @@ export default class AppLoaderScreen extends React.Component {
 
 		// Must return a Promise
 		return new Promise(resolve => setTimeout(() => {
-			console.log("=== App Bootstrapped")
 			resolve()
 		}, 500))
 	}
 
 
 	appLoaded = () => {
-		console.log("=== App Loaded")
 		this.props.navigation.navigate(
 			this.state.isConnected ? 'Main' : 'Welcome'
 		);
