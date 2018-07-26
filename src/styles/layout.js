@@ -30,7 +30,7 @@ const blockSize = 47
 
 // Block
 export const blocks = StyleSheet.create({
-	row: {
+	grid: {
 		width: "100%",
 		flexDirection: 'row',
 		flexWrap: 'wrap',
@@ -38,25 +38,27 @@ export const blocks = StyleSheet.create({
 		alignContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: (2 * (100 - (blockSize * 2)) / 3) + '%',
-		paddingBottom: '3%'
 	},
 	'1-1': {
 		width: "100%",
 		aspectRatio: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 	'1-2': {
 		width: '100%',
 		aspectRatio: (2 * (100 / (blockSize * 2))),
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 	'2-2': {
 		width: blockSize + '%',
 		aspectRatio: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 })
 
