@@ -14,6 +14,8 @@ export default class RowBlock extends React.Component {
                 style={ styles.block['2-2'] }
                 editMode={ this.props.editMode || visible }
                 onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                deleteMode={ false }
+                onDeleteMode={ () => {} }
             />
         )
     }
@@ -43,6 +45,8 @@ export default class RowBlock extends React.Component {
                     blocks={ config }
                     editMode={ this.props.editMode }
                     onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                    deleteMode={ this.props.deleteMode }
+                    onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                     plainEmpty={ true }
                 />
             )
@@ -56,14 +60,19 @@ export default class RowBlock extends React.Component {
             if (config.text || config.image || config.children) {
                 return (
                     <Block key={ index }
+                        id={ config.id }
                         onPress={ config.onPress }
                         style={ style }
                         editStyle={ config.editStyle }
                         editMode={ this.props.editMode }
                         onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                        deleteMode={ this.props.deleteMode }
+                        onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                         text={ config.text }
                         image={ config.image }
                         extend={ config.extend }
+                        editable={ config.editable }
+                        deletable={ config.deletable }
                     >
                         { config.children }
                     </Block>

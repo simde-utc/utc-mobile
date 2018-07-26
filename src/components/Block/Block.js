@@ -138,25 +138,44 @@ export default class Block extends React.Component {
     }
 
     editTools () {
+        var tools = []
+
         if (this.props.editMode && this.props.editable !== false) {
-            return [(
-                <TouchableHighlight underlayColor={ '#eee' }
-                    key='delete'
-                    style={ deleteStyle }
-                    onPress={ this.props.onPress }
-                >
-                    <Text>x</Text>
-    			</TouchableHighlight>
-            ), (
+            tools.push(
                 <TouchableHighlight underlayColor={ '#eee' }
                     key='resize'
                     style={ resizeStyle }
-                    onPress={ this.props.onPress }
+                    onPress={ this.props.onResize && this.props.onResize(id) }
                 >
                     <Text>r</Text>
     			</TouchableHighlight>
-            )]
+            )
         }
+
+        if (this.props.deleteMode && this.props.deletable !== false) {
+            tools.push(
+                <TouchableHighlight underlayColor={ '#eee' }
+                    key='delete'
+                    style={ deleteStyle }
+                    onPress={ this.props.onDelete && this.props.onDelete(id) }
+                >
+                    <Text>x</Text>
+    			</TouchableHighlight>
+            )
+        }
+
+        return tools
+    }
+
+    onPress () {
+        if (this.props.editMode && this.props.editable !== false)
+            return
+
+        if (this.props.deleteMode && this.props.deletable !== false)
+            return
+
+        if (this.props.onPress)
+            this.props.onPress(this.props.id)
     }
 
     render() {
@@ -164,7 +183,6 @@ export default class Block extends React.Component {
             {
                 borderRadius: 5,
                 transform: [{ rotate: this.editableRotation }],
-                overflow: 'visible',
             },
             styles.bg.white,
             this.props.style,
@@ -183,8 +201,8 @@ export default class Block extends React.Component {
             >
     			<TouchableHighlight underlayColor={ '#eee' }
                     style={[ styles.container.center ]}
-                    onPress={ this.props.onPress }
-                    onLongPress={ () => this.props.onEditMode && this.props.onEditMode(!this.props.editMode) }
+                    onPress={ this.onPress.bind(this) }
+                    onLongPress={ () => this.props.onEditMode } // MOVE
                 >
                     { this.children(this.props.text, this.props.image, this.props.children) }
     			</TouchableHighlight>

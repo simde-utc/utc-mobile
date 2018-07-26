@@ -33,7 +33,10 @@ export default class Void extends React.Component {
                 editStyle={ editStyle }
                 editMode={ this.props.editMode }
                 onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                deleteMode={ this.props.deleteMode }
+                onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                 editable={ false }
+                deletable={ false }
             >
                 <Text style={ labelStyle }>+</Text>
             </Block>
