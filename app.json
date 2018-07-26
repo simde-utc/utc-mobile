@@ -11,10 +11,6 @@
 			"backgroundColor": "#FFFFFF",
 			"resizeMode": "contain",
 			"image": "./src/img/splash.png",
-		},
-		"androidStatusBar": {
-			"barStyle": "light-content",
-			"backgroundColor": "#FFD515"
 		}
 	}
 }
