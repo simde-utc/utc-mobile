@@ -31,5 +31,5 @@ export default MainLayout = createBottomTabNavigator ({
 		screen: SettingsScreen,
 	},
 }, {
-	initialRouteName: 'Home'
+	initialRouteName: 'Storage'
 });
