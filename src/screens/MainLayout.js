@@ -4,6 +4,7 @@ import { View, Text } from 'react-native';
 import styles from '../styles/'
 
 import HomeScreen from './Home/';
+import StorageTestScreen from './StorageTest';
 
 const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0}>{ text }</Text></View>
 // const HomeScreen = () => show('Home')
@@ -13,6 +14,7 @@ const NotificationsScreen = () => show('Notifications')
 const SettingsScreen = () => show('Settings')
 
 export default MainLayout = createBottomTabNavigator ({
+	Storage: StorageTestScreen,
 	Home: {
 		screen: HomeScreen,
 	},
