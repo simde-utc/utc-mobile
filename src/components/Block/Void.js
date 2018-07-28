@@ -37,7 +37,7 @@ export default class Void extends React.Component {
                 onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                 editable={ false }
                 deletable={ false }
-                onPress={ () => { this.props.onPress && this.props.onPress([ this.props.id ]) } }
+                onPress={ () => { this.props.onPress && this.props.onPress(this.props.id) } }
             >
                 <Text style={ labelStyle }>+</Text>
             </Block>

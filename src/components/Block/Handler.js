@@ -10,6 +10,7 @@ export default class BlockHandler extends React.Component {
         super(props)
 
         this.state = {
+            blocks: this.props.blocks,
             editMode: this.props.editMode,
             deleteMode: this.props.deleteMode,
         }
@@ -96,7 +97,7 @@ export default class BlockHandler extends React.Component {
                     onEditMode={ this.onEditModeChange.bind(this) }
                     deleteMode={ this.state.deleteMode }
                     onDeleteMode={ this.onDeleteModeChange.bind(this) }
-                    blocks={ this._getConfig(this.props.blocks) }
+                    blocks={ this._getConfig(this.state.blocks) }
                     onPressNewBlock={ (index) => {
                         // Si on demande d'ajouter un block via l'utlitaire, on ajoute un block dans la grille global,
                         // pas dans le dossier d'outils

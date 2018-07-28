@@ -8,10 +8,18 @@ import VoidBlock from './Void'
 import styles from '../../styles'
 
 export default class GridBlock extends React.Component {
+    _getId (index) {
+        var id = Array.isArray(this.props.id) ? this.props.id.slice(0) : []
+
+        id.push(index)
+
+        return id
+    }
+
     voidBlock (visible, index) {
         return (
             <VoidBlock key={ index }
-                id={ index }
+                id={ this._getId(index) }
                 style={ styles.block['2-2'] }
                 editMode={ this.props.editMode || visible }
                 onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
@@ -43,7 +51,7 @@ export default class GridBlock extends React.Component {
         if (Array.isArray(config)) {
             return (
                 <BlockFolder key={ index }
-                    id={ index }
+                    id={ this._getId(index) }
                     style={ blockFolderStyle }
                     gridStyle={ gridStyle }
                     blocks={ config }
@@ -63,11 +71,9 @@ export default class GridBlock extends React.Component {
             ]
 
             if (config.text || config.image || config.children) {
-                console.log('Block', index)
-
                 return (
                     <Block key={ index }
-                        id={ index }
+                        id={ this._getId(index) }
                         onPress={ config.onPress }
                         style={ style }
                         editStyle={ config.editStyle }
