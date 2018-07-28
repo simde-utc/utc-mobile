@@ -52,9 +52,9 @@ class Storage {
 	stringifyData = async (data) => {
 		// TODO : set entier
 		console.log(typeof data)
-		try {
+		try {	/**
 			if (typeof data === 'string')
-				return data		
+				return data	**/	
 			return JSON.stringify(data);
 		} catch (error) {
 			console.log("error : ", error)
