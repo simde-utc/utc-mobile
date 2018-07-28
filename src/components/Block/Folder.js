@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 
 import BlockGrid from './Grid'
 
@@ -30,21 +29,15 @@ export default class BlockFolder extends React.Component {
 
     render () {
 		return (
-            <View style={ this.props.style }>
-                <BlockGrid style={ this.props.gridStyle }
-                    blocks={ this._getConfig(this.props.blocks) }
-                    editMode={ this.props.editMode }
-                    onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
-                    deleteMode={ this.props.deleteMode }
-                    onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
-                    onPressNewBlock={ (index) => {
-                        index.unshift(this.props.id)
-
-                        if (this.props.onPressNewBlock)
-                            this.props.onPressNewBlock(index)
-                    } }
-                />
-            </View>
+            <BlockGrid style={[ this.props.style, this.props.gridStyle ]}
+                id={ this.props.id }
+                blocks={ this._getConfig(this.props.blocks) }
+                editMode={ this.props.editMode }
+                onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
+                deleteMode={ this.props.deleteMode }
+                onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
+                onPressNewBlock={ (index) => { this.props.onPressNewBlock && this.props.onPressNewBlock(index) } }
+            />
 		)
 	}
 }
