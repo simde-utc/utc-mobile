@@ -24,6 +24,12 @@ class Storage {
 		return AsyncStorage.setItem(key, data);
 	}
 
+	removeItem = async (key) => {
+		if (!key)	throw "Clé non définie !";
+
+		return AsyncStorage.removeItem(key);
+	}
+
 
 	// ========== Encrypted Storage ==========
 
