@@ -50,6 +50,13 @@ class Storage {
 		return SecureStore.setItemAsync(key, data);
 	}
 	
+	removeSensitiveData = async (key) => {
+		if (!key)	throw "Clé non définie !";
+		if (!this.checkSensitiveKey(key))
+			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
+
+		return SecureStore.deleteItemAsync(key);
+	}
 
 	// ========== Helpers ==========
 
