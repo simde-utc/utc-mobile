@@ -5,7 +5,7 @@ import styles from '../styles'
 import { colors } from '../styles/variables';
 import Storage from '../services/Storage';
 
-const key = "test storage"
+const key = "test.storage"
 
 export default class StorageTestScreen extends React.Component {
 	state = {
@@ -16,8 +16,9 @@ export default class StorageTestScreen extends React.Component {
 	// ========== Helpers ==========
 
 	toggleSecurity = (checked) => {
-		this.setState(prevState => ({ ...prevState, security: !checked }))
-		return !checked;
+		console.log("Security :", checked ? "ON" : "OFF")
+		this.setState(prevState => ({ ...prevState, security: checked }))
+		return checked;
 	}
 
 	log = (data, error = false) => {
@@ -28,14 +29,15 @@ export default class StorageTestScreen extends React.Component {
 	// ========== Getter & Setters ==========
 
 	getter = async () => {
-		console.log("Getter started")
+		console.log("Getter started", this.state.security ? "SECURE" : "NOT SECURE")
+		
 		let promise = this.state.security ? Storage.getSensitiveData(key) : Storage.getItem(key)
 		promise.then(data => this.log(data))
 			.catch(err => this.log(err, true))
 	}
 
 	setter = async (i) => {
-		console.log("Setter "+i+" started")
+		console.log("Setter "+i+" started", this.state.security ? "SECURE" : "NOT SECURE")
 		let data;
 		switch (i) {
 			case 1:
@@ -56,7 +58,6 @@ export default class StorageTestScreen extends React.Component {
 		}
 
 		let promise = this.state.security ? Storage.setSensitiveData(key, data) : Storage.setItem(key, data)
-
 		promise.then(() => console.log("Data "+i+" set"))
 			.catch(err => console.warn("Error setting data "+i+" : "+err))
 	}
@@ -64,7 +65,7 @@ export default class StorageTestScreen extends React.Component {
 	render() {
 		return (
 			<View style={[ styles.get('container.center', 'container.padded'), { justifyContent: 'space-around', alignItems: 'stretch' } ]}>
-				<BigCheckBox onChange={ this.toggleSecurity } label="Encrypted data" />
+				<BigCheckBox value={ this.state.security } onChange={ this.toggleSecurity } label="Encrypted data" />
 				<Text>Got : { JSON.stringify(this.state.log, null, 2) }</Text>
 				<Button onPress={ this.getter } title="Get item and log" />
 				<Button onPress={() => this.setter(1) } title="Set text" />

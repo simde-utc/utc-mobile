@@ -6,7 +6,7 @@ class Storage {
 	// ========== Normal Storage ==========
 
 	getItem = async (key) => {
-		if (!key)	throw "Clef non définie!";
+		if (!key)	throw "Clé non définie !";
 
 		try {
 			const data = await AsyncStorage.getItem(key);
@@ -17,8 +17,8 @@ class Storage {
 	}
 
 	setItem = async (key, value) => {
-		if (!key)	throw "Clef non définie!";
-		if (!value)	throw "Valeur non définie!";
+		if (!key)	throw "Clé non définie !";
+		if (!value)	throw "Valeur non définie !";
 
 		const data = await this.stringifyData(value)
 		return AsyncStorage.setItem(key, data);
@@ -28,33 +28,33 @@ class Storage {
 	// ========== Encrypted Storage ==========
 
 	getSensitiveData = async (key) => {
-		if (!key)	throw "Clef non définie!";
+		if (!key)	throw "Clé non définie !";
+		if (!this.checkSensitiveKey(key))
+			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
 
 		try {
 			const data = await SecureStore.getItemAsync(key);
-			return this.parseData(data);
+			return this.parseData(data, true);
 		} catch (err) {
 			throw "Impossible de récupérer les données"
 		}
 	}
 
 	setSensitiveData = async (key, value) => {
-		if (!key)	throw "Clef non définie!";
-		if (!value)	throw "Valeur non définie!";
+		if (!key)	throw "Clé non définie !";
+		if (!value)	throw "Valeur non définie !";
+		if (!this.checkSensitiveKey(key))
+			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
 
-		const data = await this.stringifyData(value)
+		const data = await this.stringifyData(value, true)
 		return SecureStore.setItemAsync(key, data);
 	}
 	
 
-	// ========== JSON Helpers ==========
+	// ========== Helpers ==========
 
-	stringifyData = async (data) => {
-		// TODO : set entier
-		console.log(typeof data)
-		try {	/**
-			if (typeof data === 'string')
-				return data	**/	
+	stringifyData = async (data, sensitiveString) => {
+		try {
 			return JSON.stringify(data);
 		} catch (error) {
 			console.log("error : ", error)
@@ -63,14 +63,15 @@ class Storage {
 	}
 
 	parseData = async (data) => {
-		// TODO : récupération text simple et entier
 		try {
 			return JSON.parse(data)
 		} catch (error) {
-			console.log("error : ", error)
 			throw  "Impossible de parser les données récupérées."
 		}
 	}
+
+	// Sensitive keys only contain alphanumeric characters and ._-
+	checkSensitiveKey = (key) => /^[\w.\-]+$/.test(key)
 
 }
 
