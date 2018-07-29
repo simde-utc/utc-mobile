@@ -33,27 +33,15 @@ export default class GridBlock extends React.Component {
     block (config, index) {
         const blockFolderStyle = [
             styles.block['2-2'],
-            {
-        		justifyContent: 'space-between',
-        		alignContent: 'space-between',
-                marginBottom: 0,
-            },
+            styles.block.folder,
             this.props.style,
         ]
-
-        const gridStyle = {
-            justifyContent: 'space-between',
-            alignContent: 'space-between',
-            paddingHorizontal: 0,
-            paddingBottom: 0,
-        }
 
         if (Array.isArray(config)) {
             return (
                 <BlockFolder key={ index }
                     id={ this._getId(index) }
                     style={ blockFolderStyle }
-                    gridStyle={ gridStyle }
                     blocks={ config }
                     editMode={ this.props.editMode }
                     onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
@@ -67,7 +55,8 @@ export default class GridBlock extends React.Component {
         else {
             var style = [
                 config.style,
-                styles.block[(config.extend ? '1' : '2') + '-2']
+                styles.block[(config.extend ? '1' : '2') + '-2'],
+                this.props.blockStyle,
             ]
 
             if (config.text || config.image || config.children) {
