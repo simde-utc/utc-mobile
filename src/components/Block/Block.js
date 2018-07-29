@@ -184,8 +184,9 @@ export default class Block extends React.Component {
                 borderRadius: 5,
                 transform: [{ rotate: this.editableRotation }],
             },
-            styles.bg.white,
+            styles.block.block,
             this.props.style,
+            styles.bg.yellow,
         ]
 
         // Animation des blocs en editMode
@@ -196,9 +197,7 @@ export default class Block extends React.Component {
             this.animateEditMode()
 
 		return (
-            <Animated.View
-                style={ style }
-            >
+            <Animated.View style={ style }>
     			<TouchableHighlight underlayColor={ '#eee' }
                     style={[ styles.container.center ]}
                     onPress={ this.onPress.bind(this) }

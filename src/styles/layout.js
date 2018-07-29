@@ -36,29 +36,30 @@ export const blocks = StyleSheet.create({
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',
 		alignContent: 'space-between',
-		alignItems: 'center',
 		paddingHorizontal: (2 * (100 - (blockSize * 2)) / 3) + '%',
+	},
+	folder: {
+		justifyContent: 'space-between',
+		alignContent: 'space-between',
+		paddingHorizontal: 0,
+		marginBottom: 10
+	},
+	block: {
+		width: "100%",
+		height: '100%',
+		marginBottom: 10
 	},
 	'1-1': {
 		width: "100%",
 		aspectRatio: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 	'1-2': {
 		width: '100%',
 		aspectRatio: (2 * (100 / (blockSize * 2))),
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 	'2-2': {
 		width: blockSize + '%',
 		aspectRatio: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginBottom: (100 - (blockSize * 2)) + '%'
 	},
 })
 

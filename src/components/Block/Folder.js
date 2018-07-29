@@ -29,9 +29,10 @@ export default class BlockFolder extends React.Component {
 
     render () {
 		return (
-            <BlockGrid style={[ this.props.style, this.props.gridStyle ]}
+            <BlockGrid style={ this.props.style }
                 id={ this.props.id }
                 blocks={ this._getConfig(this.props.blocks) }
+                blockStyle={{ marginBottom: 0 }}
                 editMode={ this.props.editMode }
                 onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
                 deleteMode={ this.props.deleteMode }
