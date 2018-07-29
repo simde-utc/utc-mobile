@@ -14,6 +14,8 @@ export default class HomeScreen extends React.Component {
 	constructor (props) {
 		super(props)
 
+		const navigation = this.props.navigation
+
 		this.state = {
 			config: [
 			    {
@@ -70,8 +72,6 @@ export default class HomeScreen extends React.Component {
 	}
 
 	render () {
-		const navigation = this.props.navigation
-
 		return (
 			<BlockHandler
 				blocks={ this.state.config }
