@@ -9,11 +9,13 @@ export const containers = StyleSheet.create({
 	default: {
 		flex: 1,
 		alignItems: 'center',
+		backgroundColor: colors.white,
 		width: "100%"
 	},
 	center: {
 		flex: 1,
 		alignItems: 'center',
+		backgroundColor: colors.white,
 		justifyContent: 'center',
 	},
 	padded: {
