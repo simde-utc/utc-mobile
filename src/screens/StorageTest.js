@@ -23,7 +23,10 @@ export default class StorageTestScreen extends React.Component {
 
 	log = (data, error = false) => {
 		this.setState(prevState => ({ ...prevState, log: data }));
-		error ? console.warn(data) : console.log(data);
+		if (error)
+			console.warn(data)
+		else
+			console.log(data);
 	}
 
 	// ========== Getter & Setters ==========
@@ -44,16 +47,16 @@ export default class StorageTestScreen extends React.Component {
 				data = "abc";
 				break;
 			case 2:
-				data = ["azd", 4, 4.5];
+				data = 3.2575;
 				break;
 			case 3:
-				data = {a: 1, b: 3};
+				data = ["azd", 4, 4.5];
 				break;
 			case 4:
-				data = null;
+				data = {a: 1, b: 3};
 				break;
 			case 5:
-				data = undefined;
+				data = null;
 				break;
 		}
 
@@ -69,10 +72,10 @@ export default class StorageTestScreen extends React.Component {
 				<Text>Got : { JSON.stringify(this.state.log, null, 2) }</Text>
 				<Button onPress={ this.getter } title="Get item and log" />
 				<Button onPress={() => this.setter(1) } title="Set text" />
-				<Button onPress={() => this.setter(2) } title="Set array" />
-				<Button onPress={() => this.setter(3) } title="Set object" />
-				<Button onPress={() => this.setter(4) } title="Set null" />
-				<Button onPress={() => this.setter(5) } title="Set undefined" />
+				<Button onPress={() => this.setter(2) } title="Set number" />
+				<Button onPress={() => this.setter(3) } title="Set array" />
+				<Button onPress={() => this.setter(4) } title="Set object" />
+				<Button onPress={() => this.setter(5) } title="Set null" />
 			</View>
 		);
 	}
