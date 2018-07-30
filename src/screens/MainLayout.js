@@ -1,12 +1,14 @@
 import React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
 import { createBottomTabNavigator  } from 'react-navigation';
-
-// import HomeScreen from './Home/';
 import styles from '../styles/'
 
-import Icon from '../components/Icon'
+// Screens
+// import HomeScreen from './Home/';
+// import StorageTestScreen from './StorageTest'; // DEBUG
 
+// Icons
+import Icon from '../components/Icon'
 import HomeOn from '../img/icons/navbar/home-on.svg'
 import HomeOff from '../img/icons/navbar/home-off.svg'
 import NewsOn from '../img/icons/navbar/news-on.svg'
@@ -18,35 +20,27 @@ import NotificationsOff from '../img/icons/navbar/bell-off.svg'
 import HamburgerOn from '../img/icons/navbar/hamburger-on.svg'
 import HamburgerOff from '../img/icons/navbar/hamburger-off.svg'
 
-
-const show = (text) => {
-	return (
-		<View style={ styles.container.center }>
-			<Text style={ styles.text.h0 }>
-				{ text }
-			</Text>
-		</View>
-	)
-}
-
+// DEBUG
+const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0 }>{ text }</Text></View>
 const HomeScreen = () => show('Home')
 const NewsScreen = () => show('News')
 const EventsScreen = () => show('Events')
 const NotificationsScreen = () => show('Notifications')
 const HamburgerScreen = () => show('Hamburger')
 
-const tabBarOptions = Platform.OS === 'ios' ?
-  {
-    // iOS tabBarOptions
-    showLabel: false
-  } : {
-    // Android tabBarOptions
-    showIcon: true,
-    showLabel: false
-  }
 
+const tabBarOptions = Platform.OS === 'ios' ?
+	{
+		// iOS tabBarOptions
+		showLabel: false
+	} : {
+		// Android tabBarOptions
+		showIcon: true,
+		showLabel: false
+	}
 
 export default MainLayout = createBottomTabNavigator ({
+	// Storage: StorageTestScreen,	// DEBUG
 	Home: {
 		screen: HomeScreen,
 		navigationOptions: ({ navigation }) => ({
