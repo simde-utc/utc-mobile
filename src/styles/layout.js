@@ -8,13 +8,11 @@ export const bgColors = createStyleFromList(colors, 'backgroundColor');
 export const containers = StyleSheet.create({
 	default: {
 		flex: 1,
-		backgroundColor: colors.white,
 		alignItems: 'center',
 		width: "100%"
 	},
 	center: {
 		flex: 1,
-		backgroundColor: colors.white,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
