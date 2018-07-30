@@ -1,7 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Button from 'react-native-button';
-import { resetNavigation } from '../../utils/navigation'
 import styles from '../../styles'
 
 // Components
@@ -48,7 +46,7 @@ export default class ConnectedScreen extends React.Component {
 					<BigButton
 						label="Aller à la page d'accueil"
 						style={ styles.mt.lg }
-						onPress={ () => resetNavigation(this.props.navigation) }
+						onPress={ () => this.props.navigation.navigate('Main') }
 					/>
 				</View>
 			</View>

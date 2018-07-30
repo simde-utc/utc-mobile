@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.005 35.005">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #007d94;
+      }
+
+      .cls-2 {
+        fill: #ffd515;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Portail" transform="translate(0.004)">
+    <ellipse id="Ellipse_3" data-name="Ellipse 3" class="cls-1" cx="17.502" cy="17.502" rx="17.502" ry="17.502" transform="translate(-0.004)"/>
+    <path id="Tracé_47" data-name="Tracé 47" class="cls-2" d="M2.5,6.25V17.5h15V6.25ZM16.25,2.5h2.5A1.181,1.181,0,0,1,20,3.75v15A1.181,1.181,0,0,1,18.75,20H1.25A1.181,1.181,0,0,1,0,18.75v-15A1.181,1.181,0,0,1,1.25,2.5h2.5V1.25A1.181,1.181,0,0,1,5,0,1.181,1.181,0,0,1,6.25,1.25V2.5h7.5V1.25a1.25,1.25,0,0,1,2.5,0ZM15,15H12.5V12.5H15Zm-3.75,0H8.75V12.5h2.5ZM15,11.25H12.5V8.75H15Zm-3.75,0H8.75V8.75h2.5ZM7.5,15H5V12.5H7.5Z" transform="translate(7.996 7)"/>
+  </g>
+</svg>
