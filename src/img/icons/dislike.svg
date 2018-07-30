@@ -1,0 +1,22 @@
+<svg id="Pas_interessé" data-name="Pas interessé" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63.006 63.006">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #007d94;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        fill: #ffd515;
+      }
+    </style>
+  </defs>
+  <ellipse id="Ellipse_3" data-name="Ellipse 3" class="cls-1" cx="31.503" cy="31.503" rx="31.503" ry="31.503" transform="translate(0)"/>
+  <g id="No" transform="translate(-1021 -4480)">
+    <rect id="Rectangle_1445" data-name="Rectangle 1445" class="cls-2" width="16" height="16" transform="translate(1049 4498)"/>
+    <path id="Union_3" data-name="Union 3" class="cls-3" d="M13.045,15.417,2.371,26.091,0,23.718,10.673,13.045,0,2.371,2.371,0,13.045,10.673,23.718,0l2.373,2.371L15.417,13.045,26.091,23.718l-2.373,2.373Z" transform="translate(1039 4498)"/>
+  </g>
+</svg>
