@@ -1,15 +1,15 @@
 import Api from './Api'
 
-export class CASAuth extends Api {
-    static CAS_TGT_URL = "https://cas.utc.fr/cas/v1/tickets";
+export default class CASAuth extends Api {
 
+	static CAS_TGT_URL = "https://cas.utc.fr/cas/v1/tickets/";
 	static HEADER_FORM_URLENCODED = {
         'Content-Type': 'application/x-www-form-urlencoded',
     }
 
-    constructor() {
+    constructor(url = CASAuth.CAS_TGT_URL){
+	super(url);
 	this.tgt = "";
-        super(CAS_TGT_URL);
     }
 
     call(request, method, queries, body, validStatus) {
@@ -19,21 +19,25 @@ export class CASAuth extends Api {
         return super.call(request, method, queries, body, headers, validStatus)
     }
 
-	call(request, method, queries, body, headers, validStatus) {
-        return fetch(this.urlWithQueries(this.baseUrl + request, queries), {
-            method: method || Api.GET,
-            headers: headers || {},
-            body: serialize(body)
-        })
-        .then(response => Promise.all([ response.text, response.status, response.url ]))
-        .catch(response => console.log('A gérer !')) // TODO
-        .then(([ response, status, url ]) => {
-            if ((validStatus || Api.VALID_STATUS).includes(status))
-                return Promise.all([response, status, url])
-            else
-                return Promise.reject([response, status, url])
-        })
-    }
+call (request, method, queries, body, headers, validStatus) {
+
+	return new Promise((resolve, reject) => {
+		   fetch(super.urlWithQueries(this.baseUrl + request, queries), {
+		    method: method || Api.GET,
+		    headers: headers || {},
+		    body: super.serialize(body)
+		}).then((response) => {
+			    if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
+					response.text().then( (text) => {resolve([text, response.status, response.url]);  } );
+				}
+				else {
+					response.text().then( (text) => { reject([text, response.status, response.url]); }); 
+				}
+		}
+		).catch( (e) => {reject([e.message, 523, ""]);} );
+	});
+        
+}
 
 
 
@@ -42,21 +46,24 @@ export class CASAuth extends Api {
     }
 
 
-    // Définitions des routes:
-    login(login, password) {
-        return this.call(
-            CAS_TGT_URL,
-            Api.POST,
-            {},
-            {
-                service: login,
-            },
-	HEADER_FORM_URLENCODED
-        ).then(([response, status, url]) => { 
-		if(status != 201) {return Promise.reject([response, status, url]);} else {this.tgt = url; Promise.resolve([response, status, url]);}
-	
-        })
-    }
+login(login, passwd) {
+	return new Promise((resolve, reject) => {
+		this.call(
+			"",
+			Api.POST,
+			"",
+			{
+		        	username: login,
+				password: passwd
+			},
+			CASAuth.HEADER_FORM_URLENCODED
+		).then( ([response, status, url]) => {
+ 
+			if(status != 201) {reject([response, status, url]);}
+			else {this.tgt = url; resolve([response, status, url]);}
+		}).catch( ([response, status, url]) => reject([response, status, url]) );
+    });
+}
 
 
 
@@ -69,7 +76,7 @@ export class CASAuth extends Api {
             {
                 service: service
             },
-	HEADER_FORM_URLENCODED
+	CASAuth.HEADER_FORM_URLENCODED
         ).then(([response, status, url]) => { 
 		if(status != 200) {return Promise.reject([response, status, url]);} else {Promise.resolve(response);}
 	
@@ -77,4 +84,3 @@ export class CASAuth extends Api {
 }
 }
 
-export default new Portail()
