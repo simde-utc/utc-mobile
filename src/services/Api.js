@@ -29,9 +29,9 @@ export default class Api {
     }
 
     urlWithQueries(url, queries) {
-        if (queries === undefined || queries.length === 0)
+        if (queries === undefined || queries.length === 0 || queries == "")
             return url
-
+	else
         return url + '?' + this.serialize(queries)
     }
 
