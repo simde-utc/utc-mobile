@@ -3,6 +3,10 @@
   "env": {
     "development": {
       "plugins": ["transform-react-jsx-source", "inline-dotenv"]
+    },
+    "production": {
+      "plugins": ["transform-remove-console"]
     }
   }
 }
+

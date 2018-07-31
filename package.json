@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "babel-plugin-inline-dotenv": "^1.1.2",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "jest-expo": "~27.0.0",
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1"
@@ -28,8 +29,9 @@
     "react-native-button": "^2.3.0",
     "react-native-carousel": "^0.11.0",
     "react-native-checkbox-svg": "^2.1.1",
-    "react-native-keychain": "^3.0.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-svg-uri": "^1.2.3",
+    "react-native-svg": "^6.5.0",
     "react-navigation": "^2.8.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",

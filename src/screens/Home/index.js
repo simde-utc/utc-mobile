@@ -1,16 +1,14 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
+import { View, Image, Text, ScrollView, Button } from 'react-native';
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
+import Storage from '../../services/Storage';
+
 
 export default class HomeScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Accueil',
-	};
-
 	render() {
 		return (
-			<Text> Home </Text>
+			<Text>Home</Text>
 		);
 	}
 }
