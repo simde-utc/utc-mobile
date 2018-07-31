@@ -61,7 +61,18 @@ login(login, passwd) {
  
 			if(status != 201) {reject([response, status, url]);}
 			else {this.tgt = url; resolve([response, status, url]);}
-		}).catch( ([response, status, url]) => reject([response, status, url]) );
+		}).catch( (e) => {
+			if(e instanceof TypeError) {reject([JSON.stringify(e), 523, ""]); }
+		else {
+			if(Array.isArray(e) && e.length ==3) {
+				let a, b, c;
+				[a, b, c] = e;
+				reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]); //pour garantir le retour d'un truc qui va pas provoquer de bug lors de l'affichage de l'erreur dans un composant un react
+			}
+			else {reject(["Erreur réseau", 523, ""]);}
+		}
+
+		} );
     });
 }
 
