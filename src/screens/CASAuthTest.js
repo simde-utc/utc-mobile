@@ -31,16 +31,8 @@ log_in = (login, password) => {
 	promise.then(([text, status, url]) => {
 				this.log(text +" "+status+" "+url);
 	}
-	).catch( (e) => {
-		if(e instanceof TypeError) {this.log(JSON.stringify(e), true); /**this.log(e.message, true);**/}
-		else {
-			if(Array.isArray(e) && e.length ==3) {
-				let text, status, url;
-				[text, status, url] = e;
-				this.log(text +" "+status+" "+url, true);
-			}
-			else {this.log("Erreur réseau", true);}
-		}
+	).catch( ([text, status, url]) => {
+		this.log(text + " "+status+" "+url, true);
 	});
 	
 }
