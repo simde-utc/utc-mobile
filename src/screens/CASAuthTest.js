@@ -30,6 +30,9 @@ log_in = (login, password) => {
 	promise = cas.login(login, password);
 	promise.then(([text, status, url]) => {
 				this.log(text +" "+status+" "+url);
+				this.log(cas.isConnected() ? "connected" : "not connected");
+				if(!cas.isConnected()) {return;}
+				
 	}
 	).catch( ([text, status, url]) => {
 		this.log(text + " "+status+" "+url, true);
