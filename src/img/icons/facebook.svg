@@ -1,0 +1,16 @@
+<svg id="facebook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.005 35.005">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #007d94;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <ellipse id="Ellipse_3" data-name="Ellipse 3" class="cls-1" cx="17.502" cy="17.502" rx="17.502" ry="17.502"/>
+  <path id="Tracé_45" data-name="Tracé 45" class="cls-2" d="M88.2,24.2V13.174h3.764l.538-4.3H88.2V6.183c0-1.21.4-2.151,2.151-2.151h2.285V.134C92.1.134,90.754,0,89.275,0c-3.226,0-5.511,2.016-5.511,5.646V8.872H80v4.3h3.764V24.2Z" transform="translate(-69.061 5.47)"/>
+</svg>
