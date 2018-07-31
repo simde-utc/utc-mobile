@@ -18,6 +18,7 @@
 Je vous conseille de mettre ceci dans le constructeur de votre screen.
 Il est possible de passer en paramètre l'adresse du racine de l'API ticket du CAS, sinon, par défaut c'est `https://cas.utc.fr/cas/v1/tickets/`.
 * Se connecter et obtenir un TGT:
+
 		promise = this.cas.login("jeanmichelestmonlogin", "1234estuntrèsbonmotdepasse");
 		promise.then(([text, status, url]) => {
 			console.log(text +" "+status+" "+url);
@@ -28,11 +29,17 @@ Il est possible de passer en paramètre l'adresse du racine de l'API ticket du C
 			//l'utilisateur n'est pas connecté. Si status=401, c'est que les identifiants sont incorrects. Si status=523, c'est une erreur de connexion au réseau ou un bug dans CASAuth. Sinon, j'en sais rien, débrouillez-vous pour être gentil avec l'utilisateur.
 			
 		});
+
 * Vérifier qu'on est connecté et qu'on a un TGT :
+
 		cas.isConnected() //renvoie true ou false
+
 * Obtenir le TGT (normalement vous n'avez pas besoin de ça, mais c'est pratique pour le debug)
+
 		cas.tgt
+
 * Demander un ST
+
 		promise = this.cas.getService(service);
 		promise.then(([text, status, url]) => {
 				console.log(text +" "+status+" "+url);
