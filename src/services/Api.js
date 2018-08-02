@@ -51,6 +51,6 @@ export default class Api {
 				}
 			}).catch( (e) => {reject([e.message, 523]);} );
 
-	}
+	});
     }
 }
