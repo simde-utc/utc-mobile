@@ -36,18 +36,21 @@ export default class Api {
     }
 
     call(request, method, queries, body, headers, validStatus) {
-        return fetch(this.urlWithQueries(this.baseUrl + request, queries), {
+	return new Promise((resolve, reject) => {
+
+	fetch(this.urlWithQueries(this.baseUrl + request, queries), {
             method: method || Api.GET,
             headers: headers || {},
             body: JSON.stringify(body)
-        })
-        .then(response => Promise.all([ response.json(), response.status ]))
-        .catch(response => Promise.reject(["Uncaught network error", 523]))
-        .then(([ response, status ]) => {
-            if ((validStatus || Api.VALID_STATUS).includes(status))
-                return Promise.all([response, status])
-            else
-                return Promise.reject([response, status])
-        })
+        }).then( (response) => {
+				if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
+					response.text().then( (text) => {resolve([text, response.status]);  } );
+				}
+				else {
+					response.text().then( (text) => { reject([text, response.status]); }); 
+				}
+			}).catch( (e) => {reject([e.message, 523]);} );
+
+	}
     }
 }
