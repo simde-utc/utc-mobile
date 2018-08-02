@@ -42,7 +42,7 @@ export default class Api {
             body: JSON.stringify(body)
         })
         .then(response => Promise.all([ response.json(), response.status ]))
-        .catch(response => console.log('A gérer !')) // TODO
+        .catch(response => Promise.reject(["Uncaught network error", 523]))
         .then(([ response, status ]) => {
             if ((validStatus || Api.VALID_STATUS).includes(status))
                 return Promise.all([response, status])
