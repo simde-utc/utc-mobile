@@ -35,7 +35,7 @@ export default class Api {
         return url + '?' + this.serialize(queries)
     }
 
-    call(request, method, queries, body, headers, validStatus) {
+    call(request, method, queries, body, headers, validStatus, json=false) {
 	return new Promise((resolve, reject) => {
 
 	fetch(this.urlWithQueries(this.baseUrl + request, queries), {
@@ -44,7 +44,12 @@ export default class Api {
             body: JSON.stringify(body)
         }).then( (response) => {
 				if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
-					response.text().then( (text) => {resolve([text, response.status]);  } );
+						if(json) {
+							response.json().then( (data) => {resolve([data, response.status]);  } );
+						}
+						else {
+							response.text().then( (text) => {resolve([text, response.status]);  } );
+						}
 				}
 				else {
 					response.text().then( (text) => { reject([text, response.status]); }); 
