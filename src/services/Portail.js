@@ -11,8 +11,6 @@ export class Portail extends Api {
 
 	constructor() {
 		super(process.env.PORTAIL_URL || 'http://192.168.56.1:8000/');
-		this.articles = {};
-		this.lastArticleUpdate = 0;
 	}
 
 	call(request, method, queries, body, validStatus) {
@@ -51,7 +49,7 @@ export class Portail extends Api {
 						client_secret: process.env.PORTAIL_CLIENT_SECRET,
 						username: emailOrLogin,
 						password: password,
-						scope: ''
+						scope: 'user-manage-articles'
 					}
 				).then( ([response, status]) => {
 					Portail.token = response;
@@ -78,9 +76,13 @@ export class Portail extends Api {
 		});
 
 	}
-/**
-	updateArticles(paginate, page, order, week) {
+
+	getArtBuffer(paginate, page, order, week) {
 		this._checkConnected();
+		order = order || '';
+		week = week || '';
+		paginate = paginate || '';
+		page = page || '';
 		return new Promise((resolve, reject) => {
 			this.call(
 				Portail.API_V1 + 'articles',
@@ -90,7 +92,8 @@ export class Portail extends Api {
 					"order": order,
 					"week": week
 				}).then( ( [data, status] ) => {
-					Portail.articles = data;
+					this.articles = data;
+					this.lastArticleUpdate = Date.now();
 					resolve();
 				}).catch( ([response, status]) => {
 					reject([response, status]);
@@ -98,7 +101,8 @@ export class Portail extends Api {
 		});
 			
 	}
-**/
+
+
 }
 
 export default new Portail()
