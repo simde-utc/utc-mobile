@@ -22,7 +22,7 @@ export default class ActualitesUTCTestScreen extends React.Component {
 	
 	defaultValues = {
 		login: "rmaliach",
-		service : "http://assos.utc.fr/cas",
+		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed",
 	}	
 
 	log = (data, error = false) => {
@@ -42,7 +42,7 @@ log_in = (login, password) => {
 	promise = this.cas.login(login, password);
 	promise.then(([text, status, url]) => {
 				this.log(text +" "+status+" "+url);
-				//this.log(this.cas.isConnected() ? "connected" : "not connected");
+				this.log(this.cas.isConnected() ? "connected" : "not connected");
 				
 				
 	}
