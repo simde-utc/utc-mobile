@@ -7,21 +7,30 @@ export class Portail extends Api {
 	static token = {}
 	static user = {}
 
+	static notConnectedException = "Tried to call Portail route but not logged in.";
+
 	constructor() {
-		super(process.env.PORTAIL_URL)
+		super(process.env.PORTAIL_URL || 'http://192.168.56.1:8000/');
+		this.articles = {};
+		this.lastArticleUpdate = 0;
 	}
 
 	call(request, method, queries, body, validStatus) {
-		headers = Api.HEADER_JSON
+		
+		headers = Api.HEADER_JSON;
 
-		if (Object.keys(Portail.token).length !== 0)
-			headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token
-
-		return super.call(request, method, queries, body, headers, validStatus)
+		if (Object.keys(Portail.token).length !== 0) {
+			headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token; }
+		return super.call(request, method, queries, body, headers, validStatus, true);
+		
 	}
 
 	isConnected() {
 		return (Object.keys(Portail.token).length !== 0) && (Object.keys(Portail.user).length !== 0)
+	}
+
+	_checkConnected() {
+		if(!this.isConnected) {throw [Portail.notConnectedException, 523];}
 	}
 
 	getUser() {
@@ -30,30 +39,66 @@ export class Portail extends Api {
 
 	// Définitions des routes:
 	login(emailOrLogin, password) {
-		return this.call(
-			Portail.OAUTH + 'token',
-			Api.POST,
-			{},
-			{
-				grant_type: 'password',
-				client_id: process.env.PORTAIL_CLIENT_ID,
-				client_secret: process.env.PORTAIL_CLIENT_SECRET,
-				username: emailOrLogin,
-				password: password,
-				scope: ''
-			}
-		).then(([response, status]) => { // Si on a une 20x
-			Portail.token = response
-			// Peut-être chercher les infos user ?
-			return this.getUserData()
-		})
+			
+		return new Promise( (resolve, reject) => {
+				this.call(
+					Portail.OAUTH + 'token',
+					Api.POST,
+					{},
+					{
+						grant_type: 'password',
+						client_id: process.env.PORTAIL_CLIENT_ID,
+						client_secret: process.env.PORTAIL_CLIENT_SECRET,
+						username: emailOrLogin,
+						password: password,
+						scope: ''
+					}
+				).then( ([response, status]) => {
+					Portail.token = response;
+					this.getUserData(false).then( () => {resolve();});
+				}).catch( ([response, status]) => {
+					reject([response, status]);
+				});
+			
+		});
+
 	}
 
-	getUserData() {
-		return this.call(
-			Portail.API_V1 + 'user',
-		).then(([response, status]) => Portail.user = response)
+	getUserData(userMustBeConnected = true) {
+		if(userMustBeConnected) {this._checkConnected();}
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'user'
+			).then( ([data, status]) => {
+						Portail.user = data;
+						resolve();
+			}).catch( ([response, status]) => {
+						reject([response, status]);
+			});
+		});
+
 	}
+/**
+	updateArticles(paginate, page, order, week) {
+		this._checkConnected();
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'articles',
+				Api.GET,
+				{	"paginate": paginate,
+					"page": page,
+					"order": order,
+					"week": week
+				}).then( ( [data, status] ) => {
+					Portail.articles = data;
+					resolve();
+				}).catch( ([response, status]) => {
+					reject([response, status]);
+				});
+		});
+			
+	}
+**/
 }
 
 export default new Portail()
