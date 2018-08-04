@@ -3,7 +3,6 @@ import Api from './Api'
 export default class ActualitesUTC extends Api {
 
 	static ACTUS_FEED_LOGIN = 'http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed&ticket=';
-	static PORTAIL_DEBUG = 'http://assos.utc.fr/cas?ticket=';
 
 	constructor(st) {
 		super(ActualitesUTC.ACTUS_FEED_LOGIN);
