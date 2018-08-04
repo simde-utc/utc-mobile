@@ -24,10 +24,10 @@ const AppSwitch = createSwitchNavigator({
 }, {
 	initialRouteName: 'Loading'
 })
-
 **/
 
-import ActualitesUTCTestScreen from './src/screens/ActualitesUTCTest';
+import ActualitesMDETestScreen from './src/screens/ActualitesMDETest.js';
+
 
 
 export default class App extends React.Component {
@@ -36,10 +36,7 @@ export default class App extends React.Component {
 			<Provider store={ store }>
 				<AppSwitch />
 			</Provider>
-
-			
-			
 		);**/
-		return(	<ActualitesUTCTestScreen />);
+		return(<ActualitesMDETestScreen />);
 	}
 }
