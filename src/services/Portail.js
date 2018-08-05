@@ -77,10 +77,11 @@ export class Portail extends Api {
 
 	}
 
-	getArtBuffer(paginate, page, order, week) {
+	getArtBuffer(paginate, page, order, week, timestamp=false) {
 		this._checkConnected();
 		order = order || '';
 		week = week || '';
+		week += timestamp && ',timestamp';
 		paginate = paginate || '';
 		page = page || '';
 		return new Promise((resolve, reject) => {
