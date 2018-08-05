@@ -45,7 +45,7 @@ getArticles() {
 	this.log("getting articles...");
 	if(!Portail.isConnected()) {this.log("not connected!"); return;}
 	
-	Portail.getArtBuffer().then(() => {console.log("Portail.articles:");console.log(Portail.articles);}).catch( ([response, status]) => {this.log(response + '---' + status, true);});
+	Portail.getArticles().then(() => {console.log("Portail.articles:");console.log(Portail.articles);}).catch( ([response, status]) => {this.log(response + '---' + status, true);});
 }
 
 
