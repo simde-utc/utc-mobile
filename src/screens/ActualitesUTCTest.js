@@ -16,13 +16,13 @@ export default class ActualitesUTCTestScreen extends React.Component {
 		log: "",
 		login: "rmaliach",
 		password: "",
-		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed",
+		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts",
 		st : ""
 	}
 	
 	defaultValues = {
 		login: "rmaliach",
-		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed",
+		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts",
 	}	
 
 	log = (data, error = false) => {
@@ -61,8 +61,8 @@ let service = this.state.service;
 			if(!this.st) {this.log("pas de st!", true); return;}
 			this.actus = new ActualitesUTC(this.st);
 			this.log("loading articles");
-			try {
-			this.actus.loadArticles();
+			try {	
+				this.actus.loadArticles();
 			} catch (e) {console.log(e);}
 				
 				
