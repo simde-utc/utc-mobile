@@ -12,4 +12,4 @@ Ces objets peuvent ensuite être utilisés dans les screens pour modifier l'éta
 
 ## Services utilisant CASAuth
 
-* [ActualitesUTC](ActualitesUTC.md) télécharger des articles de l'actualité interne de l'UTC.
+* [ActualitesUTC](ActualitesUTC.md) télécharger des articles de l'actualité interne de l'UTC. Hérite de *Api*. *NE DOIT PAS ETRE UTILISEE DIRECTEMENT*.
