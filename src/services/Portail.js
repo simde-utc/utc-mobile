@@ -76,7 +76,7 @@ export class Portail extends Api {
 		});
 
 	}
-
+	//ne doit PAS être utilisée directement mais via la classe Articles
 	getArticles(paginate, page, order, week, timestamp=false) {
 
 		this._checkConnected();
