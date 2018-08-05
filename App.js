@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 
-/**
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import AppLoader from './src/screens/AppLoader';
 import AppLayout from './src/screens/AppLayout';
@@ -24,20 +23,17 @@ const AppSwitch = createSwitchNavigator({
 }, {
 	initialRouteName: 'Loading'
 })
-**/
 
-import ActualitesUTCTestScreen from './src/screens/ActualitesUTCTest';
 
 
 
 export default class App extends React.Component {
-	render() {/**
+	render() {
 		return (
 			<Provider store={ store }>
 				<AppSwitch />
 			</Provider>
-		);**/
-		return(<ActualitesUTCTestScreen />);
+		);
 		
 	}
 }
