@@ -1,8 +1,21 @@
+/**
+ * Télécharger des données depuis le WP des actualités internes de l'UTC
+ * @serviceCAS "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts"
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+*/
+
 import Api from './Api'
 
 export default class ActualitesUTC extends Api {
 
-	static ACTUS_FEED_LOGIN = 'http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed&ticket=';
+	static ACTUS_FEED_LOGIN = 'http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts&ticket=';
+
+	static HEADERS = {
+		"Accept" : "application/json",
+	}
 
 	constructor(st) {
 		super(ActualitesUTC.ACTUS_FEED_LOGIN);
@@ -14,34 +27,16 @@ export default class ActualitesUTC extends Api {
 
 
 	loadArticles() {
-			console.log("!!FETCH!!");
-			this.call(this._st, Api.GET).then( ([response, status]) => { // Si on a une 20x
-				console.log(response + " --- "+ status);
-			}).catch( ([response, status]) => {
-				console.log(response + " --- "+ status);
+			return this.call(this._st, Api.GET, {}, null, ActualitesUTC.HEADERS, Api.validStatus, true).then( ([response, status]) => { 
+				this.articles = response;
 			});
 	}
 
-	
-	call(request, method, queries, body, headers, validStatus) {
-	return new Promise((resolve, reject) => {
-	console.log("!!!FETCH : " + this.urlWithQueries(this.baseUrl + request, queries));
-	fetch(this.urlWithQueries(this.baseUrl + request, queries), {
-            method: method || Api.GET,
-            headers: headers || {},
-            body: JSON.stringify(body)
-        }).then( (response) => {
-				if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
-					response.text().then( (text) => {resolve([text, response.status]);  } );
-				}
-				else {
-					response.text().then( (text) => { reject([text, response.status]); }); 
-				}
-			}).catch( (e) => {reject([e.message, 523]);} );
-
-	});
-    }
-
-
+    
 }
+
+
+
+
+
 

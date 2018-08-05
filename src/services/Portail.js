@@ -77,7 +77,8 @@ export class Portail extends Api {
 
 	}
 
-	getArtBuffer(paginate, page, order, week, timestamp=false) {
+	getArticles(paginate, page, order, week, timestamp=false) {
+
 		this._checkConnected();
 		order = order || '';
 		week = week || '';
