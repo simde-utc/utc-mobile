@@ -1,8 +1,20 @@
+/**
+ * Télécharger des données depuis le WP des actualités internes de l'UTC
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+*/
+
 import Api from './Api'
 
 export default class ActualitesUTC extends Api {
 
 	static ACTUS_FEED_LOGIN = 'http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Ffeed&ticket=';
+
+	static HEADERS = {
+		"Accept" : "application/xml",
+	}
 
 	constructor(st) {
 		super(ActualitesUTC.ACTUS_FEED_LOGIN);
@@ -14,34 +26,43 @@ export default class ActualitesUTC extends Api {
 
 
 	loadArticles() {
-			console.log("!!FETCH!!");
-			this.call(this._st, Api.GET).then( ([response, status]) => { // Si on a une 20x
+			console.log(this._st);
+			
+			this.call(this._st, Api.GET, '', '', ActualitesUTC.HEADERS).then( ([response, status]) => { // Si on a une 20x
 				console.log(response + " --- "+ status);
 			}).catch( ([response, status]) => {
 				console.log(response + " --- "+ status);
 			});
+			
 	}
 
-	
 	call(request, method, queries, body, headers, validStatus) {
+	console.log("getting : ");
+	let finalRequest = this.baseUrl + request;
+	console.log(finalRequest);
 	return new Promise((resolve, reject) => {
-	console.log("!!!FETCH : " + this.urlWithQueries(this.baseUrl + request, queries));
-	fetch(this.urlWithQueries(this.baseUrl + request, queries), {
-            method: method || Api.GET,
-            headers: headers || {},
-            body: JSON.stringify(body)
-        }).then( (response) => {
-				if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
-					response.text().then( (text) => {resolve([text, response.status]);  } );
-				}
-				else {
-					response.text().then( (text) => { reject([text, response.status]); }); 
-				}
-			}).catch( (e) => {reject([e.message, 523]);} );
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = (e) => {
+			if (request.readyState !== 4) {
+			    return;
+			  }
 
+			  if ((validStatus || Api.VALID_STATUS).includes(request.status)) {
+				resolve([request.responseText, request.status]);
+			  } else {
+				reject([request.responseText, request.status]);
+			  }
+		};
+
+		request.open((method || Api.GET), finalRequest);
+		request.send();
+	
 	});
     }
-
-
 }
+
+
+
+
+
 
