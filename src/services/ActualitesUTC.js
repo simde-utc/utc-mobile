@@ -12,11 +12,7 @@ import Api from './Api'
 
 export default class ActualitesUTC extends Api {
 
-	static ACTUS_FEED_LOGIN = 'http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts&ticket=';
-
-	static HEADERS = {
-		"Accept" : "application/json",
-	}
+	static ACTUS_FEED_LOGIN = "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts&ticket=";
 
 	static NO_ARTICLES_LOADED_EXCEPTION = "No articles were loaded!";
 
@@ -32,8 +28,8 @@ export default class ActualitesUTC extends Api {
 
 
 	loadArticles() {
-			return this.call(this._st, Api.GET, {}, null, ActualitesUTC.HEADERS, Api.validStatus, true).then( ([response, status]) => { 
-				this.articles = response;
+			return this.call(this._st, Api.GET).then( ([response, status]) => { 
+				this.articles = JSON.parse(response);
 				this._articlesWereLoaded = true;
 			});
 	}
