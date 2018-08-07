@@ -1,6 +1,7 @@
+
 /**
  * Télécharger des données depuis le WP des actualités internes de l'UTC
- * Cette classe ne doit PAS être utilisée directement, mais via la classe Articles
+ * Cette classe ne doit PAS être utilisée directement, mais via la classe Portail
  * @serviceCAS "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts"
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
  *
@@ -21,17 +22,30 @@ export default class ActualitesUTC extends Api {
 		if(!st) {throw "Pas de service ticket!";}
 		this._st = st;
 		this._articlesWereLoaded = false;
-		this._randomArticlesConsumed = {};
 		this._randomArticlesBucket = {};
 		this._randomArticlesBucketEmpty = true;
+		this.wpIndexDico = new Map();
 	}
 
 
 	loadArticles() {
-			return this.call(this._st, Api.GET).then( ([response, status]) => { 
-				this.articles = JSON.parse(response);
+		return new Promise ( (resolve, reject) => {
+			this.call(this._st, Api.GET).then( ([response, status]) => { 
+				this.articles = Array.from(JSON.parse(response));
+				this.articles.forEach(this.normalizeArray);
+				var i = 0;
+				this.articles.forEach( (article) => {
+					//fonction pour map id wordpress vers indice article
+					this.wpIndexDico.set(article["id"], i);
+					i++;
+				});
+				console.log(this.wpIndexDico);
 				this._articlesWereLoaded = true;
+				resolve();
+			}).catch( (e) => {
+				reject(e);
 			});
+		});
 	}
 
 	articlesWereLoaded() {
@@ -42,32 +56,63 @@ export default class ActualitesUTC extends Api {
 		if (!this.articlesWereLoaded()) {throw ActualitesUTC.NO_ARTICLES_LOADED_EXCEPTION;}
 	}
 
-	getArticles(paginate, page, order, week, timestamp=false) {
-		
+	getArticles(paginate, page, order, week) {		
+	
 		//on suppose que tous les paramètres sont remplis
-		//date est un objet Date natif js
-		
-		var result = [];		
-
+		//week est un objet Date natif js
 		this._checkArtLoaded();
-		for (article in this.articles) {
-			let date = new Date(article.date_gmt);
+		var result = this.articles.filter( (article) => {
+			//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
+			let date = new Date(article["date_gmt"]);
 			let nextweek = new Date(week.getTime() + 604800000);
-			if ((week <= date) && (date <= nextweek)) {
-				result.push(article);
-			}
+			return ((week <= date) && (date <= nextweek));
+		});
+		
+		
+		
+		if(result.length == 0) {return [];}
+
+		result.sort(this.compArtDate);
+		
+
+		switch (order) {
+			
+			
+			case 'oldest':
+			result.reverse();
+			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
+			break;
+
+			case 'random':
+				if(this._randomArticlesBucketEmpty) {this._randomArticlesBucket = this.shuffle(result); this._randomArticlesBucketEmpty = false;}
+				result = [];
+				while ((result.length < paginate) && (this._randomArticlesBucket.length !=0))
+					{result.push(this._randomArticlesBucket.shift());}
+				if(this._randomArticlesBucket.length ==0) {this._randomArticlesBucketEmpty = true;}
+				
+			break;
+ 
+			case 'latest':
+			default:
+			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
+			break;
 		}
-		
-		result.sort(compArtDate);
-		restrainArray(paginate*page, paginate*(page+1));
-		
+			
+
 		return result;				
 		
 	}
 
 	getRandomArticleId() {
-		
+		this._checkArtLoaded();
+		return this.articles[Math.floor(Math.random()*this.articles.length)]["id"];
+	}
 
+	getArticleByWordpressId(id) {
+		if(id === undefined) {throw "No id provided!";}
+		this._checkArtLoaded();
+		if ((!this.wpIndexDico.has(id)) || (this.wpIndexDico.get(id) > this.articles.length)) {throw "Article unavailable in local cache.";}
+		return this.articles[this.wpIndexDico.get(id)];
 	}
 
 
@@ -84,9 +129,53 @@ export default class ActualitesUTC extends Api {
 	}
 
 	restrainArray(array,a,b) {
-		array.splice(b+1, array.length-b-1);
+		array.splice(b+1, array.length-b);
 		array.splice(0, a);
 	}
+
+	//pour avoir les mêmes champs que pour les articles portail
+	normalizeArray(article, index, array) {
+		for (champ in article) {
+
+			switch (champ) {
+			
+			case "title":
+			case "content":
+			case "excerpt":
+				article[champ] = article[champ]['rendered'];
+			break;
+			
+			case "id":
+			case "date_gmt":
+			case "link":
+			case "wp:featuredmedia":
+			break;
+			
+			case "_links":
+				article["wp:featuredmedia"] = article[champ]["wp:featuredmedia"][0]["href"];
+				delete article[champ];
+			break;
+
+			default:
+				delete article[champ];
+			}
+		}
+	}
+
+	//algo de fisher-yates, implémenté pour mélanger des array
+	shuffle(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+	  while (0 !== currentIndex) {
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
 
     
 }

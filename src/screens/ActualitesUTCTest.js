@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Button, TextInput } from 'react-native';
+import { View, Image, Text, ScrollView, Button, TextInput, Picker } from 'react-native';
 import styles from '../styles'
 import { colors } from '../styles/variables';
 import CASAuth from '../services/CASAuth';
@@ -17,12 +17,21 @@ export default class ActualitesUTCTestScreen extends React.Component {
 		login: "rmaliach",
 		password: "",
 		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts",
-		st : ""
+		date : "Jul 17, 2018 03:24:00",
+		st : "",
+		order: "",
+		page : "1",
+		pagination : "3",
+		wpArtId : "18186",
 	}
 	
 	defaultValues = {
 		login: "rmaliach",
 		service : "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts",
+		date: "Jul 17, 2018 03:24:00",
+		page : "1",
+		pagination : "3",
+		wpArtId : "18186"
 	}	
 
 	log = (data, error = false) => {
@@ -36,15 +45,8 @@ export default class ActualitesUTCTestScreen extends React.Component {
 
 log_in = (login, password) => {
 	this.log("logging in...");
-	
-	
-	
-	promise = this.cas.login(login, password);
-	promise.then(([text, status, url]) => {
-				this.log(text +" "+status+" "+url);
-				this.log(this.cas.isConnected() ? "connected" : "not connected");
-				
-				
+	this.cas.login(login, password).then(([text, status, url]) => {
+		this.log(this.cas.isConnected() ? "connected" : "not connected");
 	}
 	).catch( ([text, status, url]) => {
 		this.log(text + " "+status+" "+url, true);
@@ -52,7 +54,7 @@ log_in = (login, password) => {
 	
 }
 
-getArticles() {
+loadArticles() {
 let service = this.state.service;
 	promise = this.cas.getService(service);
 	promise.then(([text, status, url]) => {
@@ -62,7 +64,9 @@ let service = this.state.service;
 			this.actus = new ActualitesUTC(this.st);
 			this.log("loading articles");
 			try {	
-				this.actus.loadArticles();
+				this.actus.loadArticles().then( () => {
+				 	this.log("articles loaded.");
+				});
 			} catch (e) {console.log(e);}
 				
 				
@@ -73,10 +77,31 @@ let service = this.state.service;
 
 }
 
+getArticles() {
+	if(this.actus === undefined || !this.actus.articlesWereLoaded()) {this.log("No articles were loaded.");return;}
+	this.log("getting articles -> console");
+	console.log("!!!!=======!!!!");
+	let date = new Date(this.state.date);
+	this.actus.getArticles(this.state.pagination,this.state.page,this.state.order, date).forEach( (article) => {console.log(article.title);});
+}
+
+getArticleById() {
+	if(this.actus === undefined || !this.actus.articlesWereLoaded()) {this.log("No articles were loaded.");return;}
+	this.log("getting article -> console");
+	console.log("!!!!=======!!!!");
+	let id = parseInt(this.state.wpArtId);
+	console.log(this.actus.getArticleByWordpressId(id));
+}
+
+getRandomArticleId() {
+	if(this.actus === undefined || !this.actus.articlesWereLoaded()) {this.log("No articles were loaded.");return;}
+	this.log(this.actus.getRandomArticleId());
+}
+
 
 	render() {
 		return (
-			<View style={[ styles.get('container.center', 'container.padded'), { justifyContent: 'space-around', alignItems: 'stretch' } ]}>
+			<ScrollView contentContainerStyle={[ styles.get('container.center', 'container.padded'), { justifyContent: 'space-around', alignItems: 'stretch' } ]}>
 				<Text>State : { this.state.log }</Text>
 				<TextInput
 				  style={{height: 40}}
@@ -96,8 +121,44 @@ let service = this.state.service;
 				defaultValue = {this.defaultValues.service}
 				onChangeText={(text) => this.setState(prevState => ({ ...prevState, service: text }))}
 				/>
-				<Button onPress={ () => {this.getArticles();}} title="get service & get articles" />
-			</View>
+				<Button onPress={ () => {this.loadArticles();}} title="get service & load articles" />
+				<TextInput
+				  style={{height: 40}}
+				  placeholder="date"
+				  defaultValue = {this.defaultValues.date}
+				onChangeText={(text) => this.setState(prevState => ({ ...prevState, date: text }))}
+				/>
+				<TextInput
+				  style={{height: 40}}
+				  placeholder="pagination"
+				  keyboardType="numeric"
+				  defaultValue = {this.defaultValues.pagination}
+				onChangeText={(text) => this.setState(prevState => ({ ...prevState, pagination: text }))}
+				/>
+				<TextInput
+				  style={{height: 40}}
+				  placeholder="page"
+				  keyboardType="numeric"
+				  defaultValue = {this.defaultValues.page}
+				onChangeText={(text) => this.setState(prevState => ({ ...prevState, page: text }))} />
+				<Picker
+				  selectedValue={this.state.order}
+				  style={{ height: 50, width: 100 }}
+				  onValueChange={(itemValue, itemIndex) => this.setState(prevState => ({ ...prevState, order: itemValue }))}>
+				  <Picker.Item label="Latest" value="latest" />
+				  <Picker.Item label="Oldest" value="oldest" />
+				  <Picker.Item label="Random" value="random" />
+				</Picker>
+				<Button onPress={ () => {this.getArticles();}} title="get articles" />
+				<TextInput
+				  style={{height: 40}}
+				  placeholder="wp article id"
+				  keyboardType="numeric"
+				  defaultValue = {this.defaultValues.wpArtId}
+				onChangeText={(text) => this.setState(prevState => ({ ...prevState, wpArtId: text }))} />
+				<Button onPress={ () => {this.getArticleById();}} title="get article by id" />
+				<Button onPress={ () => {this.getRandomArticleId();}} title="get random article id" />
+			</ScrollView>
 		);
 	}
 }
