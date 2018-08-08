@@ -7,7 +7,7 @@
  *
  * @copyright Copyright (c) 2017, SiMDE-UTC
  * @license AGPL-3.0
-*/
+**/
 
 import Api from './Api'
 
@@ -39,7 +39,6 @@ export default class ActualitesUTC extends Api {
 					this.wpIndexDico.set(article["id"], i);
 					i++;
 				});
-				console.log(this.wpIndexDico);
 				this._articlesWereLoaded = true;
 				resolve();
 			}).catch( (e) => {
@@ -114,6 +113,24 @@ export default class ActualitesUTC extends Api {
 		if ((!this.wpIndexDico.has(id)) || (this.wpIndexDico.get(id) > this.articles.length)) {throw "Article unavailable in local cache.";}
 		return this.articles[this.wpIndexDico.get(id)];
 	}
+
+	getFeaturedMediaUrl = async function(url) {
+		if(url === undefined) {throw "No url provided";}
+		this._checkArtLoaded();
+		var parameters = {
+			method: Api.GET,
+			cache : "force-cache"
+		}
+		try {
+		var response = await fetch(url, parameters);
+		if (!Api.VALID_STATUS.includes(response.status)) {throw [response.text(), response.status];}
+		var data = await response.json();
+		return data["media_details"]["sizes"]["full"];
+		} catch (e) {
+			throw [e.message, 523];
+		}
+	}
+
 
 
 
