@@ -23,6 +23,10 @@ export default class ActualitesUTCTestScreen extends React.Component {
 		page : "1",
 		pagination : "3",
 		wpArtId : "18186",
+		wpMediaUrl : "http://actualites.utc.fr/wp-json/wp/v2/media/18203",
+		image : {uri : "https://raw.githubusercontent.com/CdRom1/simdepng/master/simde.png"},
+		imageHeight : 50,
+		imageWidth: 100,
 	}
 	
 	defaultValues = {
@@ -31,7 +35,8 @@ export default class ActualitesUTCTestScreen extends React.Component {
 		date: "Jul 17, 2018 03:24:00",
 		page : "1",
 		pagination : "3",
-		wpArtId : "18186"
+		wpArtId : "18186",
+		wpMediaUrl : "http://actualites.utc.fr/wp-json/wp/v2/media/18203"
 	}	
 
 	log = (data, error = false) => {
@@ -98,10 +103,21 @@ getRandomArticleId() {
 	this.log(this.actus.getRandomArticleId());
 }
 
+getWpMedia() {
+	if(this.actus === undefined || !this.actus.articlesWereLoaded()) {this.log("No articles were loaded.");return;}
+	this.log("getting media...");
+	this.actus.getFeaturedMediaUrl(this.state.wpMediaUrl).then( (wpImage) => {		
+		this.state.image = {uri: wpImage["source_url"]};
+		this.state.imageHeight = wpImage["height"];
+		this.state.imageWidth = wpImage["width"];
+		this.log("got media");
+	});
+}
+
 
 	render() {
 		return (
-			<ScrollView contentContainerStyle={[ styles.get('container.center', 'container.padded'), { justifyContent: 'space-around', alignItems: 'stretch' } ]}>
+			<ScrollView contentContainerStyle={[ styles.get('container.padded'), { justifyContent: 'space-around', alignItems: 'stretch' } ]}>
 				<Text>State : { this.state.log }</Text>
 				<TextInput
 				  style={{height: 40}}
@@ -158,6 +174,16 @@ getRandomArticleId() {
 				onChangeText={(text) => this.setState(prevState => ({ ...prevState, wpArtId: text }))} />
 				<Button onPress={ () => {this.getArticleById();}} title="get article by id" />
 				<Button onPress={ () => {this.getRandomArticleId();}} title="get random article id" />
+				<TextInput
+				  style={{height: 40}}
+				  placeholder="wp media url"
+				  defaultValue = {this.defaultValues.wpMediaUrl}
+				onChangeText={(text) => this.setState(prevState => ({ ...prevState, wpMediaUrl: text }))} />
+				<Button onPress={ () => {this.getWpMedia();}} title="get wordpress featured media" />
+				<Image
+					style={{height:this.state.imageHeight, width: this.state.imageWidth}}
+					source={this.state.image}
+				/>
 			</ScrollView>
 		);
 	}
