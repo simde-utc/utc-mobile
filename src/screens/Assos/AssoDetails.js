@@ -35,7 +35,13 @@ _loadDetails() {
 	
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
-		this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"], parentId: data["parent"]["id"], parentName : data["parent"]["shortname"]}));
+		if(id != 1 && id != '1') {
+			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"], parentId: data["parent"]["id"], parentName : data["parent"]["shortname"]}));
+		}
+		else {
+			//root : pas de parent
+			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"]}));
+		}
 	}).catch( ([response, status]) => {
 		this.warn("Erreur lors de la connexion au portail : " + response + ' --- ' + status);
 	});
