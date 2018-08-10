@@ -1,3 +1,5 @@
+import AbortController from "abort-controller"
+
 export default class Api {
     static GET = 'GET'
     static POST = 'POST'
@@ -14,7 +16,7 @@ export default class Api {
     ]
 
 //for aborting fetch requests
-	static controller = new AbortController();
+	static controller = new AbortController.AbortController();
 	static signal = controller.signal;
 
     constructor(url) {
