@@ -20,7 +20,7 @@ class CustomDrawerContentComponent extends React.Component {
 		const headerStyle = styles.get('container.center', 'px.sm', 'py.lg', 'mb.lg', 'bg.lightBlue')
 		const headerImagePath = isConnected ? require('../img/icon.png') : require('../img/icon.png')
 		const headerImageStyle = isConnected ? styles.img.bigAvatar : styles.img.bigThumbnail
-		const headerText = isConnected ? "My Super Name" : "Application UTC"
+		const headerText = isConnected ? PortailApi.getUser().name : "Application UTC"
 		const headerTextStyle = styles.get('text.h1', 'text.yellow')
 
 		return (

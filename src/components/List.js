@@ -34,13 +34,15 @@ export default class List extends React.Component {
 		return (
 			<View style={ listStyle.view }>
 				{ item.icon && <View height={30} width={30} style={ listStyle.icon} /> }
-				<Text style={ listStyle.text }>{ item.text }</Text>
+				<View style={{ flex: 1 }}>
+					<Text style={ listStyle.text }>{ item.text }</Text>
+				</View>
 			</View>
 		);
 	}
 
 	render() {
-		return <FlatList 
+		return <FlatList
 					contentContainerStyle={ listStyle.container }
 					data={ this.props.data }
 					keyExtractor={ this.props.keyExtractor ? this.props.keyExtractor : this._keyExtractor }
