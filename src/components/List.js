@@ -7,7 +7,7 @@
 **/
 
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
 
 import Icon from './Icon';
 import News from '../img/icons/news.svg'
@@ -73,11 +73,12 @@ export default class List extends React.Component {
 	}
 
 	_renderItem({ item }) {
-		return (
+		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
 			<View style={ listStyle.view }>
 				<View style={listStyle.icon}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
 				<Text style={ listStyle.text }>{ item.text }</Text>
 			</View>
+			</TouchableHighlight>
 		);
 	}
 
