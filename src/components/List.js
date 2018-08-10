@@ -14,6 +14,7 @@ import News from '../img/icons/news.svg'
 import Map from '../img/icons/map.svg'
 import Bell from '../img/icons/bell.svg'
 import Calendar from '../img/icons/calendar.svg'
+import Arrow from '../img/icons/arrow_yellow.svg'
 
 const nativeIcons = ["news", "map", "bell", "calendar"]
 
@@ -74,9 +75,10 @@ export default class List extends React.Component {
 
 	_renderItem({ item }) {
 		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
-			<View style={ listStyle.view }>
+			<View style={ this.props.elementStyle || listStyle.view }>
 				<View style={listStyle.icon}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
 				<Text style={ listStyle.text }>{ item.text }</Text>
+				{this.props.arrow && <Icon height={25} width={25} image={Arrow} />}
 			</View>
 			</TouchableHighlight>
 		);
@@ -84,7 +86,7 @@ export default class List extends React.Component {
 
 	render() {
 		return <FlatList 
-					contentContainerStyle={ listStyle.container }
+					contentContainerStyle={ this.props.style || listStyle.container }
 					data={ this.props.data }
 					keyExtractor={ this.props.keyExtractor ? this.props.keyExtractor : this._keyExtractor }
 					renderItem={ this.props.renderItem ? this.props.renderItem : this._renderItem }
