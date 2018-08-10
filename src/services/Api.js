@@ -13,6 +13,10 @@ export default class Api {
         200, 201, 204
     ]
 
+//for aborting fetch requests
+	static controller = new AbortController();
+	static signal = controller.signal;
+
     constructor(url) {
         this.baseUrl = url
     }
@@ -39,6 +43,7 @@ export default class Api {
 	var parameters = {
             method: method || Api.GET,
             headers: headers || {},
+	    signal: signal
         }
 	
 	if (method != 'GET') {parameters.body = JSON.stringify(body);}
@@ -61,4 +66,8 @@ export default class Api {
 
 	});
     }
+
+	abortRequest() {
+		controller.abort();
+	}
 }
