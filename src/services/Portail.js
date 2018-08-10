@@ -10,7 +10,7 @@ export class Portail extends Api {
 	static notConnectedException = "Tried to call Portail route but not logged in.";
 
 	constructor() {
-		super(process.env.PORTAIL_URL || 'http://192.168.56.1:8000/');
+		super(process.env.PORTAIL_URL || 'https://portail.nastuzzi.fr/');
 	}
 
 	call(request, method, queries, body, validStatus) {
@@ -49,7 +49,7 @@ export class Portail extends Api {
 						client_secret: process.env.PORTAIL_CLIENT_SECRET,
 						username: emailOrLogin,
 						password: password,
-						scope: 'user-manage-articles'
+						scope: 'user-get-articles user-get-assos'
 					}
 				).then( ([response, status]) => {
 					Portail.token = response;
@@ -102,6 +102,27 @@ export class Portail extends Api {
 				});
 		});
 			
+	}
+
+	getAssos(id=1, tree=false, stageDown=0, stageUp=2) {
+		//les undefined sont gérés mais pas les strings vides
+		if (stageDown == "")  {stageDown = 0;}
+		if (stageUp == "") {stageUp = 2;}
+		if(id == "") {id = 1;}
+
+		this._checkConnected();
+		tree = tree ? 'tree' : 'flat';
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'assos',
+				Api.GET,
+				{	"stages": stageDown + ',' + stageUp + ',' + tree,
+				}).then( ( [data, status] ) => {
+					resolve(data);
+				}).catch( ([response, status]) => {
+					reject([response, status]);
+				});
+		});
 	}
 
 
