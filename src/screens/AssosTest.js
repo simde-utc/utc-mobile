@@ -41,7 +41,7 @@ log_in = (login, password) => {
 	
 }
 
-get_assos = (id, tree, stageDown, stageUp) => {
+get_assos = (tree, stageDown, stageUp) => {
 	if(!Portail.isConnected()) {this.log('Not connected', true); return;}
 	//les undefined ou strings vides sont gérés par portail
 	Portail.getAssos(id, tree, stageDown, stageUp).then( (data) => {
@@ -51,7 +51,15 @@ get_assos = (id, tree, stageDown, stageUp) => {
 	});
 }
 
-
+get_asso_details = (id) => {
+	if(!Portail.isConnected()) {this.log('Not connected', true); return;}
+	//les undefined ou strings vides sont gérés par portail
+	Portail.getAssoDetails(id).then( (data) => {
+		this.log('got data -> console'); console.log(data);
+	}).catch( ([response, status]) => {
+		this.log(response + ' --- ' + status, true);
+	});
+}
 
 	render() {
 		return (
@@ -88,14 +96,14 @@ get_assos = (id, tree, stageDown, stageUp) => {
 				  keyboardType='numeric'
 				onChangeText={(text) => this.setState(prevState => ({ ...prevState, upfloor: text }))}
 				/>
+				<Button onPress={ () => {this.get_assos(this.state.tree, this.state.downfloor, this.state.upfloor); } } title="get assos" />
 				<TextInput
 				  style={{height: 40}}
 				  placeholder="asso id"
 				  keyboardType='numeric'
 				onChangeText={(text) => this.setState(prevState => ({ ...prevState, assoid: text }))}
 				/>
-				<Button onPress={ () => {this.get_assos(this.state.assoid, this.state.tree, this.state.downfloor, this.state.upfloor); } } title="get assos" />
-				
+				<Button onPress={ () => {this.get_asso_details(this.state.assoid); } } title="get asso details" />
 			</View>
 		);
 	}
