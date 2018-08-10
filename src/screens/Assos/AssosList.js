@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, StyleSheet } from 'react-native';
 import { createStackNavigator  } from 'react-navigation';
 import styles from '../../styles/';
 import AssoDetailsScreen from './AssoDetails';
@@ -7,6 +7,37 @@ import AssoDetailsScreen from './AssoDetails';
 import Portail from '../../services/Portail';
 
 import List from '../../components/List';
+
+const listStyle = StyleSheet.create({
+	container: {
+		justifyContent: 'flex-start',
+		paddingHorizontal: 10,
+		paddingVertical: 20,
+		flex:1
+	},
+	elementView: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		marginVertical: 8,
+		marginHorizontal: 20,
+	},
+	iconContainer: {
+		marginRight: 15
+	},
+	text: {
+		fontSize: 14,
+		justifyContent: 'flex-start'
+	},
+
+	arrowStyle: {
+
+	},
+
+	icon: {
+
+	}
+});
 
 class AssosListScreen extends React.Component {
 	constructor(props) {
@@ -17,7 +48,7 @@ class AssosListScreen extends React.Component {
 
 	state = {
 		log: "",
-		assosList: [	{ icon: 'news',	text: "chargement" }],
+		assosList: [	{ }],
 	}
 
 	log = (data, error = false) => {
@@ -52,11 +83,8 @@ class AssosListScreen extends React.Component {
 	render() {
 
 	    return (
-	      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-		<Text>Assos</Text>
-		<Text>State : {this.state.log}</Text>
-		<List data={this.state.assosList} />
-	
+	      <View style={{ flex: 1 }}>
+		<List data={this.state.assosList} arrow={true} style={listStyle} />
 	      </View>
 	    );
 	  }
