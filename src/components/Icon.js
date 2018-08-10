@@ -8,7 +8,7 @@ export default class Icon extends React.Component {
 	render() {
 		return (
 			<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-				<SvgUri width='30' height='30' source={ this.props.image } />
+				<SvgUri width={this.props.width || '30'} height={this.props.height || '30'} source={ this.props.image } />
 			</View>
 		);
 	}
