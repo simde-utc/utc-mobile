@@ -1,3 +1,13 @@
+
+/**
+ * Télécharger des données du portail des associations du BDE-UTC et des services de l'UTC
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>, Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
+
 import Api from './Api'
 
 export class Portail extends Api {
