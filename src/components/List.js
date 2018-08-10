@@ -24,18 +24,26 @@ const listStyle = StyleSheet.create({
 		paddingHorizontal: 30,
 		paddingVertical: 20
 	},
-	view: {
+	elementView: {
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginVertical: 8,
 		marginHorizontal: 20,
 	},
-	icon: {
+	iconContainer: {
 		marginRight: 15
 	},
 	text: {
 		fontSize: 14
+	},
+
+	arrowStyle: {
+
+	},
+
+	icon: {
+
 	}
 });
 
@@ -46,6 +54,7 @@ export default class List extends React.Component {
 		this._renderItem = this._renderItem.bind(this);
 		this._isNativeIcon = this._isNativeIcon.bind(this);
 		this._iconKeyToSvg = this._iconKeyToSvg.bind(this);
+		listStyle = this.props.style || listStyle;
 	}
 	
 	_keyExtractor(item, index) {
@@ -75,10 +84,12 @@ export default class List extends React.Component {
 
 	_renderItem({ item }) {
 		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
-			<View style={ this.props.elementStyle || listStyle.view }>
-				<View style={listStyle.icon}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
-				<Text style={ listStyle.text }>{ item.text }</Text>
-				{this.props.arrow && <Icon height={25} width={25} image={Arrow} />}
+			<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+				<View style={ listStyle.elementView }>
+					<View style={listStyle.iconContainer}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon style={listStyle.icon} height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
+					<Text style={ listStyle.text }>{ item.text }</Text>
+				</View>
+				{this.props.arrow && <Icon style={listStyle.arrowStyle} height={25} width={25} image={Arrow} />}
 			</View>
 			</TouchableHighlight>
 		);
@@ -86,7 +97,7 @@ export default class List extends React.Component {
 
 	render() {
 		return <FlatList 
-					contentContainerStyle={ this.props.style || listStyle.container }
+					contentContainerStyle={ listStyle.container }
 					data={ this.props.data }
 					keyExtractor={ this.props.keyExtractor ? this.props.keyExtractor : this._keyExtractor }
 					renderItem={ this.props.renderItem ? this.props.renderItem : this._renderItem }
