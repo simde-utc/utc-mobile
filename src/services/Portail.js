@@ -154,6 +154,28 @@ export class Portail extends Api {
 			}
 		)
 	}
+
+	getEventsFromCalendar(calendar_id, month) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'calendars/' + calendar_id + '/events',
+			Api.GET,
+			{
+				'order': 'oldest',
+				'month': month
+			}
+		)
+	}
+
+	getUserCalendars() {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/calendars',
+			Api.GET,
+		)
+	}
 }
 
 export default new Portail()
