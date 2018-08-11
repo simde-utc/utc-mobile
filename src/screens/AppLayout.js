@@ -7,10 +7,10 @@ import { colors } from '../styles/variables'
 import styles from '../styles/'
 
 import MainLayout from './MainLayout'
+import ProfileScreen from './Profile'
+
 // DEBUG
 const show = (text) => (<View style={ styles.container.center }><Text style={ styles.text.h0 }>{ text }</Text></View>)
-const ProfileScreen = () => show('Profile')
-const LoginScreen = () => show('Login')
 const SettingsScreen = () => show('Settings')
 
 class CustomDrawerContentComponent extends React.Component {
@@ -42,11 +42,8 @@ export default AppLayout = createDrawerNavigator({
 	Main: {
 		screen: MainLayout
 	},
-	Profile: {
-		screen: ProfileScreen
-	},
 	Login: {
-		screen: LoginScreen
+		screen: ProfileScreen
 	},
 	Settings: {
 		screen: SettingsScreen
