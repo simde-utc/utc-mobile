@@ -10,8 +10,14 @@ export class Portail extends Api {
 
 	static notConnectedException = "Tried to call Portail route but not logged in.";
 
+	static scopes = [
+		'user-get-articles',
+		'user-get-calendars',
+		'user-get-articles'
+	]
+
 	constructor() {
-		super(process.env.PORTAIL_URL || 'http://192.168.56.1:8000/');
+		super(process.env.PORTAIL_URL);
 	}
 
 	call(request, method, queries, body, validStatus) {
@@ -36,6 +42,13 @@ export class Portail extends Api {
 		return Portail.user
 	}
 
+	forget() {
+		Portail.user = {}
+		Portail.token = {}
+
+		return Storage.removeSensitiveData('user')
+	}
+
 	// Définitions des routes:
 	login(login, password) {
 		return new Promise( (resolve, reject) => {
@@ -49,27 +62,35 @@ export class Portail extends Api {
 					client_secret: process.env.PORTAIL_CLIENT_SECRET,
 					username: login,
 					password: password,
-					scope: 'user-manage-articles'
+					scope: Portail.scopes.join(' ')
 				}
 			).then( ([response, status]) => {
 				Portail.token = response;
 
 				Storage.setSensitiveData('user', {
 					login: login,
-					password: password
+					password: password,
+					token: response
 				})
 
-				this.getUserData(false).then( () => resolve() );
+				return this.getUserData(false).then(() => {
+					return resolve()
+				})
 			}).catch( ([response, status]) => {
-				reject([response, status]);
+				return reject([response, status])
 			});
 		});
 	}
 
 	logout() {
-		Portail.user = {}
-		
-		return Storage.removeSensitiveData('user')
+		return this.forget()
+	}
+
+	connect(token) {
+		if (token)
+			Portail.token = token
+
+		return this.getUserData(false)
 	}
 
 	getUserData(userMustBeConnected = true) {
@@ -79,9 +100,10 @@ export class Portail extends Api {
 				Portail.API_V1 + 'user'
 			).then( ([data, status]) => {
 				Portail.user = data;
-				resolve();
+
+				resolve()
 			}).catch( ([response, status]) => {
-				reject([response, status]);
+				reject([response, status])
 			});
 		});
 
