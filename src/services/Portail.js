@@ -1,4 +1,5 @@
 import Api from './Api'
+import Storage from './Storage'
 
 export class Portail extends Api {
 	static OAUTH = 'oauth/'
@@ -36,7 +37,7 @@ export class Portail extends Api {
 	}
 
 	// Définitions des routes:
-	login(emailOrLogin, password) {
+	login(login, password) {
 		return new Promise( (resolve, reject) => {
 			this.call(
 				Portail.OAUTH + 'token',
@@ -46,13 +47,19 @@ export class Portail extends Api {
 					grant_type: 'password',
 					client_id: process.env.PORTAIL_CLIENT_ID,
 					client_secret: process.env.PORTAIL_CLIENT_SECRET,
-					username: emailOrLogin,
+					username: login,
 					password: password,
 					scope: 'user-manage-articles'
 				}
 			).then( ([response, status]) => {
 				Portail.token = response;
-				this.getUserData(false).then( () => {resolve();});
+
+				Storage.setSensitiveData('user', {
+					login: login,
+					password: password
+				})
+
+				this.getUserData(false).then( () => resolve() );
 			}).catch( ([response, status]) => {
 				reject([response, status]);
 			});
@@ -61,6 +68,8 @@ export class Portail extends Api {
 
 	logout() {
 		Portail.user = {}
+		
+		return Storage.removeSensitiveData('user')
 	}
 
 	getUserData(userMustBeConnected = true) {
@@ -69,10 +78,10 @@ export class Portail extends Api {
 			this.call(
 				Portail.API_V1 + 'user'
 			).then( ([data, status]) => {
-						Portail.user = data;
-						resolve();
+				Portail.user = data;
+				resolve();
 			}).catch( ([response, status]) => {
-						reject([response, status]);
+				reject([response, status]);
 			});
 		});
 
