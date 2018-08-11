@@ -14,13 +14,13 @@ export class Portail extends Api {
 	}
 
 	call(request, method, queries, body, validStatus) {
-		
+
 		headers = Api.HEADER_JSON;
 
 		if (Object.keys(Portail.token).length !== 0) {
 			headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token; }
 		return super.call(request, method, queries, body, headers, validStatus, true);
-		
+
 	}
 
 	isConnected() {
@@ -28,7 +28,7 @@ export class Portail extends Api {
 	}
 
 	_checkConnected() {
-		if(!this.isConnected) {throw [Portail.notConnectedException, 523];}
+		if (!this.isConnected) {throw [Portail.notConnectedException, 523];}
 	}
 
 	getUser() {
@@ -37,29 +37,30 @@ export class Portail extends Api {
 
 	// Définitions des routes:
 	login(emailOrLogin, password) {
-			
 		return new Promise( (resolve, reject) => {
-				this.call(
-					Portail.OAUTH + 'token',
-					Api.POST,
-					{},
-					{
-						grant_type: 'password',
-						client_id: process.env.PORTAIL_CLIENT_ID,
-						client_secret: process.env.PORTAIL_CLIENT_SECRET,
-						username: emailOrLogin,
-						password: password,
-						scope: 'user-manage-articles'
-					}
-				).then( ([response, status]) => {
-					Portail.token = response;
-					this.getUserData(false).then( () => {resolve();});
-				}).catch( ([response, status]) => {
-					reject([response, status]);
-				});
-			
+			this.call(
+				Portail.OAUTH + 'token',
+				Api.POST,
+				{},
+				{
+					grant_type: 'password',
+					client_id: process.env.PORTAIL_CLIENT_ID,
+					client_secret: process.env.PORTAIL_CLIENT_SECRET,
+					username: emailOrLogin,
+					password: password,
+					scope: 'user-manage-articles'
+				}
+			).then( ([response, status]) => {
+				Portail.token = response;
+				this.getUserData(false).then( () => {resolve();});
+			}).catch( ([response, status]) => {
+				reject([response, status]);
+			});
 		});
+	}
 
+	logout() {
+		Portail.user = {}
 	}
 
 	getUserData(userMustBeConnected = true) {
@@ -101,7 +102,7 @@ export class Portail extends Api {
 					reject([response, status]);
 				});
 		});
-			
+
 	}
 
 
