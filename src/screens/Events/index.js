@@ -13,20 +13,43 @@ export default class EventsScreen extends React.Component {
 		this.state = {
 			months: [],
 			items: {},
-		};
+			calendars: [],
+			date: moment().format('YYYY-MM-DD')
+		}
+
+		PortailApi.getUserCalendars().then(([data]) => {
+			this.setState(prevState => {
+				prevState.calendars = data
+
+				return prevState
+			})
+
+			this.reload()
+		})
+	}
+
+	reload() {
+		this.setState(prevState => {
+			prevState.months = []
+			prevState.items = {}
+
+			return prevState
+		})
+
+		this.loadItems(this.state.date)
 	}
 
 	render() {
 		return (
 			<Agenda
-				items={this.state.items}
-				loadItemsForMonth={this.loadItems.bind(this)}
-				selected={'2018-04-05'}
-				renderItem={this.renderItem.bind(this)}
-				renderEmptyDate={this.renderEmptyDate.bind(this)}
-				rowHasChanged={this.rowHasChanged.bind(this)}
-				onDayPress={(day)=>{console.log('day pressed')}}
-				onDayChange={(day)=>{console.log('day changed')}}
+				items={ this.state.items }
+				loadItemsForMonth={ (date) => { this.loadItems(date.dateString) } }
+				selected={ this.state.date }
+				onDayPress={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
+				onDayChange={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
+				renderItem={ this.renderItem.bind(this) }
+				renderEmptyDate={ this.renderEmptyDate.bind(this) }
+				rowHasChanged={ this.rowHasChanged.bind(this) }
 				// markingType={'period'}
 				// markedDates={{
 				//    '2017-05-08': {textColor: '#666'},
@@ -45,11 +68,11 @@ export default class EventsScreen extends React.Component {
 	}
 
 	loadItems(day) {
-		var month = moment(new Date(day.dateString)).format('YYYY-MM-01')
+		var month = moment(new Date(day)).format('YYYY-MM-01')
 		var momentMonth = moment(new Date(month))
 
 		if (!this.state.months.includes(month)) {
-			var momentMonthLimit = moment(moment(new Date(day.dateString)).format('YYYY-MM-01')).add(1, 'months')
+			var momentMonthLimit = moment(new Date(moment(new Date(day)).format('YYYY-MM-01'))).add(1, 'months')
 
 			this.setState(prevState => {
 				prevState.months.push(month)
@@ -63,34 +86,31 @@ export default class EventsScreen extends React.Component {
 				momentMonth.add(1, 'days')
 			}
 
+			this.state.calendars.forEach((calendar) => {
+				PortailApi.getEventsFromCalendar(calendar.id, month).then(([data]) => {
+					data.forEach((event) => {
+						var date = moment(event.begin_at).format('YYYY-MM-DD')
+						event.color = calendar.color
 
-			return PortailApi.getEvents(month).then(([data]) => {
-				data.forEach((event) => {
-					var date = moment(event.begin_at).format('YYYY-MM-DD')
+						this.setState(prevState => {
+							if (!prevState.items[date])
+								prevState.items[date] = [event]
+							else
+								prevState.items[date].push(event)
 
-					this.setState(prevState => {
-						if (!prevState.items[date])
-							prevState.items[date] = []
-
-						prevState.items[date].push(event)
-
-						return prevState
+							return prevState
+						})
 					})
+				}).catch((response) => {
+					// On a aucun évènement à ajouter
 				})
-
-				return new Promise.resolve()
-			}).catch(() => {
-				return new Promise.resolve()
 			})
-		}
-		else {
-			return new Promise.resolve()
 		}
 	}
 
 	renderItem(item) {
 		return (
-			<View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+			<View style={[styles.item, {height: item.height, backgroundColor: item.color }]}><Text>{item.name}</Text></View>
 		);
 	}
 
@@ -101,7 +121,7 @@ export default class EventsScreen extends React.Component {
 	}
 
 	rowHasChanged(r1, r2) {
-		return r1.name !== r2.name;
+		return r1.id !== r2.id;
 	}
 }
 
