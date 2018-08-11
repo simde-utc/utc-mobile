@@ -102,7 +102,7 @@ export default class ConnectionScreen extends React.Component {
 					/>
 					<BigButton label={ "Se connecter" }
 						style={ styles.get('mt.lg', 'mb.md') }
-						onPress={() => this.connect()}
+						onPress={() => this.connect() }
 					/>
 					<Button style={ styles.lightBlueText }
 						onPress={ (checked) => this.props.navigation.navigate('Connected') }
