@@ -12,6 +12,7 @@ export default class AppLoaderScreen extends React.Component {
 
 		this.state = {
 			text: 'Chargement de l\'application',
+			screen: 'Welcome'
 		}
 	}
 
@@ -43,23 +44,40 @@ export default class AppLoaderScreen extends React.Component {
 			if (user) {
 				this.setState(prevState => ({
 					...prevState,
-					text: 'Connexion de l\'application'
-				}));
+					text: 'Reconnexion'
+				}))
 
-				return PortailApi.login(user.login, user.password)
+				return PortailApi.connect(user.token).catch(() => {
+					return PortailApi.login(user.login, user.password).catch(() => {
+						this.setState(prevState => ({
+							...prevState,
+							text: 'Application déconnectée',
+							screen: 'Connection'
+						}));
+
+						return PortailApi.forget()
+					})
+				})
 			}
 		}).then(() => {
 			this.setState(prevState => ({
 				...prevState,
 				isConnected: PortailApi.isConnected()
 			}));
+
+			if (PortailApi.isConnected()) {
+				this.setState(prevState => ({
+					...prevState,
+					screen: 'Home'
+				}));
+			}
 		})
 	}
 
 
 	appLoaded = () => {
 		this.props.navigation.navigate(
-			this.state.isConnected ? 'Main' : 'Welcome'
+			this.state.screen
 		);
 	}
 
