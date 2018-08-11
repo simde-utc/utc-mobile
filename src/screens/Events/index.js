@@ -5,16 +5,18 @@ import moment from 'moment'
 
 import PortailApi from '../../services/Portail'
 import Storage from '../../services/Storage'
+import ColorUtils from '../../utils/Color'
 
 export default class EventsScreen extends React.Component {
+
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			months: [],
-			items: {},
+			events: {},
 			calendars: [],
-			date: moment().format('YYYY-MM-DD')
+			date: '2018-04-01' || moment().format('YYYY-MM-DD')
 		}
 
 		PortailApi.getUserCalendars().then(([data]) => {
@@ -31,43 +33,43 @@ export default class EventsScreen extends React.Component {
 	reload() {
 		this.setState(prevState => {
 			prevState.months = []
-			prevState.items = {}
+			prevState.events = {}
+			prevState.markedDates = {}
 
 			return prevState
 		})
 
-		this.loadItems(this.state.date)
+		this.loadEvents(this.state.date)
 	}
 
 	render() {
 		return (
 			<Agenda
-				items={ this.state.items }
-				loadItemsForMonth={ (date) => { this.loadItems(date.dateString) } }
+				items={ this.state.events }
+				loadItemsForMonth={ (date) => { this.loadEvents(date.dateString) } }
 				selected={ this.state.date }
 				onDayPress={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
 				onDayChange={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
-				renderItem={ this.renderItem.bind(this) }
+				renderItem={ this.renderEvent.bind(this) }
 				renderEmptyDate={ this.renderEmptyDate.bind(this) }
 				rowHasChanged={ this.rowHasChanged.bind(this) }
-				// markingType={'period'}
-				// markedDates={{
-				//    '2017-05-08': {textColor: '#666'},
-				//    '2017-05-09': {textColor: '#666'},
-				//    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-				//    '2017-05-21': {startingDay: true, color: 'blue'},
-				//    '2017-05-22': {endingDay: true, color: 'gray'},
-				//    '2017-05-24': {startingDay: true, color: 'gray'},
-				//    '2017-05-25': {color: 'gray'},
-				//    '2017-05-26': {endingDay: true, color: 'gray'}}}
 				// monthFormat={'yyyy'}
 				// theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-				//renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+				//renderDay={(day, event) => (<Text>{day ? day.day: 'event'}</Text>)}
 			/>
 		);
 	}
 
-	loadItems(day) {
+	_findEventId(array, id) {
+		for (let i = 0; i < array.length; i++) {
+			if (array[i].id === id)
+				return i
+		}
+
+		return null
+	}
+
+	loadEvents(day) {
 		var month = moment(new Date(day)).format('YYYY-MM-01')
 		var momentMonth = moment(new Date(month))
 
@@ -81,7 +83,12 @@ export default class EventsScreen extends React.Component {
 			});
 
 			while (momentMonth < momentMonthLimit) {
-				this.state.items[momentMonth.format('YYYY-MM-DD')] = []
+				if (!this.state.events[momentMonth.format('YYYY-MM-DD')])
+					this.setState(prevState => {
+						prevState.events[momentMonth.format('YYYY-MM-DD')] = []
+
+						return prevState
+					})
 
 				momentMonth.add(1, 'days')
 			}
@@ -90,16 +97,32 @@ export default class EventsScreen extends React.Component {
 				PortailApi.getEventsFromCalendar(calendar.id, month).then(([data]) => {
 					data.forEach((event) => {
 						var date = moment(event.begin_at).format('YYYY-MM-DD')
-						event.color = calendar.color
 
-						this.setState(prevState => {
-							if (!prevState.items[date])
-								prevState.items[date] = [event]
-							else
-								prevState.items[date].push(event)
+						// On ajoute l'évènement pour la date x
+						if (!this.state.events[date])
+							this.setState(prevState => {
+								prevState.events[date] = []
+								return prevState
+							})
 
-							return prevState
-						})
+						var index = this._findEventId(this.state.events[date], event.id);
+
+						// Si l'évènement y est déjà, on ajoute juste sur quel calendrier il est
+						if (index === null) {
+							event.calendars = [calendar]
+
+							this.setState(prevState => {
+								prevState.events[date].push(event)
+								return prevState
+							})
+						}
+						else {
+							this.setState(prevState => {
+								prevState.events[date][index].calendars.push(calendar)
+
+								return prevState
+							})
+						}
 					})
 				}).catch((response) => {
 					// On a aucun évènement à ajouter
@@ -108,9 +131,52 @@ export default class EventsScreen extends React.Component {
 		}
 	}
 
-	renderItem(item) {
+	renderEventCalendars(calendars) {
+		const style = {
+			flexDirection: 'row',
+			bottom: 0
+		}
+
+		const calendarStyle = {
+			padding: 5,
+			marginRight: 5,
+			borderRadius: 5,
+		}
+
 		return (
-			<View style={[styles.item, {height: item.height, backgroundColor: item.color }]}><Text>{item.name}</Text></View>
+			<View style={ style }>
+				{ calendars.map((calendar, index) => (
+					<View style={[ calendarStyle, { backgroundColor: calendar.color } ]}
+						key={ index }
+					>
+						<Text style={{ fontSize: 12, color: ColorUtils.invertColor(calendar.color, true) }}>
+							{ calendar.name }
+						</Text>
+					</View>
+				)) }
+			</View>
+		)
+	}
+
+	renderEvent(event) {
+		const style = [
+			styles.event,
+			{
+				height: 100
+			}
+		]
+
+		if (event.full_day)
+			var time = 'La journée'
+		else
+			var time = moment(event.begin_at).format('HH:mm') + ' - ' + moment(event.end_at).format('HH:mm')
+
+		return (
+			<View style={ style }>
+				<Text>{ time }</Text>
+				<Text>{ event.name }</Text>
+				{ this.renderEventCalendars(event.calendars) }
+			</View>
 		);
 	}
 
@@ -120,13 +186,14 @@ export default class EventsScreen extends React.Component {
 		);
 	}
 
-	rowHasChanged(r1, r2) {
-		return r1.id !== r2.id;
+	rowHasChanged(event1, event2) {
+		return event1.id !== event2
+			|| JSON.stringify(event1.calendars) !== JSON.stringify(event2.calendars);
 	}
 }
 
 const styles = StyleSheet.create({
-	item: {
+	event: {
 		backgroundColor: 'white',
 		flex: 1,
 		borderRadius: 5,
