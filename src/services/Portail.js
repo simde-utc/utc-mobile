@@ -13,7 +13,7 @@ export class Portail extends Api {
 	static scopes = [
 		'user-get-articles',
 		'user-get-calendars',
-		'user-get-articles'
+		'user-get-events'
 	]
 
 	constructor() {
@@ -65,6 +65,7 @@ export class Portail extends Api {
 					scope: Portail.scopes.join(' ')
 				}
 			).then( ([response, status]) => {
+				response.scopes = Portail.scopes
 				Portail.token = response;
 
 				Storage.setSensitiveData('user', {
@@ -90,6 +91,10 @@ export class Portail extends Api {
 		if (token)
 			Portail.token = token
 
+		// On vérifie si le token a les scopes actuels, en case de mise à jour, on actualise
+		if (JSON.stringify(Portail.token.scopes) !== JSON.stringify(Portail.scopes))
+			return new Promise.reject()
+
 		return this.getUserData(false)
 	}
 
@@ -110,13 +115,14 @@ export class Portail extends Api {
 	}
 	//ne doit PAS être utilisée directement mais via la classe Articles
 	getArticles(paginate, page, order, week, timestamp=false) {
-
 		this._checkConnected();
+
 		order = order || '';
 		week = week || '';
 		week += timestamp && ',timestamp';
 		paginate = paginate || '';
 		page = page || '';
+
 		return new Promise((resolve, reject) => {
 			this.call(
 				Portail.API_V1 + 'articles',
@@ -136,7 +142,18 @@ export class Portail extends Api {
 
 	}
 
+	getEvents(month) {
+		this._checkConnected();
 
+		return this.call(
+			Portail.API_V1 + 'events',
+			Api.GET,
+			{
+				'order': 'oldest',
+				'month': month
+			}
+		)
+	}
 }
 
 export default new Portail()
