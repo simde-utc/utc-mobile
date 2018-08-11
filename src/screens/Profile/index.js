@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import styles from '../../styles'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 // Components
 import HeaderView from '../../components/HeaderView'
@@ -22,6 +23,28 @@ export default class ProfileScreen extends React.Component {
 
 		if (!PortailApi.isConnected())
 			props.navigation.navigate('Connection')
+
+		this.state = {
+			loading: false,
+		}
+	}
+
+	logout () {
+		this.setState(prevState => {
+			prevState.loading = true
+
+			return prevState
+		})
+
+		PortailApi.logout().then(() => {
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			this.props.navigation.navigate('Connection')
+		})
 	}
 
 	render () {
@@ -32,6 +55,9 @@ export default class ProfileScreen extends React.Component {
 
 		return (
 			<View style={ styles.container.default }>
+				<View>
+					<Spinner visible={ this.state.loading } textContent="Déconnexion en cours..." textStyle={{ color: '#FFF' }} />
+				</View>
 				<HeaderView>
 						<Image style={ styles.img.bigAvatar } source={ require('../../img/icon.png') } />
 						<Text style={ styles.get('text.h1', 'text.yellow') }>{ PortailApi.getUser().name }</Text>
@@ -43,7 +69,7 @@ export default class ProfileScreen extends React.Component {
 					<BigButton
 						label="Se déconnecter"
 						style={ styles.mt.lg }
-						onPress={ () => { PortailApi.logout(); return this.props.navigation.navigate('Connection') } }
+						onPress={ () => { this.logout() } }
 					/>
 				</View>
 			</View>
