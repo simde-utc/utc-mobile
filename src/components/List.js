@@ -34,6 +34,11 @@ const listStyle = StyleSheet.create({
 	iconContainer: {
 		marginRight: 15
 	},
+	rowWithArrowView: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
 	text: {
 		fontSize: 14
 	},
@@ -44,7 +49,7 @@ const listStyle = StyleSheet.create({
 
 	icon: {
 
-	}
+	},
 });
 
 export default class List extends React.Component {
@@ -84,7 +89,7 @@ export default class List extends React.Component {
 
 	_renderItem({ item }) {
 		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
-			<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+			<View style={item.customElmtStyle || listStyle.rowWithArrowView}>
 				<View style={ listStyle.elementView }>
 					<View style={listStyle.iconContainer}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon style={listStyle.icon} height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
 					<Text style={ listStyle.text }>{ item.text }</Text>
