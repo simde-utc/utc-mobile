@@ -9,23 +9,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles'
-
+import { colors } from '../styles/variables';
 import List from './List';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 
 const listStyle = StyleSheet.create({
 	container: {
 		justifyContent: 'flex-start',
-		paddingHorizontal: 10,
-		paddingVertical: 20,
-		flex:1
+		flex:1,
+		backgroundColor: colors.veryLightGray,
 	},
 	elementView: {
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginVertical: 8,
-		marginHorizontal: 20,
+		marginRight: 20,
 	},
 	iconContainer: {
 		marginRight: 15
@@ -41,7 +40,25 @@ const listStyle = StyleSheet.create({
 
 	icon: {
 
-	}
+	},	
+	rowWithArrowView: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		borderTopWidth: 1,
+		borderBottomWidth: 1,
+		borderColor: colors.lightGray,
+		backgroundColor: colors.white,
+		marginVertical: 2,
+	},
+	PoleStyle: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		borderBottomWidth: 1,
+		borderColor: colors.lightGray,
+		backgroundColor: colors.white,
+	},
 });
 
 
@@ -85,17 +102,22 @@ PoleTabs(data) {
 
 formatPole(pole) {
 return {
-	screen: () =>(this.formatChildren(pole["children"])),
+	screen: () =>(this.formatChildren(pole["children"], pole)),
 	navigationOptions: ({nav}) => ({
 		title: pole["shortname"]
 	})
 }
 }
 	
-formatChildren(children) {
+formatChildren(children, pole) {
 	var list = [];
+	//pour le moment, on rajoute le pôle avec ses propres enfants
+		list.push({icon : 'bell', text : pole["name"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: pole["name"], id: pole["id"], portailInstance : this.props.portailInstance}), customElmtStyle: listStyle.PoleStyle});
 	for (let child of children) {
-		list.push({icon : 'bell', text : child["shortname"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance})});
+		//si ce n'est pas un pôle alors on ajoute à la liste
+		if (child["children"].length == 0) {
+			list.push({icon : 'bell', text : child["shortname"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance})});
+		}
 	}
 return <List data={list} arrow={true} style={listStyle} />;
 }
