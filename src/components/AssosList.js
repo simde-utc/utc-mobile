@@ -49,7 +49,7 @@ const listStyle = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: colors.lightGray,
 		backgroundColor: colors.white,
-		marginVertical: 2,
+		marginVertical: 7,
 	},
 	PoleStyle: {
 		flexDirection: 'row',
@@ -58,8 +58,10 @@ const listStyle = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: colors.lightGray,
 		backgroundColor: colors.white,
+		height: 60,
 	},
 });
+
 
 
 export default class AssosListComponent extends React.Component {
@@ -86,17 +88,18 @@ PoleTabs(data) {
 	}
 
 	//et finalement les options
-	var options = {
-		tabBarOptions: {
-			style: styles.tabBar.style,
-			labelStyle: styles.tabBar.label,
-		},
-		backBehavior: 'none',
-		initialRouteName: 'Members',
-		order: screensOrder,
-	}
 
-	return createMaterialTopTabNavigator(tabs, screensOrder);
+var options={
+	tabBarOptions: {
+		style: styles.assosListTabBar.style,
+		labelStyle: styles.assosListTabBar.label,
+		tabStyle: styles.assosListTabBar.tab,
+	},
+	backBehavior: 'none',
+}
+
+	return createMaterialTopTabNavigator(tabs, options);
+	//return createMaterialTopTabNavigator(tabs); 
 }
 
 
