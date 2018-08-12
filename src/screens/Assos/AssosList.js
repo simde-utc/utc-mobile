@@ -1,43 +1,13 @@
 import React from 'react';
 import { View, Text, Image, Button, StyleSheet } from 'react-native';
-import { createStackNavigator  } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import styles from '../../styles/';
 import AssoDetailsScreen from './AssoDetails';
 
 import Portail from '../../services/Portail';
 
-import List from '../../components/List';
+import AssosListComponent from '../../components/AssosList';
 
-const listStyle = StyleSheet.create({
-	container: {
-		justifyContent: 'flex-start',
-		paddingHorizontal: 10,
-		paddingVertical: 20,
-		flex:1
-	},
-	elementView: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		marginVertical: 8,
-		marginHorizontal: 20,
-	},
-	iconContainer: {
-		marginRight: 15
-	},
-	text: {
-		fontSize: 14,
-		justifyContent: 'flex-start'
-	},
-
-	arrowStyle: {
-
-	},
-
-	icon: {
-
-	}
-});
 
 class AssosListScreen extends React.Component {
 	constructor(props) {
@@ -48,7 +18,7 @@ class AssosListScreen extends React.Component {
 
 	state = {
 		log: "",
-		assosList: [	{ }],
+		list: "WAIT_LOADING",
 	}
 
 	log = (data, error = false) => {
@@ -67,24 +37,25 @@ class AssosListScreen extends React.Component {
 		await Portail.login("romain@maliach.fr", "Patate123");
 		if(!Portail.isConnected()) {this.log("Erreur de connexion au portail!", true);return;}
 		if(this.isUnMounted) {return;}
-		this.assos = await Portail.getAssos();
-		var list = [];
-		for (let asso of this.assos) {
-			list.push({icon : 'bell', text : asso["shortname"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: asso["name"], id: asso["id"], portailInstance : Portail})});
-		}
+		this.assos = await Portail.getAssos(true, 0, 2);
 		if(this.isUnMounted) {return;}
-		this.setState(prevState => ({ ...prevState, assosList: list }));
+		this.setState(prevState => ({ ...prevState, list: this.assos }));
+		
 	}
 	catch ([response, status]) {
 		this.log(response + ' --- ' + status, true);
 	}
 	}
 
+
+	
+
+
 	render() {
 
 	    return (
 	      <View style={{ flex: 1 }}>
-		<List data={this.state.assosList} arrow={true} style={listStyle} />
+		<AssosListComponent data={this.state.list} portailInstance={Portail} navigation={this.props.navigation}/>
 	      </View>
 	    );
 	  }
