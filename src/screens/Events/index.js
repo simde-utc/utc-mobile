@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, ScrollView, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment'
 
@@ -8,7 +8,6 @@ import Storage from '../../services/Storage'
 import ColorUtils from '../../utils/Color'
 
 export default class EventsScreen extends React.Component {
-
 	constructor(props) {
 		super(props)
 
@@ -16,7 +15,7 @@ export default class EventsScreen extends React.Component {
 			months: [],
 			events: {},
 			calendars: [],
-			date: '2018-04-01' || moment().format('YYYY-MM-DD')
+			date: moment().format('YYYY-MM-DD')
 		}
 
 		PortailApi.getUserCalendars().then(([data]) => {
@@ -34,12 +33,14 @@ export default class EventsScreen extends React.Component {
 		this.setState(prevState => {
 			prevState.months = []
 			prevState.events = {}
-			prevState.markedDates = {}
 
 			return prevState
 		})
 
 		this.loadEvents(this.state.date)
+	}
+
+	seeEvent(event_id) {
 	}
 
 	render() {
@@ -170,13 +171,18 @@ export default class EventsScreen extends React.Component {
 			var time = moment(event.begin_at).format('HH:mm') + ' - ' + moment(event.end_at).format('HH:mm')
 
 		return (
-			<View style={ style }>
-				<Text style={{ fontSize: 17 }}>{ time }</Text>
-				<Text style={{ marginTop: 3, fontWeight: 'bold', fontSize: 18 }}>{ event.name }</Text>
-				<Text style={{ fontSize: 12 }}>{ event.location.name }</Text>
-				<Text style={{ fontStyle: 'italic', fontSize: 10 }}>{ event.location.place.name }</Text>
-				{ this.renderEventCalendars(event.calendars) }
-			</View>
+			<TouchableHighlight style={ style }
+				onPress={ () => this.seeEvent(event.id) }
+				underlayColor={"#fff0"}
+			>
+				<View>
+					<Text style={{ fontSize: 17 }}>{ time }</Text>
+					<Text style={{ marginTop: 3, fontWeight: 'bold', fontSize: 18 }}>{ event.name }</Text>
+					<Text style={{ fontSize: 12 }}>{ event.location.name }</Text>
+					<Text style={{ fontStyle: 'italic', fontSize: 10 }}>{ event.location.place.name }</Text>
+					{ this.renderEventCalendars(event.calendars) }
+				</View>
+			</TouchableHighlight>
 		);
 	}
 

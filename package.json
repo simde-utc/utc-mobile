@@ -34,6 +34,7 @@
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-svg": "^6.5.0",
     "react-native-svg-uri": "^1.2.3",
+    "react-native-webview-leaflet": "^2.0.501",
     "react-navigation": "^2.8.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",

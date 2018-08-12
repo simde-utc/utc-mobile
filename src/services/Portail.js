@@ -155,6 +155,15 @@ export class Portail extends Api {
 		)
 	}
 
+	getEvent(event_id) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'events/' + event_id,
+			Api.GET,
+		)
+	}
+
 	getEventsFromCalendar(calendar_id, month) {
 		this._checkConnected();
 

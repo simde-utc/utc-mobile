@@ -5,8 +5,9 @@ import styles from '../styles/'
 
 // Screens
 // import HomeScreen from './Home/';
-// import StorageTestScreen from './StorageTest'; // DEBUG
+// import StorageTestScree from './StorageTest'; // DEBUG
 import EventsScreen from './Events'
+import EventScreen from './Events/Event'
 
 // Icons
 import Icon from '../components/Icon'
@@ -59,6 +60,14 @@ export default MainLayout = createBottomTabNavigator ({
 	},
 	Events: {
 		screen: EventsScreen,
+		navigationOptions: ({ navigation }) => ({
+			tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? EventsOn : EventsOff } />
+			)
+		})
+	},
+	Event: { // Debug pour un event
+		screen: EventScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
 				<Icon image={ focused ? EventsOn : EventsOff } />
