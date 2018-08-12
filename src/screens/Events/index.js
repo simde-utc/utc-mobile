@@ -134,7 +134,8 @@ export default class EventsScreen extends React.Component {
 	renderEventCalendars(calendars) {
 		const style = {
 			flexDirection: 'row',
-			bottom: 0
+			bottom: 0,
+			marginTop: 10
 		}
 
 		const calendarStyle = {
@@ -161,9 +162,6 @@ export default class EventsScreen extends React.Component {
 	renderEvent(event) {
 		const style = [
 			styles.event,
-			{
-				height: 100
-			}
 		]
 
 		if (event.full_day)
@@ -173,8 +171,10 @@ export default class EventsScreen extends React.Component {
 
 		return (
 			<View style={ style }>
-				<Text>{ time }</Text>
-				<Text>{ event.name }</Text>
+				<Text style={{ fontSize: 17 }}>{ time }</Text>
+				<Text style={{ marginTop: 3, fontWeight: 'bold', fontSize: 18 }}>{ event.name }</Text>
+				<Text style={{ fontSize: 12 }}>{ event.location.name }</Text>
+				<Text style={{ fontStyle: 'italic', fontSize: 10 }}>{ event.location.place.name }</Text>
 				{ this.renderEventCalendars(event.calendars) }
 			</View>
 		);
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
 		marginTop: 17
 	},
 	emptyDate: {
-		height: 15,
 		flex:1,
 		paddingTop: 30
 	}
