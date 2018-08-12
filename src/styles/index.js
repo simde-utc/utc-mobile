@@ -7,6 +7,7 @@ import img from './image';
 import { bigCheckBox } from './bigCheckBox';
 import { bigButton } from './bigButton';
 import { tabBar } from './tabBar';
+import { assosListTabBar } from './assosListTabBar';
 
 const styles = {
 	// General styles
@@ -15,6 +16,7 @@ const styles = {
 	img,
 	
 	// Component styles
+	assosListTabBar,
 	tabBar,
 	bigCheckBox,
 	bigButton,
