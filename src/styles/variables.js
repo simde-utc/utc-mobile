@@ -21,6 +21,7 @@ export const colors = {
 	gray: '#6d6f71',
 	lightGray: '#8f9293',
 	red: '#95193b',
+	veryLightGray: '#f9f9f9'
 };
 
 export const spaces = {
