@@ -1,6 +1,14 @@
+/**
+ * Affiche la liste des assos en fonction de données du portail
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react';
 import { View, Text, Image, Button, StyleSheet } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, withNavigation } from 'react-navigation';
 import styles from '../../styles/';
 import AssoDetailsScreen from './AssoDetails';
 
@@ -13,6 +21,10 @@ class AssosListScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.assos = {};
+		this.portailInstance = this.props.navigation.getParam('portailInstance', 'NO-PORTAIL');
+	}
+
+	componentDidMount() {
 		this._loadAssos();
 	}
 
@@ -33,17 +45,33 @@ class AssosListScreen extends React.Component {
 
 	_loadAssos = async function() {
 	try {
+		
+
+		var iAmChild = this.props.navigation.getParam('isChild', 'NO-CHILD');
+		if(iAmChild !== true) {iAmChild = false;}
+		if(iAmChild == true) {
+			this.props.navigation.setParams({title: 'Child!'});
+			var data = this.props.navigation.getParam('data', 'NO-DATA');
+			if(data == "NO-DATA") {throw "Requested child asso display, but didn't provide asso data via navigation."}
+			this.assos = data;
+		}
+		else {
+
+			if(this.isUnMounted) {return;}
+			await Portail.login("romain@maliach.fr", "Patate123");
+			if(!Portail.isConnected()) {this.log("Erreur de connexion au portail!", true);return;}
+
+			if(this.isUnMounted) {return;}
+			this.assos = await Portail.getAssos(true, 0, 2);
+
+		}
+
 		if(this.isUnMounted) {return;}
-		await Portail.login("romain@maliach.fr", "Patate123");
-		if(!Portail.isConnected()) {this.log("Erreur de connexion au portail!", true);return;}
-		if(this.isUnMounted) {return;}
-		this.assos = await Portail.getAssos(true, 0, 2);
-		if(this.isUnMounted) {return;}
-		this.setState(prevState => ({ ...prevState, list: this.assos }));
+		this.setState(prevState => ({ ...prevState, list: this.assos, child: iAmChild }));
 		
 	}
-	catch ([response, status]) {
-		this.log(response + ' --- ' + status, true);
+	catch (e) {
+		this.log(e, true);
 	}
 	}
 
@@ -52,10 +80,9 @@ class AssosListScreen extends React.Component {
 
 
 	render() {
-
 	    return (
 	      <View style={{ flex: 1 }}>
-		<AssosListComponent data={this.state.list} portailInstance={Portail} navigation={this.props.navigation}/>
+		<AssosListComponent data={this.state.list} isChild={this.state.child} portailInstance={(this.portailInstance != 'NO-PORTAIL' && this.portailInstance.isConnected()) ? this.portailInstance : Portail} />
 	      </View>
 	    );
 	  }
@@ -68,7 +95,7 @@ this.isUnMounted = true;
 }
 
 
-export default AssosExploreLayout = createStackNavigator(
+export default Assos = createStackNavigator(
 {
 	AssosList: {
 		screen: AssosListScreen,

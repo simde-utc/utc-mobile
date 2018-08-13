@@ -10,123 +10,75 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles'
 import { colors } from '../styles/variables';
-import List from './List';
-import { createMaterialTopTabNavigator } from 'react-navigation';
 
-const listStyle = StyleSheet.create({
-	container: {
-		justifyContent: 'flex-start',
-		flex:1,
-		backgroundColor: colors.veryLightGray,
-	},
-	elementView: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		marginVertical: 8,
-		marginRight: 20,
-	},
-	iconContainer: {
-		marginRight: 15
-	},
-	text: {
-		fontSize: 14,
-		justifyContent: 'flex-start'
-	},
+import { withNavigation } from 'react-navigation';
 
-	arrowStyle: {
+import BlockHandler from '../components/Block';
 
-	},
-
-	icon: {
-
-	},	
-	rowWithArrowView: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		borderTopWidth: 1,
-		borderBottomWidth: 1,
-		borderColor: colors.lightGray,
-		backgroundColor: colors.white,
-		marginVertical: 7,
-	},
-	PoleStyle: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		borderBottomWidth: 1,
-		borderColor: colors.lightGray,
-		backgroundColor: colors.white,
-		height: 60,
-	},
-});
-
-
-
-export default class AssosListComponent extends React.Component {
+class AssosListComponent extends React.Component {
 
 	constructor(props) {
 		super(props);
-		listStyle = this.props.style || listStyle;
 	}
 	
-PoleTabs(data) {
-	var tabs = {};
-	var screensOrder = [];
-	//on commence par le root
-	//on se sert de l'id pour nommer le screen, c'est donc la clef de l'objet tabs
-	tabs[data[0]["id"]] = this.formatPole(data[0]);
-	screensOrder.push(data[0]["id"]);
-	//ici, la difficulté est de déterminer quelle asso est un pôle. On considère que toute asso qui n'est pas 0 et qui a des enfants est un pôle
-	for (let asso of data[0]["children"]) {
-	//pour chaque asso sous le bde
-		if (asso["children"].length != 0) {
-			tabs[asso["id"]] = this.formatPole(asso);
-			screensOrder.push(asso["id"]);
+AssosBlocks(data, isChild) {
+	var blocks = [];
+
+	if(isChild == false) {
+		//on commence par le root
+		blocks.push(this.formatPole(data[0]));
+		//ici, la difficulté est de déterminer quelle asso est un pôle. On considère que toute asso qui n'est pas 0 et qui a des enfants est un pôle
+		for (let asso of data[0]["children"]) {
+		//pour chaque asso sous le bde, on l'ajoute si c'est un pôle
+			if (asso["children"].length != 0) {
+				blocks.push(this.formatPole(asso));
+			}
+		}
+	}
+	else {
+		//pour le moment, on rajoute le pôle avec ses propres enfants
+		blocks.push(this.formatChild(data));
+		for (let child of data["children"]) {
+			blocks.push(this.formatChild(child));
 		}
 	}
 
-	//et finalement les options
-
-var options={
-	tabBarOptions: {
-		style: styles.assosListTabBar.style,
-		labelStyle: styles.assosListTabBar.label,
-		tabStyle: styles.assosListTabBar.tab,
-	},
-	backBehavior: 'none',
+	return (
+		<BlockHandler
+			blocks={ blocks }
+			editMode={ false }
+			deleteMode={ false }
+			addTools = {false}
+			navigation = {this.props.navigation}
+		/>
+	); 
 }
 
-	return createMaterialTopTabNavigator(tabs, options);
-	//return createMaterialTopTabNavigator(tabs); 
-}
-
-
+//TODO: des images pour les pôles et les assos
 formatPole(pole) {
 return {
-	screen: () =>(this.formatChildren(pole["children"], pole)),
-	navigationOptions: ({nav}) => ({
-		title: pole["shortname"]
-	})
-}
+		children: (<Text>{pole["shortname"]}</Text>),
+	        extend: true,
+		onPress: () => {
+			this.props.navigation.push('AssosList', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance});
+		},
+		image: require('../img/logo_utc.png'),
+	}
 }
 	
-formatChildren(children, pole) {
-	var list = [];
-	//pour le moment, on rajoute le pôle avec ses propres enfants
-		list.push({icon : 'bell', text : pole["name"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: pole["name"], id: pole["id"], portailInstance : this.props.portailInstance}), customElmtStyle: listStyle.PoleStyle});
-	for (let child of children) {
-		//si ce n'est pas un pôle alors on ajoute à la liste
-		if (child["children"].length == 0) {
-			list.push({icon : 'bell', text : child["shortname"], onPress: () => this.props.navigation.navigate('AssoDetails', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance})});
-		}
+formatChild(child) {
+return {
+		children: (<Text>{child["shortname"]}</Text>),
+	        extend: true,
+		onPress: () => {
+			this.props.navigation.navigate('AssoDetails', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance});
+		},
+		image: require('../img/logo_utc.png'),
 	}
-return <List data={list} arrow={true} style={listStyle} />;
 }
 	
 	render() {
-		if(this.props.data !== undefined) {
+		if(this.props.data !== undefined && this.props.isChild !== undefined) {
 			switch(this.props.data) {
 				case "WAIT_LOADING" :
 					return <Text>Chargement...</Text>;
@@ -137,8 +89,7 @@ return <List data={list} arrow={true} style={listStyle} />;
 					return <View />
 					break;
 				default:
-					const Tab = this.PoleTabs(this.props.data);
-					return (<Tab />);
+					return this.AssosBlocks(this.props.data, this.props.isChild);
 					break;		
 			}
 		}
@@ -147,3 +98,5 @@ return <List data={list} arrow={true} style={listStyle} />;
 		}
 	}
 }
+
+export default withNavigation(AssosListComponent);
