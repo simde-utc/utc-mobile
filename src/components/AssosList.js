@@ -57,10 +57,10 @@ AssosBlocks(data, isChild) {
 //TODO: des images pour les pôles et les assos
 formatPole(pole) {
 return {
-		children: (<Text>{pole["shortname"]}</Text>),
-	        extend: true,
+		text: pole["shortname"],
+	        extend: false,
 		onPress: () => {
-			this.props.navigation.push('AssosList', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance});
+			this.props.navigation.push('AssosList', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: child["shortname"]});
 		},
 		image: require('../img/logo_utc.png'),
 	}
