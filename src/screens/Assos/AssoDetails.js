@@ -1,3 +1,11 @@
+/**
+ * Affiche la liste des assos en fonction de données du portail
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react';
 import { View, Text, Image, Button } from 'react-native';
 export default class AssoDetailsScreen extends React.Component {
