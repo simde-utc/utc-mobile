@@ -18,11 +18,19 @@ import AssosListComponent from '../../components/AssosList';
 
 
 class AssosListScreen extends React.Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      title: navigation.getParam('name', 'Associations'),
+    };
+  };
+
+
 	constructor(props) {
 		super(props);
 		this.assos = {};
 		this.portailInstance = this.props.navigation.getParam('portailInstance', 'NO-PORTAIL');
 	}
+
 
 	componentDidMount() {
 		this._loadAssos();
@@ -45,12 +53,12 @@ class AssosListScreen extends React.Component {
 
 	_loadAssos = async function() {
 	try {
+
 		
 
 		var iAmChild = this.props.navigation.getParam('isChild', 'NO-CHILD');
 		if(iAmChild !== true) {iAmChild = false;}
 		if(iAmChild == true) {
-			this.props.navigation.setParams({title: 'Child!'});
 			var data = this.props.navigation.getParam('data', 'NO-DATA');
 			if(data == "NO-DATA") {throw "Requested child asso display, but didn't provide asso data via navigation."}
 			this.assos = data;
@@ -99,9 +107,6 @@ export default Assos = createStackNavigator(
 {
 	AssosList: {
 		screen: AssosListScreen,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Associations',
-		}),
 	},
 	AssoDetails: {
 		screen: AssoDetailsScreen,
