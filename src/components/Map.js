@@ -13,27 +13,35 @@ import WebViewLeaflet from 'react-native-webview-leaflet';
 
 
 export default class Map extends React.Component {
-
-	constructor(props) {
-		super(props);
-		
-	}
-
 	showBF() {
-//[49.41551, 2.81866],
 		this.webViewLeaflet.sendMessage({
-			bounds: [[49.41550, 2.81865], [49.41552,2.81867]],			
+			bounds: [[49.41550, 2.81865], [49.41552,2.81867]],
 		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log(prevProps);
-		console.log(this.props);
-		if(prevProps.viewPort !== this.props.viewPort) {
-			this.webViewLeaflet.sendMessage(this.props.viewPort);
+		if (prevProps.target !== this.props.target) {
+			this.webViewLeaflet.sendMessage({
+				bounds: [
+					[
+						(parseFloat(this.props.target[0]) - 0.00001).toFixed(5),
+						(parseFloat(this.props.target[1]) - 0.00001).toFixed(5),
+					], [
+						(parseFloat(this.props.target[0]) + 0.00001).toFixed(5),
+						(parseFloat(this.props.target[1]) + 0.00001).toFixed(5),
+					],
+				],
+				locations: [{
+					coords: this.props.target,
+					icon: "Ici"
+				}]
+			});
 		}
 
-		if(prevProps.knownLocation !== this.props.knownLocation) {
+		if (prevProps.viewPort !== this.props.viewPort)
+			this.webViewLeaflet.sendMessage(this.props.viewPort);
+
+		if (prevProps.knownLocation !== this.props.knownLocation) {
 			switch(this.props.knownLocation) {
 				case 'BF':
 				default:
@@ -43,17 +51,21 @@ export default class Map extends React.Component {
 			}
 		}
 	}
-	
+
+	onLoad = ({ payload }) => {
+		this.showBF()
+
+		this.props.loaded && this.props.loaded()
+	}
+
 	render() {
 		return (
-			<View style={{flex:1}} >
-			<WebViewLeaflet
-			  // get a reference to the web view so that messages can be sent to the map
-			  ref={(component) => (this.webViewLeaflet = component)}
-
-			  // the component that will receive map events
-			  eventReceiver={this}  
-			/>
+			<View style={{ flex:1 }} >
+				<WebViewLeaflet
+				  ref={ (component) => (this.webViewLeaflet = component) }
+				  eventReceiver={ this }
+				  centerButton={ false }
+				/>
 			</View>
 		);
 	}

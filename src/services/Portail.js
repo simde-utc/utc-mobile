@@ -31,7 +31,6 @@ export class Portail extends Api {
 	}
 
 	call(request, method, queries, body, validStatus) {
-
 		headers = Api.HEADER_JSON;
 
 		if (Object.keys(Portail.token).length !== 0) {
@@ -192,7 +191,7 @@ export class Portail extends Api {
 
 	getEvents(month) {
 		this._checkConnected();
-		
+
 		return this.call(
 			Portail.API_V1 + 'events',
 			Api.GET,
