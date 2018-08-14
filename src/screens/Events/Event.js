@@ -8,6 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay'
 // Components
 import BigButton from '../../components/BigButton'
 import HeaderView from '../../components/HeaderView'
+import Map from '../../components/Map';
 
 import PortailApi from '../../services/Portail'
 import Storage from '../../services/Storage'
@@ -20,16 +21,44 @@ export default class EventScreen extends React.Component {
 		this.state = {
 			event: {},
 			loading: true,
+			loaded: false,
 		}
 
-		PortailApi.getEvent(5).then(([data]) => { // Debug
+		PortailApi.getEvent('65690220-9fc8-11e8-96bf-4dbd26e1b167').then(([ event ]) => { // Debug
 			this.setState(prevState => {
-				prevState.event = data
+				prevState.event = event
 				prevState.loading = false
 
 				return prevState
 			})
+
+			if (this.state.loaded)
+				this.setTarget()
 		})
+	}
+
+	setTarget() {
+		var position = this.state.event.location.position || this.state.event.location.place.position
+
+		this.setState(prevState => {
+			prevState.target = [
+				position.coordinates[1],
+				position.coordinates[0]
+			]
+
+			return prevState
+		})
+	}
+
+	loaded() {
+		this.setState(prevState => {
+			prevState.loaded = true
+
+			return prevState
+		})
+
+		if (!this.state.loading)
+			this.setTarget()
 	}
 
 	render() {
@@ -48,11 +77,9 @@ export default class EventScreen extends React.Component {
 					subtitle="Il est nécessaire pour le bon fonctionnement de l'application que vous vous connectiez au Portail des Assos. Si vous ne vous y êtes jamais connecté, veuillez vous connecter en tant que CAS"
 				/>
 				<View style={{ backgroundColor: '#F00', width: '100%', aspectRatio: 2 }}>
-					<WebView style={{ flex: 1, width: '100%' }}
-					    javaScriptEnabled={ true }
-					    domStorageEnabled={ true }
-					    startInLoadingState={ true }
-						source={{ uri: 'https://www.openstreetmap.org/export/embed.html?bbox=2.8120923042297368,49.413939818144016,2.8210508823394775,49.41711913604144&layer=mapnik&marker=49.41552950283581,2.816571593284607' }}
+					<Map
+						target={ this.state.target }
+						loaded={ this.loaded.bind(this) }
 					/>
 				</View>
 				<View style={ viewStyle }>
