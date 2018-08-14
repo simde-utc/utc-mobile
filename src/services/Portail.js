@@ -1,3 +1,13 @@
+
+/**
+ * Télécharger des données du portail des associations du BDE-UTC et des services de l'UTC
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>, Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
+
 import Api from './Api'
 import Storage from './Storage'
 
@@ -80,6 +90,7 @@ export class Portail extends Api {
 			}).catch( ([response, status]) => {
 				return reject([response, status])
 			});
+
 		});
 	}
 
@@ -142,9 +153,46 @@ export class Portail extends Api {
 
 	}
 
+	getAssos(tree=false, stageDown=0, stageUp=2) {
+		//les undefined sont gérés mais pas les strings vides
+		if (stageDown == "")  {stageDown = 0;}
+		if (stageUp == "") {stageUp = 2;}
+		this._checkConnected();
+		tree = tree ? 'tree' : 'flat';
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'assos',
+				Api.GET,
+				{	"stages": stageDown + ',' + stageUp + ',' + tree,
+				}).then( ( [data, status] ) => {
+					resolve(data);
+				}).catch( ([response, status]) => {
+					reject([response, status]);
+				});
+		});
+	}
+
+
+	getAssoDetails(id=1) {
+		//les undefined sont gérés mais pas les strings vides
+		if(id == "") {id = 1;}
+		this._checkConnected();
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'assos/' + id,
+				Api.GET,
+				{}).then( ( [data, status] ) => {
+					resolve(data);
+				}).catch( ([response, status]) => {
+					reject([response, status]);
+				});
+		});
+	}
+
+
 	getEvents(month) {
 		this._checkConnected();
-
+		
 		return this.call(
 			Portail.API_V1 + 'events',
 			Api.GET,
