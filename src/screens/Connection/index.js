@@ -25,9 +25,31 @@ export default class ConnectionScreen extends React.Component {
 		this.state = {
 			emailOrLogin: '',
 			password: '',
+			allowEmail: false,
 			loading: false,
 			loadingText: 'Connexion en cours...',
 		}
+	}
+
+	tryToConnect () {
+		if (this.state.emailOrLogin.contains('@') && !this.state.allowEmail) {
+			this.setState(prevState => {
+				prevState.allowEmail = true
+
+				return prevState
+			})
+
+			Alert.alert(
+				'Connexion',
+				'Il est préférable de se connecter via son compte CAS. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
+				[
+					{ text: 'Continuer' },
+				],
+				{ cancelable: true }
+			)
+		}
+		else
+			this.connect()
 	}
 
 	connect () {
@@ -102,12 +124,12 @@ export default class ConnectionScreen extends React.Component {
 				</View>
 				<HeaderView
 					title="Connectez-vous"
-					subtitle="Il est nécessaire pour le bon fonctionnement de l'application que vous vous connectiez au Portail des Assos. Si vous ne vous y êtes jamais connecté, veuillez vous connecter en tant que CAS"
+					subtitle="Il est nécessaire pour pouvoir utiliser pleinement l'application que vous vous connectiez"
 				/>
 				<View style={ viewStyle }>
 					<TextInput style={ styles.bigButton }
 						underlineColorAndroid='transparent'
-						placeHolder="Email / Login CAS"
+						placeHolder="Login CAS / Email"
 						value={ this.state.emailOrLogin }
 						onChangeText={(text) => this.setState(() => { return { emailOrLogin: text } })}
 						keyboardType="email-address"
@@ -125,7 +147,7 @@ export default class ConnectionScreen extends React.Component {
 					/>
 					<BigButton label={ "Se connecter" }
 						style={ styles.get('mt.lg', 'mb.md') }
-						onPress={() => this.connect() }
+						onPress={() => this.tryToConnect() }
 					/>
 					<Button style={ styles.lightBlueText }
 						onPress={ (checked) => this.props.navigation.navigate('Connected') }
