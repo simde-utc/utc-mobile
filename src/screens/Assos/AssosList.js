@@ -10,17 +10,50 @@ import React from 'react';
 import { View, Text, Image, Button, StyleSheet } from 'react-native';
 import { createStackNavigator, withNavigation } from 'react-navigation';
 import styles from '../../styles/';
+import { colors } from '../../styles/variables';
 import AssoDetailsScreen from './AssoDetails';
 
 import Portail from '../../services/Portail';
 
-import AssosListComponent from '../../components/AssosList';
+import AssosListComponent from '../../components/Assos/AssosList';
 
 
 class AssosListScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
+	//ce qui se passe ici est très très sale Samy
+	var name = navigation.getParam('name', 'Associations');
+	var foreColor = colors.white;
+	var color = '';
+	switch (name) {
+		case 'Bureau des Etudiants':
+			color = colors.bdeBack;
+			break;
+		case 'Pôle Artistique et Évènementiel':
+		case 'Pôle Artistique et Événementiel':
+			//si on faisait du REST j'aurais pas besoin de tenir compte des fautes de frappe du seed Samy
+			color = colors.paeBack;
+			break;
+		case 'Pôle Solidarité Et Citoyenneté':
+			color = colors.psecBack;
+			break;
+		case 'Pôle Technologie et Entreprenariat':
+			color = colors.pteBack;
+			break;
+		case 'Pôle Vie de Campus':
+			color = colors.pvdcBack;
+			break;
+		case 'Associations':
+		default:
+			color = colors.white;
+			foreColor = colors.gray;
+			break;
+	}
     return {
-      title: navigation.getParam('name', 'Associations'),
+	title: name,
+	headerTintColor: foreColor,
+	headerStyle: {
+		backgroundColor: color,
+	},
     };
   };
 
@@ -66,7 +99,6 @@ class AssosListScreen extends React.Component {
 		else {
 
 			if(this.isUnMounted) {return;}
-			await Portail.login("romain@maliach.fr", "Patate123");
 			if(!Portail.isConnected()) {this.log("Erreur de connexion au portail!", true);return;}
 
 			if(this.isUnMounted) {return;}
