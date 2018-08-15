@@ -1,15 +1,16 @@
-
 /**
  * Télécharger des données du portail des associations du BDE-UTC et des services de l'UTC
- * @author Samy Nastuzzi <samy@nastuzzi.fr>, Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
  *
- * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
 **/
 
-
 import Api from './Api'
 import Storage from './Storage'
+
+import Generate from '../utils/Generate'
 
 export class Portail extends Api {
 	static OAUTH = 'oauth/'
@@ -21,6 +22,8 @@ export class Portail extends Api {
 	static notConnectedException = "Tried to call Portail route but not logged in.";
 
 	static scopes = [
+		'user-create-info-identity-auth-app',
+		'user-get-info-identity-auth-app',
 		'user-get-articles',
 		'user-get-calendars',
 		'user-get-events'
@@ -40,7 +43,7 @@ export class Portail extends Api {
 	}
 
 	isConnected() {
-		return (Object.keys(Portail.token).length !== 0) && (Object.keys(Portail.user).length !== 0)
+		return Object.keys(Portail.token).length !== 0
 	}
 
 	_checkConnected() {
@@ -58,39 +61,53 @@ export class Portail extends Api {
 		return Storage.removeSensitiveData('user')
 	}
 
-	// Définitions des routes:
 	login(login, password) {
-		return new Promise( (resolve, reject) => {
-			this.call(
-				Portail.OAUTH + 'token',
-				Api.POST,
-				{},
-				{
-					grant_type: 'password',
-					client_id: process.env.PORTAIL_CLIENT_ID,
-					client_secret: process.env.PORTAIL_CLIENT_SECRET,
-					username: login,
-					password: password,
-					scope: Portail.scopes.join(' ')
+		return this.call(
+			Portail.OAUTH + 'token',
+			Api.POST,
+			{},
+			{
+				grant_type: 'password',
+				client_id: process.env.PORTAIL_CLIENT_ID,
+				client_secret: process.env.PORTAIL_CLIENT_SECRET,
+				username: login,
+				password: password,
+				scope: Portail.scopes.join(' ')
+			}
+		).then(([response, status]) => {
+			response.scopes = Portail.scopes
+			Portail.token = response;
+
+			return this.getUserData(false)
+		})
+	}
+
+	createAppAuthentification() {
+		this._checkConnected();
+
+		const app_id = Generate.UUIDv4();
+		const password = Generate.key();
+
+		return this.call(
+			Portail.API_V1 + 'user/auths',
+			Api.POST,
+			{},
+			{
+				name: 'app',
+				data: {
+					'app_id': app_id,
+					password: password
 				}
-			).then( ([response, status]) => {
-				response.scopes = Portail.scopes
-				Portail.token = response;
+			}
+		).then((data) => {
+			Storage.setSensitiveData('user', {
+				app_id: app_id,
+				password: password,
+				token: Portail.token
+			})
 
-				Storage.setSensitiveData('user', {
-					login: login,
-					password: password,
-					token: response
-				})
-
-				return this.getUserData(false).then(() => {
-					return resolve()
-				})
-			}).catch( ([response, status]) => {
-				return reject([response, status])
-			});
-
-		});
+			return data
+		})
 	}
 
 	logout() {
@@ -109,20 +126,15 @@ export class Portail extends Api {
 	}
 
 	getUserData(userMustBeConnected = true) {
-		if(userMustBeConnected) {this._checkConnected();}
-		return new Promise((resolve, reject) => {
-			this.call(
-				Portail.API_V1 + 'user'
-			).then( ([data, status]) => {
-				Portail.user = data;
+		if (userMustBeConnected) { this._checkConnected(); }
 
-				resolve()
-			}).catch( ([response, status]) => {
-				reject([response, status])
-			});
+		return this.call(
+			Portail.API_V1 + 'user'
+		).then(([response, status]) => {
+			Portail.user = response;
 		});
-
 	}
+
 	//ne doit PAS être utilisée directement mais via la classe Articles
 	getArticles(paginate, page, order, week, timestamp=false) {
 		this._checkConnected();

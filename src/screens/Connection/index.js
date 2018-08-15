@@ -25,7 +25,8 @@ export default class ConnectionScreen extends React.Component {
 		this.state = {
 			emailOrLogin: '',
 			password: '',
-			loading: false
+			loading: false,
+			loadingText: 'Connexion en cours...',
 		}
 	}
 
@@ -39,16 +40,7 @@ export default class ConnectionScreen extends React.Component {
 		PortailApi.login(
 			this.state.emailOrLogin,
 			this.state.password
-		).then(() => {
-			this.setState(prevState => {
-				prevState.loading = false
-
-				return prevState
-			})
-
-			this.props.navigation.navigate('Connected')
-		}
-		).catch(() => {
+		).catch(([response, status]) => {
 			this.setState(prevState => {
 				prevState.loading = false
 
@@ -58,6 +50,37 @@ export default class ConnectionScreen extends React.Component {
 			Alert.alert(
 				'Connexion',
 				'Votre adresse email et/ou votre mot de passe est incorrect',
+				[
+					{ text: 'Continuer' },
+				],
+				{ cancelable: true }
+			)
+		}).then(() => {
+			this.setState(prevState => {
+				prevState.loadingText = 'Enregistrement de l\'appareil...'
+
+				return prevState
+			})
+
+			return PortailApi.createAppAuthentification()
+		}).then(([response, status]) => {
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			this.props.navigation.navigate('Connected')
+		}).catch(([response, status]) => {
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			Alert.alert(
+				'Connexion',
+				'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez',
 				[
 					{ text: 'Continuer' },
 				],
@@ -75,7 +98,7 @@ export default class ConnectionScreen extends React.Component {
 		return (
 			<View style={styles.container.default}>
 				<View>
-					<Spinner visible={this.state.loading} textContent="Connexion en cours..." textStyle={{color: '#FFF'}} />
+					<Spinner visible={this.state.loading} textContent={ this.state.loadingText } textStyle={{ color: '#FFF' }} />
 				</View>
 				<HeaderView
 					title="Connectez-vous"

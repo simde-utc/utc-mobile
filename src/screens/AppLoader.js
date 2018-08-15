@@ -48,7 +48,7 @@ export default class AppLoaderScreen extends React.Component {
 				}))
 
 				return PortailApi.connect(user.token).catch(() => {
-					return PortailApi.login(user.login, user.password).catch(() => {
+					return PortailApi.login(user.app_id, user.password).catch(() => {
 						this.setState(prevState => ({
 							...prevState,
 							text: 'Application déconnectée',
