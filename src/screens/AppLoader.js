@@ -40,7 +40,7 @@ export default class AppLoaderScreen extends React.Component {
 	bootstrap = async () => {
 		// Download fonts, images etc...
 		// Fetch tokens from SecureStore...
-		return Storage.getSensitiveData('user').then((user) => {
+		return Storage.getSensitiveData('portail').then((user) => {
 			if (user) {
 				this.setState(prevState => ({
 					...prevState,
