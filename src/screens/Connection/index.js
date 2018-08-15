@@ -62,22 +62,7 @@ export default class ConnectionScreen extends React.Component {
 		PortailApi.login(
 			this.state.emailOrLogin,
 			this.state.password
-		).catch(([response, status]) => {
-			this.setState(prevState => {
-				prevState.loading = false
-
-				return prevState
-			})
-
-			Alert.alert(
-				'Connexion',
-				'Votre adresse email et/ou votre mot de passe est incorrect',
-				[
-					{ text: 'Continuer' },
-				],
-				{ cancelable: true }
-			)
-		}).then(() => {
+		).then(() => {
 			this.setState(prevState => {
 				prevState.loadingText = 'Enregistrement de l\'appareil...'
 
@@ -102,11 +87,13 @@ export default class ConnectionScreen extends React.Component {
 
 			Alert.alert(
 				'Connexion',
-				'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez',
+				PortailApi.isConnected() ?
+					'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez' :
+					'Votre adresse email et/ou votre mot de passe est incorrect',
 				[
 					{ text: 'Continuer' },
 				],
-				{ cancelable: true }
+				{ cancelable: !PortailApi.isConnected() }
 			)
 		})
 	}

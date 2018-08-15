@@ -1,5 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay'
+
 import styles from '../../styles'
 
 // Components
@@ -20,15 +22,40 @@ export default class ConnectedScreen extends React.Component {
 	constructor (props) {
 		super(props)
 
+		this.state = {
+			loading: false
+		}
+
 		if (PortailApi.isConnected()) {
 			this.subTitle = "Vous êtes maintenant connecté.e sous " + PortailApi.getUser().name + " !"
 			this.more = "et tout ceci, de manière personnalisée"
 		} else {
 			this.subTitle = "Vous n'êtes connecté.e sous aucun compte"
 
-			PortailApi.createInvitedAccount().catch(([response, status]) => {
-				console.log(response, status)
-			}) // TODO end
+			this.state.loading = true
+
+			PortailApi.createInvitedAccount().then(
+				this.setState(prevState => {
+					prevState.loading = false
+
+					return prevState
+				})
+			).catch(([response, status]) => {
+				Alert.alert(
+					'Enregistrement',
+					'Une erreur a été détectée lors de l\'enregistrement de l\'application. Veuillez relancer l\'application',
+					[
+						{ text: 'Continuer' },
+					],
+					{ cancelable: false }
+				)
+
+				this.setState(prevState => {
+					prevState.loading = false
+
+					return prevState
+				})
+			})
 		}
 	}
 
@@ -40,6 +67,9 @@ export default class ConnectedScreen extends React.Component {
 
 		return (
 			<View style={ styles.container.default }>
+				<View>
+					<Spinner visible={ this.state.loading } textContent="Enregistrement de l'application..." textStyle={{ color: '#FFF' }} />
+				</View>
 				<HeaderView
 					title="Bienvenue !"
 					subtitle={ this.subTitle }
