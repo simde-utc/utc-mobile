@@ -50,6 +50,20 @@ export class Portail extends Api {
 		if (this.isConnected() !== needToBeTrue) {throw [Portail.notConnectedException, 523]}
 	}
 
+	setData(login, password) {
+		return this.login(login, password).then(() => {
+			return Storage.setSensitiveData('portail', {
+				app_id: login,
+				password: password,
+				token: Portail.token
+			})
+		})
+	}
+
+	getData() {
+		return Storage.getSensitiveData('portail')
+	}
+
 	getUser() {
 		return Portail.user
 	}
@@ -141,11 +155,7 @@ export class Portail extends Api {
 				}
 			}
 		).then((data) => {
-			return Storage.setSensitiveData('portail', {
-				app_id: app_id,
-				password: password,
-				token: Portail.token
-			}).then(() => {
+			return this.setData(app_id, password).then(() => {
 				return data
 			})
 		})

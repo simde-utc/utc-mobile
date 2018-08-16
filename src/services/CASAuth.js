@@ -28,11 +28,11 @@ call (request, method, queries, body, headers, validStatus) {
 					response.text().then( (text) => {resolve([text, response.status, response.url]);  } );
 				}
 				else {
-					response.text().then( (text) => { reject([text, response.status, response.url]); }); 
+					response.text().then( (text) => { reject([text, response.status, response.url]); });
 				}
 			}).catch( (e) => {reject([e.message, 523, ""]);} );
 	});
-        
+
 }
 
 
@@ -41,6 +41,22 @@ isConnected() {
 	return this.tgt != "";
 }
 
+setData(login, password) {
+	return this.login(login, password).then(() => {
+		return Storage.setSensitiveData('cas', {
+			login: login,
+			password: password,
+		})
+	})
+}
+
+forget() {
+	return Storage.removeSensitiveData('cas')
+}
+
+getData() {
+	return Storage.getSensitiveData('cas')
+}
 
 login(login, passwd) {
 	return new Promise((resolve, reject) => {
@@ -49,7 +65,7 @@ login(login, passwd) {
 			Api.POST,
 			"",
 			{
-		        	username: login,
+	        	username: login,
 				password: passwd
 			},
 			CASAuth.HEADER_FORM_URLENCODED
@@ -62,12 +78,12 @@ login(login, passwd) {
 				if(Array.isArray(e) && e.length ==3) {
 					let a, b, c;
 					[a, b, c] = e;
-					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]); 
+					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]);
 
 				}
 				else {reject(["Erreur réseau", 523, ""]);}
 			}
-			
+
 		});
     });
 }
@@ -91,12 +107,12 @@ getService(service) {
 				if(Array.isArray(e) && e.length ==3) {
 					let a, b, c;
 					[a, b, c] = e;
-					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]); 
+					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]);
 
 				}
 				else {reject(["Erreur réseau", 523, ""]);}
 			}
-			
+
 		});
     });
 }
