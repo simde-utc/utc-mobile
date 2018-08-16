@@ -70,6 +70,16 @@ export default class ConnectionScreen extends React.Component {
 			})
 
 			return PortailApi.createAppAuthentification()
+		}).then(() => {
+			if (!this.state.emailOrLogin.contains('@')) {
+				this.setState(prevState => {
+					prevState.loadingText = 'Enregistrement des données CAS...'
+
+					return prevState
+				})
+
+				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(() => {})
+			}
 		}).then(([response, status]) => {
 			this.setState(prevState => {
 				prevState.loading = false
