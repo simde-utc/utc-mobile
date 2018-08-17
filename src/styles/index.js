@@ -8,6 +8,7 @@ import { bigCheckBox } from './bigCheckBox';
 import { bigButton } from './bigButton';
 import { tabBar } from './tabBar';
 import { assosListTabBar } from './assosListTabBar';
+import { article } from './Article';
 
 const styles = {
 	// General styles
@@ -20,6 +21,7 @@ const styles = {
 	tabBar,
 	bigCheckBox,
 	bigButton,
+	article,
 
 
 	// Getter function
