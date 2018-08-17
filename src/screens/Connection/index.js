@@ -1,3 +1,11 @@
+/**
+ * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react'
 import { View, Image, Text, TextInput, Alert } from 'react-native'
 import Button from 'react-native-button'
@@ -34,7 +42,17 @@ export default class ConnectionScreen extends React.Component {
 	}
 
 	tryToConnect () {
-		if (this.state.emailOrLogin.contains('@') && !this.state.allowEmail) {
+		if (this.state.emailOrLogin.length === 0 || this.state.password.length === 0) {
+			Alert.alert(
+				'Connexion',
+				'Il est nécessaire de remplir les deux champs',
+				[
+					{ text: 'Continuer' },
+				],
+				{ cancelable: true }
+			)
+		}
+		else if (this.state.emailOrLogin.contains('@') && !this.state.allowEmail) {
 			this.setState(prevState => {
 				prevState.allowEmail = true
 
@@ -52,70 +70,6 @@ export default class ConnectionScreen extends React.Component {
 		}
 		else
 			this.connect()
-	}
-
-	badLogin () {
-		this.setState(prevState => {
-			prevState.loading = false
-
-			return prevState
-		})
-
-		Alert.alert(
-			'Connexion',
-			'Votre login et/ou votre mot de passe est incorrect',
-			[
-				{ text: 'Continuer' },
-			],
-			{ cancelable: true }
-		)
-	}
-
-	register () {
-		new Promise((resolve, reject) => {
-			if (!this.state.emailOrLogin.contains('@')) {
-				this.setState(prevState => {
-					prevState.loadingText = 'Enregistrement des données CAS...'
-
-					return prevState
-				})
-
-				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
-					this.setState(prevState => {
-						prevState.loading = false
-
-						return prevState
-					})
-
-					Alert.alert(
-						'Connexion',
-						'Une erreur a été rencontrée dans la sauvegarde de vos données CAS',
-						[
-							{ text: 'Continuer' },
-						],
-						{ cancelable: false }
-					)
-
-					this.props.navigation.navigate('Connected')
-				}).then(() => {
-					this.setState(prevState => {
-						prevState.loading = false
-
-						return prevState
-					})
-
-					this.props.navigation.navigate('Connected')
-				})
-			}
-
-			this.setState(prevState => {
-				prevState.loading = false
-
-				return prevState
-			})
-
-			this.props.navigation.navigate('Connected')
-		})
 	}
 
 	connect () {
@@ -204,6 +158,70 @@ export default class ConnectionScreen extends React.Component {
 				})
 			}
 		}).then(this.register)
+	}
+
+	register () {
+		new Promise((resolve, reject) => {
+			if (!this.state.emailOrLogin.contains('@')) {
+				this.setState(prevState => {
+					prevState.loadingText = 'Enregistrement des données CAS...'
+
+					return prevState
+				})
+
+				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
+					this.setState(prevState => {
+						prevState.loading = false
+
+						return prevState
+					})
+
+					Alert.alert(
+						'Connexion',
+						'Une erreur a été rencontrée dans la sauvegarde de vos données CAS',
+						[
+							{ text: 'Continuer' },
+						],
+						{ cancelable: false }
+					)
+
+					this.props.navigation.navigate('Connected')
+				}).then(() => {
+					this.setState(prevState => {
+						prevState.loading = false
+
+						return prevState
+					})
+
+					this.props.navigation.navigate('Connected')
+				})
+			}
+
+			this.setState(prevState => {
+				prevState.loading = false
+
+				return prevState
+			})
+
+			this.props.navigation.navigate('Connected')
+		})
+	}
+
+	badLogin () {
+		this.setState(prevState => {
+			prevState.loading = false
+
+			return prevState
+		})
+
+		Alert.alert(
+			'Connexion',
+			'Votre login et/ou votre mot de passe est incorrect',
+			[
+				{ text: 'Continuer' },
+			],
+			{ cancelable: true }
+		)
 	}
 
 	render() {
