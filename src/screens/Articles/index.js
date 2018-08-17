@@ -5,7 +5,9 @@ import {FlatList} from 'react-native';
 import Portail from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
 
-const DEFAULT_ARTICLES_PAGINATION = 3;
+const DEFAULT_ARTICLES_PAGINATION = 6;
+//seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
+const THRESHOLD = 0.2; 
 
 export default class ArticlesScreen extends React.Component {
 	static navigationOptions = {
@@ -19,11 +21,14 @@ export default class ArticlesScreen extends React.Component {
 		super(props);
 		if(!Portail.isConnected()) {throw 'Attempted to fetch articles but portail not connected.';}
 		this.state = {
-			page:1,
+			page:0,
 			pagination:DEFAULT_ARTICLES_PAGINATION,
 			canLoadMoreContent: true,
-			networkOk: true
+			networkOk: true,
+			data: [],
 		};
+		this.data = [];
+		this.props.articleHeight = 100;
 		
 	}
 
@@ -34,12 +39,13 @@ export default class ArticlesScreen extends React.Component {
 	_loadMoreContentAsync = async () => {
 		try {
 		this.setState(prevState => ({ ...prevState, networkOk: true}));
-		console.log("loading data");
 		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1);
-		console.log("data loaded");
+		newdata = newdata[0].map( (elmt) => {return {key: elmt["id"], article:elmt};});
+		if (newdata.length < this.state.pagination) {this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));}
 		this.data = this.data.concat(newdata);
 		
 		this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+		//il est nécessaire d'effectuer cette instruction en dernier et séparément des autres car le setstate est async
 		this.setState(prevState => ({ ...prevState, data: this.data }));
 		}
 
@@ -47,14 +53,13 @@ export default class ArticlesScreen extends React.Component {
 			switch (status) {
 				case 416:
 					this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));
-					console.log(response);
 					break;
 				case 523:
 				default:
 					this.setState(prevState => ({ ...prevState, networkOk: false }));
-					console.warn(response, status);
 					break;
 			}
+			
 		}
 	}
 
@@ -64,7 +69,9 @@ export default class ArticlesScreen extends React.Component {
 		return (
 			<FlatList
 				data={this.state.data}
-				renderItem={({item}) => <Article data={item} />}
+				renderItem={({item}) => <ArticleComponent data={item} />}
+				onEndReached={this._loadMoreContentAsync}
+				onEndReachedThreshold = {THRESHOLD}
 			/>
 		);
 
