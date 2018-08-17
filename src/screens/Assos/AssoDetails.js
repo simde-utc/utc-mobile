@@ -7,7 +7,31 @@
 **/
 
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, ScrollView } from 'react-native';
+import Hr from '../../components/Hr';
+import {colors} from '../../styles/variables';
+import styles from '../../styles'
+import { createMaterialTopTabNavigator } from 'react-navigation';
+import Markdown from 'react-native-simple-markdown'
+
+
+const markdownStyles = {
+  heading1: {
+    fontSize: 24,
+    color: colors.gray,
+  },
+  link: {
+    color: colors.yellow,
+  },
+  mailTo: {
+    color: colors.lightBlue,
+  },
+  text: {
+    color: colors.black,
+  },
+}
+
+
 export default class AssoDetailsScreen extends React.Component {
 
 constructor(props) {
@@ -43,7 +67,7 @@ _loadDetails() {
 	
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
-		if(id != 1 && id != '1') {
+		if(data["parent"].length != 0) {
 			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"], parentId: data["parent"]["id"], parentName : data["parent"]["shortname"]}));
 		}
 		else {
@@ -57,18 +81,94 @@ _loadDetails() {
 
 render() {
 	
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-	{this.state.warn && <Text>{this.state.message}</Text>}
-	<Text>{this.state.description}</Text>
-	<Text>Type d'association : {this.state.type}</Text>
-	<Text>{this.state.parentName}</Text>
-      </View>
-    );
+    
+var Tab = createMaterialTopTabNavigator(
+	{
+		Presentation: {
+			screen: () => (<PresentationView
+					description={this.state.description}
+					parentName={this.state.parentName}
+					type={this.state.type}	
+					/>),
+			navigationOptions: ({ nav }) => ({
+				title: 'En bref'
+			})
+		},
+		Articles: {
+			screen: ToDoView,
+			navigationOptions: ({ nav }) => ({
+				title: 'Articles'
+			})
+		},
+		Events: {
+			screen: ToDoView,
+			navigationOptions: ({ nav }) => ({
+				title: 'Evénements'
+			})
+		},
+		Trombi: {
+			screen: ToDoView,
+			navigationOptions: ({ nav }) => ({
+				title: 'Trombi'
+			})
+		},
+
+	},
+	{
+		tabBarOptions: {
+			style: styles.tabBar.style,
+			labelStyle: styles.tabBar.label,
+			
+		},
+		backBehavior: 'none',
+		initialRouteName: 'Presentation',
+		order: ['Presentation', 'Articles', 'Events', 'Trombi'],
+	});
+
+return <Tab />;
+  
   }
 
 componentWillUnmount() {
 if(this.portail !== undefined) {this.portail.abortRequest();}
 this.isUnMounted = true;
 }
+}
+
+class PresentationView extends React.Component {
+
+render() {
+	return <ScrollView
+		contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30 }}>
+			<Image
+			source={this.props.logo || require('../../img/payutc.png')}
+			resizeMode='contain'
+			style={{height:100, margin:20}} 
+			/>
+			
+			<Markdown styles={markdownStyles}>
+				{this.props.description}
+			</Markdown>
+			
+			<Hr color={colors.lightGray}/>
+
+			<Text>{this.props.type}</Text>
+			<Text>{this.props.parentName}</Text>
+
+		</ScrollView>;
+	
+	}
+
+}
+
+class ToDoView extends React.Component {
+
+render() {
+	return <ScrollView
+		contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30 }}>
+			<Text>//TODO</Text>
+		</ScrollView>;
+	
+	}
+
 }
