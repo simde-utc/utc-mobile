@@ -1,3 +1,12 @@
+/**
+ * Permet de gérer les données stockées localement
+ * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import { AsyncStorage } from "react-native";
 import { SecureStore } from "expo";
 
@@ -55,7 +64,7 @@ class Storage {
 		const data = await this.stringifyData(value, true)
 		return SecureStore.setItemAsync(key, data);
 	}
-	
+
 	removeSensitiveData = async (key) => {
 		if (!key)	throw "Clé non définie !";
 		if (!this.checkSensitiveKey(key))

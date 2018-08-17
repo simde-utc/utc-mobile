@@ -22,7 +22,8 @@ export class Portail extends Api {
 	static notConnectedException = "Tried to call Portail route but not logged in."
 
 	static scopes = [
-		'user-create-info-identity-auth-app',
+		'user-create-info-identity-auth-app', // Tout simplement ajouter la connexion application
+		'user-create-info-identity-auth-cas', // Ajouter la connexion CAS
 		'user-get-info-identity-auth-app',
 		'user-get-articles',
 		'user-get-calendars',
@@ -44,6 +45,10 @@ export class Portail extends Api {
 
 	isConnected() {
 		return Object.keys(Portail.token).length !== 0 && Object.keys(Portail.user).length !== 0
+	}
+
+	isActive() {
+		return this.isConnected() && Portail.user.is_active
 	}
 
 	_checkConnected(needToBeTrue = true) {
@@ -111,7 +116,6 @@ export class Portail extends Api {
 				client_secret: process.env.PORTAIL_CLIENT_SECRET,
 			}
 		).then(([response, status]) => {
-			console.log(response)
 			response.scopes = Portail.scopes
 			Portail.token = response
 
@@ -124,15 +128,12 @@ export class Portail extends Api {
 				}
 			)
 		}).then(([response, status]) => {
-			console.log(response)
 			Portail.user = response
 
 			return this.createAppAuthentification(app_id)
 		}).then(([response, status]) => {
-			console.log(response)
 			return Storage.getSensitiveData('portail')
 		}).then((data) => {
-			console.log(data)
 			return this.login(data.app_id, data.password)
 		})
 	}
@@ -159,6 +160,23 @@ export class Portail extends Api {
 				return data
 			})
 		})
+	}
+
+	createCasAuthentification(login, password) {
+		this._checkConnected()
+
+		return this.call(
+			Portail.API_V1 + 'users/' + Portail.user.id + '/auths',
+			Api.POST,
+			{},
+			{
+				name: 'cas',
+				data: {
+					login: login,
+					password: password
+				}
+			}
+		)
 	}
 
 	logout() {

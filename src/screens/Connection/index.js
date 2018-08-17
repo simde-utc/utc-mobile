@@ -10,6 +10,7 @@ import HeaderView from '../../components/HeaderView'
 
 // API
 import PortailApi from '../../services/Portail'
+import CASAuth from '../../services/CASAuth'
 
 export default class ConnectionScreen extends React.Component {
 	static navigationOptions = {
@@ -26,6 +27,7 @@ export default class ConnectionScreen extends React.Component {
 			emailOrLogin: '',
 			password: '',
 			allowEmail: false,
+			forceCreation: false,
 			loading: false,
 			loadingText: 'Connexion en cours...',
 		}
@@ -52,25 +54,25 @@ export default class ConnectionScreen extends React.Component {
 			this.connect()
 	}
 
-	connect () {
+	badLogin () {
 		this.setState(prevState => {
-			prevState.loading = true
+			prevState.loading = false
 
 			return prevState
 		})
 
-		PortailApi.login(
-			this.state.emailOrLogin,
-			this.state.password
-		).then(() => {
-			this.setState(prevState => {
-				prevState.loadingText = 'Enregistrement de l\'appareil...'
+		Alert.alert(
+			'Connexion',
+			'Votre login et/ou votre mot de passe est incorrect',
+			[
+				{ text: 'Continuer' },
+			],
+			{ cancelable: true }
+		)
+	}
 
-				return prevState
-			})
-
-			return PortailApi.createAppAuthentification()
-		}).then(() => {
+	register () {
+		new Promise((resolve, reject) => {
 			if (!this.state.emailOrLogin.contains('@')) {
 				this.setState(prevState => {
 					prevState.loadingText = 'Enregistrement des données CAS...'
@@ -78,9 +80,34 @@ export default class ConnectionScreen extends React.Component {
 					return prevState
 				})
 
-				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(() => {})
+				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
+					this.setState(prevState => {
+						prevState.loading = false
+
+						return prevState
+					})
+
+					Alert.alert(
+						'Connexion',
+						'Une erreur a été rencontrée dans la sauvegarde de vos données CAS',
+						[
+							{ text: 'Continuer' },
+						],
+						{ cancelable: false }
+					)
+
+					this.props.navigation.navigate('Connected')
+				}).then(() => {
+					this.setState(prevState => {
+						prevState.loading = false
+
+						return prevState
+					})
+
+					this.props.navigation.navigate('Connected')
+				})
 			}
-		}).then(([response, status]) => {
+
 			this.setState(prevState => {
 				prevState.loading = false
 
@@ -88,24 +115,95 @@ export default class ConnectionScreen extends React.Component {
 			})
 
 			this.props.navigation.navigate('Connected')
-		}).catch(([response, status]) => {
-			this.setState(prevState => {
-				prevState.loading = false
-
-				return prevState
-			})
-
-			Alert.alert(
-				'Connexion',
-				PortailApi.isConnected() ?
-					'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez' :
-					'Votre adresse email et/ou votre mot de passe est incorrect',
-				[
-					{ text: 'Continuer' },
-				],
-				{ cancelable: !PortailApi.isConnected() }
-			)
 		})
+	}
+
+	connect () {
+		this.setState(prevState => {
+			prevState.loading = true
+
+			return prevState
+		})
+
+		new Promise(() => {
+			if (PortailApi.isConnected() && !this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
+				if (this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
+					this.setState(prevState => {
+						prevState.forceCreation = true
+						prevState.loading = false
+
+						return prevState
+					})
+
+					Alert.alert(
+						'Connexion',
+						'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
+						[
+							{ text: 'Continuer' },
+						],
+						{ cancelable: false }
+					)
+				}
+				else {
+					return PortailApi.createCasAuthentification(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
+						if (status === 400) {
+							this.badLogin()
+
+							return;
+						}
+
+						this.setState(prevState => {
+							prevState.forceCreation = true
+							prevState.loading = false
+
+							return prevState
+						})
+
+						Alert.alert(
+							'Connexion',
+							'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
+							[
+								{ text: 'Continuer' },
+							],
+							{ cancelable: false }
+						)
+					})
+				}
+			}
+			else {
+				return PortailApi.login(
+					this.state.emailOrLogin,
+					this.state.password
+				).then(() => {
+					this.setState(prevState => {
+						prevState.loadingText = 'Enregistrement de l\'appareil...'
+
+						return prevState
+					})
+
+					return PortailApi.createAppAuthentification().then(() => {
+						return this.register()
+					}).catch(([response, status]) => {
+						this.setState(prevState => {
+							prevState.loading = false
+
+							return prevState
+						})
+
+						Alert.alert(
+							'Connexion',
+							'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez',
+							[
+								{ text: 'Continuer' },
+							],
+							{ cancelable: false }
+						)
+					})
+				}).catch(() => {
+					this.badLogin()
+				})
+			}
+		}).then(this.register)
 	}
 
 	render() {

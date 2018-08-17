@@ -21,7 +21,7 @@ export default class ProfileScreen extends React.Component {
 	constructor (props) {
 		super(props)
 
-		if (!PortailApi.isConnected())
+		if (!PortailApi.isActive())
 			props.navigation.navigate('Connection')
 
 		this.state = {
