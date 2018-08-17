@@ -1,3 +1,11 @@
+/**
+ * Affiche la page connecté. Connecte l'application si l'application ne l'est pas ou qu'elle est lancée en tant qu'invité
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react';
 import { Text, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay'
