@@ -40,7 +40,7 @@ export default class AppLoaderScreen extends React.Component {
 	bootstrap = async () => {
 		// Download fonts, images etc...
 		// Fetch tokens from SecureStore...
-		return Storage.getSensitiveData('user').then((user) => {
+		return PortailApi.getData().then((user) => {
 			if (user) {
 				this.setState(prevState => ({
 					...prevState,
@@ -48,7 +48,7 @@ export default class AppLoaderScreen extends React.Component {
 				}))
 
 				return PortailApi.connect(user.token).catch(() => {
-					return PortailApi.login(user.login, user.password).catch(() => {
+					return PortailApi.login(user.app_id, user.password).catch(() => {
 						this.setState(prevState => ({
 							...prevState,
 							text: 'Application déconnectée',

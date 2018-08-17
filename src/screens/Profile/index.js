@@ -1,3 +1,11 @@
+/**
+ * Affiche le profil de la personne
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import styles from '../../styles'
@@ -21,7 +29,7 @@ export default class ProfileScreen extends React.Component {
 	constructor (props) {
 		super(props)
 
-		if (!PortailApi.isConnected())
+		if (!PortailApi.isActive())
 			props.navigation.navigate('Connection')
 
 		this.state = {

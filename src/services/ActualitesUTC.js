@@ -1,4 +1,3 @@
-
 /**
  * Télécharger des données depuis le WP des actualités internes de l'UTC
  * Cette classe ne doit PAS être utilisée directement, mais via la classe Portail
@@ -30,7 +29,7 @@ export default class ActualitesUTC extends Api {
 
 	loadArticles() {
 		return new Promise ( (resolve, reject) => {
-			this.call(this._st, Api.GET).then( ([response, status]) => { 
+			this.call(this._st, Api.GET).then( ([response, status]) => {
 				this.articles = Array.from(JSON.parse(response));
 				this.articles.forEach(this.normalizeArray);
 				var i = 0;
@@ -55,8 +54,8 @@ export default class ActualitesUTC extends Api {
 		if (!this.articlesWereLoaded()) {throw ActualitesUTC.NO_ARTICLES_LOADED_EXCEPTION;}
 	}
 
-	getArticles(paginate, page, order, week) {		
-	
+	getArticles(paginate, page, order, week) {
+
 		//on suppose que tous les paramètres sont remplis
 		//week est un objet Date natif js
 		this._checkArtLoaded();
@@ -66,17 +65,17 @@ export default class ActualitesUTC extends Api {
 			let nextweek = new Date(week.getTime() + 604800000);
 			return ((week <= date) && (date <= nextweek));
 		});
-		
-		
-		
+
+
+
 		if(result.length == 0) {return [];}
 
 		result.sort(this.compArtDate);
-		
+
 
 		switch (order) {
-			
-			
+
+
 			case 'oldest':
 			result.reverse();
 			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
@@ -88,18 +87,18 @@ export default class ActualitesUTC extends Api {
 				while ((result.length < paginate) && (this._randomArticlesBucket.length !=0))
 					{result.push(this._randomArticlesBucket.shift());}
 				if(this._randomArticlesBucket.length ==0) {this._randomArticlesBucketEmpty = true;}
-				
+
 			break;
- 
+
 			case 'latest':
 			default:
 			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
 			break;
 		}
-			
 
-		return result;				
-		
+
+		return result;
+
 	}
 
 	getRandomArticleId() {
@@ -155,19 +154,19 @@ export default class ActualitesUTC extends Api {
 		for (champ in article) {
 
 			switch (champ) {
-			
+
 			case "title":
 			case "content":
 			case "excerpt":
 				article[champ] = article[champ]['rendered'];
 			break;
-			
+
 			case "id":
 			case "date_gmt":
 			case "link":
 			case "wp:featuredmedia":
 			break;
-			
+
 			case "_links":
 				article["wp:featuredmedia"] = article[champ]["wp:featuredmedia"][0]["href"];
 				delete article[champ];
@@ -194,11 +193,5 @@ export default class ActualitesUTC extends Api {
 	}
 
 
-    
+
 }
-
-
-
-
-
-

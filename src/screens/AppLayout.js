@@ -15,12 +15,10 @@ const SettingsScreen = () => show('Settings')
 
 class CustomDrawerContentComponent extends React.Component {
 	render() {
-		const isConnected = PortailApi.isConnected()
-
 		const headerStyle = styles.get('container.center', 'px.sm', 'py.lg', 'mb.lg', 'bg.lightBlue')
-		const headerImagePath = isConnected ? require('../img/icon.png') : require('../img/icon.png')
-		const headerImageStyle = isConnected ? styles.img.bigAvatar : styles.img.bigThumbnail
-		const headerText = isConnected ? PortailApi.getUser().name : "Application UTC"
+		const headerImagePath = PortailApi.isActive() ? require('../img/icon.png') : require('../img/icon.png')
+		const headerImageStyle = PortailApi.isActive() ? styles.img.bigAvatar : styles.img.bigThumbnail
+		const headerText = PortailApi.getUser().name
 		const headerTextStyle = styles.get('text.h1', 'text.yellow')
 
 		return (
