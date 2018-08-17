@@ -111,12 +111,29 @@ export default class Block extends React.Component {
                 }
             }
             else {
-                return (
+		if(text) {
+			return(
+				<View style={{ flexDirection: 'column', justifyContent:'center', alignItems: 'center', height: '80%', width: '80%' }}>
+		                    <Image style={{ flex: 8, width: '100%' }}
+		                        source={ image }
+		                        resizeMode="contain"
+		                    />
+		                    <Text style={[{ flex: 2 }, styles.text.center ]}>
+		                        { text }
+		                    </Text>
+		                </View>);
+
+		}
+		else {
+			return (
         			<Image style={{ width: '90%' }}
-                        source={ image }
-                        resizeMode='center'
-                    />
-        		)
+                        		source={ image }
+		                        resizeMode='center'
+                    		/>);
+
+		}
+                
+        		
             }
         }
         else if (text) {

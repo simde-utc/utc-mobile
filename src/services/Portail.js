@@ -27,7 +27,8 @@ export class Portail extends Api {
 		'user-get-info-identity-auth-app',
 		'user-get-articles',
 		'user-get-calendars',
-		'user-get-events'
+		'user-get-events',
+		'user-get-assos',
 	]
 
 	constructor() {

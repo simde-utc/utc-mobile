@@ -21,7 +21,14 @@ export const colors = {
 	gray: '#6d6f71',
 	lightGray: '#8f9293',
 	red: '#95193b',
-	veryLightGray: '#f9f9f9'
+	veryLightGray: '#f9f9f9',
+	bdeBack: '#f6d31f',
+	paeBack: '#ea762d',
+	pteBack: '#239bd2',
+	pvdcBack: '#fed41a',
+	psecBack: '#95bd0c',
+	poleFore: '#f6f8f4',
+	
 };
 
 export const spaces = {
