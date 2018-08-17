@@ -24,7 +24,7 @@ export default class EventScreen extends React.Component {
 			loaded: false,
 		}
 
-		PortailApi.getEvent('65690220-9fc8-11e8-96bf-4dbd26e1b167').then(([ event ]) => { // Debug
+		PortailApi.getEvent(props.navigation.getParam('id')).then(([ event ]) => { // Debug
 			this.setState(prevState => {
 				prevState.event = event
 				prevState.loading = false

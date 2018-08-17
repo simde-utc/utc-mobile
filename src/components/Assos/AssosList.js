@@ -20,7 +20,7 @@ class AssosListComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-	
+
 AssosBlocks(data, isChild) {
 	var blocks = [];
 
@@ -37,7 +37,7 @@ AssosBlocks(data, isChild) {
 	}
 	else {
 		//pour le moment, on rajoute le pôle avec ses propres enfants
-		blocks.push(this.formatChild(data));		
+		blocks.push(this.formatChild(data));
 		if(data["children"][0]["children"].length != 0) {
 			//si on veut lister les assos sous le bde
 			for (let child of data["children"]) {
@@ -63,7 +63,7 @@ AssosBlocks(data, isChild) {
 			addTools = {false}
 			navigation = {this.props.navigation}
 		/>
-	); 
+	);
 }
 
 //TODO: des images pour les pôles et les assos
@@ -72,23 +72,23 @@ return {
 		text: pole["shortname"],
 	        extend: false,
 		onPress: () => {
-			this.props.navigation.push('AssosList', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: child["shortname"]});
+			this.props.navigation.push('Assos', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: child["shortname"]});
 		},
 		image: require('../../img/logo_utc.png'),
 	}
 }
-	
+
 formatChild(child) {
 return {
 		text: child["shortname"],
 	        extend: false,
 		onPress: () => {
-			this.props.navigation.navigate('AssoDetails', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance});
+			this.props.navigation.navigate('Asso', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance});
 		},
 		image: require('../../img/logo_utc.png'),
 	}
 }
-	
+
 	render() {
 		if(this.props.data !== undefined && this.props.isChild !== undefined) {
 			switch(this.props.data) {
@@ -102,7 +102,7 @@ return {
 					break;
 				default:
 					return this.AssosBlocks(this.props.data, this.props.isChild);
-					break;		
+					break;
 			}
 		}
 		else {
