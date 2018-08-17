@@ -205,32 +205,25 @@ export class Portail extends Api {
 		})
 	}
 
-	//ne doit PAS être utilisée directement mais via la classe Articles
 	getArticles(paginate, page, order, week, timestamp=false) {
 		this._checkConnected()
 
 		order = order || ''
 		week = week || ''
-		week += timestamp && ',timestamp'
+		if(timestamp && week) {week += ',timestamp';}
 		paginate = paginate || ''
 		page = page || ''
 
-		return new Promise((resolve, reject) => {
-			this.call(
+		
+		return this.call(
 				Portail.API_V1 + 'articles',
 				Api.GET,
 				{	"paginate": paginate,
 					"page": page,
 					"order": order,
 					"week": week
-				}).then( ( [data, status] ) => {
-					this.articles = data
-					this.lastArticleUpdate = Date.now()
-					resolve()
-				}).catch( ([response, status]) => {
-					reject([response, status])
-				})
-		})
+				});
+	
 
 	}
 
