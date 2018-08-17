@@ -7,6 +7,7 @@ import { colors } from '../styles/variables'
 import styles from '../styles/'
 
 import MainLayout from './MainLayout'
+import AssosNavigator from './Assos'
 import ProfileScreen from './Profile'
 
 // DEBUG
@@ -39,6 +40,9 @@ class CustomDrawerContentComponent extends React.Component {
 export default AppLayout = createDrawerNavigator({
 	Main: {
 		screen: MainLayout
+	},
+	Assos: {
+		screen: AssosNavigator
 	},
 	Login: {
 		screen: ProfileScreen

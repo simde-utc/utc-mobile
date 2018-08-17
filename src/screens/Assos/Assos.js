@@ -8,19 +8,17 @@
 
 import React from 'react';
 import { View, Text, Image, Button, StyleSheet } from 'react-native';
-import { createStackNavigator, withNavigation } from 'react-navigation';
 import styles from '../../styles/';
 import { colors } from '../../styles/variables';
-import AssoDetailsScreen from './AssoDetails';
 
 import Portail from '../../services/Portail';
 
 import AssosListComponent from '../../components/Assos/AssosList';
 
 
-class AssosListScreen extends React.Component {
+export default class AssosScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
-	//ce qui se passe ici est très très sale Samy
+	//ce qui se passe ici est très très sale Samy <3
 	var name = navigation.getParam('name', 'Associations');
 	var foreColor = colors.white;
 	var color = '';
@@ -87,7 +85,7 @@ class AssosListScreen extends React.Component {
 	_loadAssos = async function() {
 	try {
 
-		
+
 
 		var iAmChild = this.props.navigation.getParam('isChild', 'NO-CHILD');
 		if(iAmChild !== true) {iAmChild = false;}
@@ -108,7 +106,7 @@ class AssosListScreen extends React.Component {
 
 		if(this.isUnMounted) {return;}
 		this.setState(prevState => ({ ...prevState, list: this.assos, child: iAmChild }));
-		
+
 	}
 	catch (e) {
 		this.log(e, true);
@@ -116,7 +114,7 @@ class AssosListScreen extends React.Component {
 	}
 
 
-	
+
 
 
 	render() {
@@ -133,20 +131,3 @@ this.isUnMounted = true;
 }
 
 }
-
-
-export default Assos = createStackNavigator(
-{
-	AssosList: {
-		screen: AssosListScreen,
-	},
-	AssoDetails: {
-		screen: AssoDetailsScreen,
-		navigationOptions: ({ navigation }) => ({
-			title: navigation.state.params.name,
-		}),
-	}
-},
-{
-	initialRouteName: 'AssosList',
-});

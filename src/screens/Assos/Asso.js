@@ -32,13 +32,12 @@ const markdownStyles = {
 }
 
 
-export default class AssoDetailsScreen extends React.Component {
-
+export default class AssoScreen extends React.Component {
 constructor(props) {
 	super(props);
 	this._loadDetails();
 	this.isUnMounted = false;
-	
+
 }
 	state = {
 		warn: false,
@@ -64,7 +63,7 @@ _loadDetails() {
 	this.portail = navigation.getParam('portailInstance', 'NO-PORTAIL');
 		if(this.portail == "NO-PORTAIL") {throw "No portail instance provided!";}
 		if(!this.portail.isConnected()) {throw "The provided Portail instance is not connected!";}
-	
+
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
 		if(data["parent"].length != 0) {
@@ -80,15 +79,15 @@ _loadDetails() {
 }
 
 render() {
-	
-    
+
+
 var Tab = createMaterialTopTabNavigator(
 	{
 		Presentation: {
 			screen: () => (<PresentationView
 					description={this.state.description}
 					parentName={this.state.parentName}
-					type={this.state.type}	
+					type={this.state.type}
 					/>),
 			navigationOptions: ({ nav }) => ({
 				title: 'En bref'
@@ -118,7 +117,7 @@ var Tab = createMaterialTopTabNavigator(
 		tabBarOptions: {
 			style: styles.tabBar.style,
 			labelStyle: styles.tabBar.label,
-			
+
 		},
 		backBehavior: 'none',
 		initialRouteName: 'Presentation',
@@ -126,7 +125,7 @@ var Tab = createMaterialTopTabNavigator(
 	});
 
 return <Tab />;
-  
+
   }
 
 componentWillUnmount() {
@@ -143,20 +142,20 @@ render() {
 			<Image
 			source={this.props.logo || require('../../img/payutc.png')}
 			resizeMode='contain'
-			style={{height:100, margin:20}} 
+			style={{height:100, margin:20}}
 			/>
-			
+
 			<Markdown styles={markdownStyles}>
 				{this.props.description}
 			</Markdown>
-			
+
 			<Hr color={colors.lightGray}/>
 
 			<Text>{this.props.type}</Text>
 			<Text>{this.props.parentName}</Text>
 
 		</ScrollView>;
-	
+
 	}
 
 }
@@ -168,7 +167,7 @@ render() {
 		contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30 }}>
 			<Text>//TODO</Text>
 		</ScrollView>;
-	
+
 	}
 
 }
