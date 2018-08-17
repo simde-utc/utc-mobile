@@ -1,5 +1,15 @@
+/**
+ * Affiche la page connecté. Connecte l'application si l'application ne l'est pas ou qu'elle est lancée en tant qu'invité
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
 import React from 'react';
 import { Text, View } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay'
+
 import styles from '../../styles'
 
 // Components
@@ -20,11 +30,43 @@ export default class ConnectedScreen extends React.Component {
 	constructor (props) {
 		super(props)
 
-		if (PortailApi.isConnected()) {
-			this.subTitle = "Vous êtes maintenant connecté.e sous " + PortailApi.getUser().name + " !"
-			this.more = "et tout ceci, de manière personnalisée"
-		} else
-			this.subTitle = "Vous n'êtes connecté.e sous aucun compte"
+		this.state = {
+			loading: false
+		}
+
+		if (PortailApi.isActive()) {
+			this.state.subTitle = "Vous êtes maintenant connecté.e sous " + PortailApi.getUser().name + " !"
+			this.state.more = "et tout ceci, de manière personnalisée"
+		}
+		else
+			this.state.subTitle = "Vous n'êtes connecté.e sous aucun compte"
+
+		if (!PortailApi.isConnected()) {
+			this.state.loading = true
+
+			PortailApi.createInvitedAccount().then(() => {
+				this.setState(prevState => {
+					prevState.loading = false
+
+					return prevState
+				})
+			}).catch(([response, status]) => {
+				Alert.alert(
+					'Enregistrement',
+					'Une erreur a été détectée lors de l\'enregistrement de l\'application. Veuillez relancer l\'application',
+					[
+						{ text: 'Continuer' },
+					],
+					{ cancelable: false }
+				)
+
+				this.setState(prevState => {
+					prevState.loading = false
+
+					return prevState
+				})
+			})
+		}
 	}
 
 	render () {
@@ -35,13 +77,16 @@ export default class ConnectedScreen extends React.Component {
 
 		return (
 			<View style={ styles.container.default }>
+				<View>
+					<Spinner visible={ this.state.loading } textContent="Enregistrement de l'application..." textStyle={{ color: '#FFF' }} />
+				</View>
 				<HeaderView
 					title="Bienvenue !"
-					subtitle={ this.subTitle }
+					subtitle={ this.state.subTitle }
 				/>
 				<View style={ viewStyle }>
 					<Text style={[ styles.get('text.h2', 'text.center'), { margin: 20 } ]}>
-						Vous pouvez dès à présent utiliser toutes les fonctionnalités de l'application { this.more }!
+						Vous pouvez dès à présent utiliser toutes les fonctionnalités de l'application { this.state.more }!
 					</Text>
 					<BigButton
 						label="Aller à la page d'accueil"

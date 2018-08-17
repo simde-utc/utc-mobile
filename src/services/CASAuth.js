@@ -1,122 +1,132 @@
+/**
+ * Intéragir avec le CAS UTC
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license AGPL-3.0
+**/
+
+import { Alert } from 'react-native'
+
 import Api from './Api'
+import Storage from './Storage'
 
-export default class CASAuth extends Api {
-
-	static CAS_TGT_URL = "https://cas.utc.fr/cas/v1/tickets/";
-
-	static HEADER_FORM_URLENCODED = {
-        'Content-Type': 'application/x-www-form-urlencoded',
+class CASAuth extends Api {
+	constructor(url = CASAuth.CAS_TGT_URL) {
+		super(process.env.CAS_URL)
 	}
 
-    constructor(url = CASAuth.CAS_TGT_URL){
-	super(url);
-	this.tgt = "";
-    }
-
-call (request, method, queries, body, headers, validStatus) {
-
-	return new Promise((resolve, reject) => {
-		   fetch(
-			super.urlWithQueries(this.baseUrl + request, queries),
-			{
+	call(request, method, queries, body, headers, validStatus) {
+		return new Promise((resolve, reject) => {
+			fetch(super.urlWithQueries(this.baseUrl + request, queries), {
 				method: method || Api.GET,
 				headers: headers || {},
 				body: super.serialize(body)
-			}
-			).then( (response) => {
+			}).then((response) => {
 				if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
-					response.text().then( (text) => {resolve([text, response.status, response.url]);  } );
+					return response.text().then((text) => {
+						return resolve([text, response.status, response.url])
+					})
 				}
 				else {
-					response.text().then( (text) => { reject([text, response.status, response.url]); }); 
+					return response.text().then((text) => {
+						return reject([text, response.status, response.url])
+					})
 				}
-			}).catch( (e) => {reject([e.message, 523, ""]);} );
-	});
-        
-}
+			}).catch((e) => {
+				return reject([e.message, 523, ""])
+			})
+		})
+	}
 
+	isConnected() {
+		return this.tgt && this.tgt.length > 0
+	}
 
+	setData(login, password) {
+		return this.login(login, password).then(() => {
+			return Storage.setSensitiveData('cas', {
+				login: login,
+				password: password,
+			})
+		})
+	}
 
-isConnected() {
-	return this.tgt != "";
-}
+	forget() {
+		this.tgt = ''
 
+		return Storage.removeSensitiveData('cas')
+	}
 
-login(login, passwd) {
-	return new Promise((resolve, reject) => {
-		this.call(
+	getData() {
+		return Storage.getSensitiveData('cas')
+	}
+
+	login(login, passwd) {
+		return this.call(
 			"",
 			Api.POST,
 			"",
 			{
-		        	username: login,
+				username: login,
 				password: passwd
 			},
-			CASAuth.HEADER_FORM_URLENCODED
-		).then( ([response, status, url]) => {
-			if(status != 201) {reject([response, status, url]);}
-			else {this.tgt = this._parseTgt(response); resolve([response, status, url]); }
-		}).catch( (e) => {
-			if(e instanceof TypeError) {reject([JSON.stringify(e), 523, ""]); }
-			else {
-				if(Array.isArray(e) && e.length ==3) {
-					let a, b, c;
-					[a, b, c] = e;
-					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]); 
+			CASAuth.HEADER_FORM_URLENCODED,
+			[ 201 ]
+		).then(([response, status, url]) => {
+			this.tgt = this._parseTgt(response)
 
-				}
-				else {reject(["Erreur réseau", 523, ""]);}
-			}
-			
-		});
-    });
-}
+			return [response, status, url]
+		}).catch(this._error)
+	}
 
-getService(service) {
-	return new Promise((resolve, reject) => {
-		this.call(
+	getService(service) {
+		return this.call(
 			this.tgt,
 			Api.POST,
 			"",
 			{
-		        	service: service
+				service: service
 			},
 			CASAuth.HEADER_FORM_URLENCODED
-		).then( ([response, status, url]) => {
-			if(status != 200) {reject([response, status, url]);}
-			else { resolve([response, status, url]); }
-		}).catch( (e) => {
-			if(e instanceof TypeError) {reject([JSON.stringify(e), 523, ""]); }
-			else {
-				if(Array.isArray(e) && e.length ==3) {
-					let a, b, c;
-					[a, b, c] = e;
-					reject([JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]); 
+			[ 200 ]
+		).catch(this._error)
+	}
 
-				}
-				else {reject(["Erreur réseau", 523, ""]);}
+	_error(e) {
+		if (e instanceof TypeError)
+			return [JSON.stringify(e), 523, ""]
+		else {
+			if (Array.isArray(e) && e.length === 3) {
+				let a, b, c
+				[a, b, c] = e
+
+				return [JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)]
 			}
-			
-		});
-    });
+			else
+				return ["Erreur réseau", 523, ""]
+		}
+	}
+
+	_parseTgt(content) {
+		try {
+			let start = content.indexOf('tickets//') + 8
+			let end = content.indexOf('"', start)
+
+			return content.substring(start, end)
+		}
+		catch(e) {
+			Alert.alert(
+				'CAS',
+				'Une erreur CAS a été rencontrée',
+				[
+					{ text: 'Continuer' },
+				],
+				{ cancelable: false }
+			)
+		}
+	}
 }
 
-
-
-
-//helpers
-
-_parseTgt(content) {
-try{
-	let start = content.indexOf('tickets//') + 8;
-	let end = content.indexOf('"', start);
-	return content.substring(start, end);
-}
-catch(e) {
-	console.log(JSON.stringify(e));
-}
-}
-
-
-
-}
+export default new CASAuth()
