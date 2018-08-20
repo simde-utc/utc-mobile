@@ -1,7 +1,6 @@
 /**
  * Télécharger des données depuis le WP des actualités internes de l'UTC
  * Cette classe ne doit PAS être utilisée directement, mais via la classe Portail
- * @serviceCAS "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts"
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
  *
  * @copyright Copyright (c) 2017, SiMDE-UTC
@@ -12,12 +11,10 @@ import Api from './Api'
 
 export default class ActualitesUTC extends Api {
 
-	static ACTUS_FEED_LOGIN = "http://actualites.utc.fr/wp-login.php?external=cas&redirect_to=%2Fwp-json%2Fwp%2Fv2%2Fposts&ticket=";
-
 	static NO_ARTICLES_LOADED_EXCEPTION = "No articles were loaded!";
 
 	constructor(st) {
-		super(ActualitesUTC.ACTUS_FEED_LOGIN);
+		super(process.env.ACTUS_UTC_FEED_LOGIN + "&ticket=");
 		if(!st) {throw "Pas de service ticket!";}
 		this._st = st;
 		this._articlesWereLoaded = false;
@@ -56,20 +53,23 @@ export default class ActualitesUTC extends Api {
 
 	getArticles(paginate, page, order, week) {
 
-		//on suppose que tous les paramètres sont remplis
-		//week est un objet Date natif js
 		this._checkArtLoaded();
+		if(week) {
+		//on suppose que week est un objet Date natif js
+
 		var result = this.articles.filter( (article) => {
 			//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
 			let date = new Date(article["date_gmt"]);
 			let nextweek = new Date(week.getTime() + 604800000);
 			return ((week <= date) && (date <= nextweek));
 		});
-
+		}
+		else {var result = this.articles;}
 
 
 		if(result.length == 0) {return [];}
-
+		
+		if(paginate === undefined || paginate === null || paginate == '') {paginate=result.length; page=1;}
 		result.sort(this.compArtDate);
 
 
