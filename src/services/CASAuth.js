@@ -64,19 +64,22 @@ class CASAuth extends Api {
 	}
 
 	canAutoLogin() {
-		try {
-		this.getData().then( (cred) => {
-		return (cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined); });
-		}
-		catch (e) {
-		return false;
-		}
+		return new Promise((resolve, reject) => {
+			this.getData().then( (cred) => {
+				resolve(cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined);
+			}).catch( (e) => {
+				resolve(false);
+			});
+		});
 	}
 
 	autoLogin() {
 		if(!this.canAutoLogin()) {throw "Requested CASAuth.autoLogin but no credentials are currently stored.";}
-		this.getData().then( (cred) => {
-		return this.login(cred.login, cred.password); });
+		return new Promise( (resolve, reject) => {
+			this.getData().then( (cred) => {
+				resolve(this.login(cred.login, cred.password));
+			}).catch( (e) => {reject(e)} );
+		});
 	}
 
 	login(login, passwd) {
@@ -105,7 +108,7 @@ class CASAuth extends Api {
 			{
 				service: service
 			},
-			CASAuth.HEADER_FORM_URLENCODED
+			CASAuth.HEADER_FORM_URLENCODED,
 			[ 200 ]
 		).catch(this._error)
 	}
