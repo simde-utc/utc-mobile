@@ -6,7 +6,7 @@ export default class ArticleComponent extends React.Component {
 	render() {
 		return (
 			<View style={styles.article.container}>
-				<Text>{JSON.stringify(this.props.data)}</Text>
+				<Text>{this.props.data["created_at"] ? this.props.data["created_at"] : this.props.data["date_gmt"]}</Text>
 			</View>
 		);
 
