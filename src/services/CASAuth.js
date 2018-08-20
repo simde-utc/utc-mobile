@@ -67,6 +67,7 @@ class CASAuth extends Api {
 		try {
 		var cred = this.getData();
 		return (cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined);
+		}
 		catch (e) {
 		return false;
 		}
