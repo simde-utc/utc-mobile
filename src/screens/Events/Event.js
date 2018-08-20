@@ -4,6 +4,7 @@ import moment from 'moment'
 import Button from 'react-native-button'
 import styles from '../../styles'
 import Spinner from 'react-native-loading-spinner-overlay'
+import openMap from 'react-native-open-maps';
 
 // Components
 import BigButton from '../../components/BigButton'
@@ -15,16 +16,32 @@ import Storage from '../../services/Storage'
 import ColorUtils from '../../utils/Color'
 
 export default class EventScreen extends React.Component {
+	static navigationOptions = ({ navigation, navigationOptions }) => {
+		return {
+			title: navigation.getParam('name', 'Evènement'),
+		}
+    }
+
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			event: {},
+			calendars: [],
 			loading: true,
 			loaded: false,
 		}
 
-		PortailApi.getEvent(props.navigation.getParam('id')).then(([ event ]) => { // Debug
+		PortailApi.getUserCalendars().then(([calendars]) => {
+			this.setState(prevState => {
+				prevState.calendars = calendars
+
+				return prevState
+			})
+		}).catch(() => {})
+
+		PortailApi.getEvent(props.navigation.getParam('id')).then(([event]) => {
+			console.log(event)
 			this.setState(prevState => {
 				prevState.event = event
 				prevState.loading = false
@@ -50,6 +67,17 @@ export default class EventScreen extends React.Component {
 		})
 	}
 
+	goMap() {
+		if (!this.state.loading) {
+			var position = this.state.event.location.position || this.state.event.location.place.position
+
+			openMap({
+				latitude: position.coordinates[1],
+				longitude: position.coordinates[0],
+			})
+		}
+	}
+
 	loaded() {
 		this.setState(prevState => {
 			prevState.loaded = true
@@ -72,26 +100,30 @@ export default class EventScreen extends React.Component {
 				<View>
 					<Spinner visible={this.state.loading} textContent="Chargement de l'évènement..." textStyle={{color: '#FFF'}} />
 				</View>
-				<HeaderView
-					title="Connectez-vous"
-					subtitle="Il est nécessaire pour le bon fonctionnement de l'application que vous vous connectiez au Portail des Assos. Si vous ne vous y êtes jamais connecté, veuillez vous connecter en tant que CAS"
-				/>
-				<View style={{ backgroundColor: '#F00', width: '100%', aspectRatio: 2 }}>
+				<TouchableHighlight style={{ backgroundColor: '#F00', width: '100%', aspectRatio: 2 }}
+					onPress={ () => this.goMap() }
+					underlayColor={"#fff0"}
+				>
 					<Map
 						target={ this.state.target }
 						loaded={ this.loaded.bind(this) }
 					/>
-				</View>
+				</TouchableHighlight>
+				<Text>
+					{ this.state.event.name }
+				</Text>
+				<Text>
+					{ this.state.event.owned_by && this.state.event.owned_by.name }
+				</Text>
 				<View style={ viewStyle }>
-					<BigButton label={ "Se connecter" }
+					<BigButton label="Ajouter dans un calendrier"
 						style={ styles.get('mt.lg', 'mb.md') }
 						onPress={() => this.connect() }
 					/>
-					<Button style={ styles.lightBlueText }
-						onPress={ (checked) => this.props.navigation.navigate('Connected') }
-					>
-						Je ne souhaite pas me connecter
-					</Button>
+					<BigButton label="Partager"
+						style={ styles.get('mt.lg', 'mb.md') }
+						onPress={() => this.connect() }
+					/>
 				</View>
 			</View>
 		);
