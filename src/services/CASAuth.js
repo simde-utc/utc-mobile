@@ -63,6 +63,21 @@ class CASAuth extends Api {
 		return Storage.getSensitiveData('cas')
 	}
 
+	canAutoLogin() {
+		try {
+		var cred = this.getData();
+		return (cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined);
+		catch (e) {
+		return false;
+		}
+	}
+
+	autoLogin() {
+		if(!this.canAutoLogin()) {throw "Requested CASAuth.autoLogin but no credentials are currently stored.";}
+		var cred = this.getData();
+		return this.login(cred.login, cred.password);
+	}
+
 	login(login, passwd) {
 		return this.call(
 			"",
