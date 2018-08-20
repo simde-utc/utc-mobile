@@ -13,8 +13,8 @@ import Api from './Api'
 import Storage from './Storage'
 
 class CASAuth extends Api {
-	constructor(url = CASAuth.CAS_TGT_URL) {
-		super(process.env.CAS_URL)
+	constructor(url = process.env.CAS_URL) {
+		super(url)
 	}
 
 	call(request, method, queries, body, headers, validStatus) {
