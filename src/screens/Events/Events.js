@@ -8,6 +8,12 @@ import Storage from '../../services/Storage'
 import ColorUtils from '../../utils/Color'
 
 export default class EventsScreen extends React.Component {
+	static navigationOptions = ({ navigation, navigationOptions }) => {
+		return {
+			title: 'Calendrier',
+		}
+    }
+
 	constructor(props) {
 		super(props)
 
@@ -18,15 +24,17 @@ export default class EventsScreen extends React.Component {
 			date: moment().format('YYYY-MM-DD')
 		}
 
-		PortailApi.getUserCalendars().then(([data]) => {
+		PortailApi.getUserCalendars().then(([calendars]) => {
 			this.setState(prevState => {
-				prevState.calendars = data
+				prevState.calendars = calendars
 
 				return prevState
 			})
 
 			this.reload()
-		}).catch(() => {})
+		}).catch(() => {
+			this.reload()
+		})
 	}
 
 	reload() {
@@ -40,8 +48,8 @@ export default class EventsScreen extends React.Component {
 		this.loadEvents(this.state.date)
 	}
 
-	seeEvent(event_id) {
-		this.props.navigation.push('Event', {id: event_id})
+	seeEvent(id, name) {
+		this.props.navigation.push('Event', {id: id, name: name})
 	}
 
 	render() {
@@ -96,8 +104,8 @@ export default class EventsScreen extends React.Component {
 			}
 
 			this.state.calendars.forEach((calendar) => {
-				PortailApi.getEventsFromCalendar(calendar.id, month).then(([data]) => {
-					data.forEach((event) => {
+				PortailApi.getEventsFromCalendar(calendar.id, month).then(([events]) => {
+					events.forEach((event) => {
 						var date = moment(event.begin_at).format('YYYY-MM-DD')
 
 						// On ajoute l'évènement pour la date x
@@ -173,7 +181,7 @@ export default class EventsScreen extends React.Component {
 
 		return (
 			<TouchableHighlight style={ style }
-				onPress={ () => this.seeEvent(event.id) }
+				onPress={ () => this.seeEvent(event.id, event.name) }
 				underlayColor={"#fff0"}
 			>
 				<View>
@@ -194,7 +202,7 @@ export default class EventsScreen extends React.Component {
 	}
 
 	rowHasChanged(event1, event2) {
-		return event1.id !== event2
+		return event1.id !== event2.id
 			|| JSON.stringify(event1.calendars) !== JSON.stringify(event2.calendars);
 	}
 }
