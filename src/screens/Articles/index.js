@@ -42,7 +42,8 @@ export default class ArticlesScreen extends React.Component {
 		
 		this.setState(prevState => ({ ...prevState, isLoading: true, networkOk: true}));
 		try {
-		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1);
+		let today = new Date("2018-07-19T14:32:34"); //TODO normalement il faudra récupérer ce paramètre du component de filtrage
+		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest', today, false, true, true);
 		newdata = newdata[0]; //parce qu'on reçoit [response, status]
 		if (newdata.length < this.state.pagination) {this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));}
 		this.data = this.data.concat(newdata);
@@ -52,7 +53,7 @@ export default class ArticlesScreen extends React.Component {
 		this.setState(prevState => ({ ...prevState, data: this.data }));
 		}
 
-		catch ([response, status]) {
+		catch (e) {/**
 			switch (status) {
 				case 416:
 					this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));
@@ -61,7 +62,7 @@ export default class ArticlesScreen extends React.Component {
 				default:
 					this.setState(prevState => ({ ...prevState, networkOk: false }));
 					break;
-			}
+			}**/ console.warn(e);
 			
 		}
 	}
@@ -75,7 +76,7 @@ export default class ArticlesScreen extends React.Component {
 					renderItem={({item}) => <ArticleComponent data={item} />}
 					onEndReached={this._loadMoreContentAsync}
 					onEndReachedThreshold = {THRESHOLD}
-					keyExtractor={ (item) => item["id"]}
+					keyExtractor={ (item) => item["id"].toString()}
 					ListFooterComponent = {<View style={styles.article.loadingIndicatorContainer}><Text style={styles.article.loadingIndicatorText}>Chargement... {!this.state.networkOk && "Samy, ça marche pas!"} {!this.state.canLoadMoreContent && 'Y\'en a plus!'}</Text></View>}
 				/>
 			</View>

@@ -6,7 +6,7 @@ export default class ArticleComponent extends React.Component {
 	render() {
 		return (
 			<View style={styles.article.container}>
-				<Text>{this.props.data["content"]}</Text>
+				<Text>{JSON.stringify(this.props.data)}</Text>
 			</View>
 		);
 

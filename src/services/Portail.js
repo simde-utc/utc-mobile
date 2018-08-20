@@ -9,8 +9,9 @@
 
 import Api from './Api'
 import Storage from './Storage'
-
 import Generate from '../utils/Generate'
+import CASAuth from './CASAuth';
+import ActualitesUTC from './ActualitesUTC';
 
 export class Portail extends Api {
 	static OAUTH = 'oauth/'
@@ -205,25 +206,97 @@ export class Portail extends Api {
 		})
 	}
 
-	getArticles(paginate, page, order, week, timestamp=false) {
-		this._checkConnected()
-
+	getArticles(paginate, page, order, week, timestamp=false, actusUTC=false, articlesPortail=true) {
+	  try{
+		if(articlesPortail) {this._checkConnected();}
+		if(actusUTC) {
+		if (!CASAuth.canAutoLogin()) {throw "Tried to load articles from Actualites UTC, but CAS cannot autologin"; actusUTC=false;}
+		}
+		if (!(actusUTC || articlesPortail)) {throw ("Ecoutez, vous me donnerez un radis, s'il vous plaît. (Asked to get no articles : neither Portail nor actualités UTC)");}
+		//ceci n'est utile que pour le formattage des requêtes http à portail
 		order = order || ''
 		week = week || ''
-		if(timestamp && week) {week += ',timestamp';}
+		if(timestamp || !(week instanceof Date)) {week = new Date(Date.UTC(week));} //peut causer une erreur si on fout n'importe quoi dans week
 		paginate = paginate || ''
 		page = page || ''
-
-		
-		return this.call(
+		var weekAsPortailTimeStamp = Math.floor(week.getTime() / 1000) + ',timestamp';
+		if((!actusUTC) && articlesPortail) { 
+			return this.call(
 				Portail.API_V1 + 'articles',
 				Api.GET,
 				{	"paginate": paginate,
 					"page": page,
 					"order": order,
-					"week": week
+					"week": weekAsPortailTimeStamp
 				});
+		}
+
+		if(!articlesPortail && actusUTC) {
+			return new Promise((resolve, reject) => {
+			CASAuth.autoLogin().then( () => {
+				CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then( (serviceTicket) => {
+					var actus = new ActualitesUTC(serviceTicket[0]);
+						actus.loadArticles().then( () => {
+							resolve([actus.getArticles(paginate, page, order, week),200]);
+						}).catch( (e) => {reject(e);} );
+					});
+				});
+			}).catch ( (e) => {throw e;} ); //on laisse les erreurs de co remonter, ici on s'occupe que de la logique
+		}
+
+		if(articlesPortail && actusUTC) {
+
+		//bon ici c'est pas très lisible mais c'est pas non plus compliqué, c'est juste un peu optimisé pour que les deux ressources soient chargées en parallèle, puis qu'on fasse un traitement quand les deux sont finies
+// on met 416 en valide parce qu'une absence d'article sur portail ne doit pas provoquer une erreur qui empêcherait le chargement d'articles sur utc, mais si on constate que les deux sont vides alors on throw la 416 quand même
+		return new Promise((resolve, reject) => {
+			Promise.all([ this.call(
+					Portail.API_V1 + 'articles',
+					Api.GET,
+					{	"paginate": paginate,
+						"page": page,
+						"order": order,
+						"week": weekAsPortailTimeStamp
+					},
+					'',
+					[200, 201, 204, 416]),
+
+			new Promise((resolve, reject) => {
+					CASAuth.autoLogin().then( () => {
+						CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then( (serviceTicket) => {
+							var actus = new ActualitesUTC(serviceTicket[0]);
+							actus.loadArticles().then( () => {
+								resolve([actus.getArticles(paginate, page, order, week),200]);
+							}).catch( (e) => {reject(e);} );
+						});
+					});
+			})
+
+
+			]).then(([resultPortail, resultUTC]) => {
+			//les deux ressources ont été chargés sans erreur
+				if (resultPortail[1] == 416 && resultUTC[0].length == 0) {throw resultPortail;}
+				if(resultPortail[1] !== 416) {data = resultPortail[0].concat(resultUTC[0]); }//ce n'est pas une vraie concaténation, normalement il n'y a aucun élément en commun...
+				if(resultPortail[1] == 416 && resultUTC[0].length != 0) {data = resultUTC[0];}
+				data.sort(this.compArtDate);
+				resolve([data, 200]);
+			}).catch( (e) => {reject(e);} );
 	
+		}).catch( (e) => {throw e;});
+		}
+	  }
+	  catch(e) {
+		console.warn(e); //debug
+		//ce catch n'est là que pour garantir le format [response, status]
+		if (!(e[0] !== undefined && e[1] !== undefined)) {
+			//normalement ceci n'arrive jamais, mais si jamais ça arrive, ce serait bête que la vraie erreur soit masquée par une erreur au moment du démembrement e -> [r, s]
+			if(e instanceof TypeError) {
+				throw [e, 523]; //c'est plus cool dans la console, et c'est plus pratique si jamais on veut faire des analytics/metrics
+			} else {
+				throw [JSON.stringify(e), 523];
+			}
+		}
+		else {throw e;}
+	  }
 
 	}
 
@@ -306,6 +379,17 @@ export class Portail extends Api {
 			Portail.API_V1 + 'user/calendars',
 			Api.GET,
 		)
+	}
+
+	//pure helpers
+
+	compArtDate(a,b) {
+	var dateA = new Date(a); var dateB = new Date(b);
+	  if (dateA < dateB)
+	    return -1;
+	  if (dateA > dateB)
+	    return 1;
+	  return 0;
 	}
 }
 
