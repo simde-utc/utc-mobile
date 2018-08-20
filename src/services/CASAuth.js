@@ -14,7 +14,7 @@ import Storage from './Storage'
 
 class CASAuth extends Api {
 	constructor(url = process.env.CAS_URL) {
-		super(url)
+		super(url);
 	}
 
 	call(request, method, queries, body, headers, validStatus) {
@@ -65,8 +65,8 @@ class CASAuth extends Api {
 
 	canAutoLogin() {
 		try {
-		var cred = this.getData();
-		return (cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined);
+		this.getData().then( (cred) => {
+		return (cred !== undefined && cred !== null && cred.login !== undefined && cred.password !== undefined); });
 		}
 		catch (e) {
 		return false;
@@ -75,8 +75,8 @@ class CASAuth extends Api {
 
 	autoLogin() {
 		if(!this.canAutoLogin()) {throw "Requested CASAuth.autoLogin but no credentials are currently stored.";}
-		var cred = this.getData();
-		return this.login(cred.login, cred.password);
+		this.getData().then( (cred) => {
+		return this.login(cred.login, cred.password); });
 	}
 
 	login(login, passwd) {
