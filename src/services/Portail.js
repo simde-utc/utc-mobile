@@ -384,7 +384,8 @@ export class Portail extends Api {
 	//pure helpers
 
 	compArtDate(a,b) {
-	var dateA = new Date(a); var dateB = new Date(b);
+//TODO trouver une solution pour parser les dates portails (ne marche pas actuellement)
+	var dateA = new Date(a.created_at || a.date_gmt); var dateB = new Date(b.created_at || b.date_gmt);
 	  if (dateA < dateB)
 	    return -1;
 	  if (dateA > dateB)

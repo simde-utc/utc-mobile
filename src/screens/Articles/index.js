@@ -43,12 +43,14 @@ export default class ArticlesScreen extends React.Component {
 		this.setState(prevState => ({ ...prevState, isLoading: true, networkOk: true}));
 		try {
 		let today = new Date("2018-07-19T14:32:34"); //TODO normalement il faudra récupérer ce paramètre du component de filtrage
-		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest', today, false, true, true);
+		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1, 'oldest', today, false, true, true);
+		//truc chelou : comme la liste est 'à l'endoit' (le premier élément de l'array est en haut, le dernier est en bas), si on veut un scroll à la facebook avec l'élément le plus récent (le dernier en date) en haut (le premier de l'array), il faut faire un "oldest", et à l'inverse, si on veut les trucs les plus vieux en premier, il faut un latest
 		newdata = newdata[0]; //parce qu'on reçoit [response, status]
 		if (newdata.length < this.state.pagination) {this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));}
 		this.data = this.data.concat(newdata);
 		
 		this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+		//il est nécessaire d'effectuer l'inversion en tout dernier, juste avant la mise à jour de l'état, pour que les nouvelles données soient inversées comme les vielles, en gardant l'ordre
 		//il est nécessaire d'effectuer cette instruction en dernier et séparément des autres car le setstate est async
 		this.setState(prevState => ({ ...prevState, data: this.data }));
 		}
