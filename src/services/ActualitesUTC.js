@@ -76,7 +76,7 @@ export default class ActualitesUTC extends Api {
 		switch (order) {
 
 
-			case 'oldest':
+			case 'latest':
 			result.reverse();
 			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
 			break;
@@ -90,7 +90,7 @@ export default class ActualitesUTC extends Api {
 
 			break;
 
-			case 'latest':
+			case 'oldest':
 			default:
 			this.restrainArray(result, (page-1)*paginate, page*paginate-1);
 			break;
