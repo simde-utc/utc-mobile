@@ -249,7 +249,9 @@ export class Portail extends Api {
 		//bon ici c'est pas très lisible mais c'est pas non plus compliqué, c'est juste un peu optimisé pour que les deux ressources soient chargées en parallèle, puis qu'on fasse un traitement quand les deux sont finies
 // on met 416 en valide parce qu'une absence d'article sur portail ne doit pas provoquer une erreur qui empêcherait le chargement d'articles sur utc, mais si on constate que les deux sont vides alors on throw la 416 quand même
 		return new Promise((resolve, reject) => {
-			Promise.all([ this.call(
+			Promise.all([ 
+			new Promise((resolve, reject) => {
+					this.call(
 					Portail.API_V1 + 'articles',
 					Api.GET,
 					{	"paginate": paginate,
@@ -258,7 +260,11 @@ export class Portail extends Api {
 						"week": weekAsPortailTimeStamp
 					},
 					'',
-					[200, 201, 204, 416]),
+					[200, 201, 204, 416]).then( (data) => {
+						if(data[1] != 416) {data[0].forEach(this._normalizePortailArticle);}
+						resolve(data);
+					}).catch( (e) => reject(e));
+			}),
 
 			new Promise((resolve, reject) => {
 					CASAuth.autoLogin().then( () => {
@@ -277,7 +283,10 @@ export class Portail extends Api {
 				if (resultPortail[1] == 416 && resultUTC[0].length == 0) {throw resultPortail;}
 				if(resultPortail[1] !== 416) {data = resultPortail[0].concat(resultUTC[0]); }//ce n'est pas une vraie concaténation, normalement il n'y a aucun élément en commun...
 				if(resultPortail[1] == 416 && resultUTC[0].length != 0) {data = resultUTC[0];}
-				data.sort(this.compArtDate);
+				if(order != 'random') {data.sort(this.compArtDate);
+					if(order == 'latest') {data.reverse();}
+				}
+				
 				resolve([data, 200]);
 			}).catch( (e) => {reject(e);} );
 	
@@ -383,8 +392,11 @@ export class Portail extends Api {
 
 	//pure helpers
 
+	_normalizePortailArticle(article) {
+		article["created_at"] = article["created_at"].replace(' ', 'T');
+	}
+
 	compArtDate(a,b) {
-//TODO trouver une solution pour parser les dates portails (ne marche pas actuellement)
 	var dateA = new Date(a.created_at || a.date_gmt); var dateB = new Date(b.created_at || b.date_gmt);
 	  if (dateA < dateB)
 	    return -1;
@@ -392,6 +404,8 @@ export class Portail extends Api {
 	    return 1;
 	  return 0;
 	}
+
+	
 }
 
 export default new Portail()
