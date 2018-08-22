@@ -5,9 +5,9 @@ import styles from '../../styles'
 import Portail from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
 
-const DEFAULT_ARTICLES_PAGINATION = 6;
+const DEFAULT_ARTICLES_PAGINATION = 25;
 //seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
-const THRESHOLD = 0.2; 
+const THRESHOLD = 0.2;
 
 export default class ArticlesScreen extends React.Component {
 	static navigationOptions = {
@@ -19,70 +19,53 @@ export default class ArticlesScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
-		if(!Portail.isConnected()) {throw 'Attempted to fetch articles but portail not connected.';}
+
 		this.state = {
-			page:0,
-			pagination:DEFAULT_ARTICLES_PAGINATION,
+			page: 0,
+			pagination: DEFAULT_ARTICLES_PAGINATION,
 			canLoadMoreContent: true,
-			networkOk: true,
-			data: [],
+			articles: [],
 			isLoading: false,
 		};
-		this.data = [];
+
 		this.props.articleHeight = 100;
-		
 	}
 
-	componentDidMount(){
-		this._loadMoreContentAsync();
+	componentDidMount() {
+		this._loadMoreContentAsync()
 	}
 
-	_loadMoreContentAsync = async () => {
-		if(!this.state.canLoadMoreContent) {return;}
-		
-		this.setState(prevState => ({ ...prevState, isLoading: true, networkOk: true}));
-		try {
-		let today = new Date("2018-07-19T14:32:34"); //TODO normalement il faudra récupérer ce paramètre du component de filtrage
-		var newdata = await Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest', today, false, true, true);
-		newdata = newdata[0]; //parce qu'on reçoit [response, status]
-		if (newdata.length < this.state.pagination) {this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));}
-		this.data = this.data.concat(newdata);
-		
-		this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-		//il est nécessaire d'effectuer l'inversion en tout dernier, juste avant la mise à jour de l'état, pour que les nouvelles données soient inversées comme les vielles, en gardant l'ordre
-		//il est nécessaire d'effectuer cette instruction en dernier et séparément des autres car le setstate est async
-		this.setState(prevState => ({ ...prevState, data: this.data }));
-		}
+	_loadMoreContentAsync() {
+		if (!this.state.canLoadMoreContent) return
 
-		catch ([response, status]) {
-			switch (status) {
-				case 416:
-					this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }));
-					break;
-				case 523:
-				default:
-					this.setState(prevState => ({ ...prevState, networkOk: false }));
-					break;
-			}
-			
-		}
+		this.setState(prevState => ({ ...prevState, isLoading: true }))
+
+		Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest').then(([response, status]) => {
+			this.setState(prevState => {
+				prevState.page++
+				prevState.articles = prevState.articles.concat(response)
+
+				return prevState
+			})
+		}).catch(([response, status]) => {
+			if (status === 416)
+				this.setState(prevState => ({ ...prevState, canLoadMoreContent: false }))
+		})
 	}
 
-	
+
 
 	render() {
 		return (<View style={styles.article.articlesFeedContainer}>
 				<FlatList
-					data={this.state.data}
+					data={this.state.articles}
 					renderItem={({item}) => <ArticleComponent data={item} />}
-					onEndReached={this._loadMoreContentAsync}
+					onEndReached={ this._loadMoreContentAsync.bind(this) }
 					onEndReachedThreshold = {THRESHOLD}
 					keyExtractor={ (item) => item["id"].toString()}
-					ListFooterComponent = {<View style={styles.article.loadingIndicatorContainer}><Text style={styles.article.loadingIndicatorText}>Chargement... {!this.state.networkOk && "Samy, ça marche pas!"} {!this.state.canLoadMoreContent && 'Y\'en a plus!'}</Text></View>}
+					ListFooterComponent = {<View style={styles.article.loadingIndicatorContainer}><Text style={styles.article.loadingIndicatorText}>{!this.state.canLoadMoreContent && 'Y\'en a plus!'}</Text></View>}
 				/>
 			</View>
 		);
-
-		
 	}
 }

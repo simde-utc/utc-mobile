@@ -7,6 +7,7 @@ import styles from '../styles/'
 // import HomeScreen from './Home/';
 // import StorageTestScree from './StorageTest'; // DEBUG
 import EventsNavigator from './Events'
+import ArticlesScreen from './Articles'
 
 // Icons
 import Icon from '../components/Icon'
@@ -24,7 +25,6 @@ import HamburgerOff from '../img/icons/navbar/hamburger-off.svg'
 // DEBUG
 const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0 }>{ text }</Text></View>
 const HomeScreen = () => show('Home')
-const NewsScreen = () => show('News')
 const NotificationsScreen = () => show('Notifications')
 const HamburgerScreen = () => show('Hamburger')
 
@@ -50,7 +50,7 @@ export default MainLayout = createBottomTabNavigator ({
 		})
 	},
 	News: {
-		screen: NewsScreen,
+		screen: ArticlesScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
 				<Icon image={ focused ? NewsOn : NewsOff } />

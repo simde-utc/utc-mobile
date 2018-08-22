@@ -206,107 +206,21 @@ export class Portail extends Api {
 		})
 	}
 
-	getArticles(paginate, page, order, week, timestamp=false, actusUTC=false, articlesPortail=true) {
-	  try{
-		if(articlesPortail) {this._checkConnected();}
-		if(actusUTC) {
-		if (!CASAuth.canAutoLogin()) {throw "Tried to load articles from Actualites UTC, but CAS cannot autologin"; actusUTC=false;}
-		}
-		if (!(actusUTC || articlesPortail)) {throw ("Ecoutez, vous me donnerez un radis, s'il vous plaît. (Asked to get no articles : neither Portail nor actualités UTC)");}
-		//ceci n'est utile que pour le formattage des requêtes http à portail
-		order = order || ''
-		week = week || ''
-		if(timestamp || !(week instanceof Date)) {week = new Date(Date.UTC(week));} //peut causer une erreur si on fout n'importe quoi dans week
-		paginate = paginate || ''
-		page = page || ''
-		var weekAsPortailTimeStamp = Math.floor(week.getTime() / 1000) + ',timestamp';
-		if((!actusUTC) && articlesPortail) { 
-			return this.call(
-				Portail.API_V1 + 'articles',
-				Api.GET,
-				{	"paginate": paginate,
-					"page": page,
-					"order": order,
-					"week": weekAsPortailTimeStamp
-				});
-		}
+	getArticles(paginate = '', page = '', order = '', week = '') {
+		this._checkConnected();
 
-		if(!articlesPortail && actusUTC) {
-			return new Promise((resolve, reject) => {
-			CASAuth.autoLogin().then( () => {
-				CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then( (serviceTicket) => {
-					var actus = new ActualitesUTC(serviceTicket[0]);
-						actus.loadArticles().then( () => {
-							resolve([actus.getArticles(paginate, page, order, week),200]);
-						}).catch( (e) => {reject(e);} );
-					});
-				});
-			}).catch ( (e) => {throw e;} ); //on laisse les erreurs de co remonter, ici on s'occupe que de la logique
-		}
+		if (week)
+			var week = week + ',timestamp';
 
-		if(articlesPortail && actusUTC) {
-
-		//bon ici c'est pas très lisible mais c'est pas non plus compliqué, c'est juste un peu optimisé pour que les deux ressources soient chargées en parallèle, puis qu'on fasse un traitement quand les deux sont finies
-// on met 416 en valide parce qu'une absence d'article sur portail ne doit pas provoquer une erreur qui empêcherait le chargement d'articles sur utc, mais si on constate que les deux sont vides alors on throw la 416 quand même
-		return new Promise((resolve, reject) => {
-			Promise.all([ 
-			new Promise((resolve, reject) => {
-					this.call(
-					Portail.API_V1 + 'articles',
-					Api.GET,
-					{	"paginate": paginate,
-						"page": page,
-						"order": order,
-						"week": weekAsPortailTimeStamp
-					},
-					'',
-					[200, 201, 204, 416]).then( (data) => {
-						if(data[1] != 416) {data[0].forEach(this._normalizePortailArticle);}
-						resolve(data);
-					}).catch( (e) => reject(e));
-			}),
-
-			new Promise((resolve, reject) => {
-					CASAuth.autoLogin().then( () => {
-						CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then( (serviceTicket) => {
-							var actus = new ActualitesUTC(serviceTicket[0]);
-							actus.loadArticles().then( () => {
-								resolve([actus.getArticles(paginate, page, order, week),200]);
-							}).catch( (e) => {reject(e);} );
-						});
-					});
-			})
-
-
-			]).then(([resultPortail, resultUTC]) => {
-			//les deux ressources ont été chargés sans erreur
-				if (resultPortail[1] == 416 && resultUTC[0].length == 0) {throw resultPortail;}
-				if(resultPortail[1] !== 416) {data = resultPortail[0].concat(resultUTC[0]); }//ce n'est pas une vraie concaténation, normalement il n'y a aucun élément en commun...
-				if(resultPortail[1] == 416 && resultUTC[0].length != 0) {data = resultUTC[0];}
-				if(order != 'random') {data.sort(this.compArtDate);
-					if(order == 'latest') {data.reverse();}
-				}
-				
-				resolve([data, 200]);
-			}).catch( (e) => {reject(e);} );
-	
-		}).catch( (e) => {throw e;});
-		}
-	  }
-	  catch(e) {
-		console.warn(e); //debug
-		//ce catch n'est là que pour garantir le format [response, status]
-		if (!(e[0] !== undefined && e[1] !== undefined)) {
-			//normalement ceci n'arrive jamais, mais si jamais ça arrive, ce serait bête que la vraie erreur soit masquée par une erreur au moment du démembrement e -> [r, s]
-			if(e instanceof TypeError) {
-				throw [e, 523]; //c'est plus cool dans la console, et c'est plus pratique si jamais on veut faire des analytics/metrics
-			} else {
-				throw [JSON.stringify(e), 523];
+		return this.call(
+			Portail.API_V1 + 'articles',
+			Api.GET,
+			{	"paginate": paginate,
+				"page": page,
+				"order": order,
+				"week": week
 			}
-		}
-		else {throw e;}
-	  }
-
+		);
 	}
 
 	getAssos(tree=false, stageDown=0, stageUp=2) {
@@ -405,7 +319,7 @@ export class Portail extends Api {
 	  return 0;
 	}
 
-	
+
 }
 
 export default new Portail()
