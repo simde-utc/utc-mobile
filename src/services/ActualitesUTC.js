@@ -25,23 +25,19 @@ export default class ActualitesUTC extends Api {
 
 
 	loadArticles() {
-		return new Promise ( (resolve, reject) => {
-			this.call(this._st, Api.GET).then( ([response, status]) => {
-				this.articles = Array.from(JSON.parse(response));
-				this.articles.forEach(this.normalizeArray);
-				var i = 0;
-				this.articles.forEach( (article) => {
-					//fonction pour map id wordpress vers indice article
-					this.wpIndexDico.set(article["id"], i);
-					i++;
-				});
+		return this.call(this._st, Api.GET).then(([response, status]) => {
+			this.articles = Array.from(JSON.parse(response));
+			this.articles.forEach(this.normalizeArray);
 
-				this._articlesWereLoaded = true;
-				resolve();
-			}).catch( (e) => {
-				reject(e);
+			var i = 0;
+			this.articles.forEach( (article) => {
+					//fonction pour map id wordpress vers indice article
+				this.wpIndexDico.set(article["id"], i);
+				i++;
 			});
-		});
+
+			this._articlesWereLoaded = true;
+		})
 	}
 
 	articlesWereLoaded() {
@@ -53,20 +49,19 @@ export default class ActualitesUTC extends Api {
 	}
 
 	getArticles(paginate, page, order, week) {
-
 		this._checkArtLoaded();
+
 		if(week) {
 		//on suppose que week est un objet Date natif js
 
-		var result = this.articles.filter( (article) => {
-			//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
-			let date = new Date(article["date_gmt"]);
-			let nextweek = new Date(week.getTime() + 604800000);
-			return ((week <= date) && (date <= nextweek));
-		});
+			var result = this.articles.filter( (article) => {
+				//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
+				let date = new Date(article["date_gmt"])
+				let nextweek = new Date(week.getTime() + 604800000)
+				return ((week <= date) && (date <= nextweek))
+			})
 		}
 		else {var result = this.articles;}
-
 
 		if(result.length == 0) {throw [[], 416];}
 		
@@ -97,9 +92,7 @@ export default class ActualitesUTC extends Api {
 			break;
 		}
 
-
 		return result;
-
 	}
 
 	getRandomArticleId() {
