@@ -149,7 +149,7 @@ render() {
 				{this.props.description}
 			</Markdown>
 
-			<Hr color={colors.lightGray}/>
+			<Hr style={{backgroundColor: colors.lightGray}}/>
 
 			<Text>{this.props.type}</Text>
 			<Text>{this.props.parentName}</Text>
