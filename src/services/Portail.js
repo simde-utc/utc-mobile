@@ -82,6 +82,16 @@ export class Portail extends Api {
 		return Storage.removeSensitiveData('portail')
 	}
 
+	autoLogin() {
+		return this.getData().then((data) => {
+			return this.login(data.app_id, data.password).then((user) => {
+				return user
+			}).catch(() => {
+				return PortailApi.forget()
+			})
+		})
+	}
+
 	login(login, password) {
 		return this.call(
 			Portail.OAUTH + 'token',
