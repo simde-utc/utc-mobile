@@ -64,7 +64,7 @@ export default class ActualitesUTC extends Api {
 		else {var result = this.articles;}
 
 		if(result.length == 0) {throw [[], 416];}
-		
+
 		if(paginate === undefined || paginate === null || paginate == '') {paginate=result.length; page=1;}
 		result.sort(this.compArtDate);
 
