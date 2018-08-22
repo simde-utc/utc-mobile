@@ -82,6 +82,16 @@ export class Portail extends Api {
 		return Storage.removeSensitiveData('portail')
 	}
 
+	autoLogin() {
+		return this.getData().then((data) => {
+			return this.login(data.app_id, data.password).then((user) => {
+				return user
+			}).catch(() => {
+				return PortailApi.forget()
+			})
+		})
+	}
+
 	login(login, password) {
 		return this.call(
 			Portail.OAUTH + 'token',
@@ -220,7 +230,7 @@ export class Portail extends Api {
 		paginate = paginate || ''
 		page = page || ''
 		var weekAsPortailTimeStamp = Math.floor(week.getTime() / 1000) + ',timestamp';
-		if((!actusUTC) && articlesPortail) { 
+		if((!actusUTC) && articlesPortail) {
 			return this.call(
 				Portail.API_V1 + 'articles',
 				Api.GET,
@@ -249,7 +259,7 @@ export class Portail extends Api {
 		//bon ici c'est pas très lisible mais c'est pas non plus compliqué, c'est juste un peu optimisé pour que les deux ressources soient chargées en parallèle, puis qu'on fasse un traitement quand les deux sont finies
 // on met 416 en valide parce qu'une absence d'article sur portail ne doit pas provoquer une erreur qui empêcherait le chargement d'articles sur utc, mais si on constate que les deux sont vides alors on throw la 416 quand même
 		return new Promise((resolve, reject) => {
-			Promise.all([ 
+			Promise.all([
 			new Promise((resolve, reject) => {
 					this.call(
 					Portail.API_V1 + 'articles',
@@ -286,10 +296,10 @@ export class Portail extends Api {
 				if(order != 'random') {data.sort(this.compArtDate);
 					if(order == 'latest') {data.reverse();}
 				}
-				
+
 				resolve([data, 200]);
 			}).catch( (e) => {reject(e);} );
-	
+
 		}).catch( (e) => {throw e;});
 		}
 	  }
@@ -405,7 +415,7 @@ export class Portail extends Api {
 	  return 0;
 	}
 
-	
+
 }
 
 export default new Portail()

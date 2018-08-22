@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import styles from '../styles/';
 import { colors } from '../styles/variables';
 
+import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
 import Storage from '../services/Storage';
 
@@ -25,8 +26,9 @@ export default class AppLoaderScreen extends React.Component {
 	render() {
 		return (
 			<View style={ styles.container.center }>
+				<Image source={require('../img/logo_utc.png')} style={ styles.img.logoStyle } resizeMode={'center'} />
 				<ActivityIndicator size="large" color={ colors.yellow }/>
-				<Text style={ styles.get('text.h3', 'text.center', 'my.lg') }>
+				<Text style={[ styles.get('text.h3', 'text.center', 'my.lg'), { marginTop: 10, marginBottom: 50 } ]}>
 					{ this.state.text }
 				</Text>
 			</View>
@@ -39,27 +41,8 @@ export default class AppLoaderScreen extends React.Component {
 	// Load async data and store it in the App store
 	bootstrap = async () => {
 		// Download fonts, images etc...
-		// Fetch tokens from SecureStore...
-		return PortailApi.getData().then((user) => {
-			if (user) {
-				this.setState(prevState => ({
-					...prevState,
-					text: 'Reconnexion'
-				}))
 
-				return PortailApi.connect(user.token).catch(() => {
-					return PortailApi.login(user.app_id, user.password).catch(() => {
-						this.setState(prevState => ({
-							...prevState,
-							text: 'Application déconnectée',
-							screen: 'Connection'
-						}));
-
-						return PortailApi.forget()
-					})
-				})
-			}
-		}).then(() => {
+		return PortailApi.autoLogin().then(() => {
 			this.setState(prevState => ({
 				...prevState,
 				isConnected: PortailApi.isConnected()
@@ -68,10 +51,15 @@ export default class AppLoaderScreen extends React.Component {
 			if (PortailApi.isConnected()) {
 				this.setState(prevState => ({
 					...prevState,
+					text: 'Connexion...',
 					screen: 'Home'
-				}));
+				}))
+
+				return CASAuth.autoLogin().catch(() => true)
 			}
-		})
+
+			return true
+		}).catch(() => true)
 	}
 
 

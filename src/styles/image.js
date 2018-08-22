@@ -22,9 +22,16 @@ export const bigAvatar = {
 	borderRadius: 50
 };
 
+export const logoStyle = {
+	width: 225,
+	height: 150,
+	marginBottom: 20
+}
+
 export default image = StyleSheet.create({
 	thumbnail,
 	avatar,
 	bigThumbnail,
 	bigAvatar,
+	logoStyle,
 });
