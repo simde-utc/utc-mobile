@@ -64,9 +64,7 @@ export default class ArticlesScreen extends React.Component {
 					return
 
 				if (articles2)
-					articles.concat(articles2)
-
-				console.log(articles)
+					articles = articles.concat(articles2)
 
 				// Il faut trier
 				this.setState(prevState => {
@@ -84,10 +82,14 @@ export default class ArticlesScreen extends React.Component {
 			var actus = new ActualitesUTC(serviceTicket)
 
 			return actus.loadArticles().then(() => {
-				resolve([actus.getArticles(paginate, page, order, week), 200])
+				return actus.getArticles(paginate, page, order, week)
 			}).catch(([response, status]) => {
 				this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }))
+
+				return []
 			})
+		}).catch(() => {
+			return []
 		})
 	}
 
@@ -97,6 +99,8 @@ export default class ArticlesScreen extends React.Component {
 		}).catch(([response, status]) => {
 			if (status === 416)
 				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }))
+
+			return []
 		})
 	}
 
