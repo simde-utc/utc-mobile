@@ -5,9 +5,11 @@ import styles from '../../styles'
 import CASAuth from '../../services/CASAuth';
 import Portail from '../../services/Portail';
 
+import ActualitesUTC from '../../services/ActualitesUTC';
+
 import ArticleComponent from '../../components/Articles/Article';
 
-const DEFAULT_ARTICLES_PAGINATION = 25;
+const DEFAULT_ARTICLES_PAGINATION = 6; //debug pour bien vérifier le chargement en plusieurs fois
 //seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.2;
 
@@ -52,21 +54,27 @@ export default class ArticlesScreen extends React.Component {
 			var PortailArticles = this._loadPortailArticles()
 			promises.push(PortailArticles)
 		}
+		
 
 		if (promises) {
 			this.setState(prevState => ({ ...prevState, loading: true }))
-			this.flatList.scrollToEnd()
+
+
 
 			return new Promise.all(promises).then(([articles, articles2]) => {
 				this.setState(prevState => ({ ...prevState, loading: false }))
 
-				if (!articles)
-					return
+				if (!(articles || articles2)) {return;}
+				if (articles && articles2) {
+					console.log(articles.length);
+					console.log(articles2.length);
+					articles.concat(articles2);
+					console.log(articles.length);
+				else {
+					console.log("pas de concat");
+					articles = articles || articles2;}
 
-				if (articles2)
-					articles.concat(articles2)
 
-				console.log(articles)
 
 				// Il faut trier
 				this.setState(prevState => {
@@ -80,15 +88,28 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	_loadUTCArticles() {
-		return CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
-			var actus = new ActualitesUTC(serviceTicket)
+		return new Promise((resolve, reject) => {
+			CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
+				var actus = new ActualitesUTC(serviceTicket)
 
-			return actus.loadArticles().then(() => {
-				resolve([actus.getArticles(paginate, page, order, week), 200])
-			}).catch(([response, status]) => {
-				this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }))
-			})
-		})
+				return actus.loadArticles().then(() => {
+					resolve(actus.getArticles(this.state.pagination, this.state.page + 1, 'latest'))
+				}).catch(([response, status]) => {
+					switch(status) {
+						case 416:
+							this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
+							break;
+						case 523:
+						default:
+							//TODO: afficher réseau ou inconnue
+							console.warn([response, status]);
+							this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
+							break;
+					}
+							
+				})
+			});
+		});
 	}
 
 	_loadPortailArticles() {
@@ -98,6 +119,22 @@ export default class ArticlesScreen extends React.Component {
 			if (status === 416)
 				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }))
 		})
+	}
+
+
+	//pure helpers
+
+	_normalizePortailArticle(article) {
+		article["created_at"] = article["created_at"].replace(' ', 'T');
+	}
+
+	compArtDate(a,b) {
+	var dateA = new Date(a.created_at || a.date_gmt); var dateB = new Date(b.created_at || b.date_gmt);
+	  if (dateA < dateB)
+	    return -1;
+	  if (dateA > dateB)
+	    return 1;
+	  return 0;
 	}
 
 	render() {

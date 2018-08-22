@@ -314,21 +314,6 @@ export class Portail extends Api {
 		)
 	}
 
-	//pure helpers
-
-	_normalizePortailArticle(article) {
-		article["created_at"] = article["created_at"].replace(' ', 'T');
-	}
-
-	compArtDate(a,b) {
-	var dateA = new Date(a.created_at || a.date_gmt); var dateB = new Date(b.created_at || b.date_gmt);
-	  if (dateA < dateB)
-	    return -1;
-	  if (dateA > dateB)
-	    return 1;
-	  return 0;
-	}
-
 
 }
 
