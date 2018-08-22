@@ -66,28 +66,26 @@ export default class ArticlesScreen extends React.Component {
 
 				if (!(articles || articles2)) {return;}
 				if (articles && articles2) {
-					console.log(articles.length);
-					console.log(articles2.length);
-					articles.concat(articles2);
-					console.log(articles.length);
+					articles2.forEach(this._normalizePortailArticle);
+					articles = articles.concat(articles2);
+				}					
 				else {
-					console.log("pas de concat");
 					articles = articles || articles2;}
 
+				articles.sort(this._compArtDate);
+				articles.reverse(); //parce qu'on veut les plus récents en haut
 
-
-				// Il faut trier
 				this.setState(prevState => {
 					prevState.page++
 					prevState.articles = prevState.articles.concat(articles)
-
 					return prevState
 				})
-			}).catch(() => { this.setState(prevState => ({ ...prevState, loading: false })) })
+			}).catch((e) => {console.warn(e); this.setState(prevState => ({ ...prevState, loading: false })) })
 		}
 	}
 
 	_loadUTCArticles() {
+
 		return new Promise((resolve, reject) => {
 			CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
 				var actus = new ActualitesUTC(serviceTicket)
@@ -110,6 +108,7 @@ export default class ArticlesScreen extends React.Component {
 				})
 			});
 		});
+
 	}
 
 	_loadPortailArticles() {
@@ -118,6 +117,8 @@ export default class ArticlesScreen extends React.Component {
 		}).catch(([response, status]) => {
 			if (status === 416)
 				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }))
+
+			return []
 		})
 	}
 
@@ -128,7 +129,7 @@ export default class ArticlesScreen extends React.Component {
 		article["created_at"] = article["created_at"].replace(' ', 'T');
 	}
 
-	compArtDate(a,b) {
+	_compArtDate(a,b) {
 	var dateA = new Date(a.created_at || a.date_gmt); var dateB = new Date(b.created_at || b.date_gmt);
 	  if (dateA < dateB)
 	    return -1;
