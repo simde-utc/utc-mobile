@@ -151,8 +151,10 @@ export default class ActualitesUTC extends Api {
 
 			case "title":
 			case "content":
-			case "excerpt":
 				article[champ] = article[champ]['rendered'];
+				break;
+			case "excerpt":
+				article[champ] = article[champ]['rendered'].replace('<p>', '<p style="marginTop: 0">'); //workaround default html rendering
 			break;
 
 			case "id":

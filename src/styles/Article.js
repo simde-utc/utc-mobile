@@ -2,7 +2,7 @@ import { colors } from './variables';
 
 export const article = {
 	container: {
-		width: '100%',
+		flex:1,
 		borderWidth: 1,
 		borderColor: colors.lightGray,
 		marginBottom:10,
@@ -29,5 +29,13 @@ export const article = {
 	},
 	contentContainer: {
 		backgroundColor: 'lightblue',
-	}
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom:0,
+		maxWidth: '95%',
+	},
+	titleContainer: {
+		maxWidth: '95%',
+	},
+	title: "text-align:center;font-size:20;",
 };
