@@ -11,7 +11,7 @@ import ArticleComponent from '../../components/Articles/Article';
 
 const DEFAULT_ARTICLES_PAGINATION = 6; //debug pour bien vérifier le chargement en plusieurs fois
 //seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
-const THRESHOLD = 0.2;
+const THRESHOLD = 0.4;
 
 export default class ArticlesScreen extends React.Component {
 	static navigationOptions = {
@@ -44,6 +44,9 @@ export default class ArticlesScreen extends React.Component {
 		if (!this.state.canLoadMorePortailArticles) return
 
 		var promises = []
+	
+
+		if(this.state.loading) {return;} //pas de requête doublon
 
 		if (CASAuth.isConnected() && this.state.canLoadMoreUTCArticles) {
 			var UTCArticles = this._loadUTCArticles()
@@ -62,7 +65,6 @@ export default class ArticlesScreen extends React.Component {
 
 
 			return new Promise.all(promises).then(([articles, articles2]) => {
-				this.setState(prevState => ({ ...prevState, loading: false }))
 
 				if (!(articles || articles2)) {return;}
 				if (articles && articles2) {
@@ -76,10 +78,17 @@ export default class ArticlesScreen extends React.Component {
 				articles.reverse(); //parce qu'on veut les plus récents en haut
 
 				this.setState(prevState => {
-					prevState.page++
-					prevState.articles = prevState.articles.concat(articles)
-					return prevState
-				})
+					prevState.page++;					
+					return prevState;
+				},
+				() => {
+					//il faut être sûr d'incrémenter la pagination avant d'autoriser le chargement de nouveaux articles
+					this.setState( prevState => {
+						prevState.articles = prevState.articles.concat(articles);
+						prevState.loading = false;
+						return prevState;
+					});
+				});
 			}).catch((e) => {console.warn(e); this.setState(prevState => ({ ...prevState, loading: false })) })
 		}
 	}
