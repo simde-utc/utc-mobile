@@ -7,7 +7,7 @@
 **/
 
 import React from 'react';
-import { View, Text, TextInput, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, TextInput, Image, ScrollView, TouchableHighlight } from 'react-native';
 
 import styles from '../styles'
 
@@ -43,10 +43,40 @@ const filterTextStyle = {
 }
 
 const searchStyle = {
-	minWidth: 25,
+	width: 150,
 	height: 25,
-	backgroundColor: 'red'
+	flexDirection: 'row',
+	alignItems: 'center',
+	borderWidth: 1,
+	borderRadius: 15,
+	borderColor: 'grey',
+	backgroundColor: 'white',
 }
+
+const searchImageStyle = {
+	marginLeft: 5,
+	width: 15,
+	height: 15,
+}
+
+const searchTextStyle = {
+	marginHorizontal: 5,
+	fontSize: 11,
+	flex: 1,
+}
+
+const searchLaunchStyle = {
+	paddingRight: 5,
+	height: '100%',
+	alignItems: 'center',
+}
+
+const searchLaunchTextStyle = [
+	styles.text.yellow,
+	{
+		height: '100%'
+	}
+]
 
 // /!\ Attention, à cause d'un bug React native, il est nécessaire de tout inverser pour que le scrollview s'affiche bien
 export default class Filter extends React.Component {
@@ -54,7 +84,8 @@ export default class Filter extends React.Component {
 		super(props)
 
 		this.state = {
-			search: ''
+			search: '',
+			canSearch: false,
 		}
 	}
 
@@ -63,6 +94,11 @@ export default class Filter extends React.Component {
 		setTimeout(() => {
 			this.scrollView.scrollToEnd({ animated: false })
 		}, 10)
+	}
+
+	onSearch() {
+		if (this.state.search.length > 0 && this.props.onSearch && (this.props.searchButton !== false))
+			this.onSearch(this.state.search)
 	}
 
 	renderFilter(id, name) {
@@ -105,15 +141,26 @@ export default class Filter extends React.Component {
 	render() {
 		return (
 			<View style={ viewStyle } >
-				<TextInput style={ searchStyle }
-					underlineColorAndroid='transparent'
-					placeHolder={ this.props.searchText || 'Rechercher' }
-					value={ this.state.search }
-					onChangeText={(text) => this.setState(() => { return { search: text } })}
-					autoCapitalize="none"
-					autoCorrect={ false }
-					secureTextEntry={ true }
-				/>
+				<View style={ searchStyle }>
+					<Image style={ searchImageStyle }
+						source={ require('../img/search.png') }
+					/>
+					<TextInput style={ searchTextStyle }
+						underlineColorAndroid='transparent'
+						placeHolder={ this.props.searchText || 'Rechercher' }
+						value={ this.state.search }
+						onChangeText={(text) => { this.setState(() => { return { canSearch: text.length > 0, search: text } }); this.props.onSearchTextChange && this.props.onSearchTextChange(text) }}
+						onSubmitEditing={ this.onSearch.bind(this) }
+						autoCapitalize="none"
+						autoCorrect={ false }
+					/>
+					<TouchableHighlight style={[ searchLaunchStyle, this.state.canSearch && (this.props.searchButton !== false) ? {} : { display: 'none' } ]}
+						onPress={ this.onSearch.bind(this) }
+						underlayColor={ "#fff0" }
+					>
+						<Text style={ searchLaunchTextStyle }>{ '\u27A4' }</Text>
+					</TouchableHighlight>
+				</View>
 				<ScrollView
 					ref={(component) => ( this.scrollView = component )}
 					style={ filtersStyle }
