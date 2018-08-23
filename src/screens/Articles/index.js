@@ -52,12 +52,9 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	_loadMoreContentAsync() {
-		if (!this.state.canLoadMorePortailArticles) return
+		if (!this.state.canLoadMorePortailArticles || this.state.loading) return
 
 		var promises = []
-
-
-		if(this.state.loading) {return;} //pas de requête doublon
 
 		if (CASAuth.isConnected() && this.state.canLoadMoreUTCArticles) {
 			var UTCArticles = this._loadUTCArticles()
@@ -70,7 +67,6 @@ export default class ArticlesScreen extends React.Component {
 
 			promises.push(PortailArticles)
 		}
-
 
 		if (promises) {
 			this.setState(prevState => ({ ...prevState, loading: true }))
@@ -101,7 +97,6 @@ export default class ArticlesScreen extends React.Component {
 					});
 				});
 			}).catch((e) => {console.warn(e); this.setState(prevState => ({ ...prevState, loading: false })) })
-
 		}
 	}
 
