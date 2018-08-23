@@ -89,7 +89,7 @@ export default class Filter extends React.Component {
 		}
 	}
 
-	componentDidMount() {
+	componentDidMount(prevProps, prevState) {
 		// Il faut qu'on réinverse ici aussi
 		setTimeout(() => {
 			this.scrollView.scrollToEnd({ animated: false })
@@ -148,8 +148,13 @@ export default class Filter extends React.Component {
 					<TextInput style={ searchTextStyle }
 						underlineColorAndroid='transparent'
 						placeHolder={ this.props.searchText || 'Rechercher' }
-						value={ this.state.search }
-						onChangeText={(text) => { this.setState(() => { return { canSearch: text.length > 0, search: text } }); this.props.onSearchTextChange && this.props.onSearchTextChange(text) }}
+						value={ this.props.searchText || this.state.search }
+						onChangeText={(text) => {
+							if (this.props.onSearchTextChange)
+								text = this.props.onSearchTextChange(text) || text
+
+							this.setState(() => { return { canSearch: text.length > 0, search: text } })
+						}}
 						onSubmitEditing={ this.onSearch.bind(this) }
 						autoCapitalize="none"
 						autoCorrect={ false }
