@@ -156,7 +156,8 @@ export default class Filter extends React.Component {
 							this.setState(() => { return { canSearch: text.length > 0, search: text } })
 						}}
 						onSubmitEditing={ this.onSearch.bind(this) }
-						autoCapitalize="none"
+						autoCapitalize='none'
+						keyboardType='email-address'
 						autoCorrect={ false }
 					/>
 					<TouchableHighlight style={[ searchLaunchStyle, this.state.canSearch && (this.props.searchButton !== false) ? {} : { display: 'none' } ]}

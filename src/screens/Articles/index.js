@@ -170,7 +170,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	render() {
-		const toMatch = this.state.search.split(' ')
+		const toMatch = this.state.search.toLowerCase().split(' ')
 
 		const data = this.state.articles.filter((article) => {
 			if (!this.state.selectedFilters.includes(article['article_type']))
@@ -182,9 +182,9 @@ export default class ArticlesScreen extends React.Component {
 					continue // TODO: il faudrait checker les tags
 				}
 				else if (
-					article.title.indexOf(toMatch[i]) < 0
-					&& (article.description || article.excerpt).indexOf(toMatch[i]) < 0
-					&& article.content.indexOf(toMatch[i]) < 0
+					article.title.toLowerCase().indexOf(toMatch[i]) < 0
+					&& (article.description || article.excerpt).toLowerCase().indexOf(toMatch[i]) < 0
+					&& article.content.toLowerCase().indexOf(toMatch[i]) < 0
 				)
 					return false
 			}
