@@ -31,8 +31,18 @@ export default class ArticlesScreen extends React.Component {
 			canLoadMoreUTCArticles: true,
 			canLoadMorePortailArticles: true,
 			articles: [],
+			filters: [
+				'utc', 'assos',
+			],
+			selectedFilters: [],
 			loading: false,
 		};
+
+		if (CASAuth.isConnected())
+			this.state.selectedFilters.push('utc')
+
+		if (Portail.isConnected())
+			this.state.selectedFilters.push('assos')
 
 		this.props.articleHeight = 100;
 	}
@@ -45,7 +55,7 @@ export default class ArticlesScreen extends React.Component {
 		if (!this.state.canLoadMorePortailArticles) return
 
 		var promises = []
-	
+
 
 		if(this.state.loading) {return;} //pas de requête doublon
 
@@ -79,7 +89,7 @@ export default class ArticlesScreen extends React.Component {
 				})
 
 				this.setState(prevState => {
-					prevState.page++;					
+					prevState.page++;
 					return prevState;
 				},
 				() => {
@@ -100,7 +110,11 @@ export default class ArticlesScreen extends React.Component {
 			var actus = new ActualitesUTC(serviceTicket)
 
 			return actus.loadArticles().then(() => {
-				return actus.getArticles(this.state.pagination, this.state.page + 1, 'latest')
+				return actus.getArticles(this.state.pagination, this.state.page + 1, 'latest').map((article) => {
+					article['article_type'] = 'utc'
+
+					return article
+				})
 			}).catch(([response, status]) => {
 				switch(status) {
 					case 416:
@@ -124,6 +138,7 @@ export default class ArticlesScreen extends React.Component {
 	_loadPortailArticles() {
 		return Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest').then(([response, status]) => {
 			return response.map((article) => {
+				article['article_type'] = 'assos'
 				article["created_at"] = article["created_at"].replace(' ', 'T')
 
 				return article
@@ -134,23 +149,51 @@ export default class ArticlesScreen extends React.Component {
 
 			return []
 		})
+	}
 
+	unselectFilter(name) {
+		this.setState(prevState => {
+			if (prevState.selectedFilters.length === 1 && prevState.selectedFilters.includes(name))
+				return prevState
+
+			var index = prevState.selectedFilters.indexOf(name)
+
+			if (index > -1)
+				prevState.selectedFilters.splice(index, 1)
+
+			return prevState
+		})
+	}
+
+	selectFilter(name) {
+		this.setState(prevState => {
+			prevState.selectedFilters.push(name)
+
+			return prevState
+		})
 	}
 
 	render() {
+		var data = this.state.articles.filter((article) => {
+			return this.state.selectedFilters.includes(article['article_type'])
+		});
+
 		return (
 			<View style={ styles.article.articlesFeedContainer }>
 				<Filter
-					filters={[ 'utc', 'assos' ]}
+					filters={ this.state.filters }
+					selectedFilters={ this.state.selectedFilters }
+					onFilterUnselected={ this.unselectFilter.bind(this) }
+					onFilterSelected={ this.selectFilter.bind(this) }
 				/>
 				<FlatList
 					ref={(component) => ( this.flatList = component )}
-					data={this.state.articles}
+					data={ data }
 					renderItem={({item}) => <ArticleComponent data={item} />}
 					onEndReached={ this._loadMoreContentAsync.bind(this) }
 					onEndReachedThreshold = {THRESHOLD}
-					keyExtractor={ (item) => item["id"].toString()}
-					ListFooterComponent = {<View style={ styles.article.loadingIndicatorContainer }>{ this.state.loading && <ActivityIndicator size="small" color="#0000ff" /> }</View>}
+					keyExtractor={ (item) => item["id"].toString() }
+					ListFooterComponent = { <View style={ styles.article.loadingIndicatorContainer }>{ this.state.loading && <ActivityIndicator size="small" color="#0000ff" /> }</View> }
 				/>
 			</View>
 		);
