@@ -36,6 +36,7 @@ export default class ArticlesScreen extends React.Component {
 			],
 			selectedFilters: [],
 			loading: false,
+			search: '',
 		};
 
 		if (CASAuth.isConnected())
@@ -169,9 +170,27 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	render() {
-		var data = this.state.articles.filter((article) => {
-			return this.state.selectedFilters.includes(article['article_type'])
-		});
+		const toMatch = this.state.search.split(' ')
+
+		const data = this.state.articles.filter((article) => {
+			if (!this.state.selectedFilters.includes(article['article_type']))
+				return false
+
+			for (let i = 0; i < toMatch.length; i++) {
+				if (toMatch[i][0] === '#') {
+					console.log(toMatch[i] + ' à faire')
+					continue // TODO: il faudrait checker les tags
+				}
+				else if (
+					article.title.indexOf(toMatch[i]) < 0
+					&& (article.description || article.excerpt).indexOf(toMatch[i]) < 0
+					&& article.content.indexOf(toMatch[i]) < 0
+				)
+					return false
+			}
+
+			return true
+		})
 
 		return (
 			<View style={ styles.article.articlesFeedContainer }>
@@ -180,6 +199,17 @@ export default class ArticlesScreen extends React.Component {
 					selectedFilters={ this.state.selectedFilters }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
+					searchButton={ false }
+					onSearchTextChange={(text) => {
+						text = text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ')
+						this.setState((prevState) => {
+							prevState.search = text
+
+							return prevState
+						})
+
+						return text
+					}}
 				/>
 				<FlatList
 					ref={(component) => ( this.flatList = component )}
@@ -187,7 +217,7 @@ export default class ArticlesScreen extends React.Component {
 					renderItem={({item}) => <ArticleComponent data={item} />}
 					onEndReached={ this._loadMoreContentAsync.bind(this) }
 					onEndReachedThreshold = {THRESHOLD}
-					keyExtractor={ (item) => item["id"].toString() }
+					keyExtractor={ (article) => article['article_type'] + '_' + article['id'] }
 					ListFooterComponent = { <View style={ styles.article.loadingIndicatorContainer }>{ this.state.loading && <ActivityIndicator size="small" color="#0000ff" /> }</View> }
 				/>
 			</View>
