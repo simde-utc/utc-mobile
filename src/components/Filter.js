@@ -9,10 +9,12 @@
 import React from 'react';
 import { View, Text, TextInput, Image, ScrollView, TouchableHighlight } from 'react-native';
 
+import Color from '../utils/Color'
+
 import styles from '../styles'
 
 const viewStyle = {
-	height: 75,
+	height: 50,
 	width: '100%',
 	paddingHorizontal: 20,
 	flexDirection: 'row',
@@ -30,7 +32,8 @@ const filtersStyle = {
 }
 
 const filterStyle = {
-	paddingHorizontal: 7,
+	paddingHorizontal: 5,
+	paddingVertical: 3,
 	transform: [
 		{ scaleX: -1 },
 	],
@@ -87,6 +90,7 @@ export default class Filter extends React.Component {
 			search: '',
 			seeSearch: false,
 			canSearch: false,
+			filters: [],
 		}
 	}
 
@@ -95,7 +99,7 @@ export default class Filter extends React.Component {
 			this.onSearch(this.state.search)
 	}
 
-	renderFilter(id, name) {
+	renderFilter(id, filter) {
 		var style = [
 			filterStyle
 		]
@@ -111,8 +115,15 @@ export default class Filter extends React.Component {
 			style.push(styles.border.yellow)
 		}
 
-		if ((this.props.selectedFilters || []).includes(name)) {
-			textStyle.push(styles.bg.yellow)
+		if ((this.props.selectedFilters || []).includes(filter.id)) {
+			if (filter.selectedColor) {
+				textStyle.push({
+					backgroundColor: filter.selectedColor,
+					color: Color.invertColor(filter.selectedColor, true),
+				})
+			}
+			else
+				textStyle.push(styles.bg.yellow)
 
 			var onPress = this.props.onFilterUnselected
 		}
@@ -121,12 +132,12 @@ export default class Filter extends React.Component {
 
 		return (
 			<TouchableHighlight style={ style }
-				key={ id }
-				onPress={() => { onPress && onPress(name) }}
+				key={ filter.id }
+				onPress={() => { onPress && onPress(filter.id) }}
 				underlayColor={"#fff0"}
 			>
 				<Text style={ textStyle }>
-					#{ name }
+					#{ filter.name }
 				</Text>
 			</TouchableHighlight>
 		)

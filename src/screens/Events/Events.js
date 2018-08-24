@@ -15,6 +15,9 @@ export default class EventsScreen extends React.Component {
 	static navigationOptions = ({ navigation, navigationOptions }) => {
 		return {
 			title: 'Calendrier',
+			headerStyle: {
+				display: 'none',
+			}
 		}
     }
 
@@ -121,11 +124,21 @@ export default class EventsScreen extends React.Component {
 	}
 
 	render() {
+		const filters = this.state.calendars.map((calendar) => {
+			const name = (calendar.name + (calendar.owned_by.me ? '' : ' - ' + (calendar.owned_by.shortname || calendar.owned_by.name)))
+
+			return {
+				id: calendar.id,
+				name: name,
+				selectedColor: calendar.color,
+			}
+		})
+
 		return (
 			<View style={{ flex: 1 }}>
 				<Filter
-					filters={ this.state.calendars.map((calendar) => { return calendar.name }) }
-					selectedFilters={ this.state.selectedFilters }
+					filters={ filters }
+					selectedFilters={ this.state.selectedCalendars }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
 					onSearchTextChange={ this.onSearchTextChange.bind(this) }
