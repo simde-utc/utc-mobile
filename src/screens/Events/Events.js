@@ -38,14 +38,17 @@ export default class EventsScreen extends React.Component {
 	}
 
 	reload() {
+		var today = moment().format('YYYY-MM-DD')
+
 		this.setState(prevState => {
 			prevState.months = []
 			prevState.events = {}
+			prevState.events[today] = []
 
 			return prevState
 		})
 
-		this.setDay(this.state.date)
+		this.setDay(today)
 		this.loadEvents(this.state.date)
 	}
 
@@ -56,23 +59,17 @@ export default class EventsScreen extends React.Component {
 	setDay(day) {
 		var selectedDate = moment(new Date(day)).format('YYYY-MM-DD')
 
-		console.log(day)
+		if (selectedDate === this.state.date)
+			return
 
 		this.setState(prevState => {
+			// On supprime l'ancienne date vide
+			if (prevState.events[prevState.date] && prevState.events[prevState.date].length === 0)
+				delete prevState.events[prevState.date]
+
 			prevState.date = day
 
 			return prevState
-		})
-
-		// On supprime toutes les dates vides
-		Object.entries(this.state.events).forEach(([date, data]) => {
-			if (data.length === 0) {
-				this.setState(prevState => {
-					delete prevState.events[date]
-
-					return prevState
-				})
-			}
 		})
 
 		// On doit au moins généré la vue pour le jour sélectionné
@@ -96,9 +93,6 @@ export default class EventsScreen extends React.Component {
 				renderItem={ this.renderEvent.bind(this) }
 				renderEmptyDate={ this.renderEmptyDate.bind(this) }
 				rowHasChanged={ this.rowHasChanged.bind(this) }
-				// monthFormat={'yyyy'}
-				// theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-				//renderDay={(day, event) => (<Text>{day ? day.day: 'event'}</Text>)}
 			/>
 		);
 	}
