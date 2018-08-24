@@ -169,6 +169,14 @@ export default class ArticlesScreen extends React.Component {
 		})
 	}
 
+	onlySelectFilter(name) {
+		this.setState(prevState => {
+			prevState.selectedFilters = [name]
+
+			return prevState
+		})
+	}
+
 	selectFilter(name) {
 		this.setState(prevState => {
 			prevState.selectedFilters.push(name)
@@ -218,6 +226,7 @@ export default class ArticlesScreen extends React.Component {
 					selectedFilters={ this.state.selectedFilters }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
+					onFilterLongPressed={ this.onlySelectFilter.bind(this) }
 					searchButton={ false }
 					onSearchTextChange={ this.onSearchTextChange.bind(this) }
 				/>

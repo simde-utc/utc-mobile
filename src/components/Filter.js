@@ -134,6 +134,7 @@ export default class Filter extends React.Component {
 			<TouchableHighlight style={ style }
 				key={ filter.id }
 				onPress={() => { onPress && onPress(filter.id) }}
+				onLongPress={() => { this.props.onFilterLongPressed && this.props.onFilterLongPressed(filter.id) }}
 				underlayColor={"#fff0"}
 			>
 				<Text style={ textStyle }>
