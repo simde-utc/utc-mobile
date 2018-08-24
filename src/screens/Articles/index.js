@@ -4,8 +4,9 @@ import styles from '../../styles'
 
 import CASAuth from '../../services/CASAuth';
 import Portail from '../../services/Portail';
-
 import ActualitesUTC from '../../services/ActualitesUTC';
+
+import Generate from '../../utils/Generate'
 
 import Filter from '../../components/Filter';
 import ArticleComponent from '../../components/Articles/Article';
@@ -169,6 +170,17 @@ export default class ArticlesScreen extends React.Component {
 		})
 	}
 
+	onSearchTextChange(text) {
+		text = Generate.searchText(text)
+		this.setState((prevState) => {
+			prevState.search = text
+
+			return prevState
+		})
+
+		return text
+	}
+
 	render() {
 		const toMatch = this.state.search.toLowerCase().split(' ')
 
@@ -200,16 +212,7 @@ export default class ArticlesScreen extends React.Component {
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
 					searchButton={ false }
-					onSearchTextChange={(text) => {
-						text = text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ')
-						this.setState((prevState) => {
-							prevState.search = text
-
-							return prevState
-						})
-
-						return text
-					}}
+					onSearchTextChange={ this.onSearchTextChange.bind(this) }
 				/>
 				<FlatList
 					ref={(component) => ( this.flatList = component )}

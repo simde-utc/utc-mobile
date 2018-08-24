@@ -3,6 +3,10 @@ import { View, Image, Text, ScrollView, Button, StyleSheet, TouchableHighlight }
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment'
 
+import Generate from '../../utils/Generate'
+
+import Filter from '../../components/Filter'
+
 import PortailApi from '../../services/Portail'
 import Storage from '../../services/Storage'
 import ColorUtils from '../../utils/Color'
@@ -21,6 +25,7 @@ export default class EventsScreen extends React.Component {
 			months: [],
 			events: {},
 			calendars: [],
+			selectedCalendars: [],
 			date: moment().format('YYYY-MM-DD')
 		}
 
@@ -82,18 +87,60 @@ export default class EventsScreen extends React.Component {
 		}
 	}
 
+	unselectFilter(name) {
+		this.setState(prevState => {
+			if (prevState.selectedCalendars.length === 1 && prevState.selectedCalendars.includes(name))
+				return prevState
+
+			var index = prevState.selectedCalendars.indexOf(name)
+
+			if (index > -1)
+				prevState.selectedCalendars.splice(index, 1)
+
+			return prevState
+		})
+	}
+
+	selectFilter(name) {
+		this.setState(prevState => {
+			prevState.selectedCalendars.push(name)
+
+			return prevState
+		})
+	}
+
+	onSearchTextChange(text) {
+		text = Generate.searchText(text)
+		this.setState((prevState) => {
+			prevState.search = text
+
+			return prevState
+		})
+
+		return text
+	}
+
 	render() {
 		return (
-			<Agenda
-				items={ this.state.events }
-				loadItemsForMonth={ (date) => { this.loadEvents(date.dateString) } }
-				selected={ this.state.date }
-				onDayPress={(day) => { this.setDay(day.dateString) }}
-				onDayChange={(day) => { this.setDay(day.dateString) }}
-				renderItem={ this.renderEvent.bind(this) }
-				renderEmptyDate={ this.renderEmptyDate.bind(this) }
-				rowHasChanged={ this.rowHasChanged.bind(this) }
-			/>
+			<View style={{ flex: 1 }}>
+				<Filter
+					filters={ this.state.calendars.map((calendar) => { return calendar.name }) }
+					selectedFilters={ this.state.selectedFilters }
+					onFilterUnselected={ this.unselectFilter.bind(this) }
+					onFilterSelected={ this.selectFilter.bind(this) }
+					onSearchTextChange={ this.onSearchTextChange.bind(this) }
+				/>
+				<Agenda
+					items={ this.state.events }
+					loadItemsForMonth={ (date) => { this.loadEvents(date.dateString) } }
+					selected={ this.state.date }
+					onDayPress={(day) => { this.setDay(day.dateString) }}
+					onDayChange={(day) => { this.setDay(day.dateString) }}
+					renderItem={ this.renderEvent.bind(this) }
+					renderEmptyDate={ this.renderEmptyDate.bind(this) }
+					rowHasChanged={ this.rowHasChanged.bind(this) }
+				/>
+			</View>
 		);
 	}
 
@@ -225,7 +272,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		flex: 1,
 		borderRadius: 5,
-		padding: 10,
+		padding: 15,
 		marginRight: 10,
 		marginTop: 17
 	},

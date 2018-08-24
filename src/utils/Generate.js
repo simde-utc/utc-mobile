@@ -25,5 +25,13 @@ export default {
 
             return v.toString(16);
         })
-    }
+    },
+
+    searchText: (text) => {
+        return text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ')
+    },
+
+    searchTagsText: (text) => {
+        return text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ').replace(' ', ' #').replace('##', '#')
+    },
 }
