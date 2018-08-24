@@ -12,7 +12,7 @@ import { View } from 'react-native';
 export default class Hr extends React.Component {
 	render() {
 		return (
-			<View style={{height: 1, width: '100%', marginVertical:20, backgroundColor: this.props.color || 'black'}}>
+			<View style={[{height: 1, width: '100%', marginVertical:20, backgroundColor: 'black'}, this.props.style]}>
 			</View>
 		);
 	}

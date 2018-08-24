@@ -3,6 +3,7 @@ import { createStyleFromList, colors, spaces } from './variables';
 
 // Background colors
 export const bgColors = createStyleFromList(colors, 'backgroundColor');
+export const borderColors = createStyleFromList(colors, 'borderColor');
 
 // Containers
 export const containers = StyleSheet.create({
@@ -90,6 +91,7 @@ export default layout = {
 	container: containers,
 	block: blocks,
 	bg: bgColors,
+	border: borderColors,
 	...padding,
 	...margin,
 };
