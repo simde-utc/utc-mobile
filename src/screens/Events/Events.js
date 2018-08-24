@@ -45,11 +45,44 @@ export default class EventsScreen extends React.Component {
 			return prevState
 		})
 
+		this.setDay(this.state.date)
 		this.loadEvents(this.state.date)
 	}
 
 	seeEvent(id, name) {
 		this.props.navigation.push('Event', {id: id, name: name})
+	}
+
+	setDay(day) {
+		var selectedDate = moment(new Date(day)).format('YYYY-MM-DD')
+
+		console.log(day)
+
+		this.setState(prevState => {
+			prevState.date = day
+
+			return prevState
+		})
+
+		// On supprime toutes les dates vides
+		Object.entries(this.state.events).forEach(([date, data]) => {
+			if (data.length === 0) {
+				this.setState(prevState => {
+					delete prevState.events[date]
+
+					return prevState
+				})
+			}
+		})
+
+		// On doit au moins généré la vue pour le jour sélectionné
+		if (!this.state.events[selectedDate]) {
+			this.setState(prevState => {
+				prevState.events[selectedDate] = []
+
+				return prevState
+			})
+		}
 	}
 
 	render() {
@@ -58,8 +91,8 @@ export default class EventsScreen extends React.Component {
 				items={ this.state.events }
 				loadItemsForMonth={ (date) => { this.loadEvents(date.dateString) } }
 				selected={ this.state.date }
-				onDayPress={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
-				onDayChange={ (day) => { this.setState(prevState => { prevState.date = day; return prevState })} }
+				onDayPress={(day) => { this.setDay(day.dateString) }}
+				onDayChange={(day) => { this.setDay(day.dateString) }}
 				renderItem={ this.renderEvent.bind(this) }
 				renderEmptyDate={ this.renderEmptyDate.bind(this) }
 				rowHasChanged={ this.rowHasChanged.bind(this) }
@@ -81,27 +114,13 @@ export default class EventsScreen extends React.Component {
 
 	loadEvents(day) {
 		var month = moment(new Date(day)).format('YYYY-MM-01')
-		var momentMonth = moment(new Date(month))
 
 		if (!this.state.months.includes(month)) {
-			var momentMonthLimit = moment(new Date(moment(new Date(day)).format('YYYY-MM-01'))).add(1, 'months')
-
 			this.setState(prevState => {
 				prevState.months.push(month)
 
 				return prevState
 			});
-
-			while (momentMonth < momentMonthLimit) {
-				if (!this.state.events[momentMonth.format('YYYY-MM-DD')])
-					this.setState(prevState => {
-						prevState.events[momentMonth.format('YYYY-MM-DD')] = []
-
-						return prevState
-					})
-
-				momentMonth.add(1, 'days')
-			}
 
 			this.state.calendars.forEach((calendar) => {
 				PortailApi.getEventsFromCalendar(calendar.id, month).then(([events]) => {
