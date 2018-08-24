@@ -33,7 +33,14 @@ export default class ArticlesScreen extends React.Component {
 			canLoadMorePortailArticles: true,
 			articles: [],
 			filters: [
-				'utc', 'assos',
+				{
+					id: 'utc',
+					name: 'utc',
+				},
+				{
+					id: 'assos',
+					name: 'assos',
+				},
 			],
 			selectedFilters: [],
 			loading: false,
