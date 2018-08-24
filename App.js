@@ -8,7 +8,7 @@
 **/
 
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { Platform, View, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 
@@ -34,11 +34,13 @@ const AppSwitch = createSwitchNavigator({
 	initialRouteName: 'Loading'
 })
 
+const paddingTop = Platform.OS === 'android' ? StatusBar.currentHeight || (Platform.Version < 23 ? 25 : 24) : 0
+
 export default class App extends React.Component {
 	render() {
 		return (
 			<Provider store={ store }>
-				<SafeAreaView style={{ flex: 1 }}>
+				<SafeAreaView style={{ flex: 1, paddingTop: paddingTop }}>
 					<StatusBar
 						translucent={ true }
 					/>
