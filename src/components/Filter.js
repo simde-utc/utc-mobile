@@ -22,7 +22,7 @@ const viewStyle = {
 
 const filtersStyle = {
 	flexDirection: 'row',
-	marginLeft: 20,
+	marginLeft: 10,
 	flex: 1,
 	transform: [
 		{ scaleX: -1 },
@@ -40,10 +40,10 @@ const filterTextStyle = {
 	borderRadius: 10,
 	paddingHorizontal: 5,
 	paddingVertical: 1,
+	fontSize: 12,
 }
 
 const searchStyle = {
-	width: 150,
 	height: 25,
 	flexDirection: 'row',
 	alignItems: 'center',
@@ -54,15 +54,15 @@ const searchStyle = {
 }
 
 const searchImageStyle = {
-	marginLeft: 5,
+	marginHorizontal: 5,
 	width: 15,
 	height: 15,
 }
 
 const searchTextStyle = {
 	marginHorizontal: 5,
+	width: 100,
 	fontSize: 11,
-	flex: 1,
 }
 
 const searchLaunchStyle = {
@@ -85,15 +85,9 @@ export default class Filter extends React.Component {
 
 		this.state = {
 			search: '',
+			seeSearch: false,
 			canSearch: false,
 		}
-	}
-
-	componentDidMount(prevProps, prevState) {
-		// Il faut qu'on réinverse ici aussi
-		setTimeout(() => {
-			this.scrollView.scrollToEnd({ animated: false })
-		}, 10)
 	}
 
 	onSearch() {
@@ -139,33 +133,52 @@ export default class Filter extends React.Component {
 	}
 
 	render() {
+		// Il faut qu'on réinverse ici aussi
+		setTimeout(() => {
+			this.scrollView.scrollToEnd()
+		}, 10)
+
 		return (
 			<View style={ viewStyle } >
 				<View style={ searchStyle }>
-					<Image style={ searchImageStyle }
-						source={ require('../img/search.png') }
-					/>
-					<TextInput style={ searchTextStyle }
-						underlineColorAndroid='transparent'
-						placeHolder={ this.props.searchText || 'Rechercher' }
-						value={ this.props.searchText || this.state.search }
-						onChangeText={(text) => {
-							if (this.props.onSearchTextChange)
-								text = this.props.onSearchTextChange(text) || text
-
-							this.setState(() => { return { canSearch: text.length > 0, search: text } })
-						}}
-						onSubmitEditing={ this.onSearch.bind(this) }
-						autoCapitalize='none'
-						keyboardType='email-address'
-						autoCorrect={ false }
-					/>
-					<TouchableHighlight style={[ searchLaunchStyle, this.state.canSearch && (this.props.searchButton !== false) ? {} : { display: 'none' } ]}
-						onPress={ this.onSearch.bind(this) }
+					<TouchableHighlight
+						onPress={() => { this.setState((prevState) => { prevState.seeSearch = !prevState.seeSearch; return prevState }) }}
 						underlayColor={ "#fff0" }
 					>
-						<Text style={ searchLaunchTextStyle }>{ '\u27A4' }</Text>
+						<Image style={ searchImageStyle }
+							source={ require('../img/search.png') }
+						/>
 					</TouchableHighlight>
+					{
+						this.state.seeSearch && (
+							<TextInput style={ searchTextStyle }
+								underlineColorAndroid='transparent'
+								placeHolder={ this.props.searchText || 'Rechercher' }
+								value={ this.props.searchText || this.state.search }
+								onChangeText={(text) => {
+									if (this.props.onSearchTextChange)
+									text = this.props.onSearchTextChange(text) || text
+
+									this.setState(() => { return { canSearch: text.length > 0, search: text } })
+								}}
+								onSubmitEditing={ this.onSearch.bind(this) }
+								autoCapitalize='none'
+								keyboardType='email-address'
+								autoCorrect={ false }
+								autoFocus={ true }
+							/>
+						)
+					}
+					{
+						this.state.seeSearch && (
+							<TouchableHighlight style={[ searchLaunchStyle, this.state.canSearch && (this.props.searchButton !== false) ? {} : { opacity: 0 }]}
+								onPress={ this.onSearch.bind(this) }
+								underlayColor={ "#fff0" }
+							>
+								<Text style={ searchLaunchTextStyle }>{ '\u27A4' }</Text>
+							</TouchableHighlight>
+						)
+					}
 				</View>
 				<ScrollView
 					ref={(component) => ( this.scrollView = component )}
