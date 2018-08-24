@@ -25,22 +25,19 @@ export default class ActualitesUTC extends Api {
 
 
 	loadArticles() {
-		return new Promise ( (resolve, reject) => {
-			this.call(this._st, Api.GET).then( ([response, status]) => {
-				this.articles = Array.from(JSON.parse(response));
-				this.articles.forEach(this.normalizeArray);
-				var i = 0;
-				this.articles.forEach( (article) => {
+		return this.call(this._st, Api.GET).then(([response, status]) => {
+			this.articles = Array.from(JSON.parse(response));
+			this.articles.forEach(this.normalizeArray);
+
+			var i = 0;
+			this.articles.forEach( (article) => {
 					//fonction pour map id wordpress vers indice article
-					this.wpIndexDico.set(article["id"], i);
-					i++;
-				});
-				this._articlesWereLoaded = true;
-				resolve();
-			}).catch( (e) => {
-				reject(e);
+				this.wpIndexDico.set(article["id"], i);
+				i++;
 			});
-		});
+
+			this._articlesWereLoaded = true;
+		})
 	}
 
 	articlesWereLoaded() {
@@ -52,23 +49,22 @@ export default class ActualitesUTC extends Api {
 	}
 
 	getArticles(paginate, page, order, week) {
-
 		this._checkArtLoaded();
+
 		if(week) {
 		//on suppose que week est un objet Date natif js
 
-		var result = this.articles.filter( (article) => {
-			//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
-			let date = new Date(article["date_gmt"]);
-			let nextweek = new Date(week.getTime() + 604800000);
-			return ((week <= date) && (date <= nextweek));
-		});
+			var result = this.articles.filter( (article) => {
+				//fonction déterminant si l'article est dans le bon intervalle de dates ou pas
+				let date = new Date(article["date_gmt"])
+				let nextweek = new Date(week.getTime() + 604800000)
+				return ((week <= date) && (date <= nextweek))
+			})
 		}
 		else {var result = this.articles;}
 
+		if(result.length == 0) {throw [[], 416];}
 
-		if(result.length == 0) {return [];}
-		
 		if(paginate === undefined || paginate === null || paginate == '') {paginate=result.length; page=1;}
 		result.sort(this.compArtDate);
 
@@ -96,9 +92,7 @@ export default class ActualitesUTC extends Api {
 			break;
 		}
 
-
 		return result;
-
 	}
 
 	getRandomArticleId() {
@@ -157,8 +151,10 @@ export default class ActualitesUTC extends Api {
 
 			case "title":
 			case "content":
-			case "excerpt":
 				article[champ] = article[champ]['rendered'];
+				break;
+			case "excerpt":
+				article[champ] = article[champ]['rendered'].replace('<p>', '<p style="marginTop: 0">'); //workaround default html rendering
 			break;
 
 			case "id":
