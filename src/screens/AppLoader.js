@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { LocaleConfig } from 'react-native-calendars';
 import styles from '../styles/';
 import { colors } from '../styles/variables';
 
@@ -39,8 +40,9 @@ export default class AppLoaderScreen extends React.Component {
 	// ========== App Bootstrapping Methods ==========
 
 	// Load async data and store it in the App store
-	bootstrap = async () => {
+	async bootstrap() {
 		// Download fonts, images etc...
+		this.loadLocale()
 
 		return PortailApi.autoLogin().then(() => {
 			this.setState(prevState => ({
@@ -62,8 +64,52 @@ export default class AppLoaderScreen extends React.Component {
 		}).catch(() => true)
 	}
 
+	loadLocale() {
+		LocaleConfig.locales.fr = {
+		  monthNames: [
+		    'Janvier',
+		    'Février',
+		    'Mars',
+		    'Avril',
+		    'Mai',
+		    'Juin',
+		    'Juillet',
+		    'Août',
+		    'Septembre',
+		    'Octobre',
+		    'Novembre',
+		    'Décembre',
+		  ],
+		  monthNamesShort: [
+		    'Janv.',
+		    'Févr.',
+		    'Mars',
+		    'Avril',
+		    'Mai',
+		    'Juin',
+		    'Juil.',
+		    'Août',
+		    'Sept.',
+		    'Oct.',
+		    'Nov.',
+		    'Déc.',
+		  ],
+		  dayNames: [
+		    'Dimanche',
+		    'Lundi',
+		    'Mardi',
+		    'Mercredi',
+		    'Jeudi',
+		    'Vendredi',
+		    'Samedi',
+		  ],
+		  dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+		};
 
-	appLoaded = () => {
+		LocaleConfig.defaultLocale = 'fr';
+	}
+
+	appLoaded() {
 		this.props.navigation.navigate(
 			this.state.screen
 		);
