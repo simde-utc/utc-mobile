@@ -35,6 +35,11 @@ export default class EventsScreen extends React.Component {
 		PortailApi.getUserCalendars().then(([calendars]) => {
 			this.setState(prevState => {
 				prevState.calendars = calendars
+				prevState.selectedCalendars = calendars.filter((calendar) => {
+					return calendar.owned_by.me
+				}).map((calendar) => {
+					return calendar.id
+				})
 
 				return prevState
 			})
@@ -104,6 +109,14 @@ export default class EventsScreen extends React.Component {
 		})
 	}
 
+	onlySelectFilter(name) {
+		this.setState(prevState => {
+			prevState.selectedCalendars = [name]
+
+			return prevState
+		})
+	}
+
 	selectFilter(name) {
 		this.setState(prevState => {
 			prevState.selectedCalendars.push(name)
@@ -123,15 +136,33 @@ export default class EventsScreen extends React.Component {
 		return text
 	}
 
-	render() {
-		const filters = this.state.calendars.map((calendar) => {
-			const name = (calendar.name + (calendar.owned_by.me ? '' : ' - ' + (calendar.owned_by.shortname || calendar.owned_by.name)))
+	calendarName(calendar) {
+		return calendar.name + (calendar.owned_by.me ? '' : ' - ' + (calendar.owned_by.shortname || calendar.owned_by.name))
+	}
 
+	render() {
+		const filters = this.state.calendars.map(calendar => {
 			return {
 				id: calendar.id,
-				name: name,
+				name: this.calendarName(calendar),
 				selectedColor: calendar.color,
 			}
+		})
+
+		var events = {}
+
+		Object.entries(this.state.events).forEach(([date, dateEvents]) => {
+			var visibleEvents = dateEvents.filter((event) => {
+				for (let i = 0; i < this.state.selectedCalendars.length; i++) {
+					if (this._findIdInArray(event.calendars, this.state.selectedCalendars[i]) !== null)
+						return true
+				}
+
+				return false
+			})
+
+			// if (visibleEvents.length > 0)
+				events[date] = visibleEvents
 		})
 
 		return (
@@ -141,10 +172,11 @@ export default class EventsScreen extends React.Component {
 					selectedFilters={ this.state.selectedCalendars }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
+					onFilterLongPressed={ this.onlySelectFilter.bind(this) }
 					onSearchTextChange={ this.onSearchTextChange.bind(this) }
 				/>
 				<Agenda
-					items={ this.state.events }
+					items={ events }
 					loadItemsForMonth={ (date) => { this.loadEvents(date.dateString) } }
 					selected={ this.state.date }
 					onDayPress={(day) => { this.setDay(day.dateString) }}
@@ -157,7 +189,7 @@ export default class EventsScreen extends React.Component {
 		);
 	}
 
-	_findEventId(array, id) {
+	_findIdInArray(array, id) {
 		for (let i = 0; i < array.length; i++) {
 			if (array[i].id === id)
 				return i
@@ -188,7 +220,7 @@ export default class EventsScreen extends React.Component {
 								return prevState
 							})
 
-						var index = this._findEventId(this.state.events[date], event.id);
+						var index = this._findIdInArray(this.state.events[date], event.id);
 
 						// Si l'évènement y est déjà, on ajoute juste sur quel calendrier il est
 						if (index === null) {
@@ -228,17 +260,19 @@ export default class EventsScreen extends React.Component {
 		}
 
 		return (
-			<View style={ style }>
+			<ScrollView style={ style }
+				horizontal={ true }
+			>
 				{ calendars.map((calendar, index) => (
 					<View style={[ calendarStyle, { backgroundColor: calendar.color } ]}
 						key={ index }
 					>
 						<Text style={{ fontSize: 12, color: ColorUtils.invertColor(calendar.color, true) }}>
-							{ calendar.name }
+							{ this.calendarName(calendar) }
 						</Text>
 					</View>
 				)) }
-			</View>
+			</ScrollView>
 		)
 	}
 
