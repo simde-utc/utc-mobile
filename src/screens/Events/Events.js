@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Button, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Image, Text, Modal, ScrollView, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment'
 
@@ -29,7 +29,8 @@ export default class EventsScreen extends React.Component {
 			events: {},
 			calendars: [],
 			selectedCalendars: [],
-			date: moment().format('YYYY-MM-DD')
+			date: moment().format('YYYY-MM-DD'),
+			searchCalendar: false,
 		}
 
 		PortailApi.getUserCalendars().then(([calendars]) => {
@@ -51,7 +52,7 @@ export default class EventsScreen extends React.Component {
 	}
 
 	reload() {
-		var today = moment().format('YYYY-MM-DD')
+		var today = this.state.date
 
 		this.setState(prevState => {
 			prevState.months = []
@@ -136,6 +137,17 @@ export default class EventsScreen extends React.Component {
 		return text
 	}
 
+
+	onSearch(text) {
+		this.setState((prevState) => { prevState.searchCalendar = true; return prevState })
+
+		PortailApi.getCalendars(text).then(([calendars]) => {
+			this.setState((prevState) => { prevState.calendars = prevState.calendars.concat(calendars); return prevState })
+
+			this.reload()
+		}).catch(() => {})
+	}
+
 	calendarName(calendar) {
 		return calendar.name + (calendar.owned_by.me ? '' : ' - ' + (calendar.owned_by.shortname || calendar.owned_by.name))
 	}
@@ -161,11 +173,37 @@ export default class EventsScreen extends React.Component {
 				return false
 			})
 
-			// if (visibleEvents.length > 0)
+			if (visibleEvents.length > 0 || date === this.state.date)
 				events[date] = visibleEvents
 		})
 
 		return (
+			//			<Modal
+			// 				animationType="slide"
+			// 				transparent={ true }
+			// 				visible={ this.state.searchCalendar }
+			// 				onRequestClose={() => { this.setState((prevState) => { prevState.searchCalendar = false; return prevState })}}
+			// 			>
+			// 				<View style={{
+			// 					backgroundColor: 'red',
+			// 				flex: 1,
+			// padding: 22,
+			// justifyContent: 'center',
+			// alignItems: 'center',
+			// borderRadius: 4,
+			// borderColor: 'rgba(0, 0, 0, 0.1)' }}>
+			// 					<View>
+			// 						<Text>Hello World!</Text>
+			//
+			// 						<TouchableHighlight
+			// 							onPress={() => {
+			// 							this.setModalVisible(!this.state.modalVisible);
+			// 						}}>
+			// 							<Text>Hide Modal</Text>
+			// 						</TouchableHighlight>
+			// 					</View>
+			// 				</View>
+			// 			</Modal>
 			<View style={{ flex: 1 }}>
 				<Filter
 					filters={ filters }
@@ -174,6 +212,7 @@ export default class EventsScreen extends React.Component {
 					onFilterSelected={ this.selectFilter.bind(this) }
 					onFilterLongPressed={ this.onlySelectFilter.bind(this) }
 					onSearchTextChange={ this.onSearchTextChange.bind(this) }
+					onSearch={ this.onSearch.bind(this) }
 				/>
 				<Agenda
 					items={ events }
@@ -231,10 +270,11 @@ export default class EventsScreen extends React.Component {
 								return prevState
 							})
 						}
-						else {
-							this.setState(prevState => {
-								prevState.events[date][index].calendars.push(calendar)
+						else { // On est obligé de procéder comme ça pour que le moteur de rendu détecte le changement #Pointeurs #JS
+							event.calendars = this.state.events[date][index].calendars.concat([calendar])
 
+							this.setState(prevState => {
+								prevState.events[date][index] = event
 								return prevState
 							})
 						}
@@ -296,7 +336,9 @@ export default class EventsScreen extends React.Component {
 					<Text style={{ marginTop: 3, fontWeight: 'bold', fontSize: 18 }}>{ event.name }</Text>
 					<Text style={{ fontSize: 12 }}>{ event.location.name }</Text>
 					<Text style={{ fontStyle: 'italic', fontSize: 10 }}>{ event.location.place.name }</Text>
-					{ this.renderEventCalendars(event.calendars) }
+					<View onStartShouldSetResponder={() => { return true }}>
+						{ this.renderEventCalendars(event.calendars) }
+					</View>
 				</View>
 			</TouchableHighlight>
 		);
@@ -309,8 +351,7 @@ export default class EventsScreen extends React.Component {
 	}
 
 	rowHasChanged(event1, event2) {
-		return event1.id !== event2.id
-			|| JSON.stringify(event1.calendars) !== JSON.stringify(event2.calendars);
+		return event1.id !== event2.id || event1.calendars.length !== event2.calendars.length
 	}
 }
 

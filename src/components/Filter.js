@@ -96,7 +96,7 @@ export default class Filter extends React.Component {
 
 	onSearch() {
 		if (this.state.search.length > 0 && this.props.onSearch && (this.props.searchButton !== false))
-			this.onSearch(this.state.search)
+			this.props.onSearch(this.state.search)
 	}
 
 	renderFilter(id, filter) {

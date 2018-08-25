@@ -314,7 +314,20 @@ export class Portail extends Api {
 		)
 	}
 
+	getCalendars(filter = '') {
+		this._checkConnected()
 
+		if (filter)
+			filter += ',insensitive,word'
+
+		return this.call(
+			Portail.API_V1 + 'calendars',
+			Api.GET,
+			{
+				'filter[name]': filter
+			}
+		)
+	}
 }
 
 export default new Portail()
