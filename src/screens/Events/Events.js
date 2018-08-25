@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Image, Text, Modal, ScrollView, Button, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Image, Text, FlatList, ScrollView, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import Modal from "react-native-modal"
 import moment from 'moment'
 
 import Generate from '../../utils/Generate'
@@ -30,6 +31,7 @@ export default class EventsScreen extends React.Component {
 			calendars: [],
 			selectedCalendars: [],
 			date: moment().format('YYYY-MM-DD'),
+			search: {},
 			searchCalendar: false,
 		}
 
@@ -52,18 +54,18 @@ export default class EventsScreen extends React.Component {
 	}
 
 	reload() {
-		var today = this.state.date
+		var date = this.state.date
 
 		this.setState(prevState => {
 			prevState.months = []
 			prevState.events = {}
-			prevState.events[today] = []
+			prevState.events[date] = []
 
 			return prevState
+		}, () => {
+			this.setDay(date)
+			this.loadEvents(date)
 		})
-
-		this.setDay(today)
-		this.loadEvents(this.state.date)
 	}
 
 	seeEvent(id, name) {
@@ -84,16 +86,16 @@ export default class EventsScreen extends React.Component {
 			prevState.date = day
 
 			return prevState
+		}, () => {
+			// On doit au moins généré la vue pour le jour sélectionné
+			if (!this.state.events[selectedDate]) {
+				this.setState(prevState => {
+					prevState.events[selectedDate] = []
+
+					return prevState
+				})
+			}
 		})
-
-		// On doit au moins généré la vue pour le jour sélectionné
-		if (!this.state.events[selectedDate]) {
-			this.setState(prevState => {
-				prevState.events[selectedDate] = []
-
-				return prevState
-			})
-		}
 	}
 
 	unselectFilter(name) {
@@ -128,6 +130,7 @@ export default class EventsScreen extends React.Component {
 
 	onSearchTextChange(text) {
 		text = Generate.searchText(text)
+
 		this.setState((prevState) => {
 			prevState.search = text
 
@@ -139,17 +142,39 @@ export default class EventsScreen extends React.Component {
 
 
 	onSearch(text) {
-		this.setState((prevState) => { prevState.searchCalendar = true; return prevState })
-
-		PortailApi.getCalendars(text).then(([calendars]) => {
-			this.setState((prevState) => { prevState.calendars = prevState.calendars.concat(calendars); return prevState })
-
-			this.reload()
-		}).catch(() => {})
+		this.setState((prevState) => { prevState.searchCalendar = true; prevState.search = {}; return prevState }, () => {
+			PortailApi.getCalendars(text).then(([calendars]) => {
+				this.setState((prevState) => { prevState.search.calendars = calendars; return prevState })
+			}).catch(() => {})
+		})
 	}
 
 	calendarName(calendar) {
 		return calendar.name + (calendar.owned_by.me ? '' : ' - ' + (calendar.owned_by.shortname || calendar.owned_by.name))
+	}
+
+	renderSearchCalendar(calendar) {
+		return (
+			<TouchableHighlight
+				onPress={() => {
+					this.setState((prevState) => {
+						prevState.searchCalendar = false
+
+						if (this._findIdInArray(prevState.calendars, calendar.id) === null)
+							prevState.calendars.push(calendar)
+
+						prevState.selectedCalendars.push(calendar.id)
+
+						return prevState
+					}, () => {
+						this.reload()
+					})
+			 	}}
+				underlayColor={"#fff0"}
+			>
+				<Text>{ this.calendarName(calendar) }</Text>
+			</TouchableHighlight>
+		)
 	}
 
 	render() {
@@ -178,33 +203,26 @@ export default class EventsScreen extends React.Component {
 		})
 
 		return (
-			//			<Modal
-			// 				animationType="slide"
-			// 				transparent={ true }
-			// 				visible={ this.state.searchCalendar }
-			// 				onRequestClose={() => { this.setState((prevState) => { prevState.searchCalendar = false; return prevState })}}
-			// 			>
-			// 				<View style={{
-			// 					backgroundColor: 'red',
-			// 				flex: 1,
-			// padding: 22,
-			// justifyContent: 'center',
-			// alignItems: 'center',
-			// borderRadius: 4,
-			// borderColor: 'rgba(0, 0, 0, 0.1)' }}>
-			// 					<View>
-			// 						<Text>Hello World!</Text>
-			//
-			// 						<TouchableHighlight
-			// 							onPress={() => {
-			// 							this.setModalVisible(!this.state.modalVisible);
-			// 						}}>
-			// 							<Text>Hide Modal</Text>
-			// 						</TouchableHighlight>
-			// 					</View>
-			// 				</View>
-			// 			</Modal>
 			<View style={{ flex: 1 }}>
+				<Modal isVisible={ this.state.searchCalendar }
+					onBackdropPress={() => { this.setState((prevState) => { prevState.searchCalendar = false; return prevState }) }}
+				>
+					<View style={{ backgroundColor: 'white', borderRadius: 10 }}>
+						<View style={{ justifyContent: 'center', alignItems: 'center', height: 40,
+						borderBottomWidth: 1,
+						borderColor: 'gray', }}>
+							<Text style={{
+								width: '90%',
+								textAlign: 'center',
+							}}>Recherche</Text>
+						</View>
+						<FlatList
+							data={ this.state.search.calendars }
+							renderItem={({item}) => { return this.renderSearchCalendar(item) }}
+							keyExtractor={ (calendar) => calendar.id }
+						/>
+					</View>
+				</Modal>
 				<Filter
 					filters={ filters }
 					selectedFilters={ this.state.selectedCalendars }
