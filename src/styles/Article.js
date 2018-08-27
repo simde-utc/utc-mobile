@@ -2,14 +2,12 @@ import { colors } from './variables';
 
 export const article = {
 	container: {
-		flex:1,
 		borderWidth: 1,
 		borderColor: colors.lightGray,
 		marginBottom:10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		padding: 5,
 	},
 
 	loadingIndicatorContainer: {
@@ -29,13 +27,22 @@ export const article = {
 	},
 	contentContainer: {
 		backgroundColor: 'lightblue',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		justifyContent: 'center',
 		marginBottom:0,
+		marginTop:3,
 		maxWidth: '95%',
 	},
 	titleContainer: {
 		maxWidth: '95%',
 	},
 	title: "text-align:center;font-size:20;",
+	buttonContainer: {
+		backgroundColor: 'red',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 5,
+		marginBottom:2,
+		maxWidth: '95%',
+	}
 };
