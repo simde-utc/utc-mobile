@@ -66,7 +66,7 @@ _loadDetails() {
 
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
-		if(data["parent"].length != 0) {
+		if(data["parent"]) {
 			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"], parentId: data["parent"]["id"], parentName : data["parent"]["shortname"]}));
 		}
 		else {
