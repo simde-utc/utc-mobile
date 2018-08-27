@@ -44,5 +44,6 @@ export const article = {
 		marginTop: 5,
 		marginBottom:2,
 		maxWidth: '95%',
-	}
+	},
+	contentMarkdown : {},
 };

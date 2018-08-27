@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Dimensions, TouchableHighlight, Image} from 'react-native';
+import { View, Text, Dimensions, TouchableHighlight, Image, Linking} from 'react-native';
 import styles from '../../styles'
 import { colors } from '../../styles/variables';
 import HTML from 'react-native-render-html';
+import Markdown from 'react-native-simple-markdown';
 import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
 import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
@@ -18,6 +19,16 @@ export default class ArticleComponent extends React.Component {
 	_toggleFolded() {
 		this.setState(prevState => ({ ...prevState, folded: !prevState.folded }));
 	}
+
+	_openURI = (uri) => {
+	    Linking.canOpenURL(uri).then(supported => {
+	      if (supported) {
+		Linking.openURL(uri);
+	      } else {
+		console.log("Don't know how to open URI: " + uri);
+	      }
+	    });
+	};
 	
 	render() {
 		return (
@@ -42,7 +53,19 @@ export default class ArticleComponent extends React.Component {
 					}
 					{/***CONTENU COMPLET***/}
 					{!this.state.folded &&
-						<Text>{ this.props.data["content"]}</Text>
+						<View>
+						 {this.props.data["date_gmt"] ?
+							<HTML
+								html={this.props.data["content"]}
+								onLinkPress={ (e, href) => {this._openURI(href);} }
+								imagesMaxWidth={Dimensions.get('window').width}
+					 		/> :
+							<Markdown styles={styles.article.contentMarkdown}>
+								{this.props.data["content"]}
+							</Markdown>
+						}
+						</View>
+							
 					}
 				</View>
 				{/***BOUTON DE DEVELOPPEMENT***/}
