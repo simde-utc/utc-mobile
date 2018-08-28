@@ -4,10 +4,13 @@ export const article = {
 	container: {
 		borderWidth: 1,
 		borderColor: colors.lightGray,
+		marginHorizontal: 5,
 		marginBottom:10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
-		alignItems: 'center',
+		alignItems: 'flex-start',
+		padding:10,
+		paddingBottom: 5,
 	},
 
 	loadingIndicatorContainer: {
@@ -22,28 +25,40 @@ export const article = {
 		flex:1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: 10,
+		paddingHorizontal: 2,
 		backgroundColor: colors.veryLightGray,
 	},
 	contentContainer: {
-		backgroundColor: 'lightblue',
+		backgroundColor: colors.white,
 		alignItems: 'flex-start',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		marginBottom:0,
 		marginTop:3,
-		maxWidth: '95%',
+		maxWidth: '100%',
 	},
 	titleContainer: {
-		maxWidth: '95%',
+		maxWidth: '100%',
 	},
-	title: "text-align:center;font-size:20;",
+	title: "text-align:left;font-size:20;",
 	buttonContainer: {
-		backgroundColor: 'red',
+		backgroundColor: colors.white,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginTop: 5,
+		marginBottom:0,
+		maxWidth: '100%',
+		paddingVertical: 5,
+	},
+	imageContainer: {
+		backgroundColor: colors.veryLightGray,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 5,
 		marginBottom:2,
-		maxWidth: '95%',
+		maxWidth: '100%',
 	},
 	contentMarkdown : {},
+	descriptionConstants: {
+		textColor: colors.black,
+	}
 };

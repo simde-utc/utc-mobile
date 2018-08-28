@@ -8,11 +8,32 @@ import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
 import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
+const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+
 export default class ArticleComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			folded: true,
+		}
+		this.image = null;
+		this.imageResizeMode = "cover";
+		this._handleMedia();
+	}
+
+	_handleMedia() {
+		if(this.props.data["wp:featuredmedia"]) {
+			if(SUPPORTED_IMAGE_FORMATS.includes(this.props.data["wp:featuredmedia"]["mime_type"])) {
+				this.image = this.props.data["wp:featuredmedia"]["source_url"];
+				if (this.props.data["wp:featuredmedia"]["height"] > this.props.data["wp:featuredmedia"]["width"]) {
+					//l'auteur de l'article est graphiquement mauvais, mais grâce à wordpress on peut le détecter
+					this.imageResizeMode = "contain";
+				}
+			}
+		}
+
+		if(this.props.data["image"]) {
+			this.image = this.props.data["image"]; //on prie pour que l'image soit compatible
 		}
 	}
 
@@ -41,13 +62,19 @@ export default class ArticleComponent extends React.Component {
 					 />
 					{/*** on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ***/}
 				</View>
+				{/***IMAGE***/}
+				{this.image &&
+					<View style={styles.article.imageContainer}>
+						<Image style={{height: 100, width: Dimensions.get('window').width}} resizeMode={this.imageResizeMode} resizeMethod={'scale'}  source={{uri: this.image}} />
+					</View>
+				}
 				<View style={styles.article.contentContainer}>
 					{/***DESCRIPTION***/}
 					{this.state.folded &&
 						<View style={{maxHeight:50}}>
 							{this.props.data["description"] ?
-								<Text style={{textAlign: 'center', margin:0, padding:0}}>{this.props.data["description"]}</Text> : 
-								<HTML style={{textAlign: 'center', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
+								<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> : 
+								<HTML style={{textAlign: 'left', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
 							}
 						</View>
 					}
