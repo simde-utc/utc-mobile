@@ -35,8 +35,8 @@ export default class ConnectedScreen extends React.Component {
 		}
 
 		if (PortailApi.isActive()) {
-			this.state.subTitle = "Vous êtes maintenant connecté.e sous " + PortailApi.getUser().name + " !"
-			this.state.more = "et tout ceci, de manière personnalisée"
+			this.state.subTitle = PortailApi.getUser().name + ", vous êtes connecté !"
+			this.state.more = "et à la personnaliser"
 		}
 		else
 			this.state.subTitle = "Vous n'êtes connecté.e sous aucun compte"
@@ -86,7 +86,7 @@ export default class ConnectedScreen extends React.Component {
 				/>
 				<View style={ viewStyle }>
 					<Text style={[ styles.get('text.h2', 'text.center'), { margin: 20 } ]}>
-						Vous pouvez dès à présent utiliser toutes les fonctionnalités de l'application { this.state.more }!
+						Vous êtes prêt à utiliser l'application { this.state.more }!
 					</Text>
 					<BigButton
 						label="Aller à la page d'accueil"
