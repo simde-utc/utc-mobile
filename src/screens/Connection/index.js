@@ -242,7 +242,7 @@ export default class ConnectionScreen extends React.Component {
 				<View style={ viewStyle }>
 					<TextInput style={ styles.bigButton }
 						underlineColorAndroid='transparent'
-						placeHolder="Login CAS / Email"
+						placeholder="Login CAS / Email"
 						value={ this.state.emailOrLogin }
 						onChangeText={(text) => this.setState(() => { return { emailOrLogin: text } })}
 						keyboardType="email-address"
@@ -251,7 +251,7 @@ export default class ConnectionScreen extends React.Component {
 					/>
 					<TextInput style={ styles.bigButton }
 						underlineColorAndroid='transparent'
-						placeHolder="Mot de passe"
+						placeholder="Mot de passe"
 						value={ this.state.password }
 						onChangeText={(text) => this.setState(() => { return { password: text } })}
 						autoCapitalize="none"
