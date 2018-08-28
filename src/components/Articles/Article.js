@@ -138,7 +138,7 @@ export default class ArticleComponent extends React.PureComponent {
 				</View>
 				{/***BOUTON DE DEVELOPPEMENT***/}
 				<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
-						<Image style={{height: 15}} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
+						<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
 				</TouchableHighlight>
 			</View>
 		);

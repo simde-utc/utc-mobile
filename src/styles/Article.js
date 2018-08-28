@@ -44,10 +44,14 @@ export const article = {
 		backgroundColor: colors.white,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginTop: 5,
+		marginTop: 0,
 		marginBottom:0,
 		maxWidth: '100%',
-		paddingVertical: 5,
+		paddingVertical: 7,
+		paddingTop: 17,
+	},
+	buttonImage: {
+		height: 20
 	},
 	imageContainer: {
 		backgroundColor: colors.veryLightGray,
