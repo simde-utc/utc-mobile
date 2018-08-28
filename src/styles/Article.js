@@ -60,5 +60,30 @@ export const article = {
 	contentMarkdown : {},
 	descriptionConstants: {
 		textColor: colors.black,
-	}
+	},
+	authorContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginLeft: 3,
+	},
+	authorImage: {
+		height:30,
+		width:30,
+	},
+	dateText: {
+		color: colors.gray,
+	},
+	dateContainer: {
+		marginLeft: 8,
+	},
+	headersContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	authorText: {
+		color: colors.black,
+		marginLeft: 4,
+	},
 };
