@@ -6,11 +6,12 @@ import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
 import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
 import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
+import LogoUTC from '../../img/icon.png';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
-export default class ArticleComponent extends React.Component {
+export default class ArticleComponent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -19,6 +20,23 @@ export default class ArticleComponent extends React.Component {
 		this.image = null;
 		this.imageResizeMode = "cover";
 		this._handleMedia();
+	}
+
+	_prettyDate(string, locale) {
+	let date = new Date(string);
+		switch (locale) {
+			case "fr-FR":
+				return this._renderDate(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+				break;
+			case "en-US":
+			default:
+				return this._renderDate(date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear());
+				break;
+		}
+	}
+
+	_renderDate(string) {
+		return (<Text style={styles.article.dateText}>{string}</Text>);
 	}
 
 	_handleMedia() {
@@ -54,6 +72,29 @@ export default class ArticleComponent extends React.Component {
 	render() {
 		return (
 			<View style={styles.article.container}>
+				{/***HEADER***/}
+				<View style={styles.article.headersContainer}>
+					{/***AUTEUR***/}
+					<View style={styles.article.authorContainer}>
+						<Image
+						style={styles.article.authorImage}
+						source={this.props.data["owned_by"] ? {uri: this.props.data["owned_by"]["image"]} : LogoUTC}
+						resizeMode={"contain"}
+						resizeMethod={"resize"}
+						/>
+						<Text style={styles.article.authorText}>
+							{this.props.data["owned_by"] ? this.props.data["owned_by"]["shortname"] : "UTC"}
+						</Text>
+					</View>
+					{/***DATE***/}
+					<View style={styles.article.dateContainer}>
+						{this.props.data["created_at"] ?
+							this._prettyDate(this.props.data["created_at"], "fr-FR") :
+							this._prettyDate(this.props.data["date_gmt"], "fr-FR")
+						}
+					</View>
+					{/***TODO: locale***/}
+				</View>
 				{/***TITRE***/}
 				<View style={styles.article.titleContainer}>
 					<HTML
