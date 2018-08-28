@@ -36,8 +36,13 @@ export default class ActualitesUTC extends Api {
 				i++;
 			});
 
-			this._articlesWereLoaded = true;
-		})
+			return Promise.all(this.articles.map(async (article) => {
+				try {article["wp:featuredmedia"] = await this.getFeaturedMediaUrl(article["wp:featuredmedia"]);}
+				catch (e) {console.warn(e);}
+				return article;
+			})).then( (result) => {this.articles = result; this._articlesWereLoaded = true;});
+
+		});
 	}
 
 	articlesWereLoaded() {
@@ -109,19 +114,22 @@ export default class ActualitesUTC extends Api {
 
 	getFeaturedMediaUrl = async function(url) {
 		if(url === undefined) {throw "No url provided";}
-		this._checkArtLoaded();
 		var parameters = {
 			method: Api.GET,
-			cache : "force-cache"
+			cache : "force-cache",
+			credentials: "include",
 		}
 		try {
 		var response = await fetch(url, parameters);
-		if (!Api.VALID_STATUS.includes(response.status)) {throw [response.text(), response.status];}
-		var data = await response.json();
-		return data["media_details"]["sizes"]["full"];
-		} catch (e) {
+		} catch (e) {	
 			throw [e.message, 523];
 		}
+		if (!Api.VALID_STATUS.includes(response.status)) {
+			if(response.status = 401) {return null;}
+			response.text().then((text) => {throw [text, response.status];});console.log(url);}
+		else {var data = await response.json();
+		return data["media_details"]["sizes"]["full"];}
+		
 	}
 
 
