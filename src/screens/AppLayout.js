@@ -53,6 +53,7 @@ export default AppLayout = createDrawerNavigator({
 }, {
 	contentComponent: CustomDrawerContentComponent,
 	initialRouteName: 'Main',
+	drawerPosition: 'right',
 	// drawerWidth: Dimensions.get('window').width,
 	contentOptions: {
 		activeTintColor: colors.yellow,
