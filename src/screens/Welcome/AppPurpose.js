@@ -9,16 +9,15 @@ import HeaderView from '../../components/HeaderView';
 
 
 const forMembersData = [
-	{ icon: "news",			text: "Suivre et être notifié des actualités de vos associations préférées" },
+	{ icon: "news",			text: "Suivre et être notifié des actualités de l'UTC et de vos associations préférées" },
 	{ icon: "map",			text: "Se repérer dans le campus" },
-	{ icon: "bell",			text: "Etre notifié des résultats des examens" },
-	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire et associatif" },
+	{ icon: "bell",			text: "Etre notifié des résultats des examens et d'événements qui vous intéressent" },
+	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire, associatif et personnel" },
 ]
 const forInterestedData = [
-	{ icon: "news",			text: "AAAAAAAAAAAh bon" },
+	{ icon: "news",			text: "Suivre les actualités institutionnelles de l'UTC" },
 	{ icon: "map",			text: "Se repérer dans le campus" },
-	{ icon: "bell",			text: "Etre notifié des résultats des examens" },
-	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire et associatif" },
+	{ icon: "calendar",		text: "Consulter et synchroniser son agenda associatif et personnel" },
 ]
 
 
@@ -54,7 +53,7 @@ export default class AppPurposeScreen extends React.Component {
 				<HeaderView
 					style={{ flex: 3 }}
 					title="A quoi ça sert ?"
-					subtitle="Cette application est destinée à la fois aux étudiants, aux enseignant-chercheurs, aux futurs étudiants ainsi qu'aux entreprises et aux personnes interessées par l'UTC et ses associations"
+					subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux membres de la communauté UTC, mais aussi aux entreprises et personnes interessées par l'UTC et ses associations."
 				/>
 				<View style={{ flex: 7, justifyContent: 'space-between' }}>
 					<View style={{ flex: 6, marginLeft:0}}>
