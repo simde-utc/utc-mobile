@@ -21,7 +21,7 @@ const nativeIcons = ["news", "map", "bell", "calendar"]
 const listStyle = StyleSheet.create({
 	container: {
 		justifyContent: 'center',
-		paddingHorizontal: 30,
+		paddingHorizontal: 20,
 		paddingVertical: 20
 	},
 	elementView: {
@@ -29,7 +29,8 @@ const listStyle = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginVertical: 8,
-		marginHorizontal: 20,
+		marginHorizontal: 10,
+		marginRight: 80,
 	},
 	iconContainer: {
 		marginRight: 15
