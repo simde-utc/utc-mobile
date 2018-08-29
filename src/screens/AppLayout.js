@@ -20,7 +20,7 @@ class CustomDrawerContentComponent extends React.Component {
 		const headerImagePath = PortailApi.isActive() ? require('../img/icon.png') : require('../img/icon.png')
 		const headerImageStyle = PortailApi.isActive() ? styles.img.bigAvatar : styles.img.bigThumbnail
 		const headerText = PortailApi.getUser().name
-		const headerTextStyle = styles.get('text.h1', 'text.yellow')
+		const headerTextStyle = styles.get('text.h1', 'text.yellow', 'text.center')
 
 		return (
 			<ScrollView style={ styles.get('bg.lightBlue') }>

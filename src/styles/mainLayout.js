@@ -9,7 +9,7 @@ export const mainLayout = {
 		backgroundColor: colors.yellow,
 	},
 	icon: {
-		height: 50,
-		width: 50,
+		height: 40,
+		width: 40,
 	}
 };
