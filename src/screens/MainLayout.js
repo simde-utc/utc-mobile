@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
-import { createBottomTabNavigator  } from 'react-navigation';
+import { createMaterialTopTabNavigator  } from 'react-navigation';
 import styles from '../styles/'
 
 // Screens
@@ -32,14 +32,20 @@ const HamburgerScreen = () => show('Hamburger')
 const tabBarOptions = Platform.OS === 'ios' ?
 	{
 		// iOS tabBarOptions
-		showLabel: false
+		showLabel: false,
+		style: styles.mainLayout.tabBar,
+		indicatorStyle: styles.mainLayout.indicator,
+		iconStyle: styles.mainLayout.icon,
 	} : {
 		// Android tabBarOptions
 		showIcon: true,
-		showLabel: false
+		showLabel: false,
+		style: styles.mainLayout.tabBar,
+		indicatorStyle: styles.mainLayout.indicator,
+		iconStyle: styles.mainLayout.icon,
 	}
 
-export default MainLayout = createBottomTabNavigator ({
+export default MainLayout = createMaterialTopTabNavigator ({
 	// Storage: StorageTestScreen,	// DEBUG
 	Home: {
 		screen: HomeScreen,
@@ -85,4 +91,6 @@ export default MainLayout = createBottomTabNavigator ({
 }, {
 	initialRouteName: 'Home',
 	tabBarOptions: tabBarOptions,
+	tabBarPosition: 'bottom',
+	swipeEnabled: true,
 });
