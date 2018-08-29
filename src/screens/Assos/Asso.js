@@ -137,22 +137,21 @@ this.isUnMounted = true;
 class PresentationView extends React.Component {
 
 render() {
-	return <ScrollView
-		contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30 }}>
-			<Image
-			source={this.props.logo || require('../../img/payutc.png')}
-			resizeMode='contain'
-			style={{height:100, margin:20}}
-			/>
+	return <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
+			 <Image
+                       source={this.props.logo || require('../../img/payutc.png')}
+                       resizeMode='contain'
+                       style={{height:100, margin:20}}
+                       />
 
-			<Markdown styles={markdownStyles}>
-				{this.props.description}
-			</Markdown>
+                       <Markdown styles={markdownStyles}>
+                               {this.props.description}
+                       </Markdown>
 
-			<Hr style={{backgroundColor: colors.lightGray}}/>
+                       <Hr style={{backgroundColor: colors.lightGray}}/>
 
-			<Text>{this.props.type}</Text>
-			<Text>{this.props.parentName}</Text>
+                       <Text>{this.props.type}</Text>
+                       <Text>{this.props.parentName}</Text>
 
 		</ScrollView>;
 
