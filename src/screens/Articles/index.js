@@ -23,9 +23,13 @@ export default class ArticlesScreen extends React.Component {
 		}
 	};
 
+	componentWillUnmount() {
+		this.willUnmount = true;
+	}
+
 	constructor(props) {
 		super(props);
-
+		this.willUnmount = false;
 		this.state = {
 			page: 0,
 			pagination: DEFAULT_ARTICLES_PAGINATION,
@@ -61,6 +65,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	_loadMoreContentAsync() {
+		if(this.willUnmount) {return;} //à tester avant chaque setstate pour éviter les re-render inutiles et les "memory leaks" (d'après expo). Si on avait une biblio de gestion de l'état on aurait pas besoin de faire ça
 		if (!this.state.canLoadMorePortailArticles || this.state.loading) return
 
 		var promises = []
@@ -77,6 +82,7 @@ export default class ArticlesScreen extends React.Component {
 			promises.push(PortailArticles)
 		}
 
+		if(this.willUnmount) {return;}
 		if (promises) {
 			this.setState(prevState => ({ ...prevState, loading: true }))
 
@@ -92,20 +98,21 @@ export default class ArticlesScreen extends React.Component {
 				articles.sort((article1, article2) => {
 					return new Date(article1.created_at || article1.date_gmt) > new Date(article2.created_at || article2.date_gmt) ? -1 : 1
 				})
-
+				if(this.willUnmount) {return;}
 				this.setState(prevState => {
 					prevState.page++;
 					return prevState;
 				},
 				() => {
 					//il faut être sûr d'incrémenter la pagination avant d'autoriser le chargement de nouveaux articles
+					if(this.willUnmount) {return;}
 					this.setState( prevState => {
 						prevState.articles = prevState.articles.concat(articles);
 						prevState.loading = false;
 						return prevState;
 					});
 				});
-			}).catch((e) => {console.warn(e); this.setState(prevState => ({ ...prevState, loading: false })) })
+			}).catch((e) => {console.warn(e); if(this.willUnmount) {return;} this.setState(prevState => ({ ...prevState, loading: false })) })
 		}
 	}
 
@@ -120,6 +127,7 @@ export default class ArticlesScreen extends React.Component {
 					return article
 				})
 			}).catch(([response, status]) => {
+				if(this.willUnmount) {return;}
 				switch(status) {
 					case 416:
 						this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
@@ -148,6 +156,7 @@ export default class ArticlesScreen extends React.Component {
 				return article
 			})
 		}).catch(([response, status]) => {
+			if(this.willUnmount) {return;}
 			if (status === 416)
 				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }))
 
@@ -156,6 +165,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	unselectFilter(name) {
+		if(this.willUnmount) {return;}
 		this.setState(prevState => {
 			if (prevState.selectedFilters.length === 1 && prevState.selectedFilters.includes(name))
 				return prevState
@@ -170,6 +180,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	onlySelectFilter(name) {
+		if(this.willUnmount) {return;}
 		this.setState(prevState => {
 			prevState.selectedFilters = [name]
 
@@ -178,6 +189,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	selectFilter(name) {
+		if(this.willUnmount) {return;}
 		this.setState(prevState => {
 			prevState.selectedFilters.push(name)
 
