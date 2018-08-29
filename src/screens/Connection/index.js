@@ -237,7 +237,7 @@ export default class ConnectionScreen extends React.Component {
 				</View>
 				<HeaderView
 					title="Connectez-vous"
-					subtitle="Pour utiliser pleinement l'application"
+					subtitle="pour utiliser pleinement l'application"
 				/>
 				<View style={ viewStyle }>
 					<TextInput style={ styles.bigButton }
