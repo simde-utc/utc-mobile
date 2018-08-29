@@ -10,6 +10,7 @@ import { tabBar } from './tabBar';
 import { assosListTabBar } from './assosListTabBar';
 import { assoTabBar } from './assoTabBar';
 import { article } from './Article';
+import { mainLayout } from './mainLayout';
 
 const styles = {
 	// General styles
@@ -24,6 +25,7 @@ const styles = {
 	bigButton,
 	article,
 	assoTabBar,
+	mainLayout,
 
 	// Getter function
 	get: function(...paths) {
