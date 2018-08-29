@@ -137,7 +137,8 @@ this.isUnMounted = true;
 class PresentationView extends React.Component {
 
 render() {
-	return <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
+	return <View style={{backgroundColor: colors.veryLightGray}}>
+		<ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
 			 <Image
                        source={this.props.logo || require('../../img/payutc.png')}
                        resizeMode='contain'
@@ -153,7 +154,8 @@ render() {
                        <Text>{this.props.type}</Text>
                        <Text>{this.props.parentName}</Text>
 
-		</ScrollView>;
+		</ScrollView>
+		</View>;
 
 	}
 
