@@ -116,7 +116,7 @@ var Tab = createMaterialTopTabNavigator(
 	{
 		tabBarOptions: {
 			style: styles.assoTabBar.style,
-			labelStyle: styles.tabBar.label,
+			labelStyle: styles.assoTabBar.label,
 
 		},
 		backBehavior: 'none',
