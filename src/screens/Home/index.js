@@ -94,6 +94,12 @@ export default class HomeScreen extends React.Component {
 					prevState.config[index[0]][index[1] - 1] = toEdit
 				}
 			}
+			else {
+				if (index[0] % 2 === 1 && !toEdit.extend) {
+					prevState.config[index[0]] = prevState.config[index[0] - 1]
+					prevState.config[index[0] - 1] = toEdit
+				}
+			}
 
 			toEdit.extend = !toEdit.extend
 
