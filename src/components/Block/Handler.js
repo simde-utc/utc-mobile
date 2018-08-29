@@ -98,7 +98,7 @@ export default class BlockHandler extends React.Component {
                     deleteMode={ this.state.deleteMode }
                     onDeleteMode={ this.onDeleteModeChange.bind(this) }
                     blocks={ this._getConfig(this.state.blocks) }
-                    onPressNewBlock={ (index) => {
+                    onPressNewBlock={(index) => {
                         // Si on demande d'ajouter un block via l'utlitaire, on ajoute un block dans la grille global,
                         // pas dans le dossier d'outils
                         if (this.props.addTools !== false && index[0] === this.props.blocks.length)
@@ -107,6 +107,8 @@ export default class BlockHandler extends React.Component {
                         if (this.props.onPressNewBlock)
                             this.props.onPressNewBlock(index)
                     }}
+                    onResize={ (index) => { this.props.onResize && this.props.onResize(index) } }
+                    onDelete={ (index) => { this.props.onDelete && this.props.onDelete(index) } }
                 />
             </ScrollView>
 		)

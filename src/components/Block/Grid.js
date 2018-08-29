@@ -48,6 +48,8 @@ export default class GridBlock extends React.Component {
                     deleteMode={ this.props.deleteMode }
                     onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                     onPressNewBlock={ (index) => { this.props.onPressNewBlock && this.props.onPressNewBlock(index) } }
+                    onResize={ (index) => { this.props.onResize && this.props.onResize(index) } }
+                    onDelete={ (index) => { this.props.onDelete && this.props.onDelete(index) } }
                     plainEmpty={ true }
                 />
             )
@@ -70,6 +72,8 @@ export default class GridBlock extends React.Component {
                         onEditMode={ (editMode) => { this.props.onEditMode && this.props.onEditMode(editMode) } }
                         deleteMode={ this.props.deleteMode }
                         onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
+                        onResize={ (index) => { this.props.onResize && this.props.onResize(index) } }
+                        onDelete={ (index) => { this.props.onDelete && this.props.onDelete(index) } }
                         text={ config.text }
                         image={ config.image }
                         extend={ config.extend }

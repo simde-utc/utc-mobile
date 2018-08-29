@@ -38,6 +38,8 @@ export default class BlockFolder extends React.Component {
                 deleteMode={ this.props.deleteMode }
                 onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
                 onPressNewBlock={ (index) => { this.props.onPressNewBlock && this.props.onPressNewBlock(index) } }
+                onResize={ (index) => { this.props.onResize && this.props.onResize(index) } }
+                onDelete={ (index) => { this.props.onDelete && this.props.onDelete(index) } }
             />
 		)
 	}

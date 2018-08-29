@@ -132,8 +132,8 @@ export default class Block extends React.Component {
                     		/>);
 
 		}
-                
-        		
+
+
             }
         }
         else if (text) {
@@ -162,7 +162,7 @@ export default class Block extends React.Component {
                 <TouchableHighlight underlayColor={ '#eee' }
                     key='resize'
                     style={ resizeStyle }
-                    onPress={ this.props.onResize && this.props.onResize(this.props.id) }
+                    onPress={() => { this.props.onResize && this.props.onResize(this.props.id) }}
                 >
                     <Text>r</Text>
     			</TouchableHighlight>
@@ -174,7 +174,7 @@ export default class Block extends React.Component {
                 <TouchableHighlight underlayColor={ '#eee' }
                     key='delete'
                     style={ deleteStyle }
-                    onPress={ this.props.onDelete && this.props.onDelete(this.props.id) }
+                    onPress={() => { this.props.onDelete && this.props.onDelete(this.props.id) }}
                 >
                     <Text>x</Text>
     			</TouchableHighlight>
