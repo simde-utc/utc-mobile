@@ -22,6 +22,7 @@ export default class AssosScreen extends React.Component {
 	var name = navigation.getParam('name', 'Associations');
 	var foreColor = colors.white;
 	var color = '';
+	var margin = 0;
 	switch (name) {
 		case 'Bureau des Etudiants':
 			color = colors.bdeBack;
@@ -44,6 +45,7 @@ export default class AssosScreen extends React.Component {
 		default:
 			color = colors.white;
 			foreColor = colors.gray;
+			margin = 15;
 			break;
 	}
     return {
@@ -52,7 +54,7 @@ export default class AssosScreen extends React.Component {
 	headerStyle: {
 		backgroundColor: color,
 	},
-	headerTitle: <Text adjustsFontSizeToFit={true}>{name}</Text>,
+	headerTitle: <Text style={{color: foreColor, marginLeft: margin}} adjustsFontSizeToFit={true}>{name}</Text>,
     };
   };
 
