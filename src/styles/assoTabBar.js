@@ -1,6 +1,6 @@
 import { colors } from './variables';
 
-export const tabBar = {
+export const assoTabBar = {
 	style: {
 		backgroundColor: colors.lightBlue,
 	},

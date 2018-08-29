@@ -52,6 +52,7 @@ export default class AssosScreen extends React.Component {
 	headerStyle: {
 		backgroundColor: color,
 	},
+	headerTitle: <Text adjustsFontSizeToFit={true}>{name}</Text>,
     };
   };
 

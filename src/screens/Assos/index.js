@@ -1,4 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
+import React from 'react';
+import {Text} from 'react-native';
 
 import AssosScreen from './Assos';
 import AssoScreen from './Asso';
@@ -10,9 +12,12 @@ export default Assos = createStackNavigator(
 	},
 	Asso: {
 		screen: AssoScreen,
-		navigationOptions: ({ navigation }) => ({
-			title: navigation.state.params.name,
-		}),
+		navigationOptions: ({ navigation }) => {
+				return {
+				title: navigation.state.params.name,
+				headerTitle: <Text adjustsFontSizeToFit={true}>{navigation.state.params.name}</Text>,
+				}
+		},
 	}
 },
 {
