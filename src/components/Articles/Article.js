@@ -68,6 +68,14 @@ export default class ArticleComponent extends React.PureComponent {
 	      }
 	    });
 	};
+
+	_navigateFull(){
+		if(!this.state.folded) {
+			this.props.navigation.navigate('fullArticle', {
+				data: this.props.data,
+			});
+		}
+	}
 	
 	render() {
 		return (
@@ -103,39 +111,25 @@ export default class ArticleComponent extends React.PureComponent {
 					 />
 					{/*** on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ***/}
 				</View>
-				{/***IMAGE***/}
-				{this.image &&
-					<View style={styles.article.imageContainer}>
-						<Image style={{height: 100, width: Dimensions.get('window').width}} resizeMode={this.imageResizeMode} resizeMethod={'scale'}  source={{uri: this.image}} />
-					</View>
-				}
-				<View style={styles.article.contentContainer}>
-					{/***DESCRIPTION***/}
-					{this.state.folded &&
-						<View style={{maxHeight:50}}>
-							{this.props.data["description"] ?
-								<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> : 
-								<HTML style={{textAlign: 'left', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
-							}
+				<TouchableHighlight onPress={() => this._navigateFull() } underlayColor={this.state.folded ? '#ffffff00' : '#33333333'}><View>
+					{/***IMAGE***/}
+					{this.image &&
+						<View style={styles.article.imageContainer}>
+							<Image style={{height: 100, width: Dimensions.get('window').width}} resizeMode={this.imageResizeMode} resizeMethod={'scale'}  source={{uri: this.image}} />
 						</View>
 					}
-					{/***CONTENU COMPLET***/}
-					{!this.state.folded &&
-						<View>
-						 {this.props.data["date_gmt"] ?
-							<HTML
-								html={this.props.data["content"]}
-								onLinkPress={ (e, href) => {this._openURI(href);} }
-								imagesMaxWidth={Dimensions.get('window').width}
-					 		/> :
-							<Markdown styles={styles.article.contentMarkdown}>
-								{this.props.data["content"]}
-							</Markdown>
+					<View style={styles.article.contentContainer}>
+						{/***DESCRIPTION***/}
+						{!this.state.folded &&
+							<View style={{maxHeight:50}}>
+								{this.props.data["description"] ?
+									<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> : 
+									<HTML style={{textAlign: 'left', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
+								}
+							</View>
 						}
-						</View>
-							
-					}
-				</View>
+					</View>
+				</View></TouchableHighlight>
 				{/***BOUTON DE DEVELOPPEMENT***/}
 				<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
 						<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
