@@ -9,7 +9,7 @@ import { bigButton } from './bigButton';
 import { tabBar } from './tabBar';
 import { assosListTabBar } from './assosListTabBar';
 import { assoTabBar } from './assoTabBar';
-import { article } from './Article';
+import { article } from './article';
 import { mainLayout } from './mainLayout';
 
 const styles = {
@@ -17,7 +17,7 @@ const styles = {
 	...layout,
 	text,
 	img,
-	
+
 	// Component styles
 	assosListTabBar,
 	tabBar,

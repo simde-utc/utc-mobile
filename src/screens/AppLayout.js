@@ -2,6 +2,7 @@ import React from 'react'
 import { ScrollView, View, Text, Image, Dimensions } from 'react-native'
 import { createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 
+import CASAuth from '../services/CASAuth'
 import PortailApi from '../services/Portail'
 import { colors } from '../styles/variables'
 import styles from '../styles/'
@@ -15,10 +16,28 @@ const show = (text) => (<View style={ styles.container.center }><Text style={ st
 const SettingsScreen = () => show('Settings')
 
 class CustomDrawerContentComponent extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			login: ''
+		}
+
+		if (CASAuth.isConnected()) {
+			CASAuth.getLogin().then((login) => {
+				this.setState((prevState) => {
+					prevState.login = login
+
+					return prevState
+				})
+			})
+		}
+	}
+
 	render() {
 		const headerStyle = styles.get('container.center', 'px.sm', 'py.lg', 'mb.lg', 'bg.lightBlue')
-		const headerImagePath = PortailApi.isActive() ? require('../img/icon.png') : require('../img/icon.png')
-		const headerImageStyle = PortailApi.isActive() ? styles.img.bigAvatar : styles.img.bigThumbnail
+		const headerImagePath = CASAuth.isConnected() ? { uri: 'https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur?username=' + this.state.login } : require('../img/icon.png')
+		const headerImageStyle = PortailApi.isConnected() ? styles.img.bigAvatar : styles.img.bigThumbnail
 		const headerText = PortailApi.getUser().name
 		const headerTextStyle = styles.get('text.h1', 'text.yellow', 'text.center')
 
@@ -26,7 +45,7 @@ class CustomDrawerContentComponent extends React.Component {
 			<ScrollView style={ styles.get('bg.lightBlue') }>
 				<SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
 					<View style={ headerStyle }>
-						<Image style={ headerImageStyle } source={ headerImagePath } />
+						<Image style={ headerImageStyle } source={ headerImagePath } resizeMode="center" />
 						<Text style={ headerTextStyle }>{ headerText }</Text>
 					</View>
 					<DrawerItems {...this.props} />

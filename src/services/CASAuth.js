@@ -63,6 +63,12 @@ class CASAuth extends Api {
 		return Storage.getSensitiveData('cas')
 	}
 
+	getLogin() {
+		return Storage.getSensitiveData('cas').then((data) => {
+			return data.login
+		})
+	}
+
 	autoLogin() {
 		return this.getData().then((data) => {
 			return this.login(data.login, data.password).then((response) => {
