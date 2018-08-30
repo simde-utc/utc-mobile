@@ -2,14 +2,11 @@ import { colors } from './variables';
 
 export const article = {
 	container: {
-		borderWidth: 1,
-		borderColor: colors.lightGray,
-		marginHorizontal: 5,
 		marginBottom:10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		padding:10,
+		padding: 15,
 		paddingBottom: 5,
 	},
 
@@ -65,15 +62,9 @@ export const article = {
 	descriptionConstants: {
 		textColor: colors.black,
 	},
-	authorContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginLeft: 3,
-	},
 	authorImage: {
-		height:30,
-		width:30,
+		height: 50,
+		width: 50,
 	},
 	dateText: {
 		color: colors.gray,
@@ -83,8 +74,11 @@ export const article = {
 	},
 	headersContainer: {
 		flexDirection: 'row',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		alignItems: 'center',
+		flex: 1,
+		backgroundColor: 'red',
+		width: '80%',
 	},
 	authorText: {
 		color: colors.black,
