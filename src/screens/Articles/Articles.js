@@ -247,7 +247,7 @@ export default class ArticlesScreen extends React.Component {
 				<FlatList
 					ref={(component) => ( this.flatList = component )}
 					data={ data }
-					renderItem={({item}) => <ArticleComponent navigation={this.props.navigation} data={item} />}
+					renderItem={({item}) => <ArticleComponent navigation={this.props.navigation} data={item} portailInstance={Portail}/>}
 					onEndReached={ this._loadMoreContentAsync.bind(this) }
 					onEndReachedThreshold = {THRESHOLD}
 					keyExtractor={ (article) => article['article_type'] + '_' + article['id'] }
