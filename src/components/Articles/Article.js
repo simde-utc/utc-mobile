@@ -7,9 +7,25 @@ import Markdown from 'react-native-simple-markdown';
 import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
 import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 import LogoUTC from '../../img/icon.png';
+import LikeOn from '../../img/icons/like.png';
+import LikeOff from '../../img/icons/like-off.png';
+import DislikeOn from '../../img/icons/dislike.png';
+import DislikeOff from '../../img/icons/dislike-off.png';
+import CommentsIcon from './CommentsIcon';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+
+class Icon extends React.PureComponent {
+//en attendant le full PNG dans toute l'appli y compris ../Icon
+
+render() {
+	return(
+		<Image source={this.props.image} style={{height: this.props.height||30, width: this.props.width||30}} />
+	);
+}
+
+}
 
 export default class ArticleComponent extends React.PureComponent {
 	constructor(props) {
@@ -130,6 +146,13 @@ export default class ArticleComponent extends React.PureComponent {
 						}
 					</View>
 				</View></TouchableHighlight>
+				{/*** BOUTONS D'ACTION ***/}
+				<View style={styles.article.actionsContainer}>
+					<Icon image={LikeOn} />
+					<Icon image={DislikeOff} />
+					<CommentsIcon number={3}/>
+				
+				</View>
 				{/***BOUTON DE DEVELOPPEMENT***/}
 				<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
 						<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
