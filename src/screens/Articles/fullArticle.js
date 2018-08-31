@@ -5,6 +5,8 @@ import LogoUTC from '../../img/icon.png';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
 
+const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+
 export default class fullArticleScreen extends React.PureComponent {
 	static navigationOptions = {
 		title: 'Article',
@@ -21,10 +23,6 @@ export default class fullArticleScreen extends React.PureComponent {
 		if(this.props.data["wp:featuredmedia"]) {
 			if(SUPPORTED_IMAGE_FORMATS.includes(this.props.data["wp:featuredmedia"]["mime_type"])) {
 				this.image = this.props.data["wp:featuredmedia"]["source_url"];
-				if (this.props.data["wp:featuredmedia"]["height"] > this.props.data["wp:featuredmedia"]["width"]) {
-					//l'auteur de l'article est graphiquement mauvais, mais grâce à wordpress on peut le détecter
-					this.imageResizeMode = "contain";
-				}
 			}
 		}
 
@@ -54,10 +52,6 @@ export default class fullArticleScreen extends React.PureComponent {
 		if(this.data["wp:featuredmedia"]) {
 			if(SUPPORTED_IMAGE_FORMATS.includes(this.data["wp:featuredmedia"]["mime_type"])) {
 				this.image = this.data["wp:featuredmedia"]["source_url"];
-				if (this.data["wp:featuredmedia"]["height"] > this.data["wp:featuredmedia"]["width"]) {
-					//l'auteur de l'article est graphiquement mauvais, mais grâce à wordpress on peut le détecter
-					this.imageResizeMode = "contain";
-				}
 			}
 		}
 
@@ -65,6 +59,16 @@ export default class fullArticleScreen extends React.PureComponent {
 			this.image = this.data["image"]; //on prie pour que l'image soit compatible
 		}
 	}
+
+	_openURI = (uri) => {
+	    Linking.canOpenURL(uri).then(supported => {
+	      if (supported) {
+		Linking.openURL(uri);
+	      } else {
+		console.log("Don't know how to open URI: " + uri);
+	      }
+	    });
+	};
 
 	
 	render() {
