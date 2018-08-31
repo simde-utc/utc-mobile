@@ -93,6 +93,7 @@ export const article = {
 	actionsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
+		alignItems: 'flex-end',
 		width: '100%',
 	},
 	commentsIconText: {
@@ -103,4 +104,8 @@ export const article = {
 		height: 15,
 		color: colors.yellow,
 	},
+	actionIcon :{
+		height:30,
+		width: 30,
+	}
 };
