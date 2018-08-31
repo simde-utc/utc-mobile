@@ -28,7 +28,20 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 		this.image = null;
 		this.imageResizeMode = "cover";
+		this._getActionsAndComments();
 		this._handleMedia();
+	}
+
+	_getActionsAndComments() {
+		if(this.props.data["article_type"] == 'assos') {
+			this.props.portailInstance.getUserArticleActions(this.props.data["id"]).then( ([response, status]) => {
+				if(response == []) {this.setState(prevState => ({ ...prevState, liked: false, disliked: false }));}
+				else {
+					if(response["liked"] == "true") {this.setState(prevState => ({ ...prevState, liked: true, disliked: false }));}
+					if(response["liked"] == "false") {this.setState(prevState => ({ ...prevState, liked: false, disliked: true }));}
+				}
+			});
+		}
 	}
 
 	_prettyDate(string, locale) {
@@ -98,7 +111,7 @@ export default class ArticleComponent extends React.PureComponent {
 					<View style={styles.article.authorContainer}>
 						<Image
 						style={styles.article.authorImage}
-						source={this.props.data["owned_by"] ? {uri: this.props.data["owned_by"]["image"]} : LogoUTC}
+						source={this.props.data["owned_by"] && this.props.data["owned_by"]["image"] ? {uri: this.props.data["owned_by"]["image"]} : LogoUTC}
 						resizeMode={"contain"}
 						resizeMethod={"resize"}
 						/>
