@@ -107,7 +107,9 @@ export default class BlockHandler extends React.Component {
                         if (this.props.onPressNewBlock)
                             this.props.onPressNewBlock(index)
                     }}
+                    onToggleFolder={ (index) => { this.props.onToggleFolder && this.props.onToggleFolder(index) } }
                     onResize={ (index) => { this.props.onResize && this.props.onResize(index) } }
+                    onSwitch={ (index) => { this.props.onSwitch && this.props.onSwitch(index) } }
                     onDelete={ (index) => { this.props.onDelete && this.props.onDelete(index) } }
                 />
             </ScrollView>

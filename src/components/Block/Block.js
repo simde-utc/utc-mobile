@@ -20,14 +20,27 @@ const deleteStyle = {
     zIndex: 100,
 }
 
-const resizeStyle = {
+const folderStyle = {
     position: 'absolute',
     backgroundColor: colors.lightGray,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: colors.lightGray,
-    bottom: 0,
-    left: 0,
+    width: 20,
+    height: 20,
+	top: 0,
+	left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
+}
+
+const editStyle = {
+    position: 'absolute',
+    backgroundColor: colors.lightGray,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: colors.lightGray,
     width: 20,
     height: 20,
     alignItems: 'center',
@@ -159,13 +172,31 @@ export default class Block extends React.Component {
 
         if (this.props.editMode && this.props.editable !== false) {
             tools.push(
-                <TouchableHighlight underlayColor={ '#eee' }
-                    key='resize'
-                    style={ resizeStyle }
-                    onPress={() => { this.props.onResize && this.props.onResize(this.props.id) }}
-                >
-                    <Text>r</Text>
-    			</TouchableHighlight>
+				<TouchableHighlight underlayColor={ '#eee' }
+					key='folder'
+					style={[ editStyle, { top: 0, left: 0 }]}
+					onPress={() => { this.props.onToggleFolder && this.props.onToggleFolder(this.props.id) }}
+				>
+					<Text>d</Text>
+				</TouchableHighlight>
+			)
+			tools.push(
+				<TouchableHighlight underlayColor={ '#eee' }
+					key='resize'
+					style={[ editStyle, { bottom: 0, left: 0 }]}
+					onPress={() => { this.props.onResize && this.props.onResize(this.props.id) }}
+				>
+					<Text>r</Text>
+				</TouchableHighlight>
+			)
+			tools.push(
+				<TouchableHighlight underlayColor={ '#eee' }
+					key='switch'
+					style={[ editStyle, { bottom: 0, right: 0 }]}
+					onPress={() => { this.props.onSwitch && this.props.onSwitch(this.props.id) }}
+				>
+					<Text>s</Text>
+				</TouchableHighlight>
             )
         }
 
