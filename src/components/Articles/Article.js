@@ -16,22 +16,15 @@ import CommentsIcon from './CommentsIcon';
 
 const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
-class Icon extends React.PureComponent {
-//en attendant le full PNG dans toute l'appli y compris ../Icon
-
-render() {
-	return(
-		<Image source={this.props.image} style={{height: this.props.height||30, width: this.props.width||30}} />
-	);
-}
-
-}
-
 export default class ArticleComponent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			folded: true,
+			liked: false,
+			disliked: false,
+			seen: false,
+			comments: 0,
 		}
 		this.image = null;
 		this.imageResizeMode = "cover";
@@ -85,11 +78,14 @@ export default class ArticleComponent extends React.PureComponent {
 	    });
 	};
 
-	_navigateFull(){
+	_contentTap(){
 		if(!this.state.folded) {
 			this.props.navigation.navigate('fullArticle', {
 				data: this.props.data,
 			});
+		}
+		else {
+			this._toggleFolded();
 		}
 	}
 	
@@ -127,7 +123,7 @@ export default class ArticleComponent extends React.PureComponent {
 					 />
 					{/*** on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ***/}
 				</View>
-				<TouchableHighlight onPress={() => this._navigateFull() } underlayColor={this.state.folded ? '#ffffff00' : '#33333333'}><View>
+				<TouchableHighlight onPress={() => this._contentTap() } underlayColor={this.state.folded ? '#ffffff00' : '#33333333'}><View>
 					{/***IMAGE***/}
 					{this.image &&
 						<View style={styles.article.imageContainer}>
@@ -148,9 +144,9 @@ export default class ArticleComponent extends React.PureComponent {
 				</View></TouchableHighlight>
 				{/*** BOUTONS D'ACTION ***/}
 				<View style={styles.article.actionsContainer}>
-					<Icon image={LikeOn} />
-					<Icon image={DislikeOff} />
-					<CommentsIcon number={3}/>
+					<Image source={this.state.liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
+					<Image source={this.state.disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
+					<CommentsIcon number={this.state.comments}/>
 				
 				</View>
 				{/***BOUTON DE DEVELOPPEMENT***/}
