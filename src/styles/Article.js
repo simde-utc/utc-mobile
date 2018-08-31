@@ -90,4 +90,17 @@ export const article = {
 		color: colors.black,
 		marginLeft: 4,
 	},
+	actionsContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		width: '100%',
+	},
+	commentsIconText: {
+		marginRight: 0.5,
+		fontSize: 10,
+		textAlign: 'center',
+		width: 15,
+		height: 15,
+		color: colors.yellow,
+	},
 };
