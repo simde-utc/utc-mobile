@@ -19,7 +19,7 @@ const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/
 export default class ArticleComponent extends React.PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {
+		this.state = this.props.initialState || {
 			folded: true,
 			liked: false,
 			disliked: false,
@@ -153,7 +153,7 @@ export default class ArticleComponent extends React.PureComponent {
 	_contentTap(){
 		if(!this.state.folded) {
 			this.props.navigation.navigate('fullArticle', {
-				data: this.props.data,
+				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state}/>,
 			});
 		}
 		else {
