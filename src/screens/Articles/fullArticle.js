@@ -1,5 +1,5 @@
 import React from 'react';
-import {View , Text} from 'react-native';
+import {ScrollView} from 'react-native';
 
 export default class fullArticleScreen extends React.PureComponent {
 	static navigationOptions = {
@@ -17,6 +17,6 @@ export default class fullArticleScreen extends React.PureComponent {
 	
 	render() 
 	{
-		return (<View>{this.article}</View>);
+		return (<ScrollView>{this.article}</ScrollView>);
 	}
 }

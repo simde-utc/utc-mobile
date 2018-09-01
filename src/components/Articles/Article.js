@@ -54,6 +54,14 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 	}
 
+	_touchComments() {
+		if(!this.props.fullScreen) {
+			this._navigateFullArticle();
+		}
+		else {
+			//TODO peut-être scroll down et highlight?
+		}
+	}
 
 	_touchLike() {
 		var promise;
@@ -98,6 +106,7 @@ export default class ArticleComponent extends React.PureComponent {
 				if(response["liked"] == "false") {liked = false; disliked = true; }
 			}
 			this.setState(prevState => ({ ...prevState, liked: liked, disliked: disliked}));
+			if(this.props.requestParentStateRefresh) {this.props.requestParentStateRefresh();}
 		});
 	}
 
@@ -152,13 +161,17 @@ export default class ArticleComponent extends React.PureComponent {
 
 	_contentTap(){
 		if(!this.state.folded) {
-			this.props.navigation.navigate('fullArticle', {
-				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state}/>,
-			});
+			this._navigateFullArticle();
 		}
 		else {
 			this._toggleFolded();
 		}
+	}
+
+	_navigateFullArticle() {
+		this.props.navigation.navigate('fullArticle', {
+				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state} requestParentStateRefresh={this._getActionsAndComments}/>,
+			});
 	}
 	
 	render() {
@@ -204,13 +217,28 @@ export default class ArticleComponent extends React.PureComponent {
 					}
 					<View style={styles.article.contentContainer}>
 						{/***DESCRIPTION***/}
-						{!this.state.folded &&
+						{(!this.state.folded && !this.props.fullScreen) &&
 							<View style={{maxHeight:50}}>
 								{this.props.data["description"] ?
 									<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> : 
 									<HTML style={{textAlign: 'left', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
 								}
 							</View>
+						}
+						{/***CONTENU***/}
+						{this.props.fullScreen &&
+							<View>
+							 	{this.props.data["article_type"] == 'utc' ?
+								<HTML
+									html={this.props.data["content"]}
+									onLinkPress={ (e, href) => {this._openURI(href);} }
+									imagesMaxWidth={Dimensions.get('window').width}
+						 		/> :
+								<Markdown styles={styles.article.contentMarkdown}>
+									{this.props.data["content"]}
+								</Markdown>
+								}
+							</View>		
 						}
 					</View>
 				</View></TouchableHighlight>
@@ -220,19 +248,27 @@ export default class ArticleComponent extends React.PureComponent {
 					<TouchableHighlight onPress={() => this._touchLike()} underlayColor={'#ffffff33'}>
 						<Image source={this.state.liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
 					</TouchableHighlight>
+
 					<TouchableHighlight onPress={() => this._touchDislike()} underlayColor={'#ffffff33'}>
 						<Image source={this.state.disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
 					</TouchableHighlight>
-					<CommentsIcon number={this.state.comments}/>
+
+					<TouchableHighlight onPress={() => this._touchComments()} underlayColor={'#ffffff33'}>
+						<CommentsIcon number={this.state.comments}/>
+					</TouchableHighlight>
 				</View> :
 				<View style={styles.article.onlyCommentsActionsContainer}>
-					<CommentsIcon number={this.state.comments}/>
+					<TouchableHighlight onPress={() => this._touchComments()} underlayColor={'#ffffff33'}>
+						<CommentsIcon number={this.state.comments}/>
+					</TouchableHighlight>
 				</View>
 				}
 				{/***BOUTON DE DEVELOPPEMENT***/}
-				<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
-						<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
-				</TouchableHighlight>
+				{!this.props.fullScreen &&
+					<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
+							<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
+					</TouchableHighlight>
+				}
 			</View>
 		);
 
