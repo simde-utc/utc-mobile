@@ -34,15 +34,74 @@ export default class ArticleComponent extends React.PureComponent {
 
 	_getActionsAndComments() {
 		if(this.props.data["article_type"] == 'assos') {
-			this.props.portailInstance.getUserArticleActions(this.props.data["id"]).then( ([response, status]) => {
-				if(response == []) {this.setState(prevState => ({ ...prevState, liked: false, disliked: false }));}
+
+		Promise.all(
+		[this.props.portailInstance.getUserArticleActions(this.props.data["id"]),
+		this.props.portailInstance.getArticleRootComments(this.props.data["id"])])
+		.then( ( [[responseActions, statusActions], [responseComments, statusComments]] )=> {
+				var liked, disliked;
+				if(!responseActions["liked"]) {liked = false; disliked = false;}
 				else {
-					if(response["liked"] == "true") {this.setState(prevState => ({ ...prevState, liked: true, disliked: false }));}
-					if(response["liked"] == "false") {this.setState(prevState => ({ ...prevState, liked: false, disliked: true }));}
+					if(responseActions["liked"] == "true") {liked = true; disliked = false;}
+					if(responseActions["liked"] == "false") {liked = false; disliked = true; }
 				}
+		
+				this.comments = responseComments;
+				this.setState(prevState => ({ ...prevState, comments: responseComments.length, liked: liked, disliked: disliked}));
 			});
+
+			
 		}
 	}
+
+
+	_touchLike() {
+		var promise;
+		if(this.state.liked == false && this.state.disliked == false) {
+			promise = this.props.portailInstance.createArticleAction(this.props.data["id"], "liked", "true");
+		}
+
+		if(this.state.liked == false && this.state.disliked == true) {
+			promise = this.props.portailInstance.updateArticleAction(this.props.data["id"], "liked", "true");
+		}
+
+		if(this.state.liked == true) {
+			promise = this.props.portailInstance.deleteArticleAction(this.props.data["id"], "liked");
+		}
+
+		this._handleLikeDislikePromise(promise);		
+	}
+
+	_touchDislike() {
+		var promise;
+		if(this.state.disliked == false && this.state.liked == false) {
+			promise = this.props.portailInstance.createArticleAction(this.props.data["id"], "liked", "false");
+		}
+
+		if(this.state.disliked == false && this.state.liked == true) {
+			promise = this.props.portailInstance.updateArticleAction(this.props.data["id"], "liked", "false");
+		}
+
+		if(this.state.disliked == true) {
+			promise = this.props.portailInstance.deleteArticleAction(this.props.data["id"], "liked");
+		}
+
+		this._handleLikeDislikePromise(promise);	
+	}
+
+	_handleLikeDislikePromise(promise) {
+		return promise.then( ([response, status]) => {
+			var liked, disliked;
+			if(response === undefined || response["liked"] === undefined) {liked = false; disliked = false;}
+			else {
+				if(response["liked"] == "true") {liked = true; disliked = false;}
+				if(response["liked"] == "false") {liked = false; disliked = true; }
+			}
+			this.setState(prevState => ({ ...prevState, liked: liked, disliked: disliked}));
+		});
+	}
+
+	
 
 	_prettyDate(string, locale) {
 	let date = new Date(string);
@@ -156,12 +215,20 @@ export default class ArticleComponent extends React.PureComponent {
 					</View>
 				</View></TouchableHighlight>
 				{/*** BOUTONS D'ACTION ***/}
-				<View style={styles.article.actionsContainer}>
-					<Image source={this.state.liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
-					<Image source={this.state.disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
+				{(this.props.fullActions && this.props.data["article_type"] == 'assos') ?
+				<View style={styles.article.fullActionsContainer}>
+					<TouchableHighlight onPress={() => this._touchLike()} underlayColor={'#ffffff33'}>
+						<Image source={this.state.liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
+					</TouchableHighlight>
+					<TouchableHighlight onPress={() => this._touchDislike()} underlayColor={'#ffffff33'}>
+						<Image source={this.state.disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
+					</TouchableHighlight>
 					<CommentsIcon number={this.state.comments}/>
-				
+				</View> :
+				<View style={styles.article.onlyCommentsActionsContainer}>
+					<CommentsIcon number={this.state.comments}/>
 				</View>
+				}
 				{/***BOUTON DE DEVELOPPEMENT***/}
 				<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
 						<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />

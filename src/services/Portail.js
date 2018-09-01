@@ -33,6 +33,7 @@ export class Portail extends Api {
 		'user-edit-articles-actions-user',
 		'user-get-comments-articles',
 		'user-set-comments-articles',
+		'user-manage-articles-actions-user',
 		
 	]
 
@@ -48,6 +49,16 @@ export class Portail extends Api {
 		return super.call(request, method, queries, body, headers, validStatus, true)
 
 	}
+
+	callWithoutJSON(request, method, queries, body, validStatus) {
+		headers = Api.HEADER_JSON
+
+		if (Object.keys(Portail.token).length !== 0) {
+			headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token }
+		return super.call(request, method, queries, body, headers, validStatus, false)
+
+	}
+
 
 	isConnected() {
 		return Object.keys(Portail.token).length !== 0 && Object.keys(Portail.user).length !== 0
@@ -378,6 +389,40 @@ export class Portail extends Api {
 			Portail.API_V1 + 'visibilities'
 		)
 
+	}
+
+	updateArticleAction(uuid, key, value) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions/' + key,
+			Api.PUT,
+			{
+				value : value,
+			},
+		)
+	}
+
+	createArticleAction(uuid, key, value) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions',
+			Api.POST,
+			{
+				key: key,
+				value : value,
+			},
+		)
+	}
+
+	deleteArticleAction(uuid, key) {
+		this._checkConnected();
+
+		return this.callWithoutJSON(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions/' + key,
+			Api.DELETE,
+		)
 	}
 
 
