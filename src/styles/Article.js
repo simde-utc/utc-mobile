@@ -90,9 +90,15 @@ export const article = {
 		color: colors.black,
 		marginLeft: 4,
 	},
-	actionsContainer: {
+	fullActionsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
+		alignItems: 'flex-end',
+		width: '100%',
+	},
+	onlyCommentsActionsContainer :{
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
 		alignItems: 'flex-end',
 		width: '100%',
 	},
