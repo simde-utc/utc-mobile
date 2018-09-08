@@ -67,11 +67,12 @@ _loadDetails() {
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
 		if(data["parent"]) {
-			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"], parentId: data["parent"]["id"], parentName : data["parent"]["shortname"]}));
+			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], parentId: data["parent"]["id"], 
+parentName : data["parent"]["shortname"]}));
 		}
 		else {
 			//root : pas de parent
-			this.setState(prevState => ({ ...prevState, description: data["description"], type: data["type"]["name"]}));
+			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"]}));
 		}
 	}).catch( ([response, status]) => {
 		this.warn("Erreur lors de la connexion au portail : " + response + ' --- ' + status);
@@ -88,6 +89,7 @@ var Tab = createMaterialTopTabNavigator(
 					description={this.state.description}
 					parentName={this.state.parentName}
 					type={this.state.type}
+					logo={this.state.logo}
 					/>),
 			navigationOptions: ({ nav }) => ({
 				title: 'En bref'
@@ -139,11 +141,13 @@ class PresentationView extends React.Component {
 render() {
 	return <View style={{backgroundColor: colors.veryLightGray}}>
 		<ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
+			{this.props.logo &&
 			 <Image
-                       source={this.props.logo || require('../../img/payutc.png')}
-                       resizeMode='contain'
-                       style={{height:100, margin:20}}
-                       />
+                	       source={{uri: this.props.logo}}
+	                       resizeMode='contain'
+        	               style={{height:100, margin:20}}
+                	       />
+			}
 
                        <Markdown styles={markdownStyles}>
                                {this.props.description}
