@@ -42,7 +42,7 @@
         <circle class="cls-5" cx="10" cy="10" r="10"/>
         <circle class="cls-6" cx="10" cy="10" r="9.5"/>
       </g>
-      <text id="_18" data-name="18" class="cls-4" transform="translate(305 453)"><tspan x="-6.156" y="0">18</tspan></text>
+      <text id="_18" data-name="18" class="cls-4" transform="translate(305 453)"><tspan x="-6.156" y="0"></tspan></text>
     </g>
   </g>
 </svg>
