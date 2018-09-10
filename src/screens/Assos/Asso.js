@@ -142,16 +142,19 @@ render() {
 	return <View style={{backgroundColor: colors.veryLightGray}}>
 		<ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
 			{this.props.logo &&
+			<View style={{height:100, width: '100%'}}>
 			 <Image
                 	       source={{uri: this.props.logo}}
 	                       resizeMode='contain'
         	               style={{height:100, margin:20}}
                 	       />
+			</View>
 			}
-
+			<View style={{marginTop: 15}}>
                        <Markdown styles={markdownStyles}>
                                {this.props.description}
                        </Markdown>
+			</View>
 
                        <Hr style={{backgroundColor: colors.lightGray}}/>
 
