@@ -12,6 +12,7 @@ import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
 import CommentsIcon from './CommentsIcon';
+import Comments from './Comments';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
@@ -30,7 +31,16 @@ export default class ArticleComponent extends React.PureComponent {
 		this.imageResizeMode = "cover";
 		this._getActionsAndComments();
 		this._handleMedia();
+		this.unmounted = false;
 	}
+
+	
+	componentWillUnmount() {
+		//très fréquent lorsque les articles sortent d'une flatlist
+		this.unmounted = true;
+	}
+
+
 
 	_getActionsAndComments() {
 		if(this.props.data["article_type"] == 'assos') {
@@ -47,7 +57,9 @@ export default class ArticleComponent extends React.PureComponent {
 				}
 		
 				this.comments = responseComments;
-				this.setState(prevState => ({ ...prevState, comments: responseComments.length, liked: liked, disliked: disliked}));
+				if(!this.unmounted) {
+					this.setState(prevState => ({ ...prevState, comments: responseComments.length, liked: liked, disliked: disliked}));
+				}
 			});
 
 			
@@ -105,7 +117,9 @@ export default class ArticleComponent extends React.PureComponent {
 				if(response["liked"] == "true") {liked = true; disliked = false;}
 				if(response["liked"] == "false") {liked = false; disliked = true; }
 			}
-			this.setState(prevState => ({ ...prevState, liked: liked, disliked: disliked}));
+			if(!this.unmounted) {
+				this.setState(prevState => ({ ...prevState, liked: liked, disliked: disliked}));
+			}
 			if(this.props.requestParentStateRefresh) {this.props.requestParentStateRefresh();}
 		});
 	}
@@ -146,7 +160,9 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	_toggleFolded() {
-		this.setState(prevState => ({ ...prevState, folded: !prevState.folded }));
+		if(!this.unmounted) {
+			this.setState(prevState => ({ ...prevState, folded: !prevState.folded }));
+		}
 	}
 
 	_openURI = (uri) => {
@@ -170,7 +186,7 @@ export default class ArticleComponent extends React.PureComponent {
 
 	_navigateFullArticle() {
 		this.props.navigation.navigate('fullArticle', {
-				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state} requestParentStateRefresh={this._getActionsAndComments}/>,
+				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state} requestParentStateRefresh={this._getActionsAndComments} comments={this.comments}/>,
 			});
 	}
 	
@@ -268,6 +284,12 @@ export default class ArticleComponent extends React.PureComponent {
 					<TouchableHighlight onPress={() => this._toggleFolded() } style={styles.article.buttonContainer} underlayColor={'#33333333'}>
 							<Image style={styles.article.buttonImage} resizeMode={'contain'} resizeMethod={'resize'} source={ this.state.folded ? DownBlueDevelopArrow : UpYellowDevelopArrow} />
 					</TouchableHighlight>
+				}
+				{/***COMMENTAIRES***/}
+				{(this.props.fullScreen && this.state.comments>0 && this.props.comments) &&
+					<View style={{marginTop: 5}}>
+						<Comments data={this.props.comments} />
+					</View>
 				}
 			</View>
 		);
