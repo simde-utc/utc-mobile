@@ -21,7 +21,6 @@ export class Portail extends Api {
 	static user = {}
 
 	static notConnectedException = "Tried to call Portail route but not logged in."
-
 	static scopes = [
 		'user-create-info-identity-auth-app', // Tout simplement ajouter la connexion application
 		'user-create-info-identity-auth-cas', // Ajouter la connexion CAS
@@ -30,6 +29,12 @@ export class Portail extends Api {
 		'user-get-calendars',
 		'user-get-events',
 		'user-get-assos',
+		'user-create-articles-actions',
+		'user-edit-articles-actions-user',
+		'user-get-comments-articles',
+		'user-set-comments-articles',
+		'user-manage-articles-actions-user',
+		
 	]
 
 	constructor() {
@@ -44,6 +49,16 @@ export class Portail extends Api {
 		return super.call(request, method, queries, body, headers, validStatus, true)
 
 	}
+
+	callWithoutJSON(request, method, queries, body, validStatus) {
+		headers = Api.HEADER_JSON
+
+		if (Object.keys(Portail.token).length !== 0) {
+			headers.Authorization = Portail.token.token_type + ' ' + Portail.token.access_token }
+		return super.call(request, method, queries, body, headers, validStatus, false)
+
+	}
+
 
 	isConnected() {
 		return Object.keys(Portail.token).length !== 0 && Object.keys(Portail.user).length !== 0
@@ -313,6 +328,103 @@ export class Portail extends Api {
 			Api.GET,
 		)
 	}
+
+	getUserArticleActions(uuid) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions/',
+			Api.GET,
+		)
+	}
+
+	getArticleRootComments(uuid) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'articles/' + uuid + '/comments/',
+			Api.GET,
+		)
+	}
+
+	setArticleRootComment(uuid, body, visibilityId) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'articles/' + uuid + '/comments/',
+			Api.POST,
+			{
+				body: body,
+				visibility_id : visibilityId,
+			}
+		)
+	}
+
+	getArticleSubComment(artId, commId) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'articles/' + artId + '/comments/' + commId + '/comments/',
+			Api.GET,
+		)
+	}
+
+	setArticleSubComment(artId, commId, body, visibilityId) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'articles/' + artId + '/comments/' + commId + '/comments/',
+			Api.POST,
+			{
+				body: body,
+				visibility_id : visibilityId,
+			},
+		)
+	}
+
+	getPortailVisibilities() {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'visibilities'
+		)
+
+	}
+
+	updateArticleAction(uuid, key, value) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions/' + key,
+			Api.PUT,
+			{
+				value : value,
+			},
+		)
+	}
+
+	createArticleAction(uuid, key, value) {
+		this._checkConnected();
+
+		return this.call(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions',
+			Api.POST,
+			{
+				key: key,
+				value : value,
+			},
+		)
+	}
+
+	deleteArticleAction(uuid, key) {
+		this._checkConnected();
+
+		return this.callWithoutJSON(
+			Portail.API_V1 + 'user/articles/' + uuid + '/actions/' + key,
+			Api.DELETE,
+		)
+	}
+
 
 
 }
