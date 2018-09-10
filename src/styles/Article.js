@@ -95,6 +95,7 @@ export const article = {
 		justifyContent: 'space-evenly',
 		alignItems: 'flex-end',
 		width: '100%',
+		marginVertical: 5,
 	},
 	onlyCommentsActionsContainer :{
 		flexDirection: 'row',
