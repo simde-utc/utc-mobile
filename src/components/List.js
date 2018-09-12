@@ -10,11 +10,11 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
 
 import Icon from './Icon';
-import News from '../img/icons/news.svg'
-import Map from '../img/icons/map.svg'
-import Bell from '../img/icons/bell.svg'
-import Calendar from '../img/icons/calendar.svg'
-import Arrow from '../img/icons/arrow_yellow.svg'
+import News from '../img/icons/news.png'
+import Map from '../img/icons/map.png'
+import Bell from '../img/icons/bell.png'
+import Calendar from '../img/icons/calendar.png'
+import Arrow from '../img/icons/arrow_yellow.png'
 
 const nativeIcons = ["news", "map", "bell", "calendar"]
 
@@ -62,7 +62,7 @@ export default class List extends React.Component {
 		this._iconKeyToSvg = this._iconKeyToSvg.bind(this);
 		listStyle = this.props.style || listStyle;
 	}
-	
+
 	_keyExtractor(item, index) {
 		return String(index);
 	}
