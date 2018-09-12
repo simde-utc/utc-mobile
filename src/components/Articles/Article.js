@@ -34,7 +34,7 @@ export default class ArticleComponent extends React.PureComponent {
 		this.unmounted = false;
 	}
 
-	
+
 	componentWillUnmount() {
 		//très fréquent lorsque les articles sortent d'une flatlist
 		this.unmounted = true;
@@ -55,14 +55,14 @@ export default class ArticleComponent extends React.PureComponent {
 					if(responseActions["liked"] == "true") {liked = true; disliked = false;}
 					if(responseActions["liked"] == "false") {liked = false; disliked = true; }
 				}
-		
+
 				this.comments = responseComments;
 				if(!this.unmounted) {
 					this.setState(prevState => ({ ...prevState, comments: responseComments.length, liked: liked, disliked: disliked}));
 				}
 			});
 
-			
+
 		}
 	}
 
@@ -71,7 +71,8 @@ export default class ArticleComponent extends React.PureComponent {
 			this._navigateFullArticle();
 		}
 		else {
-			//TODO peut-être scroll down et highlight?
+			//TODO: scrolldown du scrollview et de la flatlist de niveau 1, et proposer édition d'un nouveau commentaire
+
 		}
 	}
 
@@ -89,7 +90,7 @@ export default class ArticleComponent extends React.PureComponent {
 			promise = this.props.portailInstance.deleteArticleAction(this.props.data["id"], "liked");
 		}
 
-		this._handleLikeDislikePromise(promise);		
+		this._handleLikeDislikePromise(promise);
 	}
 
 	_touchDislike() {
@@ -106,7 +107,7 @@ export default class ArticleComponent extends React.PureComponent {
 			promise = this.props.portailInstance.deleteArticleAction(this.props.data["id"], "liked");
 		}
 
-		this._handleLikeDislikePromise(promise);	
+		this._handleLikeDislikePromise(promise);
 	}
 
 	_handleLikeDislikePromise(promise) {
@@ -124,7 +125,7 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
-	
+
 
 	_prettyDate(string, locale) {
 	let date = new Date(string);
@@ -189,7 +190,7 @@ export default class ArticleComponent extends React.PureComponent {
 				article: <ArticleComponent {...this.props} fullScreen={true} initialState={this.state} requestParentStateRefresh={this._getActionsAndComments} comments={this.comments}/>,
 			});
 	}
-	
+
 	render() {
 		return (
 			<View style={styles.article.container}>
@@ -220,7 +221,7 @@ export default class ArticleComponent extends React.PureComponent {
 				<View style={styles.article.titleContainer}>
 					<HTML
 						html={'<span style="' + styles.article.title + '">' + this.props.data["title"] + '</span>'}
-				
+
 					 />
 					{/*** on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ***/}
 				</View>
@@ -236,7 +237,7 @@ export default class ArticleComponent extends React.PureComponent {
 						{(!this.state.folded && !this.props.fullScreen) &&
 							<View style={{maxHeight:50}}>
 								{this.props.data["description"] ?
-									<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> : 
+									<Text style={{textAlign: 'left', margin:0, padding:0, color: styles.article.descriptionConstants.textColor}}>{this.props.data["description"]}</Text> :
 									<HTML style={{textAlign: 'left', flex:1}} html={this.props.data["excerpt"]} imagesMaxWidth={Dimensions.get('window').width} />
 								}
 							</View>
@@ -254,7 +255,7 @@ export default class ArticleComponent extends React.PureComponent {
 									{this.props.data["content"]}
 								</Markdown>
 								}
-							</View>		
+							</View>
 						}
 					</View>
 				</View></TouchableHighlight>

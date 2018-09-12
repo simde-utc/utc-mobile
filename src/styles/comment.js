@@ -4,5 +4,6 @@ export const comment = {
 	container: {
 		backgroundColor: colors.white,
 		marginBottom: 5,
+		height:15,
 	},
 };
