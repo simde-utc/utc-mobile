@@ -37,6 +37,17 @@ const AppSwitch = createSwitchNavigator({
 const paddingTop = Platform.OS === 'android' ? StatusBar.currentHeight || (Platform.Version < 23 ? 25 : 24) : 0
 
 export default class App extends React.Component {
+constructor(props) {
+	super(props);
+	this.checkEnvVariables(); //on doit le mettre ici et pas dans les classes parce que certaines classes utilisent les variable d'environnement à l'appel d'un super donc pas de vérification possible
+}
+
+checkEnvVariables() {
+	if (!(process.env.PORTAIL_URL &&	process.env.PORTAIL_CLIENT_ID && process.env.PORTAIL_CLIENT_SECRET &&	process.env.ACTUS_UTC_FEED_LOGIN &&	process.env.CAS_URL)) {
+			throw "Could not find environment variables. Please read the f* manual. Cordialement, le SiMDE.";
+		}
+}
+
 	render() {
 		return (
 			<Provider store={ store }>
