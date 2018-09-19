@@ -7,8 +7,8 @@ import { Image } from 'react-native';
 export default class Icon extends React.Component {
 	render() {
 		return (
-			<View style={this.props.style || { alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-				<Image style={{width: this.props.width || 30, height: this.props.height || 30 }} source={ this.props.image } />
+			<View style={this.props.style || { alignItems: 'center', justifyContent: 'center', flex: 1}}>
+				<Image style={{width: this.props.width || 30, height: this.props.height || 30 }} source={ this.props.image } resizeMode={'contain'}/>
 			</View>
 		);
 	}
