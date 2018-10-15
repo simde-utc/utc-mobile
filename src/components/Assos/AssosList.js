@@ -72,7 +72,7 @@ return {
 		text: pole["shortname"],
 	        extend: false,
 		onPress: () => {
-			this.props.navigation.push('Assos', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: child["shortname"]});
+			this.props.navigation.push('Assos', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: pole["shortname"]});
 		},
 		image: require('../../img/logo_utc.png'),
 	}
