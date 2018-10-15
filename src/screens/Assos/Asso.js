@@ -29,6 +29,11 @@ const markdownStyles = {
   text: {
     color: colors.black,
   },
+  listItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+  },
 }
 
 
@@ -67,7 +72,7 @@ _loadDetails() {
 	this.portail.getAssoDetails(id).then( (data) => {
 		if (this.isUnmounted) {return;}
 		if(data["parent"]) {
-			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], parentId: data["parent"]["id"], 
+			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], parentId: data["parent"]["id"],
 parentName : data["parent"]["shortname"]}));
 		}
 		else {
@@ -139,7 +144,7 @@ this.isUnMounted = true;
 class PresentationView extends React.Component {
 
 render() {
-	return <View style={{backgroundColor: colors.veryLightGray}}>
+	return <View style={{ flex:1, backgroundColor: colors.veryLightGray}}>
 		<ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start', backgroundColor: colors.veryLightGray, paddingHorizontal: 30}}>
 			{this.props.logo &&
 			<View style={{height:100, width: '100%'}}>
@@ -150,7 +155,7 @@ render() {
                 	       />
 			</View>
 			}
-			<View style={{marginTop: 15}}>
+			<View style={{marginTop: 40}}>
                        <Markdown styles={markdownStyles}>
                                {this.props.description}
                        </Markdown>
