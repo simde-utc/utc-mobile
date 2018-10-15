@@ -14,6 +14,7 @@ import { colors } from '../../styles/variables';
 import { withNavigation } from 'react-navigation';
 
 import BlockHandler from '../Block';
+import logoBde from '../../img/bde.png';
 
 class AssosListComponent extends React.Component {
 
@@ -74,7 +75,7 @@ return {
 		onPress: () => {
 			this.props.navigation.push('Assos', {name: pole["name"], id: pole["id"], isChild : true, data: pole, portailInstance : this.props.portailInstance, title: pole["shortname"]});
 		},
-		image: require('../../img/logo_utc.png'),
+		image: logoBde,
 	}
 }
 
@@ -85,7 +86,7 @@ return {
 		onPress: () => {
 			this.props.navigation.navigate('Asso', {name: child["name"], id: child["id"], portailInstance : this.props.portailInstance});
 		},
-		image: require('../../img/logo_utc.png'),
+		image: logoBde,
 	}
 }
 
