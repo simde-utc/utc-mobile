@@ -35,7 +35,8 @@ export class Portail extends Api {
 		'user-set-comments-articles',
 		'user-manage-articles-actions-user',
 		'user-get-assos-members',
-		'user-get-roles-assos-assigned'
+		'user-get-roles-assos-assigned',
+		'user-get-roles-assos-owned',
 	]
 
 	constructor() {
@@ -292,6 +293,21 @@ export class Portail extends Api {
 		return new Promise((resolve, reject) => {
 			this.call(
 				Portail.API_V1 + 'assos/' + id + '/members',
+				Api.GET,
+				{}).then( ( [data, status] ) => {
+					resolve(data)
+				}).catch( ([response, status]) => {
+					reject([response, status])
+				})
+		})
+	}
+
+	getAssoRole(assoId, roleId) {
+		if (!(assoId && roleId)) {throw "assoId & roleId required."}
+		this._checkConnected();
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'roles/' + roleId + '?owner=' + roleId,
 				Api.GET,
 				{}).then( ( [data, status] ) => {
 					resolve(data)

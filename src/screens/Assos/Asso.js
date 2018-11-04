@@ -44,6 +44,7 @@ constructor(props) {
 	this.isUnMounted = false;
 
 }
+
 	state = {
 		warn: false,
 		message : "",
@@ -52,6 +53,7 @@ constructor(props) {
 		parentId : "",
 		parentName : "",
     trombiData: [],
+    rolesData: new Map(),
 	}
 
 warn(text) {
@@ -64,25 +66,66 @@ warn(text) {
 _loadDetails() {
 	if (this.isUnmounted) {return;}
 	const { navigation } = this.props;
-	const id = navigation.getParam('id', 'NO-ID');
-		if(id == "NO-ID") {throw "No asso id provided!";}
+	this.id = navigation.getParam('id', 'NO-ID');
+		if(this.id == "NO-ID") {throw "No asso id provided!";}
 	this.portail = navigation.getParam('portailInstance', 'NO-PORTAIL');
 		if(this.portail == "NO-PORTAIL") {throw "No portail instance provided!";}
-		if(!this.portail.isConnected()) {throw "The provided Portail instance is not connected!";}
 
-	Promise.all([this.portail.getAssoDetails(id), this.portail.getAssoMembers(id)]).then( ([data, trombiData]) => {
+	Promise.all([this.portail.getAssoDetails(this.id),
+    this.portail.getAssoMembers(this.id)]).then( ([data, trombiData]) => {
 		if (this.isUnmounted) {return;}
+    this._loadRoles(trombiData).then( (roles) => {
 		if(data["parent"]) {
-			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], parentId: data["parent"]["id"],
-parentName : data["parent"]["shortname"], trombiData: trombiData}));
+			this.setState(prevState => ({ ...prevState,
+        description: data["description"],
+        logo: data["image"],
+        type: data["type"]["name"],
+        parentId: data["parent"]["id"],
+        parentName : data["parent"]["shortname"],
+        trombiData: trombiData,
+        rolesData: roles}));
 		}
 		else {
 			//root : pas de parent
-			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], trombiData: trombiData}));
+			this.setState(prevState => ({ ...prevState,
+        description: data["description"],
+        logo: data["image"],
+        type: data["type"]["name"],
+        trombiData: trombiData,
+        rolesData: roles}));
 		}
+  });
+
 	}).catch( ([response, status]) => {
 		this.warn("Erreur lors de la connexion au portail : " + response + ' --- ' + status);
 	});
+}
+
+_loadRoles = async (trombiData) => {
+    if(trombiData && trombiData[0]) { //c'est dégueu mais au moins la structure de données est ok
+      var roles = new Map();
+      var promises = [];
+    try {
+    	trombiData.forEach( (person) => {
+        promises.push(new Promise( (resolve, reject) => {
+          this.portail.getAssoRole(this.id, person["pivot"]["role_id"]).then( (data) => {
+            roles.set(person["pivot"]["role_id"], data);
+            resolve(true);
+          });
+        }));
+    	});
+    }
+    catch (e) {console.warn(e);}
+
+    }
+
+      if(promises) {
+        return Promise.all(promises).then( () => {
+            return roles;
+          })
+      }
+      else {return this.state.rolesData;}
+
 }
 
 render() {
@@ -114,7 +157,7 @@ var Tab = createMaterialTopTabNavigator(
 			})
 		},
 		Trombi: {
-			screen: () => (<AssoTrombiComponent data={this.state.trombiData} />),
+			screen: () => (<AssoTrombiComponent trombiData={this.state.trombiData} rolesData={this.state.rolesData} />),
 			navigationOptions: ({ nav }) => ({
 				title: 'Trombi'
 			})
