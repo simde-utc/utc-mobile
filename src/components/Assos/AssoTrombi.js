@@ -19,7 +19,9 @@ export default class AssoTrombiComponent extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
+		
 	}
+
 
 PeopleBlocks(data = [] ) {
 
@@ -51,9 +53,8 @@ else{ return(<Text>No data</Text>);}
 
 formatPerson(person) {
 let image = person["image"] ? {uri: person["image"]} : defaultAvatar;
-console.log(image);
 return {
-		text: person["name"],
+		text: person["name"] + " - " + this.props.rolesData.get(person["pivot"]["role_id"]).name,
 		image: image,
     extend: false,
 	}
@@ -61,15 +62,15 @@ return {
 
 	render() {
 
-		if(this.props.data !== undefined) {
-			switch(this.props.data) {
+		if(this.props.trombiData !== undefined) {
+			switch(this.props.trombiData) {
 				case {}:
 				case []:
 				case "":
 					return <View />
 					break;
 				default:
-					return this.PeopleBlocks(this.props.data);
+					return this.PeopleBlocks(this.props.trombiData);
 					break;
 			}
 		}
