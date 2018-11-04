@@ -13,7 +13,7 @@ import {colors} from '../../styles/variables';
 import styles from '../../styles'
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import Markdown from 'react-native-simple-markdown'
-
+import AssoTrombiComponent from '../../components/Assos/AssoTrombi';
 
 const markdownStyles = {
   heading1: {
@@ -51,6 +51,7 @@ constructor(props) {
 		type : "",
 		parentId : "",
 		parentName : "",
+    trombiData: [],
 	}
 
 warn(text) {
@@ -69,15 +70,15 @@ _loadDetails() {
 		if(this.portail == "NO-PORTAIL") {throw "No portail instance provided!";}
 		if(!this.portail.isConnected()) {throw "The provided Portail instance is not connected!";}
 
-	this.portail.getAssoDetails(id).then( (data) => {
+	Promise.all([this.portail.getAssoDetails(id), this.portail.getAssoMembers(id)]).then( ([data, trombiData]) => {
 		if (this.isUnmounted) {return;}
 		if(data["parent"]) {
 			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], parentId: data["parent"]["id"],
-parentName : data["parent"]["shortname"]}));
+parentName : data["parent"]["shortname"], trombiData: trombiData}));
 		}
 		else {
 			//root : pas de parent
-			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"]}));
+			this.setState(prevState => ({ ...prevState, description: data["description"], logo: data["image"], type: data["type"]["name"], trombiData: trombiData}));
 		}
 	}).catch( ([response, status]) => {
 		this.warn("Erreur lors de la connexion au portail : " + response + ' --- ' + status);
@@ -113,7 +114,7 @@ var Tab = createMaterialTopTabNavigator(
 			})
 		},
 		Trombi: {
-			screen: ToDoView,
+			screen: () => (<AssoTrombiComponent data={this.state.trombiData} />),
 			navigationOptions: ({ nav }) => ({
 				title: 'Trombi'
 			})
