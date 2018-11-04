@@ -34,7 +34,8 @@ export class Portail extends Api {
 		'user-get-comments-articles',
 		'user-set-comments-articles',
 		'user-manage-articles-actions-user',
-		
+		'user-get-assos-members',
+		'user-get-roles-assos-assigned'
 	]
 
 	constructor() {
@@ -275,6 +276,22 @@ export class Portail extends Api {
 		return new Promise((resolve, reject) => {
 			this.call(
 				Portail.API_V1 + 'assos/' + id,
+				Api.GET,
+				{}).then( ( [data, status] ) => {
+					resolve(data)
+				}).catch( ([response, status]) => {
+					reject([response, status])
+				})
+		})
+	}
+
+	getAssoMembers(id=1) {
+		//les undefined sont gérés mais pas les strings vides
+		if(id == "") {id = 1}
+		this._checkConnected()
+		return new Promise((resolve, reject) => {
+			this.call(
+				Portail.API_V1 + 'assos/' + id + '/members',
 				Api.GET,
 				{}).then( ( [data, status] ) => {
 					resolve(data)
