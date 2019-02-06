@@ -216,7 +216,7 @@ export default class ConnectionScreen extends React.Component {
 
 		Alert.alert(
 			'Connexion',
-			'Votre login et/ou votre mot de passe est incorrect',
+			'Votre login et/ou votre mot de passe est incorrect, ou cette version de l\'application n\'est pas autorisée à se connecter.',
 			[
 				{ text: 'Continuer' },
 			],
