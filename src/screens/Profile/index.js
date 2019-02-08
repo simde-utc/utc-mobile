@@ -17,6 +17,7 @@ import BigButton from '../../components/BigButton';
 
 // API
 import PortailApi from '../../services/Portail'
+import CASAuth from '../../services/CASAuth';
 
 export default class ProfileScreen extends React.Component {
 	static navigationOptions = {
@@ -34,7 +35,19 @@ export default class ProfileScreen extends React.Component {
 
 		this.state = {
 			loading: false,
+			login: '',
 		}
+
+		if (CASAuth.isConnected()) {
+			CASAuth.getLogin().then((login) => {
+				this.setState((prevState) => {
+					prevState.login = login
+
+					return prevState
+				})
+			})
+		}
+
 	}
 
 	logout () {
@@ -56,6 +69,8 @@ export default class ProfileScreen extends React.Component {
 	}
 
 	render () {
+		const headerImagePath = CASAuth.isConnected() ? { uri: 'https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur?username=' + this.state.login } : require('../../img/icon.png')
+		const headerImageStyle = PortailApi.isConnected() ? styles.img.bigAvatar : styles.img.bigThumbnail
 		const viewStyle = [
 			styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'),
 			{ flex: 7 }
@@ -67,7 +82,7 @@ export default class ProfileScreen extends React.Component {
 					<Spinner visible={ this.state.loading } textContent="Déconnexion en cours..." textStyle={{ color: '#FFF' }} />
 				</View>
 				<HeaderView>
-						<Image style={ styles.img.bigAvatar } source={ require('../../img/icon.png') } />
+						<Image style={ headerImageStyle } source={ headerImagePath } />
 						<Text style={ styles.get('text.h1', 'text.yellow') }>{ PortailApi.getUser().name }</Text>
 				</HeaderView>
 				<View style={ viewStyle }>
