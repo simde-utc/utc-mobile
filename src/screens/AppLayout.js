@@ -57,21 +57,21 @@ class CustomDrawerContentComponent extends React.Component {
 
 
 export default AppLayout = createDrawerNavigator({
-	Main: {
+	'Accueil': {
 		screen: MainLayout
 	},
-	Assos: {
+	'Assos': {
 		screen: AssosNavigator
 	},
-	Login: {
+	'Compte': {
 		screen: ProfileScreen
 	},
-	Settings: {
+	'Réglages': {
 		screen: SettingsScreen
 	},
 }, {
 	contentComponent: CustomDrawerContentComponent,
-	initialRouteName: 'Main',
+	initialRouteName: 'Accueil',
 	drawerPosition: 'right',
 	// drawerWidth: Dimensions.get('window').width,
 	contentOptions: {
