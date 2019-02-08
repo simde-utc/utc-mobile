@@ -15,7 +15,7 @@ const forMembersData = [
 	{ icon: "calendar",		text: "Consulter et synchroniser son agenda scolaire, associatif et personnel" },
 ]
 const forInterestedData = [
-	{ icon: "news",			text: "Suivre les actualités institutionnelles de l'UTC" },
+	{ icon: "news",			text: "Suivre les actualités de l'UTC" },
 	{ icon: "map",			text: "Se repérer dans le campus" },
 	{ icon: "calendar",		text: "Consulter et synchroniser son agenda associatif et personnel" },
 ]
@@ -53,7 +53,7 @@ export default class AppPurposeScreen extends React.Component {
 				<HeaderView
 					style={{ flex: 3 }}
 					title="A quoi ça sert ?"
-					subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux membres de la communauté UTC, mais aussi aux entreprises et personnes interessées par l'UTC et ses associations."
+					subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux associations, étudiants, personnels et enseignants de l'UTC, mais aussi aux entreprises et personnes interessées par l'UTC : entreprises, compiégnois."
 				/>
 				<View style={{ flex: 7, justifyContent: 'space-between' }}>
 					<View style={{ flex: 6, marginLeft:0}}>
