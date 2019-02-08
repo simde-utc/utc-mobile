@@ -60,7 +60,8 @@ export default class ArticleComponent extends React.PureComponent {
 				if(!this.unmounted) {
 					this.setState(prevState => ({ ...prevState, comments: responseComments.length, liked: liked, disliked: disliked}));
 				}
-			});
+			})
+		.catch( ([error, code]) => console.warn("Error "+code+" while loading actions and comments : " + error));
 
 
 		}
