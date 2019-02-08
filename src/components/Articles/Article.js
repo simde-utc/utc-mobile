@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Dimensions, TouchableHighlight, Image, Linking} from 'react-native';
 import styles from '../../styles'
+import PrettyDate from '../../services/PrettyDate';
 import { colors } from '../../styles/variables';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
@@ -129,16 +130,8 @@ export default class ArticleComponent extends React.PureComponent {
 
 
 	_prettyDate(string, locale) {
-	let date = new Date(string);
-		switch (locale) {
-			case "fr-FR":
-				return this._renderDate(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-				break;
-			case "en-US":
-			default:
-				return this._renderDate(date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear());
-				break;
-		}
+		let date = new Date(string);
+		return this._renderDate(PrettyDate.shortDate(date,locale));
 	}
 
 	_renderDate(string) {
