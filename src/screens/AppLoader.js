@@ -27,7 +27,7 @@ export default class AppLoaderScreen extends React.Component {
 	render() {
 		return (
 			<View style={ styles.container.center }>
-				<Image source={require('../img/logo_utc.png')} style={ styles.img.logoStyle } resizeMode={'center'} />
+				<Image source={require('../img/logo_utc.png')} style={ styles.img.logoStyle } resizeMode={'contain'} />
 				<ActivityIndicator size="large" color={ colors.yellow }/>
 				<Text style={[ styles.get('text.h3', 'text.center', 'my.lg'), { marginTop: 10, marginBottom: 50 } ]}>
 					{ this.state.text }

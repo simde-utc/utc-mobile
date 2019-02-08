@@ -23,7 +23,8 @@ export const bigAvatar = {
 };
 
 export const logoStyle = {
-	width: '70%',
+	height: '15%',
+	width: '100%',
 	marginBottom: 20
 }
 
