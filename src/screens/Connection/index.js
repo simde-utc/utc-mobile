@@ -52,7 +52,7 @@ export default class ConnectionScreen extends React.Component {
 				{ cancelable: true }
 			)
 		}
-		else if (this.state.emailOrLogin.contains('@') && !this.state.allowEmail) {
+		else if (this.state.emailOrLogin.includes('@') && !this.state.allowEmail) {
 			this.setState(prevState => {
 				prevState.allowEmail = true
 
@@ -80,8 +80,8 @@ export default class ConnectionScreen extends React.Component {
 		})
 
 		new Promise(() => {
-			if (PortailApi.isConnected() && !this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
-				if (this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
+			if (PortailApi.isConnected() && !this.state.emailOrLogin.includes('@') && !this.state.forceCreation) {
+				if (this.state.emailOrLogin.includes('@') && !this.state.forceCreation) {
 					this.setState(prevState => {
 						prevState.forceCreation = true
 						prevState.loading = false
@@ -162,7 +162,7 @@ export default class ConnectionScreen extends React.Component {
 
 	register () {
 		new Promise((resolve, reject) => {
-			if (!this.state.emailOrLogin.contains('@')) {
+			if (!this.state.emailOrLogin.includes('@')) {
 				this.setState(prevState => {
 					prevState.loadingText = 'Enregistrement des données CAS...'
 
