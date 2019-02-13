@@ -7,7 +7,7 @@
 **/
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay'
 
 import styles from '../../styles'
@@ -91,7 +91,7 @@ export default class ConnectedScreen extends React.Component {
 					<BigButton
 						label="Aller à la page d'accueil"
 						style={ styles.mt.lg }
-						onPress={ () => this.props.navigation.navigate('Main') }
+						onPress={ () => this.props.navigation.navigate('Accueil') }
 					/>
 				</View>
 			</View>
