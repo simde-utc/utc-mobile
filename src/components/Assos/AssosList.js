@@ -7,9 +7,7 @@
 **/
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import styles from '../../styles'
-import { colors } from '../../styles/variables';
+import { View, Text } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
 
@@ -21,26 +19,50 @@ class AssosListComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
-	extract(data, level=0) {
+	AssosBlocks(data, isChild, showItself=false) {
 		let blocks = [];
-		for (let child of data) {
-			if(child["shortname"]=="Polar")
-				console.log(child);
-			if(level==1 && child["children"].length != 0)
-				blocks.push(this.formatPole(child));
-			else
-				blocks.push(this.formatChild(child));
-			if (child["children"].length != 0)
-				blocks = blocks.concat(this.extract(child["children"],level+1));
+		if(!Array.isArray(data))
+			data = [data]
+		
+		if(!isChild){//Affichage du niveau zéro et des pôles
+			for (let child of data) {
+				if(child["children"].length != 0){
+					blocks.push(this.formatPole(child,true));//On suppose que cette asso est le BDE
+					for (let asso of child["children"]) {//Affichage des pôles
+						if(asso["children"].length != 0)
+							blocks.push(this.formatPole(asso));
+					}
+				}
+				else //Cas normalement impossible (asso orpheline)
+					blocks.push(this.formatChild(child));
+			}
 		}
-		return blocks;
-	}
-	AssosBlocks(data, isChild) {
-		let blocks;
-		if (Array.isArray(data))
-			blocks = this.extract(data);
-		else
-			blocks = this.extract([data]);
+		else if(showItself){//Affichages des assos du BDE (Y compris le BDE)
+			for (let child of data) {
+				blocks.push(this.formatChild(child));
+				if(child["children"].length != 0){
+					for (let asso of child["children"]) {//Affichage des assos
+						blocks.push(this.formatChild(asso));
+					}
+				}
+				else //Cas normalement impossible (asso orpheline)
+					blocks.push(this.formatChild(child));
+			}
+		}
+		else{// Affichage des assos d'un pôle
+			for (let child of data) {
+				if(child["children"].length != 0){
+					for (let asso of child["children"]) {//Affichage des assos
+						if(asso["children"].length != 0)
+							blocks.push(this.formatPole(asso));
+						else
+							blocks.push(this.formatChild(asso));
+					}
+				}
+				else //Cas normalement impossible (asso orpheline)
+					blocks.push(this.formatChild(child));
+			}
+		}
 		/*
 		if(isChild == false) {
 			//root et pôles
@@ -86,12 +108,13 @@ class AssosListComponent extends React.Component {
 	}
 
 	//TODO: des images pour les pôles et les assos
-	formatPole(pole) {
+	formatPole(pole, isBDE=false) {
+		console.log(isBDE)
 		return {
 			text: pole["shortname"],
 			extend: false,
 			onPress: () => {
-				this.props.navigation.push('Assos', { name: pole["name"], id: pole["id"], isChild: true, data: pole, portailInstance: this.props.portailInstance, title: pole["shortname"] });
+				this.props.navigation.push('Assos', { name: pole["name"], id: pole["id"], isChild: true,  showItSelf: isBDE, data: pole, portailInstance: this.props.portailInstance, title: pole["shortname"] });
 			},
 			image: (pole["image"])?{uri: pole["image"]}:logoBde,
 		}
@@ -113,15 +136,12 @@ class AssosListComponent extends React.Component {
 			switch (this.props.data) {
 				case "WAIT_LOADING":
 					return <Text>Chargement...</Text>;
-					break;
 				case {}:
 				case []:
 				case "":
 					return <View />
-					break;
 				default:
-					return this.AssosBlocks(this.props.data, this.props.isChild);
-					break;
+					return this.AssosBlocks(this.props.data, this.props.isChild, this.props.showItSelf);
 			}
 		}
 		else {
