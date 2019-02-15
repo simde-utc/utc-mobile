@@ -108,7 +108,8 @@ export default class AssosScreen extends React.Component {
 		}
 
 		if(this.isUnMounted) {return;}
-		this.setState(prevState => ({ ...prevState, list: this.assos, child: iAmChild }));
+		var assoFolderVisibility = this.props.navigation.getParam('showItSelf', '');
+		this.setState(prevState => ({ ...prevState, list: this.assos, child: iAmChild, showItSelf: assoFolderVisibility }));
 
 	}
 	catch (e) {
@@ -123,7 +124,7 @@ export default class AssosScreen extends React.Component {
 	render() {
 	    return (
 	      <View style={{ flex: 1 }}>
-		<AssosListComponent data={this.state.list} isChild={this.state.child} portailInstance={(this.portailInstance != 'NO-PORTAIL' && this.portailInstance.isConnected()) ? this.portailInstance : Portail} />
+		<AssosListComponent data={this.state.list} isChild={this.state.child} showItSelf={this.state.showItSelf} portailInstance={(this.portailInstance != 'NO-PORTAIL' && this.portailInstance.isConnected()) ? this.portailInstance : Portail} />
 	      </View>
 	    );
 	  }
