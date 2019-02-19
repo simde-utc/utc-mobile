@@ -19,7 +19,8 @@ export const bigThumbnail = {
 
 export const bigAvatar = {
 	...bigThumbnail,
-	borderRadius: 50
+	borderRadius: 50,
+	resizeMode: 'cover',
 };
 
 export const logoStyle = {
