@@ -47,7 +47,14 @@ export default class ArticlesScreen extends React.Component {
 				{
 					id: 'assos',
 					name: 'assos',
-					filter: function(article) {return article['article_type'] == this.id}
+					filter: function(article) {return article['article_type'] == this.id},
+					onSelect: () => {
+						if(this.state.selectedFilters.length == 1 && this.state.selectedFilters[0].id == 'fav')
+							this.onlySelectFilter(this.state.filters[1]) // cracra
+						else{
+							this.unselectFilter(this.state.filters[2]) // cracra
+						}
+					}
 				},
 				{
 					id: 'fav',
@@ -55,6 +62,13 @@ export default class ArticlesScreen extends React.Component {
 					favoris: [],
 					filter: function(article) {
 						return article['article_type']=='assos' && (article['owned_by'] && this.favoris.includes(article['owned_by']['id']))
+					},
+					onSelect: () => {
+						if(this.state.selectedFilters.length == 1 && this.state.selectedFilters[0].id == 'assos')
+							this.onlySelectFilter(this.state.filters[2]) // cracra
+						else{
+							this.unselectFilter(this.state.filters[1]) // cracra
+						}
 					}
 				},
 			],
@@ -169,7 +183,7 @@ export default class ArticlesScreen extends React.Component {
 			return response.map((article) => {
 				article['article_type'] = 'assos'
 				article["created_at"] = article["created_at"].replace(' ', 'T')
-
+				console.log(article)
 				return article
 			})
 		}).catch(([response, status]) => {
@@ -207,6 +221,10 @@ export default class ArticlesScreen extends React.Component {
 
 	selectFilter(name) {
 		if(this.willUnmount) {return;}
+		if(name.onSelect){
+			name.onSelect.bind(this)
+			name.onSelect()
+		}
 		this.setState(prevState => {
 			prevState.selectedFilters.push(name)
 
