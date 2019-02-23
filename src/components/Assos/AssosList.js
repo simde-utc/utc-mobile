@@ -109,7 +109,6 @@ class AssosListComponent extends React.Component {
 
 	//TODO: des images pour les pôles et les assos
 	formatPole(pole, isBDE=false) {
-		console.log(isBDE)
 		return {
 			text: pole["shortname"],
 			extend: false,
