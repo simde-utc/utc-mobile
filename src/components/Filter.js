@@ -115,7 +115,7 @@ export default class Filter extends React.Component {
 			style.push(styles.border.yellow)
 		}
 
-		if ((this.props.selectedFilters || []).includes(filter.id)) {
+		if ((this.props.selectedFilters || []).includes(filter)) {
 			if (filter.selectedColor) {
 				textStyle.push({
 					backgroundColor: filter.selectedColor,
@@ -133,7 +133,7 @@ export default class Filter extends React.Component {
 		return (
 			<TouchableHighlight style={ style }
 				key={ filter.id }
-				onPress={() => { onPress && onPress(filter.id) }}
+				onPress={() => { onPress && onPress(filter) }}
 				onLongPress={() => { this.props.onFilterLongPressed && this.props.onFilterLongPressed(filter.id) }}
 				underlayColor={"#fff0"}
 			>

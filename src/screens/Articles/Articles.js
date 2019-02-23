@@ -42,23 +42,38 @@ export default class ArticlesScreen extends React.Component {
 				{
 					id: 'utc',
 					name: 'utc',
+					filter: function(article) {return article['article_type'] == this.id}
 				},
 				{
 					id: 'assos',
 					name: 'assos',
+					filter: function(article) {return article['article_type'] == this.id}
+				},
+				{
+					id: 'fav',
+					name: 'favoris',
+					favoris: [],
+					filter: function(article) {
+						return article['article_type']=='assos' && (article['owned_by'] && this.favoris.includes(article['owned_by']['id']))
+					}
 				},
 			],
 			selectedFilters: [],
 			loading: false,
 			search: '',
 		};
-
+		Portail.getUserAssos().then( (assos) => {
+			this.setState((prevState) => {
+				for(let asso of assos)
+					prevState.filters[2].favoris.push(asso['id']) //Un peu cracra mais ça fonctionne...
+				return prevState
+			})
+		});
 		if (CASAuth.isConnected())
-			this.state.selectedFilters.push('utc')
+			this.state.selectedFilters.push(this.state.filters[0]) // utc
 
 		if (Portail.isConnected())
-			this.state.selectedFilters.push('assos')
-
+			this.state.selectedFilters.push(this.state.filters[1]) // assos
 		this.props.articleHeight = 100;
 	}
 
@@ -214,7 +229,16 @@ export default class ArticlesScreen extends React.Component {
 		const toMatch = this.state.search.toLowerCase().split(' ')
 
 		const data = this.state.articles.filter((article) => {
-			if (!this.state.selectedFilters.includes(article['article_type']))
+			//if (!this.state.selectedFilters.includes(article['article_type']))
+			//	return false
+			filtered = true;
+			for(let fl of this.state.selectedFilters){
+				if(fl.filter(article) ){
+					filtered = false
+					break
+				}
+			}
+			if(filtered)
 				return false
 
 			for (let i = 0; i < toMatch.length; i++) {
