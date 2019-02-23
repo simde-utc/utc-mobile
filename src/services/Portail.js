@@ -269,6 +269,26 @@ export class Portail extends Api {
 		})
 	}
 
+	getUserAssos(forceReload=false) {
+		if(!this.isConnected())
+			return Promise.reject("Not connected.")
+		if(Portail.user.assos == undefined || forceReload)
+			return new Promise((resolve, reject) => {
+				this.call(
+					Portail.API_V1 + 'user/assos',
+					Api.GET
+				).then( ( [data, status] ) => {
+					Portail.user.assos = data
+					resolve(data)
+				}).catch( ([response, status]) => {
+					reject([response, status])
+				})
+			})
+		else{
+			return Promise.resolve(Portail.user.assos)
+		}
+	}
+
 
 	getAssoDetails(id=1) {
 		//les undefined sont gérés mais pas les strings vides
@@ -278,11 +298,12 @@ export class Portail extends Api {
 			this.call(
 				Portail.API_V1 + 'assos/' + id,
 				Api.GET,
-				{}).then( ( [data, status] ) => {
-					resolve(data)
-				}).catch( ([response, status]) => {
-					reject([response, status])
-				})
+				{}
+			).then( ( [data, status] ) => {
+				resolve(data)
+			}).catch( ([response, status]) => {
+				reject([response, status])
+			})
 		})
 	}
 
