@@ -70,37 +70,38 @@ export default class AssoScreen extends React.Component {
 		if(this.id == "NO-ID") {throw "No asso id provided!";}
 		this.portail = navigation.getParam('portailInstance', 'NO-PORTAIL');
 		if(this.portail == "NO-PORTAIL") {throw "No portail instance provided!";}
-		
-		Promise.all([
-			this.portail.getAssoDetails(this.id),
-			this.portail.getAssoMembers(this.id)
-		]).then( ([data, trombiData]) => {
+		this.portail.getAssoDetails(this.id).then((data) => {
 			if (this.isUnmounted) {return;}
-			this._loadRoles(trombiData).then( (roles) => {
-				if(data["parent"]) {
-					this.setState(prevState => ({ ...prevState,
-						description: data["description"],
-						logo: data["image"],
-						type: data["type"]["name"],
-						parentId: data["parent"]["id"],
-						parentName : data["parent"]["shortname"],
-						trombiData: trombiData,
-						rolesData: roles}));
-				}
-				else {
-					//root : pas de parent
-					this.setState(prevState => ({ ...prevState,
-						description: data["description"],
-						logo: data["image"],
-						type: data["type"]["name"],
-						trombiData: trombiData,
-						rolesData: roles}));
-				}
-			});
-					
+			if(data["parent"]) {
+				this.setState(prevState => ({ ...prevState,
+					description: data["description"],
+					logo: data["image"],
+					type: data["type"]["name"],
+					parentId: data["parent"]["id"],
+					parentName : data["parent"]["shortname"]
+				}));
+			}
+			else {
+				//root : pas de parent
+				this.setState(prevState => ({ ...prevState,
+					description: data["description"],
+					logo: data["image"],
+					type: data["type"]["name"]
+				}));
+			}
 		}).catch( ([response, status]) => {
 			this.warn("Erreur lors de la connexion au portail : " + response + ' --- ' + status);
 		});
+		this.portail.getAssoMembers(this.id).then( (trombiData) => {
+			if (this.isUnmounted) {return;}
+			this._loadRoles(trombiData).then( (roles) => {
+				this.setState(prevState => ({ ...prevState,
+					trombiData: trombiData,
+					rolesData: roles
+				}));
+			});
+					
+		})
 	}
 				
 	_loadRoles = async (trombiData) => {
