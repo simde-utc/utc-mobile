@@ -118,7 +118,7 @@ export default class Block extends React.Component {
 								source={ image }
 								resizeMode="contain"
 							/>
-							<Text style={[{ flex: 2 }, styles.text.center]}>
+							<Text style={[{ flex: 3 }, styles.text.center]} numberOfLines={2}>
 								{text}
 							</Text>
 						</View>);
