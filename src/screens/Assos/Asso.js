@@ -1,9 +1,10 @@
 /**
-* Affiche la liste des assos en fonction de données du portail
-* @author Romain Maliach-Auguste <r.maliach@live.fr>
-*
-* @copyright Copyright (c) 2017, SiMDE-UTC
-* @license AGPL-3.0
+ * Affiche la liste des assos en fonction de données du portail
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Louis Pineau <louis.pineau@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @license AGPL-3.0
 **/
 
 import React from 'react';
