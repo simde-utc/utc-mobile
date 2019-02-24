@@ -42,19 +42,14 @@ export default class ArticlesScreen extends React.Component {
 				{
 					id: 'utc',
 					name: 'utc',
-					filter: function(article) {return article['article_type'] == this.id}
+					filter: function(article) {return article['article_type'] == this.id},
+					conflict: []
 				},
 				{
 					id: 'assos',
 					name: 'assos',
 					filter: function(article) {return article['article_type'] == this.id},
-					onSelect: () => {
-						if(this.state.selectedFilters.length == 1 && this.state.selectedFilters[0].id == 'fav')
-							this.onlySelectFilter(this.state.filters[1]) // cracra
-						else{
-							this.unselectFilter(this.state.filters[2]) // cracra
-						}
-					}
+					conflict: ['fav']
 				},
 				{
 					id: 'fav',
@@ -63,15 +58,12 @@ export default class ArticlesScreen extends React.Component {
 					filter: function(article) {
 						return article['article_type']=='assos' && (article['owned_by'] && this.favoris.includes(article['owned_by']['id']))
 					},
-					onSelect: () => {
-						if(this.state.selectedFilters.length == 1 && this.state.selectedFilters[0].id == 'assos')
-							this.onlySelectFilter(this.state.filters[2]) // cracra
-						else{
-							this.unselectFilter(this.state.filters[1]) // cracra
-						}
-					}
+					conflict: ['assos']
 				},
-			],
+			].reduce((acc, val)=>{
+				acc[val.id]=val
+				return acc
+			}, {}),
 			selectedFilters: [],
 			loading: false,
 			search: '',
@@ -79,15 +71,15 @@ export default class ArticlesScreen extends React.Component {
 		Portail.getUserAssos().then( (assos) => {
 			this.setState((prevState) => {
 				for(let asso of assos)
-					prevState.filters[2].favoris.push(asso['id']) //Un peu cracra mais ça fonctionne...
+					prevState.filters['fav'].favoris.push(asso['id'])
 				return prevState
 			})
 		});
 		if (CASAuth.isConnected())
-			this.state.selectedFilters.push(this.state.filters[0]) // utc
+			this.state.selectedFilters.push('utc')
 
 		if (Portail.isConnected())
-			this.state.selectedFilters.push(this.state.filters[1]) // assos
+			this.state.selectedFilters.push('assos')
 		this.props.articleHeight = 100;
 	}
 
@@ -183,7 +175,6 @@ export default class ArticlesScreen extends React.Component {
 			return response.map((article) => {
 				article['article_type'] = 'assos'
 				article["created_at"] = article["created_at"].replace(' ', 'T')
-				console.log(article)
 				return article
 			})
 		}).catch(([response, status]) => {
@@ -221,11 +212,13 @@ export default class ArticlesScreen extends React.Component {
 
 	selectFilter(name) {
 		if(this.willUnmount) {return;}
-		if(name.onSelect){
-			name.onSelect.bind(this)
-			name.onSelect()
-		}
 		this.setState(prevState => {
+			for(let conflict of prevState.filters[name].conflict){
+				var index = prevState.selectedFilters.indexOf(conflict)
+
+				if (index > -1)
+					prevState.selectedFilters.splice(index, 1)
+			}
 			prevState.selectedFilters.push(name)
 
 			return prevState
@@ -251,7 +244,7 @@ export default class ArticlesScreen extends React.Component {
 			//	return false
 			filtered = true;
 			for(let fl of this.state.selectedFilters){
-				if(fl.filter(article) ){
+				if(this.state.filters[fl].filter(article) ){
 					filtered = false
 					break
 				}
@@ -278,7 +271,7 @@ export default class ArticlesScreen extends React.Component {
 		return (
 			<View style={ styles.article.articlesFeedContainer }>
 				<Filter
-					filters={ this.state.filters }
+					filters={ Object.values(this.state.filters) }
 					selectedFilters={ this.state.selectedFilters }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
