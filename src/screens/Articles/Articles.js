@@ -42,23 +42,44 @@ export default class ArticlesScreen extends React.Component {
 				{
 					id: 'utc',
 					name: 'utc',
+					filter: function(article) {return article['article_type'] == this.id},
+					conflict: []
 				},
 				{
 					id: 'assos',
 					name: 'assos',
+					filter: function(article) {return article['article_type'] == this.id},
+					conflict: ['fav']
 				},
-			],
+				{
+					id: 'fav',
+					name: 'favoris',
+					favoris: [],
+					filter: function(article) {
+						return article['article_type']=='assos' && (article['owned_by'] && this.favoris.includes(article['owned_by']['id']))
+					},
+					conflict: ['assos']
+				},
+			].reduce((acc, val)=>{
+				acc[val.id]=val
+				return acc
+			}, {}),
 			selectedFilters: [],
 			loading: false,
 			search: '',
 		};
-
+		Portail.getUserAssos().then( (assos) => {
+			this.setState((prevState) => {
+				for(let asso of assos)
+					prevState.filters['fav'].favoris.push(asso['id'])
+				return prevState
+			})
+		});
 		if (CASAuth.isConnected())
 			this.state.selectedFilters.push('utc')
 
 		if (Portail.isConnected())
 			this.state.selectedFilters.push('assos')
-
 		this.props.articleHeight = 100;
 	}
 
@@ -154,7 +175,6 @@ export default class ArticlesScreen extends React.Component {
 			return response.map((article) => {
 				article['article_type'] = 'assos'
 				article["created_at"] = article["created_at"].replace(' ', 'T')
-
 				return article
 			})
 		}).catch(([response, status]) => {
@@ -193,6 +213,12 @@ export default class ArticlesScreen extends React.Component {
 	selectFilter(name) {
 		if(this.willUnmount) {return;}
 		this.setState(prevState => {
+			for(let conflict of prevState.filters[name].conflict){
+				var index = prevState.selectedFilters.indexOf(conflict)
+
+				if (index > -1)
+					prevState.selectedFilters.splice(index, 1)
+			}
 			prevState.selectedFilters.push(name)
 
 			return prevState
@@ -214,7 +240,16 @@ export default class ArticlesScreen extends React.Component {
 		const toMatch = this.state.search.toLowerCase().split(' ')
 
 		const data = this.state.articles.filter((article) => {
-			if (!this.state.selectedFilters.includes(article['article_type']))
+			//if (!this.state.selectedFilters.includes(article['article_type']))
+			//	return false
+			filtered = true;
+			for(let fl of this.state.selectedFilters){
+				if(this.state.filters[fl].filter(article) ){
+					filtered = false
+					break
+				}
+			}
+			if(filtered)
 				return false
 
 			for (let i = 0; i < toMatch.length; i++) {
@@ -236,7 +271,7 @@ export default class ArticlesScreen extends React.Component {
 		return (
 			<View style={ styles.article.articlesFeedContainer }>
 				<Filter
-					filters={ this.state.filters }
+					filters={ Object.values(this.state.filters) }
 					selectedFilters={ this.state.selectedFilters }
 					onFilterUnselected={ this.unselectFilter.bind(this) }
 					onFilterSelected={ this.selectFilter.bind(this) }
