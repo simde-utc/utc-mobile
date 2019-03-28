@@ -4,7 +4,7 @@ import PortailApi from "../../services/Portail";
 import {Image, Text, TouchableHighlight, View} from "react-native";
 import styles from "../../styles"
 
-export class UserProfile extends React.Component {
+export class ProfileHeader extends React.Component {
     constructor(props) {
         super(props);
 

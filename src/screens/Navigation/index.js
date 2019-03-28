@@ -5,8 +5,8 @@ import AssosScreen from "../Assos/Assos";
 import ProfileScreen from "../Profile";
 import Icon from "../../components/Icon";
 import Arrow from '../../img/icons/arrow_yellow.png'
-import {UserProfile} from "../Profile/UserProfile";
 import styles from '../../styles'
+import {ProfileHeader} from "../Profile/ProfileHeader";
 
 class FullWidthButton extends React.Component {
     render() {
@@ -25,7 +25,7 @@ export class NavigationScreen extends React.Component {
     render() {
         return (
             <ScrollView style={styles.navigation.scrollView}>
-                <UserProfile onPress={() => this.props.navigation.navigate('Profile')}/>
+                <ProfileHeader onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Mon compte'} onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Liste des associations'} onPress={() => this.props.navigation.navigate('Assos')}/>
             </ScrollView>
