@@ -1,6 +1,5 @@
 export const userProfile = {
     view: {
-        backgroundColor: '#007383',
         padding: 20,
         alignItems: 'center',
     },
