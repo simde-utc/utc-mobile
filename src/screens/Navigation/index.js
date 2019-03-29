@@ -1,12 +1,12 @@
 import React from 'react';
 import {createStackNavigator} from "react-navigation";
 import {ScrollView, Text, TouchableHighlight, View} from "react-native";
-import AssosScreen from "../Assos/Assos";
 import ProfileScreen from "../Profile";
 import Icon from "../../components/Icon";
 import Arrow from '../../img/icons/arrow_yellow.png'
 import styles from '../../styles'
 import {ProfileHeader} from "../Profile/ProfileHeader";
+import {LoadingAssociationsScreen} from "../Associations";
 
 class FullWidthButton extends React.Component {
     render() {
@@ -27,7 +27,7 @@ export class NavigationScreen extends React.Component {
             <ScrollView style={styles.navigation.scrollView}>
                 <ProfileHeader onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Mon compte'} onPress={() => this.props.navigation.navigate('Profile')}/>
-                <FullWidthButton name={'Liste des associations'} onPress={() => this.props.navigation.navigate('Assos')}/>
+                <FullWidthButton name={'Liste des associations'} onPress={() => this.props.navigation.navigate('Associations')}/>
             </ScrollView>
         );
     }
@@ -40,11 +40,8 @@ export default NavigationNavigator = createStackNavigator({
             header: null
         }
     },
-    Assos: {
-        screen: AssosScreen,
-        navigationOptions: {
-            headerTitle: 'Associations'
-        }
+    Associations: {
+        screen: LoadingAssociationsScreen,
     },
     Profile: {
         screen: ProfileScreen
