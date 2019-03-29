@@ -12,6 +12,8 @@ import { assoTabBar } from './assoTabBar';
 import { article } from './article';
 import { mainLayout } from './mainLayout';
 import { comment } from './comment';
+import { navigation } from './navigation';
+import { userProfile } from './userProfile';
 
 const styles = {
 	// General styles
@@ -28,6 +30,8 @@ const styles = {
 	assoTabBar,
 	mainLayout,
 	comment,
+	navigation,
+	userProfile,
 
 	// Getter function
 	get: function(...paths) {

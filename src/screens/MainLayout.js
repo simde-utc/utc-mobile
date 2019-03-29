@@ -21,17 +21,18 @@ import NotificationsOn from '../img/icons/navbar/bell-on.png'
 import NotificationsOff from '../img/icons/navbar/bell-off.png'
 import HamburgerOn from '../img/icons/navbar/hamburger-on.png'
 import HamburgerOff from '../img/icons/navbar/hamburger-off.png'
+import NavigationScreen from "./Navigation";
 
 // DEBUG
 const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0 }>{ text }</Text></View>
 const HomeScreen = () => show('Home')
 const NotificationsScreen = () => show('Notifications')
-const HamburgerScreen = () => show('Hamburger')
 
 
 const tabBarOptions = Platform.OS === 'ios' ?
 	{
 		// iOS tabBarOptions
+		showIcon: true,
 		showLabel: false,
 		style: styles.mainLayout.tabBar,
 		indicatorStyle: styles.mainLayout.indicator,
@@ -80,17 +81,16 @@ export default MainLayout = createMaterialTopTabNavigator ({
 		})
 	},
 	Hamburger: {
-		screen: HamburgerScreen,
+		screen: NavigationScreen,
 		navigationOptions: ({ navigation }) => ({
 			tabBarIcon: ({ focused }) => (
 				<Icon image={ focused ? HamburgerOn : HamburgerOff } />
-			),
-			tabBarOnPress: ({ navigation }) => navigation.toggleDrawer()
+			)
 		})
-	},
+	}
 }, {
 	initialRouteName: 'Home',
 	tabBarOptions: tabBarOptions,
 	tabBarPosition: 'bottom',
-	swipeEnabled: true,
+	swipeEnabled: false,
 });
