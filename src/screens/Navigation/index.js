@@ -6,7 +6,7 @@ import Icon from "../../components/Icon";
 import Arrow from '../../img/icons/arrow_yellow.png'
 import styles from '../../styles'
 import {ProfileHeader} from "../Profile/ProfileHeader";
-import {LoadingAssociationsScreen} from "../Associations";
+import AssociationsListScreen from "../Associations";
 
 class FullWidthButton extends React.Component {
     render() {
@@ -41,7 +41,8 @@ export default NavigationNavigator = createStackNavigator({
         }
     },
     Associations: {
-        screen: LoadingAssociationsScreen,
+        screen: AssociationsListScreen,
+
     },
     Profile: {
         screen: ProfileScreen
