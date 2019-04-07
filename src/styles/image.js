@@ -25,7 +25,7 @@ export const bigAvatar = {
 
 export const logoStyle = {
 	height: '15%',
-	width: '100%',
+	width: '80%',
 	marginBottom: 20
 }
 

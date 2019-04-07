@@ -47,13 +47,13 @@ const PurposeTabs = createMaterialTopTabNavigator({
 
 export default class AppPurposeScreen extends React.Component {
 	render() {
-		const endMessageStyle = styles.get('text.yellow', 'text.center', 'text.h4')
+		const endMessageStyle = styles.get('text.gray', 'text.h4', 'text.center', 'mb.xl');
 		return (
 			<View style={styles.container.default}>
 				<HeaderView
 					style={{ flex: 3 }}
 					title="A quoi ça sert ?"
-					subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux associations, étudiants, personnels et enseignants de l'UTC, mais aussi aux entreprises et personnes interessées par l'UTC : entreprises, compiégnois."
+					subtitle="Cette application est destinée à la fois aux étudiants, aux professeurs et chercheurs, aux futurs étudiants ainsi qu'aux entreprises."
 				/>
 				<View style={{ flex: 7, justifyContent: 'space-between' }}>
 					<View style={{ flex: 6, marginLeft:0}}>
