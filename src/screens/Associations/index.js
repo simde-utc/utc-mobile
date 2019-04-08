@@ -20,7 +20,7 @@ class AssociationBlock extends React.PureComponent {
 
                     borderColor: '#fff',
                     borderWidth: 2,
-                    borderRadius: 5
+                    borderRadius: 10
                 }}>
                     <View style={{
                         borderBottomWidth: 2,
