@@ -7,7 +7,6 @@ import Arrow from '../../img/icons/arrow_yellow.png'
 import styles from '../../styles'
 import {ProfileHeader} from "../Profile/ProfileHeader";
 import AssociationsListScreen from "../Associations";
-import AssoScreen from "../Assos/Asso";
 import AssociationScreen from "../Associations/Association";
 
 class FullWidthButton extends React.Component {

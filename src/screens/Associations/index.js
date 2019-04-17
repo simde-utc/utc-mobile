@@ -65,13 +65,7 @@ export class AssociationsListScreen extends React.PureComponent {
         headerStyle: {
             backgroundColor: '#007383',
         },
-        headerTintColor: '#fff',
-        headerRight: (
-            <Button
-                onPress={() => alert('This is a button!')}
-                title="Search"
-                color="#fff">lol</Button>
-        )
+        headerTintColor: '#fff'
     };
 
     constructor(props) {
