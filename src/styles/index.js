@@ -14,6 +14,7 @@ import { mainLayout } from './mainLayout';
 import { comment } from './comment';
 import { navigation } from './navigation';
 import { userProfile } from './userProfile';
+import {associations} from "./associations";
 
 const styles = {
 	// General styles
@@ -32,6 +33,7 @@ const styles = {
 	comment,
 	navigation,
 	userProfile,
+	associations,
 
 	// Getter function
 	get: function(...paths) {

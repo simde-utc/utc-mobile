@@ -1,15 +1,14 @@
 import React from "react";
 import Portail from "../../services/Portail";
-import {Alert, FlatList} from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";
+import {FlatList, Text} from "react-native";
 import ArticleComponent from "../../components/Articles/Article";
 
 export class ArticlesView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            articles: []
-        }
+            loading: true
+        };
     }
 
     componentDidMount() {
@@ -18,15 +17,13 @@ export class ArticlesView extends React.PureComponent {
         Portail.getArticles() // TODO: gérer la pagination et le chargement dynamique
             .then(articles => {
                 this.setState({
-                    articles: articles[0].filter(article => article.owned_by && article.owned_by.id === associationId)
+                    articles: articles[0].filter(article => article.owned_by && article.owned_by.id === associationId),
+                    loading: false
                 })
             })
             .catch(reason => {
-                console.warn(reason);
-                Alert.alert(
-                    "Articles non disponible",
-                    "Une erreur est survenue lors de la récupération des articles.",
-                    [{text: 'OK', onPress: () => this.props.navigation.goBack(associationId)}])
+                console.log(reason);
+                this.setState({loading: false})
             })
     }
 
@@ -36,8 +33,10 @@ export class ArticlesView extends React.PureComponent {
     }
 
     render() {
-        if (this.state.articles.length === 0)
-            return <Spinner visible={true}/>;
+        if (this.state.loading)
+            return <Text>Loading...</Text>;
+        else if (this.state.articles.length === 0)
+            return <Text>Aucun article</Text>;
         else
             return <FlatList
                 data={this.state.articles.map(article => {return {key: article.id, article: article}})}

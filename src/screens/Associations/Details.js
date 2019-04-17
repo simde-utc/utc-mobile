@@ -1,38 +1,37 @@
 import React from "react";
 import Portail from "../../services/Portail";
 import {Alert, Image, ScrollView, Text, View} from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";
+import styles from "../../styles";
 
 export class DetailsView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            association: null
-        }
+            association: null,
+            loading: true
+        };
     }
 
     componentDidMount() {
         const associationId = this.props.navigation.state.params.id;
 
-        if (!Portail.isConnected())
-            Alert.alert(
-                "Association non disponible",
-                "Le Portail des Associations est actuellement inaccessible.",
-                [{text: 'OK', onPress: () => this.props.navigation.goBack(associationId)}]);
-
+        if (!Portail.isConnected()) {
+            this.props.navigation.goBack(associationId);
+            Alert.alert('Association non disponible', 'Le Portail des Associations est actuellement inaccessible.')
+        }
 
         Portail.getAssoDetails(associationId)
             .then(association => {
                 this.setState({
-                    association: association
+                    association: association,
+                    loading: false
                 })
             })
             .catch(reason => {
-                console.warn(reason);
-                Alert.alert(
-                    "Association non disponible",
-                    "Une erreur est survenue lors de la récupération des informations.",
-                    [{text: 'OK', onPress: () => this.props.navigation.goBack(associationId)}])
+                console.log(reason);
+                this.props.navigation.goBack(associationId);
+                Alert.alert('Association non disponible', 'Une erreur est survenue lors de la récupération des informations.');
+                this.setState({loading: false})
             })
     }
 
@@ -41,38 +40,33 @@ export class DetailsView extends React.PureComponent {
             Portail.abortRequest();
     }
 
+    _renderLogo() {
+        if (!this.state.association.image)
+            return null;
+
+        return (
+            <View style={styles.associations.details.logoView}>
+                <Image style={{height: 200, width: 200}}
+                       source={{uri: this.state.association.image}}
+                       resizeMode='contain'/>
+            </View>
+        );
+    }
+
     render() {
-        if (!this.state.association)
-            return <Spinner visible={true}/>;
-        else
+        if (this.state.loading)
+            return <Text>loading...</Text>;
+        else if (this.state.association)
             return (
                 <ScrollView>
-                    { this.state.association.image ?
-                        <Image style={{height: 200, backgroundColor: "#fff"}} source={{uri: this.state.association.image}}/> : null
-                    }
-                    <View style={{
-                        borderTopColor: '#fff',
-                        borderTopWidth: 2,
-                        padding: '5%'
-                    }}>
-                        <Text style={{
-                            fontSize: 30,
-                            fontWeight: 'bold',
-                        }}>{this.state.association.shortname}</Text>
-                        <Text style={{
-                            fontSize: 15,
-                            fontWeight: 'bold',
-                            fontStyle: 'italic',
-                            paddingBottom: 10,
-                            color: '#6d6f71'
-                        }}>{this.state.association.name}</Text>
-                        /* TODO: Adapt to Markdown descriptions */
-                        <Text style={{
-                            fontSize: 15,
-                            color: '#6d6f71'
-                        }}>{this.state.association.description}</Text>
+                    { this._renderLogo() }
+                    <View style={{padding: '5%'}}>
+                        <Text style={styles.associations.details.textView.title}>{this.state.association.shortname}</Text>
+                        <Text style={styles.associations.details.textView.subtitle}>{this.state.association.name}</Text>
+                        <Text style={styles.associations.details.textView.description}>{this.state.association.description}</Text>
                     </View>
                 </ScrollView>
-            )
+            );
+        else return null;
     }
 }

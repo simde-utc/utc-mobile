@@ -1,13 +1,14 @@
 import React from "react";
 import Portail from "../../services/Portail";
-import {Alert, FlatList, Image, Text, View} from "react-native";
+import {FlatList, Image, ScrollView, Text, View} from "react-native";
+import styles from "../../styles";
 
 class Member extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             role: null
-        }
+        };
     }
 
     componentDidMount() {
@@ -20,34 +21,37 @@ class Member extends React.PureComponent {
             })
     }
 
+    componentWillUnmount() {
+        if (Portail !== undefined)
+            Portail.abortRequest();
+    }
+
     render() {
         return (
-            <View style={{
-                margin: '5%',
-                backgroundColor: "#f2f2f2",
-                borderColor: '#fff',
-                borderWidth: 2,
-            }}>
-                <View style={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: '#fff'
-                }}><Image style={{
-                    height: 200,
-                    width: "100%"
-                }}
-                          source={{uri: this.props.member.image}}/></View>
-                <View style={{margin: 10}}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 'bold'
-                    }}>{this.props.member.name}</Text>
+            <View style={styles.associations.block.view}>
+                <Image style={{height: 75, width: 75}}
+                       source={{uri: this.props.member.image}}
+                       resizeMode='cover'/>
 
-                    {
-                        this.state.role ? <Text style={{
-                            fontSize: 13
-                        }}>{this.state.role.name}</Text> : null
-                    }
+                <View style={styles.associations.block.details}>
+                    <Text style={{fontSize: 16, fontWeight: 'bold', color: '#3c3746'}}>{this.props.member.name}</Text>
+                    {this.state.role ? <Text style={{fontSize: 13}}>{this.state.role.name}</Text> : null}
+                </View>
+            </View>
+        )
+    }
+}
 
+class FakeMember extends React.PureComponent {
+    render() {
+        return (
+            <View style={styles.associations.block.view}>
+                <Image style={{height: 75, width: 75}}
+                       source={require('../../img/icons/picture.png')}
+                       resizeMode='center'/>
+
+                <View style={styles.associations.block.details}>
+                    <Text style={{fontSize: 16, fontWeight: 'bold', color: 'lightgray'}}>{this.props.text}</Text>
                 </View>
             </View>
         )
@@ -58,21 +62,23 @@ export class MembersView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            members: []
-        }
+            members: [],
+            loading: true
+        };
     }
 
     componentDidMount() {
         const associationId = this.props.navigation.state.params.id;
 
         Portail.getAssoMembers(associationId)
-            .then(members => this.setState({members: members}))
+            .then(members =>
+                this.setState({
+                    members: members.sort((a, b) => a.name.localeCompare(b.name)),
+                    loading: false
+                }))
             .catch(reason => {
                 console.warn(reason);
-                Alert.alert(
-                    "Trombinoscope non disponible",
-                    "Une erreur est survenue lors de la récupération des membres de l'association.",
-                    [{text: 'OK', onPress: () => this.props.navigation.goBack(associationId)}])
+                this.setState({loading: false})
             })
     }
 
@@ -82,18 +88,16 @@ export class MembersView extends React.PureComponent {
     }
 
     render() {
-        if (this.state.members.length === 0)
-            return <Text>Loading...</Text>;
+        if (this.state.loading)
+            return <ScrollView><FakeMember text={'Chargement...'}/></ScrollView>;
+        else if (this.state.members.length === 0)
+            return <ScrollView><FakeMember text={'Aucun membre trouvé'}/></ScrollView>;
         else
-            return <FlatList
-                data={this.state.members.map(member => {return {key: member.id, member: member}})}
-                renderItem={({item}) => { return (
-                    <View style={{ flex: 1, flexDirection: 'column'}}>
-                        <Member member={item.member}/>
-                    </View>
-                )}}
-                numColumns={2}
-                keyExtractor={(item, index) => index}
-            />
+            return <FlatList data={this.state.members.map(member => {return {key: member.id, member: member}})}
+                             renderItem={({item}) => { return (
+                                 <View style={{flex: 1, flexDirection: 'column'}}>
+                                     <Member member={item.member}/>
+                                 </View>
+                             )}}/>
     }
 }
