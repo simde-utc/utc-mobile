@@ -21,7 +21,7 @@ const TopTabNavigator = createMaterialTopTabNavigator({
     Events: {
         screen: EventsView,
         navigationOptions: {
-            title: 'Évènements'
+            title: 'Évents'
         }
     },
     Members: {
@@ -35,18 +35,22 @@ const TopTabNavigator = createMaterialTopTabNavigator({
         labelStyle: {
             fontSize: 12,
             fontWeight: 'bold',
-            color: '#fff'
+            color: '#007383'
         },
         style: {
-            backgroundColor: '#007d94',
+            backgroundColor: '#e7e7e7',
         },
-    }
+    },
 });
 
 export default class AssociationScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-        title: (typeof(navigation.state.params) !== 'undefined' && typeof(navigation.state.params.title) !== 'undefined') ?
+        headerTitle: (typeof(navigation.state.params) !== 'undefined' && typeof(navigation.state.params.title) !== 'undefined') ?
             navigation.state.params.title : 'Association',
+        headerStyle: {
+            backgroundColor: '#007383'
+        },
+        headerTintColor: '#fff'
     });
 
     // This need to be added for sharing Navigation's properties with TopTabNavigator and its sub-components
