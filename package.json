@@ -35,6 +35,7 @@
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-open-maps": "^0.2.2",
     "react-native-render-html": "^3.10.0",
+    "react-native-segmented-control-tab": "^3.4.0",
     "react-native-simple-markdown": "^1.1.0",
     "react-native-webview-leaflet": "^2.0.501",
     "react-navigation": "^2.8.0",

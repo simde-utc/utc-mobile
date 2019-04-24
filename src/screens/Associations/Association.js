@@ -38,7 +38,7 @@ const TopTabNavigator = createMaterialTopTabNavigator({
             color: '#007383'
         },
         style: {
-            backgroundColor: '#e7e7e7',
+            backgroundColor: '#fff',
         },
     },
 });
@@ -48,9 +48,9 @@ export default class AssociationScreen extends React.Component {
         headerTitle: (typeof(navigation.state.params) !== 'undefined' && typeof(navigation.state.params.title) !== 'undefined') ?
             navigation.state.params.title : 'Association',
         headerStyle: {
-            backgroundColor: '#007383'
+            backgroundColor: '#fff'
         },
-        headerTintColor: '#fff'
+        headerTintColor: '#007383'
     });
 
     // This need to be added for sharing Navigation's properties with TopTabNavigator and its sub-components
