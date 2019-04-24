@@ -1,6 +1,6 @@
 import React from "react";
 import Portail from "../../services/Portail";
-import {FlatList, Image, ScrollView, Text, View} from "react-native";
+import {FlatList, Image, Text, View} from "react-native";
 import styles from "../../styles";
 
 class Member extends React.PureComponent {
@@ -46,12 +46,12 @@ class FakeMember extends React.PureComponent {
     render() {
         return (
             <View style={styles.associations.block.view}>
-                <Image style={{height: 75, width: 75}}
+                <Image style={{height: 75, width: 75, backgroundColor: '#f1f1f1'}}
                        source={require('../../img/icons/picture.png')}
                        resizeMode='center'/>
 
                 <View style={styles.associations.block.details}>
-                    <Text style={{fontSize: 16, fontWeight: 'bold', color: 'lightgray'}}>{this.props.text}</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold', color: 'lightgray'}}>{this.props.title}</Text>
                 </View>
             </View>
         )
@@ -88,16 +88,14 @@ export class MembersView extends React.PureComponent {
     }
 
     render() {
-        if (this.state.loading)
-            return <ScrollView><FakeMember text={'Chargement...'}/></ScrollView>;
-        else if (this.state.members.length === 0)
-            return <ScrollView><FakeMember text={'Aucun membre trouvé'}/></ScrollView>;
-        else
-            return <FlatList data={this.state.members.map(member => {return {key: member.id, member: member}})}
-                             renderItem={({item}) => { return (
-                                 <View style={{flex: 1, flexDirection: 'column'}}>
-                                     <Member member={item.member}/>
-                                 </View>
-                             )}}/>
+        return <FlatList style={styles.associations.list}
+                         data={this.state.members.map(member => {return {key: member.id, member: member}})}
+                         renderItem={({item}) => { return (
+                             <View style={{flex: 1, flexDirection: 'column'}}>
+                                 <Member member={item.member}/>
+                             </View>
+                         )}}
+                         ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
+                         ListEmptyComponent={() => <FakeMember title={'Aucun membre trouvé'}/>}/>
     }
 }

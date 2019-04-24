@@ -1,21 +1,23 @@
 export const associations = {
-    layout: {
-        backgroundColor: '#f8f8f8'
+    list: {},
+
+    separator: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#f1f1f1'
     },
 
     block: {
         view: {
-            backgroundColor: '#f2f2f2',
-            margin: 10,
-            marginBottom: 0,
-            borderWidth: 2,
-            borderRadius: 4,
-            borderColor: '#fff',
+            padding: 10,
+            backgroundColor: '#fff',
+            //borderTopWidth: 1,
+            //borderTopColor: '#f1f1f1',
             flex: 1,
             flexDirection: 'row',
         },
         details: {
-            padding: 10,
+            paddingLeft: 10,
+            backgroundColor: '#fff',
             borderLeftWidth: 2,
             borderLeftColor: '#fff',
             flex: 1
@@ -45,9 +47,5 @@ export const associations = {
                 color: '#6d6f71'
             }
         }
-    },
-
-    member: {
     }
-
 };

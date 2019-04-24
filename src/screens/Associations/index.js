@@ -1,10 +1,10 @@
 import React from 'react';
-import {Alert, FlatList, Image, SegmentedControlIOS, Text, TouchableHighlight, View} from "react-native";
+import {Alert, FlatList, Image, Text, TouchableHighlight, View} from "react-native";
 import Portail from "../../services/Portail";
 import withNavigation from "react-navigation/src/views/withNavigation";
-import Spinner from "react-native-loading-spinner-overlay";
 import styles from "../../styles";
-import Button from "react-native-button";
+import SegmentedControlTab from "react-native-segmented-control-tab";
+import Icon from "../../components/Icon";
 
 class AssociationBlock extends React.PureComponent {
     /**
@@ -39,19 +39,22 @@ class AssociationBlock extends React.PureComponent {
                    source={{uri: this.props.entity.image}}
                    resizeMode='contain'/>
             :
-            <Image style={{height: height, width: width}}
+            <Image style={{height: height, width: width, backgroundColor: '#f1f1f1'}}
                    source={require('../../img/icons/picture.png')}
                    resizeMode='center'/>
     }
 
     render() {
         return (
-            <TouchableHighlight onPress={this.props.onPress} underlayColor={'#fff'} activeOpacity={0.7}>
+            <TouchableHighlight onPress={this.props.onPress}>
                 <View style={styles.associations.block.view}>
                     { this._renderLogo() }
                     <View style={styles.associations.block.details}>
                         <Text style={{fontSize: 20, fontWeight: 'bold', color: this._getPoleColor()}}>{this.props.entity.shortname}</Text>
                         <Text style={{fontSize: 13, fontWeight: 'bold', color: '#6d6f71'}}>{this.props.entity.name}</Text>
+                    </View>
+                    <View>
+                        <Icon image={require('../../img/icons/arrow_yellow.png')}/>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -59,20 +62,40 @@ class AssociationBlock extends React.PureComponent {
     }
 }
 
+class FakeAssociationBlock extends React.PureComponent {
+    render() {
+        return (
+            <View style={styles.associations.block.view}>
+                <Image style={{height: 100, width: 100, backgroundColor: '#f1f1f1'}}
+                       source={require('../../img/icons/picture.png')}
+                       resizeMode='center'/>
+                <View style={styles.associations.block.details}>
+                    <Text style={{fontSize: 20, fontWeight: 'bold', color: '#f1f1f1'}}>{this.props.title || ''}</Text>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', color: '#f1f1f1'}}>{this.props.subtitle || ''}</Text>
+                </View>
+            </View>
+        );
+    }
+}
+
 export class AssociationsListScreen extends React.PureComponent {
-    static navigationOptions = {
-        headerTitle: 'Associations',
-        headerStyle: {
-            backgroundColor: '#007383',
-        },
-        headerTintColor: '#fff'
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerTitle: 'Associations',
+            headerStyle: {
+                backgroundColor: '#fff',
+            },
+            headerTintColor: '#007383'
+        }
     };
 
     constructor(props) {
         super(props);
         this.state = {
             entities: [],
-            filters: ['Toutes', 'PAE', 'PTE', 'PVDC', 'PSEC', 'BDE-UTC']
+            filteredEntities: [],
+            filters: ['Toutes', 'PAE', 'PTE', 'PVDC', 'PSEC', 'BDE-UTC'],
+            selectedFilterIndex: 0,
         }
     }
 
@@ -114,11 +137,13 @@ export class AssociationsListScreen extends React.PureComponent {
     }
 
     _filterByPoles(index) {
+        this.setState({selectedFilterIndex: index});
+
         if (index === 0) // "All" filter
             this.setState({filteredEntities: this.state.entities});
         else if (index > 0 && index < this.state.filters.length) // Pôles filters
             this.setState({
-                filteredEntities: this.state.entities.filter(entity => entity.parent != null && entity.parent.shortname === this.state.filters[index])
+                filteredEntities: this.state.entities.filter(entity => entity.parent != null && entity.parent.shortname === this.state.filters[index]),
             });
         else
             throw 'Wrong filter index';
@@ -127,32 +152,42 @@ export class AssociationsListScreen extends React.PureComponent {
         this.refs._associationsFlatList.scrollToOffset({ animated: true, offset: 0 });
     }
 
+    _renderFilters() {
+        return (
+            <View style={{padding: 10, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f1f1f1'}}>
+                <SegmentedControlTab
+                    tabStyle={{backgroundColor: 'transparent', borderColor: '#007383'}}
+                    tabTextStyle={{color: '#007383'}}
+                    activeTabStyle={{backgroundColor: '#007383'}}
+                    values={this.state.filters}
+                    selectedIndex={this.state.selectedFilterIndex}
+                    onTabPress={(index) => this._filterByPoles(index)}/>
+            </View>
+        )
+    }
+
+    _renderEmptyBlock() {
+        return <FakeAssociationBlock/>
+    }
+
     render() {
-        if (this.state.entities.length === 0)
-            return <Spinner visible={true}/>;
-        else
-            return (
-                <View style={styles.associations.layout}>
-                    <SegmentedControlIOS
-                        style={{margin: 10}}
-                        tintColor={'#007383'}
-                        values={this.state.filters}
-                        selectedIndex={0}
-                        onChange={(event) => this._filterByPoles(event.nativeEvent.selectedSegmentIndex)}/>
-                    <FlatList
-                        ref='_associationsFlatList'
-                        data={this.state.filteredEntities.map(entity => { return {key: entity.id, entity: entity}})}
-                        renderItem={({item}) => <AssociationBlock entity={item.entity}
-                                                                  onPress={() => { this.props.navigation.navigate({
-                                                                      key: item.key,
-                                                                      routeName: 'Association',
-                                                                      params: {
-                                                                          id: item.entity.id,
-                                                                          title: item.entity.shortname}})}}/>
-                        }
-                    />
-                </View>
-            )
+        return (
+            <FlatList
+                style={styles.associations.list}
+                ref='_associationsFlatList'
+                data={this.state.filteredEntities.map(entity => { return {key: entity.id, entity: entity}})}
+                renderItem={({item}) => <AssociationBlock entity={item.entity}
+                                                          onPress={() => { this.props.navigation.navigate({
+                                                              key: item.key,
+                                                              routeName: 'Association',
+                                                              params: {
+                                                                  id: item.entity.id,
+                                                                  title: item.entity.shortname}})}}/>}
+                ListHeaderComponent={this._renderFilters()}
+                ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
+                ListEmptyComponent={() => <FakeAssociationBlock title={'Chargement...'}/>}
+            />
+        )
     }
 }
 
