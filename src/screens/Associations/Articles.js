@@ -32,14 +32,16 @@ export class ArticlesView extends React.PureComponent {
             Portail.abortRequest();
     }
 
-    render() {
+    render() { // This will evolve with new ArticleComponent view
         if (this.state.loading)
             return <Text>Loading...</Text>;
         else if (this.state.articles.length === 0)
             return <Text>Aucun article</Text>;
         else
-            return <FlatList
-                data={this.state.articles.map(article => {return {key: article.id, article: article}})}
-                renderItem={({item}) => { return <ArticleComponent navigation={this.props.navigation} data={item.article} portailInstance={Portail} fullActions={true} /> }}/>
+            return <FlatList data={this.state.articles.map(article => {return {key: article.id, article: article}})}
+                             renderItem={({item}) => { return <ArticleComponent navigation={this.props.navigation}
+                                                                                data={item.article}
+                                                                                portailInstance={Portail}
+                                                                                fullActions={true} /> }}/>
     }
 }

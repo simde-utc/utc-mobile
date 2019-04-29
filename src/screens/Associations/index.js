@@ -51,7 +51,9 @@ class AssociationBlock extends React.PureComponent {
                     { this._renderLogo() }
                     <View style={styles.associations.block.details}>
                         <Text style={{fontSize: 20, fontWeight: 'bold', color: this._getPoleColor()}}>{this.props.entity.shortname}</Text>
-                        <Text style={{fontSize: 13, fontWeight: 'bold', color: '#6d6f71'}}>{this.props.entity.name}</Text>
+                        <Text style={{fontSize: 13, fontWeight: 'bold', color: '#6d6f71'}}>
+                            { this.props.entity.name.toLowerCase() !== this.props.entity.shortname.toLowerCase() ? this.props.entity.name : null }
+                        </Text>
                     </View>
                     <View>
                         <Icon image={require('../../img/icons/arrow_yellow.png')}/>
@@ -79,24 +81,23 @@ class FakeAssociationBlock extends React.PureComponent {
 }
 
 export class AssociationsListScreen extends React.PureComponent {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerTitle: 'Associations',
-            headerStyle: {
-                backgroundColor: '#fff',
-            },
-            headerTintColor: '#007383'
-        }
+    static navigationOptions = {
+        headerTitle: 'Associations',
+        headerStyle: {
+            backgroundColor: '#fff'
+        },
+        headerTintColor: '#007383'
     };
 
     constructor(props) {
         super(props);
+
         this.state = {
             entities: [],
             filteredEntities: [],
             filters: ['Toutes', 'PAE', 'PTE', 'PVDC', 'PSEC', 'BDE-UTC'],
             selectedFilterIndex: 0,
-        }
+        };
     }
 
     componentDidMount() {
@@ -107,15 +108,9 @@ export class AssociationsListScreen extends React.PureComponent {
 
         let entities = [];
 
-        Portail.getAssos(true, 0, 2)
+        Portail.getAssos(false, false, 0, 0)
             .then(assos => {
-                entities.push(assos[0]); // BDE
-
-                // We add BDE's sons and their sons too
-                assos[0].children.forEach(entity => {
-                    entities.push(entity);
-                    entity.children.forEach(asso => entities.push(asso));
-                });
+                assos.forEach(entity => entities.push(entity));
 
                 this.setState({
                     entities: entities.sort((a, b) => a.shortname.localeCompare(b.shortname)), // We return entities in alphabetical order
@@ -166,26 +161,24 @@ export class AssociationsListScreen extends React.PureComponent {
         )
     }
 
-    _renderEmptyBlock() {
-        return <FakeAssociationBlock/>
-    }
-
     render() {
         return (
             <FlatList
                 style={styles.associations.list}
                 ref='_associationsFlatList'
-                data={this.state.filteredEntities.map(entity => { return {key: entity.id, entity: entity}})}
+                data={this.state.filteredEntities.map(entity => { return {key: entity.id, entity: entity} })}
                 renderItem={({item}) => <AssociationBlock entity={item.entity}
                                                           onPress={() => { this.props.navigation.navigate({
                                                               key: item.key,
                                                               routeName: 'Association',
                                                               params: {
                                                                   id: item.entity.id,
-                                                                  title: item.entity.shortname}})}}/>}
+                                                                  title: item.entity.shortname}})} }/>}
                 ListHeaderComponent={this._renderFilters()}
-                ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
+                stickyHeaderIndices={[0]}
+                ItemSeparatorComponent={() => <View style={styles.associations.separator}/>}
                 ListEmptyComponent={() => <FakeAssociationBlock title={'Chargement...'}/>}
+                initialNumToRender={5}
             />
         )
     }

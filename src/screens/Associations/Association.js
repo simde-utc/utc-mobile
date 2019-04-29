@@ -6,25 +6,25 @@ import {EventsView} from "./Events";
 import {MembersView} from "./Members";
 
 const TopTabNavigator = createMaterialTopTabNavigator({
-    Details: {
+    AssociationDetails: {
         screen: DetailsView,
         navigationOptions: {
             title: 'En bref'
         }
     },
-    Articles: {
+    AssociationArticles: {
         screen: ArticlesView,
         navigationOptions: {
             title: 'Articles'
         }
     },
-    Events: {
+    AssociationEvents: {
         screen: EventsView,
         navigationOptions: {
             title: 'Évents'
         }
     },
-    Members: {
+    AssociationMembers: {
         screen: MembersView,
         navigationOptions: {
             title: 'Trombi'

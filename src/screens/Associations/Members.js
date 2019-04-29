@@ -1,6 +1,6 @@
 import React from "react";
 import Portail from "../../services/Portail";
-import {FlatList, Image, Text, View} from "react-native";
+import {FlatList, Image, ScrollView, Text, View} from "react-native";
 import styles from "../../styles";
 
 class Member extends React.PureComponent {
@@ -29,16 +29,26 @@ class Member extends React.PureComponent {
     render() {
         return (
             <View style={styles.associations.block.view}>
-                <Image style={{height: 75, width: 75}}
-                       source={{uri: this.props.member.image}}
-                       resizeMode='cover'/>
-
+                { this._renderImage() }
                 <View style={styles.associations.block.details}>
-                    <Text style={{fontSize: 16, fontWeight: 'bold', color: '#3c3746'}}>{this.props.member.name}</Text>
-                    {this.state.role ? <Text style={{fontSize: 13}}>{this.state.role.name}</Text> : null}
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>{this.props.member.name}</Text>
+                    {this.state.role ? <Text style={{fontSize: 13, fontWeight: 'bold', color: '#6d6f71'}}>{this.state.role.name}</Text> : null}
                 </View>
             </View>
         )
+    }
+
+    _renderImage() {
+        const height = 75, width = 75;
+
+        return this.props.member.image ?
+            <Image style={{height: height, width: width}}
+                   source={{uri: this.props.member.image}}
+                   resizeMode='cover'/>
+            :
+            <Image style={{height: height, width: width, backgroundColor: '#f1f1f1'}}
+                   source={require('../../img/icons/picture.png')}
+                   resizeMode='center'/>
     }
 }
 
@@ -88,6 +98,8 @@ export class MembersView extends React.PureComponent {
     }
 
     render() {
+        if (this.state.loading)
+            return <ScrollView><FakeMember title={'Chargement...'}/></ScrollView>;
         return <FlatList style={styles.associations.list}
                          data={this.state.members.map(member => {return {key: member.id, member: member}})}
                          renderItem={({item}) => { return (
@@ -96,6 +108,6 @@ export class MembersView extends React.PureComponent {
                              </View>
                          )}}
                          ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
-                         ListEmptyComponent={() => <FakeMember title={'Aucun membre trouvé'}/>}/>
+                         ListEmptyComponent={() => <FakeMember title={'Aucun membre'}/>}/>
     }
 }
