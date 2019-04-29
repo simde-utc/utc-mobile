@@ -250,15 +250,16 @@ export class Portail extends Api {
 		);
 	}
 
-	getAssos(tree=false, stageDown=0, stageUp=2) {
+	getAssos(tree=false, deleted=false, stageDown=0, stageUp=2) {
 		//les undefined sont gérés mais pas les strings vides
 		if (stageDown == "")  {stageDown = 0}
 		if (stageUp == "") {stageUp = 2}
 		this._checkConnected()
-		tree = tree ? 'tree' : 'flat'
+		tree = tree ? 'tree' : 'flat';
+		deleted = deleted ? 'with' : 'without';
 		return new Promise((resolve, reject) => {
 			this.call(
-				Portail.API_V1 + 'assos',
+				Portail.API_V1 + 'assos' + '?deleted=' + deleted,
 				Api.GET,
 				{	"stages": stageDown + ',' + stageUp + ',' + tree,
 				}).then( ( [data, status] ) => {

@@ -10,8 +10,6 @@ export const associations = {
         view: {
             padding: 10,
             backgroundColor: '#fff',
-            //borderTopWidth: 1,
-            //borderTopColor: '#f1f1f1',
             flex: 1,
             flexDirection: 'row',
         },
@@ -27,8 +25,6 @@ export const associations = {
     details: {
         logoView: {
             backgroundColor: '#fff',
-            borderWidth: 2,
-            borderColor: '#fff',
             alignItems: 'center',
         },
         textView: {
@@ -37,7 +33,6 @@ export const associations = {
                 fontWeight: 'bold'
             },
             subtitle: {
-                paddingBottom: 10,
                 fontSize: 15,
                 fontWeight: 'bold',
                 color: '#6d6f71'

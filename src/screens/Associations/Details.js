@@ -46,7 +46,7 @@ export class DetailsView extends React.PureComponent {
 
         return (
             <View style={styles.associations.details.logoView}>
-                <Image style={{height: 200, width: 200}}
+                <Image style={{height: 200, width: 200, margin: 5}}
                        source={{uri: this.state.association.image}}
                        resizeMode='contain'/>
             </View>
@@ -54,15 +54,16 @@ export class DetailsView extends React.PureComponent {
     }
 
     render() {
-        if (this.state.loading)
-            return <Text>loading...</Text>;
-        else if (this.state.association)
+        if (!this.state.loading &&  this.state.association)
             return (
-                <ScrollView>
+                <ScrollView style={{backgroundColor: '#fff'}}>
                     { this._renderLogo() }
-                    <View style={{padding: '5%'}}>
+                    <View style={{padding: 15}}>
                         <Text style={styles.associations.details.textView.title}>{this.state.association.shortname}</Text>
                         <Text style={styles.associations.details.textView.subtitle}>{this.state.association.name}</Text>
+                    </View>
+                    <View style={styles.associations.separator}/>
+                    <View style={{padding: 15}}>
                         <Text style={styles.associations.details.textView.description}>{this.state.association.description}</Text>
                     </View>
                 </ScrollView>
