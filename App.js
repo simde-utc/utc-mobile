@@ -51,7 +51,7 @@ checkEnvVariables() {
 	render() {
 		return (
 			<Provider store={ store }>
-				<SafeAreaView style={{ flex: 1, paddingTop: paddingTop }}>
+				<SafeAreaView style={{ flex: 1, paddingTop: paddingTop }} forceInset={{ bottom: 'never' }}>
 					<StatusBar
 						translucent={ true }
 					/>

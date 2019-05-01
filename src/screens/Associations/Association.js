@@ -50,7 +50,8 @@ export default class AssociationScreen extends React.Component {
         headerStyle: {
             backgroundColor: '#fff'
         },
-        headerTintColor: '#007383'
+        headerTintColor: '#007383',
+        headerForceInset: { top: 'never' }
     });
 
     // This need to be added for sharing Navigation's properties with TopTabNavigator and its sub-components

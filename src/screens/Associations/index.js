@@ -86,7 +86,8 @@ export class AssociationsListScreen extends React.PureComponent {
         headerStyle: {
             backgroundColor: '#fff'
         },
-        headerTintColor: '#007383'
+        headerTintColor: '#007383',
+        headerForceInset: { top: 'never' }
     };
 
     constructor(props) {

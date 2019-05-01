@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
-import { createMaterialTopTabNavigator  } from 'react-navigation';
+import {createBottomTabNavigator, createMaterialTopTabNavigator} from 'react-navigation';
 import styles from '../styles/'
 
 // Screens
@@ -8,6 +8,7 @@ import styles from '../styles/'
 // import StorageTestScree from './StorageTest'; // DEBUG
 import EventsNavigator from './Events'
 import ArticlesScreen from './Articles'
+import NavigationScreen from "./Navigation";
 
 // Icons
 import Icon from '../components/Icon'
@@ -21,76 +22,68 @@ import NotificationsOn from '../img/icons/navbar/bell-on.png'
 import NotificationsOff from '../img/icons/navbar/bell-off.png'
 import HamburgerOn from '../img/icons/navbar/hamburger-on.png'
 import HamburgerOff from '../img/icons/navbar/hamburger-off.png'
-import NavigationScreen from "./Navigation";
 
 // DEBUG
 const show = (text) => <View style={ styles.container.center }><Text style={ styles.text.h0 }>{ text }</Text></View>
 const HomeScreen = () => show('Home')
 const NotificationsScreen = () => show('Notifications')
 
+const ICON_SIZE = Platform.OS === 'android' ? 25 : 20;
 
-const tabBarOptions = Platform.OS === 'ios' ?
-	{
-		// iOS tabBarOptions
-		showIcon: true,
-		showLabel: false,
-		style: styles.mainLayout.tabBar,
-		indicatorStyle: styles.mainLayout.indicator,
-		iconStyle: styles.mainLayout.icon,
-	} : {
-		// Android tabBarOptions
-		showIcon: true,
-		showLabel: false,
-		style: styles.mainLayout.tabBar,
-		indicatorStyle: styles.mainLayout.indicator,
-		iconStyle: styles.mainLayout.icon,
-	}
-
-export default MainLayout = createMaterialTopTabNavigator ({
+export default MainLayout = createBottomTabNavigator ({
 	// Storage: StorageTestScreen,	// DEBUG
 	Home: {
-		screen: HomeScreen,
-		navigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? HomeOn : HomeOff } />
+        screen: HomeScreen,
+        navigationOptions: {
+            title: 'Accueil',
+            tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? HomeOn : HomeOff } height={ICON_SIZE} width={ICON_SIZE} />
 			)
-		})
-	},
+		}
+    },
 	News: {
 		screen: ArticlesScreen,
-		navigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? NewsOn : NewsOff } />
+        navigationOptions: {
+            title: 'Actus',
+            tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? NewsOn : NewsOff } height={ICON_SIZE} width={ICON_SIZE} />
 			)
-		})
+		}
 	},
 	Events: {
 		screen: EventsNavigator,
-		navigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? EventsOn : EventsOff } />
+        navigationOptions: {
+            title: 'Calendrier',
+            tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? EventsOn : EventsOff } height={ICON_SIZE} width={ICON_SIZE} />
 			)
-		})
+		}
 	},
 	Notifications: {
 		screen: NotificationsScreen,
-		navigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? NotificationsOn : NotificationsOff } />
+		navigationOptions: {
+            title: 'Notifications',
+            tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? NotificationsOn : NotificationsOff } height={ICON_SIZE} width={ICON_SIZE} />
 			)
-		})
+		}
 	},
 	Hamburger: {
 		screen: NavigationScreen,
-		navigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused }) => (
-				<Icon image={ focused ? HamburgerOn : HamburgerOff } />
+		navigationOptions: {
+            title: 'Navigation',
+            tabBarIcon: ({ focused }) => (
+				<Icon image={ focused ? HamburgerOn : HamburgerOff } height={ICON_SIZE} width={ICON_SIZE} />
 			)
-		})
+		}
 	}
 }, {
 	initialRouteName: 'Home',
-	tabBarOptions: tabBarOptions,
-	tabBarPosition: 'bottom',
-	swipeEnabled: false,
+	tabBarOptions: {
+		showLabel: Platform.OS !== 'android', // On Android, we don't display icons label
+        activeTintColor: '#007383',
+		style: {
+        	borderTopColor: '#f1f1f1'
+		}
+	},
 });
