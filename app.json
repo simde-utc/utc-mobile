@@ -12,5 +12,13 @@
 			"resizeMode": "contain",
 			"image": "./src/img/splash.png",
 		}
+	},
+	"ios": {
+		"infoPlist": {
+			"LSApplicationQueriesSchemes": [
+				"comgooglemaps",
+				"waze"
+			]
+		}
 	}
 }

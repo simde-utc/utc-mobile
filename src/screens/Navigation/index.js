@@ -8,6 +8,7 @@ import styles from '../../styles'
 import {ProfileHeader} from "../Profile/ProfileHeader";
 import AssociationsListScreen from "../Associations";
 import AssociationScreen from "../Associations/Association";
+import {MapNavigator} from "../Map";
 
 class FullWidthButton extends React.Component {
     render() {
@@ -29,6 +30,8 @@ export class NavigationScreen extends React.Component {
                 <ProfileHeader onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Mon compte'} onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Liste des associations'} onPress={() => this.props.navigation.navigate('Associations')}/>
+                <FullWidthButton name={'Interactions'} onPress={() => this.props.navigation.navigate('Interactions')}/>
+                <FullWidthButton name={'Plan'} onPress={() => this.props.navigation.navigate('Map')}/>
             </ScrollView>
         );
     }
@@ -42,10 +45,21 @@ export default NavigationNavigator = createStackNavigator({
         }
     },
     Associations: {
-        screen: AssociationsListScreen,
+        screen: AssociationsListScreen
     },
     Association: {
         screen: AssociationScreen
+    },
+    Map: {
+        screen: MapNavigator,
+        navigationOptions: {
+            headerTitle: 'Plan',
+            headerStyle: {
+                backgroundColor: '#fff'
+            },
+            headerTintColor: '#007383',
+            headerForceInset: { top: 'never' }
+        }
     },
     Profile: {
         screen: ProfileScreen
