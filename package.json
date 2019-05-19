@@ -32,6 +32,7 @@
     "react-native-calendars": "^1.20.0",
     "react-native-carousel": "^0.11.0",
     "react-native-checkbox-svg": "^2.1.1",
+    "react-native-easy-toast": "^1.2.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-open-maps": "^0.2.2",
     "react-native-render-html": "^3.10.0",

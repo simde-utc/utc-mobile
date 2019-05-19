@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, Text } from 'react-native';
 import styles from '../../styles'
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 // Components
 import HeaderView from '../../components/HeaderView';
@@ -16,6 +17,7 @@ export default class SetPreferencesScreen extends React.Component {
 				utcNews: true,
 				assoLife: true,
 				utcMember: false,
+				cgu: false,
 			}
 		};
 		
@@ -34,10 +36,16 @@ export default class SetPreferencesScreen extends React.Component {
 	}
 
 	validate() {
-		if (this.state.checked.utcMember)
-			this.props.navigation.navigate('Connection')
-		else
-			this.props.navigation.navigate('Connected')
+		if(this.state.checked.cgu) {
+			if (this.state.checked.utcMember)
+				this.props.navigation.navigate('Connection')
+			else
+				this.props.navigation.navigate('Connected')
+		}
+		else {
+			this.refs.toast.show('Merci d\'accepter les CGU pour accéder à l\'application', 1000)
+			//alert('Conditions générales d\'utilisation', 'Merci d\'accepter les CGU pour accéder à l\'application')
+		}		
 	}
 
 	render() {
@@ -48,6 +56,7 @@ export default class SetPreferencesScreen extends React.Component {
 {/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
 		return (
 			<View style={ styles.container.default }>
+                <Toast ref="toast" position='bottom' style={{backgroundColor: 'grey'}}/>
 				<HeaderView
 					title="Nous aimerions mieux vous connaître"
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
@@ -70,6 +79,12 @@ export default class SetPreferencesScreen extends React.Component {
 						labelStyle={ styles.text.h5 }
 						label={"Etes-vous un membre UTC/BDE ?"}
 						onChange={() => this.toggleCheck('utcMember')}
+					/>
+					<BigCheckBox 
+						checked={ this.state.checked.cgu }
+						labelStyle={ styles.text.h5 }
+						label={"Je reconnais avoir lu et compris les CGU"}
+						onChange={() => this.toggleCheck('cgu')}
 					/>
 					<BigButton
 						label={ "Valider" }
