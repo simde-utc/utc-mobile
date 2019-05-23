@@ -1,7 +1,7 @@
 /**
  * Fichier chargé pour lancer l'application. Définie toutes les routes qui suivent
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
- * @author Alexabdre Brasseur <alexandre.brasseur@etu.utc.fr>
+ * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
