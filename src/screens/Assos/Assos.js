@@ -17,6 +17,9 @@ import AssosListComponent from '../../components/Assos/AssosList';
 
 
 export default class AssosScreen extends React.Component {
+	// Commenté pour être plus cohérent avec le nouveau menu de Navigation, je reviendrai dessus avec la refonte de la page des Assos
+	// Le Header est créé directement dans la vue Navigation
+	/*
   static navigationOptions = ({ navigation, navigationOptions }) => {
 	//ce qui se passe ici est très très sale Samy <3
 	var name = navigation.getParam('name', 'Associations');
@@ -51,12 +54,13 @@ export default class AssosScreen extends React.Component {
     return {
 	title: name,
 	headerTintColor: foreColor,
+	headerMode: 'float',
 	headerStyle: {
 		backgroundColor: color,
 	},
 	headerTitle: <Text style={{color: foreColor, marginLeft: margin}} adjustsFontSizeToFit={true}>{name}</Text>,
     };
-  };
+  };*/
 
 
 	constructor(props) {

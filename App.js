@@ -14,10 +14,10 @@ import store from './src/redux/store';
 
 import { createSwitchNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
 import AppLoader from './src/screens/AppLoader';
-import AppLayout from './src/screens/AppLayout';
 import ConnectionScreen from './src/screens/Connection/';
 import ConnectedScreen from './src/screens/Connected/';
 import WelcomeScreen from './src/screens/Welcome/';
+import MainLayout from "./src/screens/MainLayout";
 
 
 const AuthStack = createStackNavigator({
@@ -29,7 +29,7 @@ const AuthStack = createStackNavigator({
 const AppSwitch = createSwitchNavigator({
 	Loading: AppLoader,
 	Auth: AuthStack,
-	App: AppLayout
+	App: MainLayout
 }, {
 	initialRouteName: 'Loading'
 })
