@@ -29,7 +29,7 @@ export class ProfileHeader extends React.Component {
         // TODO: prévoir le cas lorsque l'utilisateur n'est pas connecté
 
         return (
-            <TouchableHighlight onPress={this.props.onPress}>
+            <TouchableHighlight onPress={this.props.onPress} underlayColor={'#fff'} activeOpacity={0.7}>
                 <View style={styles.userProfile.view}>
                     <Image style={styles.userProfile.image} source={imagePath}/>
                     <Text style={styles.userProfile.name}>{fullName}</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Image, ScrollView, FlatList, Text, View, TouchableHighlight} from "react-native";
+import {Dimensions, Image, ScrollView, FlatList, Text, View, TouchableHighlight, SectionList} from "react-native";
 import {createMaterialTopTabNavigator} from "react-navigation";
 import styles from "../../styles";
 import { showLocation } from 'react-native-map-link'
@@ -32,18 +32,13 @@ class Location extends React.PureComponent {
                     flex: 1,
                     flexDirection: 'row',
                 }}>
-                    <View style={{
-                        backgroundColor: '#fff',
-                        borderLeftWidth: 2,
-                        borderLeftColor: '#fff',
-                        flex: 1
-                    }}>
+                    <View style={{flex: 1}}>
                         <Text style={{fontSize: 16, fontWeight: 'bold'}}>{this.props.location.name} {this.props.location.shortName ? '(' + this.props.location.shortName + ')' : null}</Text>
                         <Text style={{fontSize: 13, fontWeight: 'bold', color: '#6d6f71'}}>{this.props.location.street}</Text>
                         <Text style={{fontSize: 11, color: '#6d6f71'}}>{this.props.location.latitude}, {this.props.location.longitude}</Text>
                     </View>
                     <View>
-                        <Icon image={require('../../img/icons/marqueur.png')}/>
+                        <Icon image={require('../../img/icons/open.png')}/>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -53,7 +48,8 @@ class Location extends React.PureComponent {
 
 class LocationsScreen extends React.PureComponent {
     render() {
-        return <FlatList data={require('../../data/locations').map(location => { return {key: location.name, location: location} })}
+        return <FlatList style={{backgroundColor: '#f4f4f4'}}
+                         data={require('../../data/locations').map(location => { return {key: location.name, location: location} })}
                          renderItem={({item}) => <Location location={item.location}/> }
                          ItemSeparatorComponent={() => <View style={styles.associations.separator}/>}/>
     }
