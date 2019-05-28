@@ -51,7 +51,7 @@ export default class SetPreferencesScreen extends React.Component {
 	render() {
 		const viewStyle = [
 			styles.get('container.center', 'mt.xl', 'mb.xxl'),
-			{ flex: 7, justifyContent: 'center', marginTop: 0 } 
+			{ flex: 7, justifyContent: 'center', marginTop: 6 } 
 		]
 {/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
 		return (
@@ -64,25 +64,25 @@ export default class SetPreferencesScreen extends React.Component {
 				<View style={ viewStyle}>
 					<BigCheckBox 
 						checked={ this.state.checked.utcNews }
-						labelStyle={ styles.text.h5 }
+						labelStyle={ styles.text.p }
 						label={"Afficher les actualités UTC"}
 						onChange={() => this.toggleCheck('utcNews')}
 					/>
 					<BigCheckBox 
 						checked={ this.state.checked.assoLife }
-						labelStyle={ styles.text.h5 }
+						labelStyle={ styles.text.p }
 						label={"Afficher la vie associative"}
 						onChange={() => this.toggleCheck('assoLife')}
 					/>
 					<BigCheckBox 
 						checked={ this.state.checked.utcMember }
-						labelStyle={ styles.text.h5 }
+						labelStyle={ styles.text.p }
 						label={"Etes-vous un membre UTC/BDE ?"}
 						onChange={() => this.toggleCheck('utcMember')}
 					/>
 					<BigCheckBox 
 						checked={ this.state.checked.cgu }
-						labelStyle={ styles.text.h5 }
+						labelStyle={ styles.text.p }
 						label={"Je reconnais avoir lu et compris les CGU"}
 						onChange={() => this.toggleCheck('cgu')}
 					/>
