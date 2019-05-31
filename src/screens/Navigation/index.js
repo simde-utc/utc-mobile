@@ -11,6 +11,7 @@ import AssociationScreen from "../Associations/Association";
 import {MapNavigator} from "../Map";
 import {InteractionsScreen} from "../Interactions";
 import {ContactsScreen} from "../Contacts";
+import {FAQNavigator} from "../FAQ";
 
 export class FullWidthButton extends React.Component {
     render() {
@@ -58,6 +59,7 @@ export class NavigationScreen extends React.Component {
                 <ProfileHeader onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Mon compte'} onPress={() => this.props.navigation.navigate('Profile')}/>
                 <FullWidthButton name={'Liste des associations'} onPress={() => this.props.navigation.navigate('Associations')}/>
+                <FullWidthButton name={'Foire aux questions'} onPress={() => this.props.navigation.navigate('FAQ')}/>
                 <FullWidthButton name={'Interactions'} onPress={() => this.props.navigation.navigate('Interactions')}/>
                 <FullWidthButton name={'Plan'} onPress={() => this.props.navigation.navigate('Map')}/>
                 <FullWidthButton name={'Contacts'} onPress={() => this.props.navigation.navigate('Contacts')}/>
@@ -79,6 +81,12 @@ export default NavigationNavigator = createStackNavigator({
     },
     Association: {
         screen: AssociationScreen
+    },
+    FAQ: {
+        screen: FAQNavigator,
+        navigationOptions: {
+            header: null,
+        }
     },
     Map: {
         screen: MapNavigator,
