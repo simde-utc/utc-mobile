@@ -37,6 +37,7 @@ export class Portail extends Api {
 		'user-get-assos-members',
 		'user-get-roles-assos-assigned',
 		'user-get-roles-assos-owned',
+		'user-get-faqs'
 	]
 
 	constructor() {
@@ -495,7 +496,50 @@ export class Portail extends Api {
 		)
 	}
 
+    getFAQs() {
+        this._checkConnected();
 
+        return new Promise((resolve, reject) => {
+            this.call(
+                Portail.API_V1 + 'faqs',
+                Api.GET,
+                {}).then( ( [data, status] ) => {
+                resolve(data)
+            }).catch( ([response, status]) => {
+                reject([response, status])
+            })
+        })
+    }
+
+	getFAQ(categoryId) {
+		this._checkConnected();
+
+        return new Promise((resolve, reject) => {
+            this.call(
+                Portail.API_V1 + 'faqs/' + categoryId,
+                Api.GET,
+                {}).then( ( [data, status] ) => {
+                resolve(data)
+            }).catch( ([response, status]) => {
+                reject([response, status])
+            })
+        })
+	}
+
+	getFAQQuestions(categoryId) {
+		this._checkConnected();
+
+        return new Promise((resolve, reject) => {
+            this.call(
+                Portail.API_V1 + 'faqs/' + categoryId + '/questions',
+                Api.GET,
+                {}).then( ( [data, status] ) => {
+                resolve(data)
+            }).catch( ([response, status]) => {
+                reject([response, status])
+            })
+        })
+	}
 
 }
 

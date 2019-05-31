@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, SectionList, Text, TouchableHighlight, View, Linking} from "react-native";
+import {Linking, SectionList, Text, TouchableHighlight, View} from "react-native";
 import styles from "../../styles";
 import Icon from "../../components/Icon";
 
