@@ -14,4 +14,5 @@ export const FAQNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'Categories',
-    });
+    }
+);
