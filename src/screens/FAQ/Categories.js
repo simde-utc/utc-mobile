@@ -54,6 +54,7 @@ export class CategoriesScreen extends React.PureComponent {
         },
         headerTintColor: '#007383',
         headerForceInset: { top: 'never' },
+        headerBackTitle: 'Catégories'
     };
 
     constructor(props) {
