@@ -79,15 +79,20 @@ export const article = {
 		color: colors.gray,
 	},
 	dateContainer: {
-		marginLeft: 8,
+		//marginLeft: 8,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
 	},
 	headersContainer: {
+		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 	authorText: {
 		color: colors.black,
+		fontWeight: 'bold',
 		marginLeft: 4,
 	},
 	fullActionsContainer: {
