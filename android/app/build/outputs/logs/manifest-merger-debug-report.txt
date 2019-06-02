@@ -1,0 +1,211 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+MERGED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+MERGED from [com.facebook.react:react-native:0.59.8] /home/samy/.gradle/caches/transforms-1/files-1.1/react-native-0.59.8.aar/76981f505d9c7854a6c7e25c963a8dc1/AndroidManifest.xml:2:1-13:12
+MERGED from [com.android.support:appcompat-v7:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/5fcb5cb2f3ebb6b2a062ed0c05e00740/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/b7b794325d13bf0e54ec93692e889240/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/b095693032e2b827f4813d3c513d628a/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/ffae8c6cf733ab81aed2ff7bd0b84031/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/dc04fb7a4028f810a2cc18b765f042ed/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/396b123f00686098d5ea09177c42d2e8/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:loader:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/924d3abb15b92bc6830eb74c161fb5ab/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:viewpager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/b9c8df616e402be784eab530cd9693bd/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/2997b1d99a37db1911178281a9e4a698/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:drawerlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/3d677db9b96ee86788ad2b1875471dbc/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/17c3bec769eb1b2282e2151c8b6a49ab/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:customview:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/9195b74580a4b6feb3360ad96a847bf5/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/e97a98ceed1ffc4c0a1015329c371ad0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/08e366edf8bbcc8f6a11ccdcc40412b1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:versionedparcelable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/80041b4cf27a951ca3d8f78e1b3a5065/AndroidManifest.xml:17:1-25:12
+MERGED from [com.android.support:cursoradapter:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/7e19993da0438520c8baeee525ac86df/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/b7bed01f6a4f01ba62c83b41189a2a76/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:documentfile:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/db11a82735aef16e6ad7e2a76d71d446/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/8f788752dfb069489e9df7bf242dbbbc/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:print:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/fea0ffd064e5d79cfa93272f0abb37d7/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/89b4adc05c9704c8e2d701f9f056257d/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/06e92d4fd14f4c487a00e571f7885c55/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/2fb6bc8b8b518acd42dc47dae6b2c44c/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/5f7eefaacf8fd80776b72460dfde0dc1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:interpolator:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/0d0d5b1cdb7cb3dc08786972d5bb07e9/AndroidManifest.xml:17:1-22:12
+MERGED from [com.facebook.fresco:fresco:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/aacfb57a77a03830086301e160fe565d/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.10.0.aar/ebb477915912397ec3770423d4114c57/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:drawee:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawee-1.10.0.aar/82737a74b514cd720307d14bb99e2cd6/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-1.10.0.aar/5258e0335cca4febebeb43dd9b9bffd2/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline-base:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-base-1.10.0.aar/16e6b9853214c1b205e32dd57f2864b7/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.soloader:soloader:0.6.0] /home/samy/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/109b1c23a849c92b2a67c6994e340bb0/AndroidManifest.xml:2:1-13:12
+MERGED from [com.facebook.fresco:fbcore:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fbcore-1.10.0.aar/672723983c9d1e06302a9e7d5a3b9cd6/AndroidManifest.xml:2:1-9:12
+INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:2:1-8:12
+INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:2:1-8:12
+INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:2:1-8:12
+	package
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:2:3-20
+		INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:2:3-20
+		INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+		INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:1-26:12
+		INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:4:5-67
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:4:22-64
+application
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:6:5-24:19
+MERGED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:6:5-24:19
+MERGED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:6:5-24:19
+MERGED from [com.facebook.react:react-native:0.59.8] /home/samy/.gradle/caches/transforms-1/files-1.1/react-native-0.59.8.aar/76981f505d9c7854a6c7e25c963a8dc1/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.react:react-native:0.59.8] /home/samy/.gradle/caches/transforms-1/files-1.1/react-native-0.59.8.aar/76981f505d9c7854a6c7e25c963a8dc1/AndroidManifest.xml:11:5-20
+MERGED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:versionedparcelable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/80041b4cf27a951ca3d8f78e1b3a5065/AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:versionedparcelable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/80041b4cf27a951ca3d8f78e1b3a5065/AndroidManifest.xml:22:5-23:19
+MERGED from [com.facebook.soloader:soloader:0.6.0] /home/samy/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/109b1c23a849c92b2a67c6994e340bb0/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.soloader:soloader:0.6.0] /home/samy/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/109b1c23a849c92b2a67c6994e340bb0/AndroidManifest.xml:11:5-20
+	android:appComponentFactory
+		ADDED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:22:18-91
+	android:label
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:8:7-39
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:8:7-39
+	tools:ignore
+		ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:7:75-114
+	android:roundIcon
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:10:7-52
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:10:7-52
+	tools:targetApi
+		ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:7:54-74
+	android:icon
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:9:7-41
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:9:7-41
+	android:allowBackup
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:11:7-34
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:11:7-34
+	android:theme
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:12:7-38
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:12:7-38
+	android:usesCleartextTraffic
+		ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:7:18-53
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:7:7-38
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:7:7-38
+activity#com.utc.MainActivity
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:13:7-22:18
+	android:label
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:15:9-41
+	android:windowSoftInputMode
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:17:9-51
+	android:configChanges
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:16:9-79
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:14:9-37
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:18:9-21:25
+action#android.intent.action.MAIN
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:19:13-65
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:19:21-62
+category#android.intent.category.LAUNCHER
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:20:13-73
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:20:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:23:7-84
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml:23:17-81
+uses-sdk
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+MERGED from [com.facebook.react:react-native:0.59.8] /home/samy/.gradle/caches/transforms-1/files-1.1/react-native-0.59.8.aar/76981f505d9c7854a6c7e25c963a8dc1/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.59.8] /home/samy/.gradle/caches/transforms-1/files-1.1/react-native-0.59.8.aar/76981f505d9c7854a6c7e25c963a8dc1/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/5fcb5cb2f3ebb6b2a062ed0c05e00740/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/5fcb5cb2f3ebb6b2a062ed0c05e00740/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/b7b794325d13bf0e54ec93692e889240/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/b7b794325d13bf0e54ec93692e889240/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/b095693032e2b827f4813d3c513d628a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/b095693032e2b827f4813d3c513d628a/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/ffae8c6cf733ab81aed2ff7bd0b84031/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/ffae8c6cf733ab81aed2ff7bd0b84031/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/dc04fb7a4028f810a2cc18b765f042ed/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/dc04fb7a4028f810a2cc18b765f042ed/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/396b123f00686098d5ea09177c42d2e8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/396b123f00686098d5ea09177c42d2e8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/924d3abb15b92bc6830eb74c161fb5ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/924d3abb15b92bc6830eb74c161fb5ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/b9c8df616e402be784eab530cd9693bd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/b9c8df616e402be784eab530cd9693bd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/2997b1d99a37db1911178281a9e4a698/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/2997b1d99a37db1911178281a9e4a698/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/3d677db9b96ee86788ad2b1875471dbc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/3d677db9b96ee86788ad2b1875471dbc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/17c3bec769eb1b2282e2151c8b6a49ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/17c3bec769eb1b2282e2151c8b6a49ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/9195b74580a4b6feb3360ad96a847bf5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/9195b74580a4b6feb3360ad96a847bf5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/e97a98ceed1ffc4c0a1015329c371ad0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/e97a98ceed1ffc4c0a1015329c371ad0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/08e366edf8bbcc8f6a11ccdcc40412b1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/08e366edf8bbcc8f6a11ccdcc40412b1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/80041b4cf27a951ca3d8f78e1b3a5065/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/80041b4cf27a951ca3d8f78e1b3a5065/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/7e19993da0438520c8baeee525ac86df/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/7e19993da0438520c8baeee525ac86df/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/b7bed01f6a4f01ba62c83b41189a2a76/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/b7bed01f6a4f01ba62c83b41189a2a76/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/db11a82735aef16e6ad7e2a76d71d446/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/db11a82735aef16e6ad7e2a76d71d446/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/8f788752dfb069489e9df7bf242dbbbc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/8f788752dfb069489e9df7bf242dbbbc/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/fea0ffd064e5d79cfa93272f0abb37d7/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/fea0ffd064e5d79cfa93272f0abb37d7/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/89b4adc05c9704c8e2d701f9f056257d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/89b4adc05c9704c8e2d701f9f056257d/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/06e92d4fd14f4c487a00e571f7885c55/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/06e92d4fd14f4c487a00e571f7885c55/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/2fb6bc8b8b518acd42dc47dae6b2c44c/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/2fb6bc8b8b518acd42dc47dae6b2c44c/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/5f7eefaacf8fd80776b72460dfde0dc1/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /home/samy/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/5f7eefaacf8fd80776b72460dfde0dc1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/0d0d5b1cdb7cb3dc08786972d5bb07e9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /home/samy/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/0d0d5b1cdb7cb3dc08786972d5bb07e9/AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.fresco:fresco:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/aacfb57a77a03830086301e160fe565d/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fresco-1.10.0.aar/aacfb57a77a03830086301e160fe565d/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.10.0.aar/ebb477915912397ec3770423d4114c57/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-okhttp3-1.10.0.aar/ebb477915912397ec3770423d4114c57/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawee-1.10.0.aar/82737a74b514cd720307d14bb99e2cd6/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/drawee-1.10.0.aar/82737a74b514cd720307d14bb99e2cd6/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-1.10.0.aar/5258e0335cca4febebeb43dd9b9bffd2/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-1.10.0.aar/5258e0335cca4febebeb43dd9b9bffd2/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-base-1.10.0.aar/16e6b9853214c1b205e32dd57f2864b7/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/imagepipeline-base-1.10.0.aar/16e6b9853214c1b205e32dd57f2864b7/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.6.0] /home/samy/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/109b1c23a849c92b2a67c6994e340bb0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.soloader:soloader:0.6.0] /home/samy/.gradle/caches/transforms-1/files-1.1/soloader-0.6.0.aar/109b1c23a849c92b2a67c6994e340bb0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:fbcore:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fbcore-1.10.0.aar/672723983c9d1e06302a9e7d5a3b9cd6/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:1.10.0] /home/samy/.gradle/caches/transforms-1/files-1.1/fbcore-1.10.0.aar/672723983c9d1e06302a9e7d5a3b9cd6/AndroidManifest.xml:5:5-7:41
+INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/samy/Git/utc/android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:5:5-77
+	android:name
+		ADDED from /home/samy/Git/utc/android/app/src/debug/AndroidManifest.xml:5:22-75

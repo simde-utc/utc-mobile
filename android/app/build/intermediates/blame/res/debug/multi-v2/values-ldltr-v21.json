@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/samy/Git/utc/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ldltr-v21/values-ldltr-v21.xml",
+            "map": [
+                {
+                    "source": "/home/samy/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/5fcb5cb2f3ebb6b2a062ed0c05e00740/res/values-ldltr-v21/values-ldltr-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "112",
+                        "endOffsets": "163"
+                    }
+                }
+            ]
+        }
+    ]
+}
