@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/samy/Git/utc/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-am/values-am.xml",
+            "outputFile": "/home/samy/Git/utc-mobile/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-am/values-am.xml",
             "map": [
                 {
                     "source": "/home/samy/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/90874b4fa972a5352b3559ad84b38da0/res/values-am/values-am.xml",
