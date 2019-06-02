@@ -1,6 +1,7 @@
 /**
  * Affiche une liste
- * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>, Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
  *
  * @copyright Copyright (c) 2017, SiMDE-UTC
  * @license AGPL-3.0
@@ -60,7 +61,7 @@ export default class List extends React.Component {
 		this._renderItem = this._renderItem.bind(this);
 		this._isNativeIcon = this._isNativeIcon.bind(this);
 		this._iconKeyToSvg = this._iconKeyToSvg.bind(this);
-		listStyle = this.props.style || listStyle;
+		this.listStyle = this.props.style || listStyle;
 	}
 
 	_keyExtractor(item, index) {
@@ -91,10 +92,10 @@ export default class List extends React.Component {
 	_renderItem({ item }) {
 
 		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
-			<View style={item.customElmtStyle || listStyle.rowWithArrowView}>
-				<View style={ listStyle.elementView }>
-					<View style={listStyle.iconContainer}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon style={listStyle.icon} height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
-					<Text style={ listStyle.text }>{ item.text }</Text>
+			<View style={item.customElmtStyle || this.listStyle.rowWithArrowView}>
+				<View style={ this.listStyle.elementView }>
+					<View style={this.listStyle.iconContainer}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon style={listStyle.icon} height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
+					<Text style={ this.listStyle.text }>{ item.text }</Text>
 				</View>
 				{this.props.arrow && <Icon style={listStyle.arrowStyle} height={25} width={25} image={Arrow} />}
 			</View>

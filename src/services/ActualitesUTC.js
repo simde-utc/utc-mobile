@@ -7,6 +7,8 @@
  * @license AGPL-3.0
 **/
 
+import { ACTUS_UTC_FEED_LOGIN } from 'react-native-dotenv'
+
 import Api from './Api'
 
 export default class ActualitesUTC extends Api {
@@ -14,7 +16,7 @@ export default class ActualitesUTC extends Api {
 	static NO_ARTICLES_LOADED_EXCEPTION = "No articles were loaded!";
 
 	constructor(st) {
-		super(process.env.ACTUS_UTC_FEED_LOGIN + "&ticket=");
+		super(ACTUS_UTC_FEED_LOGIN + "&ticket=");
 		if(!st) {throw "Pas de service ticket!";}
 		this._st = st;
 		this._articlesWereLoaded = false;
@@ -121,7 +123,7 @@ export default class ActualitesUTC extends Api {
 		}
 		try {
 		var response = await fetch(url, parameters);
-		} catch (e) {	
+		} catch (e) {
 			throw [e.message, 523];
 		}
 		if (!Api.VALID_STATUS.includes(response.status)) {
@@ -129,7 +131,7 @@ export default class ActualitesUTC extends Api {
 			response.text().then((text) => {throw [text, response.status];});console.log(url);}
 		else {var data = await response.json();
 		return data["media_details"]["sizes"]["full"];}
-		
+
 	}
 
 

@@ -8,12 +8,13 @@
 **/
 
 import { Alert } from 'react-native'
+import { CAS_URL } from 'react-native-dotenv'
 
 import Api from './Api'
 import Storage from './Storage'
 
 class CASAuth extends Api {
-	constructor(url = process.env.CAS_URL) {
+	constructor(url = CAS_URL) {
 		super(url);
 	}
 

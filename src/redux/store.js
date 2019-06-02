@@ -7,6 +7,7 @@ import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
 
 import reducers from './reducers.js';
+
 const middleware = applyMiddleware(
 	thunk,
 	promise({

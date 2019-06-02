@@ -8,8 +8,7 @@
 **/
 
 import { AsyncStorage } from "react-native";
-import { SecureStore } from "expo";
-
+import SecureStorage from 'react-native-secure-storage'
 class Storage {
 
 	// ========== Normal Storage ==========
@@ -48,7 +47,7 @@ class Storage {
 			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
 
 		try {
-			const data = await SecureStore.getItemAsync(key);
+			const data = await SecureStorage.getItem(key);
 			return this.parseData(data, true);
 		} catch (err) {
 			throw "Impossible de récupérer les données"
@@ -62,7 +61,7 @@ class Storage {
 			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
 
 		const data = await this.stringifyData(value, true)
-		return SecureStore.setItemAsync(key, data);
+		return SecureStore.setItem(key, data);
 	}
 
 	removeSensitiveData = async (key) => {
@@ -70,7 +69,7 @@ class Storage {
 		if (!this.checkSensitiveKey(key))
 			throw "La clé ne doit contenir que des charactères alphanumeric et ._-";
 
-		return SecureStore.deleteItemAsync(key);
+		return SecureStore.setItem(key, null);
 	}
 
 	// ========== Helpers ==========
