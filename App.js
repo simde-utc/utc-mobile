@@ -10,6 +10,7 @@
 import React from 'react';
 import { Platform, View, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
+import { PORTAIL_URL, PORTAIL_CLIENT_ID, PORTAIL_CLIENT_SECRET, ACTUS_UTC_FEED_LOGIN, CAS_URL } from 'react-native-dotenv'
 import store from './src/redux/store';
 
 import { createSwitchNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
@@ -43,7 +44,7 @@ constructor(props) {
 }
 
 checkEnvVariables() {
-	if (!(process.env.PORTAIL_URL &&	process.env.PORTAIL_CLIENT_ID && process.env.PORTAIL_CLIENT_SECRET &&	process.env.ACTUS_UTC_FEED_LOGIN &&	process.env.CAS_URL)) {
+	if (!(PORTAIL_URL && PORTAIL_CLIENT_ID && PORTAIL_CLIENT_SECRET && ACTUS_UTC_FEED_LOGIN && CAS_URL)) {
 			throw "Could not find environment variables. Please read the f* manual. Cordialement, le SiMDE.";
 		}
 }
