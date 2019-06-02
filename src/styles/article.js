@@ -66,8 +66,9 @@ export const article = {
 		textColor: colors.black,
 	},
 	authorContainer: {
+		flex: 2,
 		flexDirection: 'row',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginLeft: 3,
 	},
@@ -79,9 +80,8 @@ export const article = {
 		color: colors.gray,
 	},
 	dateContainer: {
-		//marginLeft: 8,
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
+		flex: 1,
+		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	headersContainer: {
