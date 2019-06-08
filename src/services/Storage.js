@@ -8,7 +8,7 @@
 **/
 
 import { AsyncStorage } from "react-native";
-import { SecureStore } from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 
 class Storage {
 
