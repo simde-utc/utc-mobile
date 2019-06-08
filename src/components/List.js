@@ -60,7 +60,6 @@ export default class List extends React.Component {
 		this._renderItem = this._renderItem.bind(this);
 		this._isNativeIcon = this._isNativeIcon.bind(this);
 		this._iconKeyToSvg = this._iconKeyToSvg.bind(this);
-		listStyle = this.props.style || listStyle;
 	}
 
 	_keyExtractor(item, index) {

@@ -31,21 +31,5 @@ export default class WelcomeScreen extends React.Component {
 				<SetPreferencesScreen navigation={ this.props.navigation }/>
 			</Carousel>
 		);
-
-		/*
-		AUTRE SOLUTION : Avec ScrollView
-		const width = Dimensions.get('window').width
-		const imageLayout = {
-			width: 	width,
-			height: width/2,
-		}
-		return (
-			<ScrollView pagingEnabled directionalLockEnabled horizontal>
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-			</ScrollView>
-		)
-		*/
 	}
 }

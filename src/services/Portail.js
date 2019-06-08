@@ -7,6 +7,9 @@
  * @license AGPL-3.0
 **/
 
+import { PORTAIL_URL, PORTAIL_CLIENT_ID, PORTAIL_CLIENT_SECRET } from '../../config';
+import config from '../../config';
+
 import Api from './Api'
 import Storage from './Storage'
 import Generate from '../utils/Generate'
@@ -40,7 +43,7 @@ export class Portail extends Api {
 	]
 
 	constructor() {
-		super(process.env.PORTAIL_URL)
+		super(PORTAIL_URL)
 	}
 
 	call(request, method, queries, body, validStatus) {
@@ -116,8 +119,8 @@ export class Portail extends Api {
 			{},
 			{
 				grant_type: 'password',
-				client_id: process.env.PORTAIL_CLIENT_ID,
-				client_secret: process.env.PORTAIL_CLIENT_SECRET,
+				client_id: PORTAIL_CLIENT_ID,
+				client_secret: PORTAIL_CLIENT_SECRET,
 				username: login,
 				password: password,
 				scope: Portail.scopes.join(' ')
@@ -141,8 +144,8 @@ export class Portail extends Api {
 			{},
 			{
 				grant_type: 'client_credentials',
-				client_id: process.env.PORTAIL_CLIENT_ID,
-				client_secret: process.env.PORTAIL_CLIENT_SECRET,
+				client_id: PORTAIL_CLIENT_ID,
+				client_secret: PORTAIL_CLIENT_SECRET,
 			}
 		).then(([response, status]) => {
 			response.scopes = Portail.scopes
@@ -236,8 +239,9 @@ export class Portail extends Api {
 	getArticles(paginate = '', page = '', order = '', week = '') {
 		this._checkConnected();
 
-		if (week)
-			var week = week + ',timestamp';
+		if (week) {
+			week = week + ',timestamp';
+		}
 
 		return this.call(
 			Portail.API_V1 + 'articles',
