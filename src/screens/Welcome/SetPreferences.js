@@ -18,7 +18,7 @@ export default class SetPreferencesScreen extends React.Component {
 				utcMember: false,
 			}
 		};
-		
+
 		this.toggleCheck = this.toggleCheck.bind(this);
 	}
 
@@ -43,7 +43,7 @@ export default class SetPreferencesScreen extends React.Component {
 	render() {
 		const viewStyle = [
 			styles.get('container.center', 'mt.xl', 'mb.xxl'),
-			{ flex: 7, justifyContent: 'center', marginTop: 0 } 
+			{ flex: 7, justifyContent: 'center', marginTop: 0 }
 		]
 {/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
 		return (
@@ -53,19 +53,19 @@ export default class SetPreferencesScreen extends React.Component {
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
 				/>
 				<View style={ viewStyle}>
-					<BigCheckBox 
+					<BigCheckBox
 						checked={ this.state.checked.utcNews }
 						labelStyle={ styles.text.h5 }
 						label={"Afficher les actualités UTC"}
 						onChange={() => this.toggleCheck('utcNews')}
 					/>
-					<BigCheckBox 
+					<BigCheckBox
 						checked={ this.state.checked.assoLife }
 						labelStyle={ styles.text.h5 }
 						label={"Afficher la vie associative"}
 						onChange={() => this.toggleCheck('assoLife')}
 					/>
-					<BigCheckBox 
+					<BigCheckBox
 						checked={ this.state.checked.utcMember }
 						labelStyle={ styles.text.h5 }
 						label={"Etes-vous un membre UTC/BDE ?"}

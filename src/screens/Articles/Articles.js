@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, Text, View, ActivityIndicator } from 'react-native';
 import styles from '../../styles'
+import { CAS_URL, ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
 import CASAuth from '../../services/CASAuth';
 import Portail from '../../services/Portail';
@@ -140,7 +141,7 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	_loadUTCArticles() {
-		return CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
+		return CASAuth.getService(ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
 			var actus = new ActualitesUTC(serviceTicket)
 
 			return actus.loadArticles().then(() => {
