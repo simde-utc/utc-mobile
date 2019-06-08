@@ -1,16 +1,30 @@
 {
-	"expo": {
-		"name": "UTC",
-		"slug": "utc",
-		"scheme": "utc",
-		"githubUrl": "https://github.com/simde-utc/portail-mobile",
-		"sdkVersion": "27.0.0",
-		"primaryColor": "#FFFFFF",
-		"icon": "./src/img/icon.png",
-		"splash": {
-			"backgroundColor": "#FFFFFF",
-			"resizeMode": "contain",
-			"image": "./src/img/splash.png",
-		}
-	}
+  "expo": {
+    "name": "UTC",
+    "slug": "expo",
+    "privacy": "public",
+    "sdkVersion": "33.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    }
+  }
 }
