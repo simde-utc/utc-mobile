@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, Text, View, ActivityIndicator } from 'react-native';
 import styles from '../../styles'
-import { CAS_URL } from '../../../config';
+import { CAS_URL, ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
 import CASAuth from '../../services/CASAuth';
 import Portail from '../../services/Portail';

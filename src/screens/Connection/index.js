@@ -136,7 +136,7 @@ export default class ConnectionScreen extends React.Component {
 					})
 
 					return PortailApi.createAppAuthentification().then(() => {
-						return this.register()
+						return this.register();
 					}).catch(([response, status]) => {
 						this.setState(prevState => {
 							prevState.loading = false
