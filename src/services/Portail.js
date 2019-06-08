@@ -236,8 +236,9 @@ export class Portail extends Api {
 	getArticles(paginate = '', page = '', order = '', week = '') {
 		this._checkConnected();
 
-		if (week)
-			var week = week + ',timestamp';
+		if (week) {
+			week = week + ',timestamp';
+		}
 
 		return this.call(
 			Portail.API_V1 + 'articles',
