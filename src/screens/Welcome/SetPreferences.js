@@ -56,20 +56,20 @@ export default class SetPreferencesScreen extends React.Component {
 					<BigCheckBox
 						checked={ this.state.checked.utcNews }
 						labelStyle={ styles.text.h5 }
-						label={"Afficher les actualités UTC"}
-						onChange={() => this.toggleCheck('utcNews')}
+						label="Afficher les actualités UTC"
+						onPress={() => this.toggleCheck('utcNews')}
 					/>
 					<BigCheckBox
 						checked={ this.state.checked.assoLife }
 						labelStyle={ styles.text.h5 }
-						label={"Afficher la vie associative"}
-						onChange={() => this.toggleCheck('assoLife')}
+						label="Afficher la vie associative"
+						onPress={() => this.toggleCheck('assoLife')}
 					/>
 					<BigCheckBox
 						checked={ this.state.checked.utcMember }
 						labelStyle={ styles.text.h5 }
-						label={"Etes-vous un membre UTC/BDE ?"}
-						onChange={() => this.toggleCheck('utcMember')}
+						label="Etes-vous un membre UTC/BDE ?"
+						onPress={() => this.toggleCheck('utcMember')}
 					/>
 					<BigButton
 						label={ "Valider" }
