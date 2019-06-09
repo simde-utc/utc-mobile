@@ -4,6 +4,11 @@ import { LocaleConfig } from 'react-native-calendars';
 import styles from '../styles/';
 import { colors } from '../styles/variables';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
 import Storage from '../services/Storage';
@@ -43,6 +48,7 @@ export default class AppLoaderScreen extends React.Component {
 	async bootstrap() {
 		// Download fonts, images etc...
 		this.loadLocale()
+		this.loadFonts();
 
 		return PortailApi.autoLogin().then(() => {
 			this.setState(prevState => ({
@@ -107,6 +113,10 @@ export default class AppLoaderScreen extends React.Component {
 		};
 
 		LocaleConfig.defaultLocale = 'fr';
+	}
+
+	loadFonts() {
+		library.add(fas, far, fab);
 	}
 
 	appLoaded() {

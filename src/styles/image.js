@@ -25,8 +25,8 @@ export const bigAvatar = {
 
 export const logoStyle = {
 	height: '15%',
-	width: '100%',
-	marginBottom: 20
+	width: '82%',
+	marginBottom: 35
 }
 
 export default image = StyleSheet.create({

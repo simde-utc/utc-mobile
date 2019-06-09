@@ -137,7 +137,7 @@ export default class ConnectionScreen extends React.Component {
 
 					return PortailApi.createAppAuthentification().then(() => {
 						return this.register();
-					}).catch(([response, status]) => {
+					}).catch(e => {
 						this.setState(prevState => {
 							prevState.loading = false
 
@@ -165,7 +165,7 @@ export default class ConnectionScreen extends React.Component {
 					else{
 						console.log(e)
 					}
-					
+
 					this.badLogin()
 				})
 			}
@@ -181,7 +181,7 @@ export default class ConnectionScreen extends React.Component {
 					return prevState
 				})
 
-				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
+				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(e => {
 					this.setState(prevState => {
 						prevState.loading = false
 
