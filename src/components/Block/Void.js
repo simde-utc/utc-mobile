@@ -1,58 +1,69 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import Block from './Block'
+import Block from './Block';
 
-import { colors } from '../../styles/variables';
-import styles from '../../styles'
+import styles from '../../styles';
 
 export default class Void extends React.Component {
-    constructor (props) {
-        super(props)
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            editMode: this.props.editMode
-        }
-    }
+		this.state = {
+			editMode: props.editMode,
+		};
+	}
 
-    render() {
-        const style = [
-            {
-                opacity: 0
-            },
-            this.props.style
-        ]
+	render() {
+		const {
+			id,
+			style: propsStyle,
+			editStyle: propsEditStyle,
+			editMode,
+			onEditMode,
+			deleteMode,
+			onDeleteMode,
+			onPress,
+		} = this.props;
 
-        const labelStyle = [
-            styles.text.h0,
-            styles.text.lightGray
-        ]
+		const style = [
+			{
+				opacity: 0,
+			},
+			propsStyle,
+		];
 
-        const editStyle = [
-            {
-                opacity: 1
-            },
-            this.props.editStyle
-        ]
+		const labelStyle = [styles.text.h0, styles.text.lightGray];
+
+		const editStyle = [
+			{
+				opacity: 1,
+			},
+			propsEditStyle,
+		];
 
 		return (
-            <Block style={ style }
-                editStyle={ editStyle }
-                editMode={ this.state.editMode = this.props.editMode }
-                onEditMode={ (editMode) => {
-                    this.state.editMode = editMode;
+			<Block
+				style={style}
+				editStyle={editStyle}
+				editMode={(this.state.editMode = editMode)}
+				onEditMode={editMode => {
+					this.state.editMode = editMode;
 
-                    if (this.props.onEditMode)
-                        this.props.onEditMode(editMode)
-                }}
-                deleteMode={ this.props.deleteMode }
-                onDeleteMode={ (deleteMode) => { this.props.onDeleteMode && this.props.onDeleteMode(deleteMode) } }
-                editable={ false }
-                deletable={ false }
-                onPress={ () => { this.state.editMode && this.props.onPress && this.props.onPress(this.props.id) } }
-            >
-                <Text style={ labelStyle }>+</Text>
-            </Block>
+					if (onEditMode) onEditMode(editMode);
+				}}
+				deleteMode={deleteMode}
+				onDeleteMode={deleteMode => {
+					onDeleteMode && onDeleteMode(deleteMode);
+				}}
+				editable={false}
+				deletable={false}
+				onPress={() => {
+					editMode && onPress && onPress(id);
+				}}
+			>
+				<Text style={labelStyle}>+</Text>
+			</Block>
 		);
 	}
 }
