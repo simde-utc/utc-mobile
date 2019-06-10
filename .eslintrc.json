@@ -97,6 +97,8 @@
 	"react/no-direct-mutation-state": 0,
 	"consistent-return": 0,
 	"no-bitwise": 0,
-	"no-throw-literal": 0
+	"no-throw-literal": 0,
+	"prefer-promise-reject-errors": 0,
+	"new-cap": 0
   }
 }
