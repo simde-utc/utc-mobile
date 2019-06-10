@@ -70,12 +70,8 @@ export default class ProfileScreen extends React.Component {
 	}
 
 	render() {
-		const { login, loading } = this.state;
-		const headerImagePath = CASAuth.isConnected()
-			? {
-					uri: `https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur?username=${login}`,
-			  }
-			: utcIcon;
+		const { loading } = this.state;
+		const headerImagePath = PortailApi.isConnected() ? { uri: PortailApi.getUser().image } : utcIcon;
 		const headerImageStyle = PortailApi.isConnected()
 			? styles.img.bigAvatar
 			: styles.img.bigThumbnail;
