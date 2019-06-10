@@ -3,19 +3,19 @@ import { StyleSheet } from 'react-native';
 export const thumbnail = {
 	resizeMode: 'contain',
 	width: 40,
-	height: 40
-}
+	height: 40,
+};
 
 export const avatar = {
 	...thumbnail,
-	borderRadius: 20
+	borderRadius: 20,
 };
 
 export const bigThumbnail = {
 	resizeMode: 'contain',
 	width: 100,
-	height: 100
-}
+	height: 100,
+};
 
 export const bigAvatar = {
 	...bigThumbnail,
@@ -26,10 +26,10 @@ export const bigAvatar = {
 export const logoStyle = {
 	height: '15%',
 	width: '82%',
-	marginBottom: 35
-}
+	marginBottom: 35,
+};
 
-export default image = StyleSheet.create({
+export default StyleSheet.create({
 	thumbnail,
 	avatar,
 	bigThumbnail,

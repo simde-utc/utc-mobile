@@ -20,11 +20,10 @@ export const textAlign = StyleSheet.create({
 	center: { textAlign: 'center' },
 	left: { textAlign: 'left' },
 	right: { textAlign: 'right' },
-	justify: { textAlign: 'justify' }
+	justify: { textAlign: 'justify' },
 });
 
-
-export default text = {
+export default {
 	...textColors,
 	...textSizes,
 	...textAlign,

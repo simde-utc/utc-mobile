@@ -1,6 +1,6 @@
 import { colors } from './variables';
 
-export const assosListTabBar = {
+export default {
 	style: {
 		backgroundColor: colors.lightBlue,
 	},
@@ -8,6 +8,6 @@ export const assosListTabBar = {
 		color: colors.yellow,
 	},
 	tab: {
-		flex:1,
+		flex: 1,
 	},
 };
