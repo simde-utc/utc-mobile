@@ -1,8 +1,7 @@
 import React from 'react';
 import { TouchableHighlight, View, Text, Image, Animated, Easing } from 'react-native';
-import Button from 'react-native-button';
 
-import styles from '../../styles'
+import styles from '../../styles';
 import { colors } from '../../styles/variables';
 
 const deleteStyle = {
@@ -18,7 +17,7 @@ const deleteStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
 	zIndex: 100,
-}
+};
 
 const resizeStyle = {
 	position: 'absolute',
@@ -33,197 +32,199 @@ const resizeStyle = {
 	alignItems: 'center',
 	justifyContent: 'center',
 	zIndex: 100,
-}
+};
 
 export default class Block extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 
-		this.editableValue = new Animated.Value(0)
+		this.editableValue = new Animated.Value(0);
 
 		this.editableRotation = this.editableValue.interpolate({
 			inputRange: [0, 0.25, 0.75, 1],
-			outputRange: ['0deg', '1.5deg', '-1.5deg', '0deg']
-		})
+			outputRange: ['0deg', '1.5deg', '-1.5deg', '0deg'],
+		});
+	}
+
+	onPress() {
+		const { editMode, editable, deleteMode, deletable, id, onPress } = this.props;
+
+		if (editMode && editable !== false) return;
+
+		if (deleteMode && deletable !== false) return;
+
+		if (onPress) onPress(id);
 	}
 
 	animateEditMode() {
+		const { editMode } = this.props;
+
 		// Animation des blocs en editMode
-		if (this.props.editMode) {
+		if (editMode) {
 			this.animatedEditMode = Animated.loop(
-				Animated.timing(
-					this.editableValue,
-					{
-						toValue: 1,
-						duration: 150,
-						easing: Easing.linear
-					}
-				),
-			)
-
-			this.animatedEditMode.start()
-		}
-		else if (this.animatedEditMode) {
-			this.animatedEditMode.stop()
-
-			// On fini l'animation
-			Animated.timing(
-				this.editableValue,
-				{
+				Animated.timing(this.editableValue, {
 					toValue: 1,
 					duration: 150,
-					easing: Easing.linear
-				}
-			).start()
+					easing: Easing.linear,
+				})
+			);
 
-			this.animatedEditMode = undefined
-		}
-	}
+			this.animatedEditMode.start();
+		} else if (this.animatedEditMode) {
+			this.animatedEditMode.stop();
 
-	children(text, image, element) {
-		if (image) {
-			if (this.props.extend && (text || element)) {
-				if (text) {
-					return (
-						<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '80%', width: '80%' }}>
-							<Image style={{ flex: 4, height: '100%' }}
-								source={ image }
-								resizeMode="contain"
-							/>
-							<Text style={[{ flex: 6 }, styles.text.center]}>
-								{text}
-							</Text>
-						</View>
-					)
-				}
-				else {
-					return (
-						<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '80%', width: '80%' }}>
-							<Image style={{ flex: 4, height: '100%' }}
-								source={ image }
-								resizeMode="contain"
-							/>
-							<View style={{ flex: 6 }}>
-								{element}
-							</View>
-						</View>
-					)
-				}
-			}
-			else {
-				if (text) {
-					return (
-						<View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80%', width: '80%' }}>
-							<Image style={{ flex: 8, width: '100%' }}
-								source={ image }
-								resizeMode="contain"
-							/>
-							<Text style={[{ flex: 3 }, styles.text.center]} numberOfLines={2}>
-								{text}
-							</Text>
-						</View>);
+			// On fini l'animation
+			Animated.timing(this.editableValue, {
+				toValue: 1,
+				duration: 150,
+				easing: Easing.linear,
+			}).start();
 
-				}
-				else {
-					return (
-						<Image style={{ width: '90%' }}
-							source={ image }
-							resizeMode='center'
-						/>);
-
-				}
-
-
-			}
-		}
-		else if (text) {
-			return (
-				<Text style={[styles.text.center, { padding: '2%' }]}
-				>
-					{text}
-				</Text>
-			)
-		}
-		else if (element) {
-			return element;/*(
-				<View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80%', width: '80%' }}>
-					{element}
-			</View>);*/
-		}
-		else {
-			return (
-				<View></View>
-			)
+			this.animatedEditMode = undefined;
 		}
 	}
 
 	editTools() {
-		var tools = []
+		const { editMode, editable, onResize, id, deleteMode, deletable, onDelete } = this.props;
+		const tools = [];
 
-		if (this.props.editMode && this.props.editable !== false) {
+		if (editMode && editable !== false) {
 			tools.push(
-				<TouchableHighlight underlayColor={'#eee'}
-					key='resize'
+				<TouchableHighlight
+					underlayColor="#eee"
+					key="resize"
 					style={resizeStyle}
-					onPress={this.props.onResize && this.props.onResize(this.props.id)}
+					onPress={onResize && onResize(id)}
 				>
 					<Text>r</Text>
 				</TouchableHighlight>
-			)
+			);
 		}
 
-		if (this.props.deleteMode && this.props.deletable !== false) {
+		if (deleteMode && deletable !== false) {
 			tools.push(
-				<TouchableHighlight underlayColor={'#eee'}
-					key='delete'
+				<TouchableHighlight
+					underlayColor="#eee"
+					key="delete"
 					style={deleteStyle}
-					onPress={this.props.onDelete && this.props.onDelete(this.props.id)}
+					onPress={onDelete && onDelete(id)}
 				>
 					<Text>x</Text>
 				</TouchableHighlight>
-			)
+			);
 		}
 
-		return tools
+		return tools;
 	}
 
-	onPress() {
-		if (this.props.editMode && this.props.editable !== false)
-			return
+	children(text, image, element) {
+		const { extend } = this.props;
 
-		if (this.props.deleteMode && this.props.deletable !== false)
-			return
+		if (image) {
+			if (extend && (text || element)) {
+				if (text) {
+					return (
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'center',
+								alignItems: 'center',
+								height: '80%',
+								width: '80%',
+							}}
+						>
+							<Image style={{ flex: 4, height: '100%' }} source={image} resizeMode="contain" />
+							<Text style={[{ flex: 6 }, styles.text.center]}>{text}</Text>
+						</View>
+					);
+				}
 
-		if (this.props.onPress)
-			this.props.onPress(this.props.id)
+				return (
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: '80%',
+							width: '80%',
+						}}
+					>
+						<Image style={{ flex: 4, height: '100%' }} source={image} resizeMode="contain" />
+						<View style={{ flex: 6 }}>{element}</View>
+					</View>
+				);
+			}
+
+			if (text) {
+				return (
+					<View
+						style={{
+							flexDirection: 'column',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: '80%',
+							width: '80%',
+						}}
+					>
+						<Image style={{ flex: 8, width: '100%' }} source={image} resizeMode="contain" />
+						<Text style={[{ flex: 3 }, styles.text.center]} numberOfLines={2}>
+							{text}
+						</Text>
+					</View>
+				);
+			}
+
+			return <Image style={{ width: '90%' }} source={image} resizeMode="center" />;
+		}
+		if (text) {
+			return <Text style={[styles.text.center, { padding: '2%' }]}>{text}</Text>;
+		}
+		if (element) {
+			return element; /* (
+				<View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80%', width: '80%' }}>
+					{element}
+			</View>); */
+		}
+
+		return <View />;
 	}
 
 	render() {
-		var style = [
+		const {
+			style: propsStyle,
+			editMode,
+			editStyle,
+			editable,
+			onEditMode,
+			text,
+			image,
+			children,
+		} = this.props;
+
+		const style = [
 			{
 				borderRadius: 5,
 				transform: [{ rotate: this.editableRotation }],
 			},
 			styles.block.block,
-			this.props.style,
+			propsStyle,
 			styles.bg.yellow,
-		]
+		];
 
 		// Animation des blocs en editMode
-		if (this.props.editMode)
-			style.push(this.props.editStyle)
+		if (editMode) style.push(editStyle);
 
-		if (this.props.editable !== false)
-			this.animateEditMode()
+		if (editable !== false) this.animateEditMode();
 
 		return (
 			<Animated.View style={style}>
-				<TouchableHighlight underlayColor={'#eee'}
+				<TouchableHighlight
+					underlayColor="#eee"
 					style={[styles.container.center]}
 					onPress={this.onPress.bind(this)}
-					onLongPress={() => this.props.onEditMode} // MOVE
+					onLongPress={() => onEditMode} // MOVE
 				>
-					{this.children(this.props.text, this.props.image, this.props.children)}
+					{this.children(text, image, children)}
 				</TouchableHighlight>
 				{this.editTools()}
 			</Animated.View>
