@@ -4,17 +4,14 @@
  *
  * @copyright Copyright (c) 2017, SiMDE-UTC
  * @license AGPL-3.0
-**/
+ * */
 
 import React from 'react';
-import { View, Text, Image, Button, StyleSheet } from 'react-native';
-import styles from '../../styles/';
-import { colors } from '../../styles/variables';
+import { View } from 'react-native';
 
-import Portail from '../../services/Portail';
+import PortailApi from '../../services/Portail';
 
 import AssosListComponent from '../../components/Assos/AssosList';
-
 
 export default class AssosScreen extends React.Component {
 	// Commenté pour être plus cohérent avec le nouveau menu de Navigation, je reviendrai dessus avec la refonte de la page des Assos
@@ -60,82 +57,101 @@ export default class AssosScreen extends React.Component {
 	},
 	headerTitle: <Text style={{color: foreColor, marginLeft: margin}} adjustsFontSizeToFit={true}>{name}</Text>,
     };
-  };*/
-
+  }; */
 
 	constructor(props) {
 		super(props);
-		this.assos = {};
-		this.portailInstance = this.props.navigation.getParam('portailInstance', 'NO-PORTAIL');
-	}
 
+		this.assos = {};
+		this.portailInstance = props.navigation.getParam('portailInstance', 'NO-PORTAIL');
+
+		this.state = {
+			log: '',
+			list: 'WAIT_LOADING',
+		};
+	}
 
 	componentDidMount() {
-		this._loadAssos();
+		this.loadAssos();
 	}
 
-	state = {
-		log: "",
-		list: "WAIT_LOADING",
+	componentWillUnmount() {
+		if (PortailApi !== undefined) {
+			PortailApi.abortRequest();
+		}
+
+		this.isUnMounted = true;
 	}
 
-	log = (data, error = false) => {
-		if(this.isUnMounted) {return;}
+	loadAssos = async () => {
+		const { navigation } = this.props;
+
+		try {
+			let iAmChild = navigation.getParam('isChild', 'NO-CHILD');
+			if (iAmChild !== true) {
+				iAmChild = false;
+			}
+			if (iAmChild) {
+				const data = navigation.getParam('data', 'NO-DATA');
+				if (data === 'NO-DATA') {
+					throw "Requested child asso display, but didn't provide asso data via navigation.";
+				}
+				this.assos = data;
+			} else {
+				if (this.isUnMounted) {
+					return;
+				}
+				if (!PortailApi.isConnected()) {
+					this.log('Erreur de connexion au portail!', true);
+					return;
+				}
+
+				if (this.isUnMounted) {
+					return;
+				}
+				this.assos = await PortailApi.getAssos(true, 0, 2);
+			}
+
+			if (this.isUnMounted) {
+				return;
+			}
+			const assoFolderVisibility = navigation.getParam('showItSelf', '');
+			this.setState(prevState => ({
+				...prevState,
+				list: this.assos,
+				child: iAmChild,
+				showItSelf: assoFolderVisibility,
+			}));
+		} catch (e) {
+			this.log(e, true);
+		}
+	};
+
+	log(data, error = false) {
+		if (this.isUnMounted) {
+			return;
+		}
 		this.setState(prevState => ({ ...prevState, log: data }));
-		if (error)
-			console.warn(data)
-		else
-			console.log(data);
+		if (error) console.warn(data);
+		else console.log(data);
 	}
-
-
-	_loadAssos = async function() {
-	try {
-
-
-
-		var iAmChild = this.props.navigation.getParam('isChild', 'NO-CHILD');
-		if(iAmChild !== true) {iAmChild = false;}
-		if(iAmChild == true) {
-			var data = this.props.navigation.getParam('data', 'NO-DATA');
-			if(data == "NO-DATA") {throw "Requested child asso display, but didn't provide asso data via navigation."}
-			this.assos = data;
-		}
-		else {
-
-			if(this.isUnMounted) {return;}
-			if(!Portail.isConnected()) {this.log("Erreur de connexion au portail!", true);return;}
-
-			if(this.isUnMounted) {return;}
-			this.assos = await Portail.getAssos(true, 0, 2);
-
-		}
-
-		if(this.isUnMounted) {return;}
-		var assoFolderVisibility = this.props.navigation.getParam('showItSelf', '');
-		this.setState(prevState => ({ ...prevState, list: this.assos, child: iAmChild, showItSelf: assoFolderVisibility }));
-
-	}
-	catch (e) {
-		this.log(e, true);
-	}
-	}
-
-
-
-
 
 	render() {
-	    return (
-	      <View style={{ flex: 1 }}>
-		<AssosListComponent data={this.state.list} isChild={this.state.child} showItSelf={this.state.showItSelf} portailInstance={(this.portailInstance != 'NO-PORTAIL' && this.portailInstance.isConnected()) ? this.portailInstance : Portail} />
-	      </View>
-	    );
-	  }
+		const { list, child, showItSelf } = this.state;
 
-componentWillUnmount() {
-if(Portail !== undefined) {Portail.abortRequest();}
-this.isUnMounted = true;
-}
-
+		return (
+			<View style={{ flex: 1 }}>
+				<AssosListComponent
+					data={list}
+					isChild={child}
+					showItSelf={showItSelf}
+					portailInstance={
+						this.portailInstance !== 'NO-PORTAIL' && this.portailInstance.isConnected()
+							? this.portailInstance
+							: PortailApi
+					}
+				/>
+			</View>
+		);
+	}
 }

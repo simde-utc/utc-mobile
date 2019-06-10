@@ -1,28 +1,28 @@
 import { colors } from './variables';
 
-export const article = {
+export default {
 	container: {
 		borderWidth: 1,
 		borderColor: colors.lightGray,
 		marginHorizontal: 5,
-		marginBottom:10,
+		marginBottom: 10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		padding:10,
+		padding: 10,
 		paddingBottom: 5,
 	},
 
 	loadingIndicatorContainer: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex:1,
+		flex: 1,
 	},
 	loadingIndicatorText: {
 		color: colors.lightGray,
 	},
 	articlesFeedContainer: {
-		flex:1,
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 2,
@@ -32,36 +32,36 @@ export const article = {
 		backgroundColor: colors.white,
 		alignItems: 'flex-start',
 		justifyContent: 'flex-start',
-		marginBottom:0,
-		marginTop:3,
+		marginBottom: 0,
+		marginTop: 3,
 		maxWidth: '100%',
 	},
 	titleContainer: {
 		maxWidth: '100%',
 	},
-	title: "text-align:left;font-size:20;",
+	title: 'text-align:left;font-size:20;',
 	buttonContainer: {
 		backgroundColor: colors.white,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 0,
-		marginBottom:0,
+		marginBottom: 0,
 		maxWidth: '100%',
 		paddingVertical: 7,
 		paddingTop: 17,
 	},
 	buttonImage: {
-		height: 20
+		height: 20,
 	},
 	imageContainer: {
 		backgroundColor: colors.veryLightGray,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 5,
-		marginBottom:2,
+		marginBottom: 2,
 		maxWidth: '100%',
 	},
-	contentMarkdown : {},
+	contentMarkdown: {},
 	descriptionConstants: {
 		textColor: colors.black,
 	},
@@ -72,8 +72,8 @@ export const article = {
 		marginLeft: 3,
 	},
 	authorImage: {
-		height:30,
-		width:30,
+		height: 30,
+		width: 30,
 	},
 	dateText: {
 		color: colors.gray,
@@ -97,7 +97,7 @@ export const article = {
 		width: '100%',
 		marginVertical: 5,
 	},
-	onlyCommentsActionsContainer :{
+	onlyCommentsActionsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		alignItems: 'flex-end',
@@ -111,8 +111,8 @@ export const article = {
 		height: 15,
 		color: colors.yellow,
 	},
-	actionIcon :{
-		height:30,
+	actionIcon: {
+		height: 30,
 		width: 30,
-	}
+	},
 };
