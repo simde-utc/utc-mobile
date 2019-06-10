@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
-import styles from '../../styles'
+import { View } from 'react-native';
+import styles from '../../styles';
 
 // Components
 import HeaderView from '../../components/HeaderView';
@@ -9,14 +9,14 @@ import BigButton from '../../components/BigButton';
 
 export default class SetPreferencesScreen extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 
 		this.state = {
 			checked: {
 				utcNews: true,
 				assoLife: true,
 				utcMember: false,
-			}
+			},
 		};
 
 		this.toggleCheck = this.toggleCheck.bind(this);
@@ -27,55 +27,57 @@ export default class SetPreferencesScreen extends React.Component {
 			...prevState,
 			checked: {
 				...prevState.checked,
-				[key]: force == null ? !prevState.checked[key] : force
-			}
-		})
-		);
+				[key]: force == null ? !prevState.checked[key] : force,
+			},
+		}));
 	}
 
 	validate() {
-		if (this.state.checked.utcMember)
-			this.props.navigation.navigate('Connection')
-		else
-			this.props.navigation.navigate('Connected')
+		const { checked } = this.state;
+		const { navigation } = this.props;
+
+		if (checked.utcMember) {
+			navigation.navigate('Connection');
+		} else {
+			navigation.navigate('Connected');
+		}
 	}
 
 	render() {
+		const { checked } = this.state;
+		const { container, text, mt } = styles;
+
 		const viewStyle = [
 			styles.get('container.center', 'mt.xl', 'mb.xxl'),
-			{ flex: 7, justifyContent: 'center', marginTop: 0 }
-		]
-{/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
+			{ flex: 7, justifyContent: 'center', marginTop: 0 },
+		];
+
 		return (
-			<View style={ styles.container.default }>
+			<View style={container.default}>
 				<HeaderView
 					title="Nous aimerions mieux vous connaître"
 					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
 				/>
-				<View style={ viewStyle}>
+				<View style={viewStyle}>
 					<BigCheckBox
-						checked={ this.state.checked.utcNews }
-						labelStyle={ styles.text.h5 }
+						checked={checked.utcNews}
+						labelStyle={text.h5}
 						label="Afficher les actualités UTC"
 						onPress={() => this.toggleCheck('utcNews')}
 					/>
 					<BigCheckBox
-						checked={ this.state.checked.assoLife }
-						labelStyle={ styles.text.h5 }
+						checked={checked.assoLife}
+						labelStyle={text.h5}
 						label="Afficher la vie associative"
 						onPress={() => this.toggleCheck('assoLife')}
 					/>
 					<BigCheckBox
-						checked={ this.state.checked.utcMember }
-						labelStyle={ styles.text.h5 }
+						checked={checked.utcMember}
+						labelStyle={text.h5}
 						label="Etes-vous un membre UTC/BDE ?"
 						onPress={() => this.toggleCheck('utcMember')}
 					/>
-					<BigButton
-						label={ "Valider" }
-						style={ styles.mt.lg }
-						onPress={ this.validate.bind(this) }
-					/>
+					<BigButton label="Valider" style={mt.lg} onPress={this.validate.bind(this)} />
 				</View>
 			</View>
 		);

@@ -1,9 +1,9 @@
 import { colors } from './variables';
 
-export const comment = {
+export default {
 	container: {
 		backgroundColor: colors.white,
 		marginBottom: 5,
-		height:15,
+		height: 15,
 	},
 };
