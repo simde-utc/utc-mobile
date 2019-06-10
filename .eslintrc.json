@@ -96,6 +96,7 @@
     "jsx-a11y/no-noninteractive-element-interactions": 0,
 	"react/no-direct-mutation-state": 0,
 	"consistent-return": 0,
-	"no-bitwise": 0
+	"no-bitwise": 0,
+	"no-throw-literal": 0
   }
 }
