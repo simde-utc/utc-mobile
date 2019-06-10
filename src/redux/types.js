@@ -6,4 +6,4 @@ export const assosActionTypes = createCrudTypes('ASSOS');
 export default {
 	users: usersActionTypes,
 	assos: assosActionTypes,
-}
+};
