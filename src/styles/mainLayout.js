@@ -1,6 +1,6 @@
 import { colors } from './variables';
 
-export const mainLayout = {
+export default {
 	tabBar: {
 		backgroundColor: colors.white,
 		padding: 0,
@@ -11,5 +11,5 @@ export const mainLayout = {
 	icon: {
 		height: 40,
 		width: 40,
-	}
+	},
 };

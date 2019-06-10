@@ -1,6 +1,6 @@
 import { colors } from './variables';
 
-export const bigCheckBox = {
+export default {
 	color: colors.gray,
 	marginBottom: 50,
-}
+};

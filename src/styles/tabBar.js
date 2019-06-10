@@ -1,12 +1,11 @@
 import { colors } from './variables';
 
-export const tabBar = {
+export default {
 	style: {
 		backgroundColor: colors.lightBlue,
 	},
 	label: {
 		color: colors.yellow,
 		fontSize: 15,
-	}
+	},
 };
-
