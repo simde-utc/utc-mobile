@@ -8,7 +8,7 @@
  * */
 
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform, StatusBar, YellowBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { createSwitchNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
 import store from './src/redux/store';
@@ -45,6 +45,8 @@ const AppSwitch = createSwitchNavigator(
 
 const paddingTop =
 	Platform.OS === 'android' ? StatusBar.currentHeight || (Platform.Version < 23 ? 25 : 24) : 0;
+
+YellowBox.ignoreWarnings(['Require cycle:']);
 
 export default class App extends React.Component {
 	static checkEnvVariables() {
