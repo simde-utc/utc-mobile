@@ -4,34 +4,39 @@
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
-**/
+ * */
 
-const CARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-const DEFAULT_LENGTH = 32
+const CARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const DEFAULT_LENGTH = 32;
 
 export default {
-    key: (length) => {
-        var text = '';
+	key: length => {
+		let text = '';
 
-        for (var i = 0; i < (length || DEFAULT_LENGTH); i++)
-            text += CARACTERS.charAt(Math.floor(Math.random() * CARACTERS.length));
+		for (let i = 0; i < (length || DEFAULT_LENGTH); i++)
+			text += CARACTERS.charAt(Math.floor(Math.random() * CARACTERS.length));
 
-        return text;
-    },
+		return text;
+	},
 
-    UUIDv4: () => {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+	UUIDv4: () => {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+			const r = (Math.random() * 16) | 0;
+			const v = c === 'x' ? r : (r & 0x3) | 0x8;
 
-            return v.toString(16);
-        })
-    },
+			return v.toString(16);
+		});
+	},
 
-    searchText: (text) => {
-        return text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ')
-    },
+	searchText: text => {
+		return text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ');
+	},
 
-    searchTagsText: (text) => {
-        return text.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ').replace('  ', ' ').replace(' ', ' #').replace('##', '#')
-    },
-}
+	searchTagsText: text => {
+		return text
+			.replace(/[^A-Za-zÀ-ž0-9-_#]+/g, ' ')
+			.replace('  ', ' ')
+			.replace(' ', ' #')
+			.replace('##', '#');
+	},
+};
