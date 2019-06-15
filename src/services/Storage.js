@@ -8,7 +8,7 @@
  * */
 
 import { AsyncStorage } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import CryptoJS from 'crypto-js';
 
 class Storage {
 	// ========== Normal Storage ==========
@@ -42,12 +42,12 @@ class Storage {
 
 	getSensitiveData = async key => {
 		if (!key) throw 'Clé non définie !';
-		if (!this.checkSensitiveKey(key))
-			throw 'La clé ne doit contenir que des charactères alphanumeric et ._-';
 
 		try {
-			const data = await SecureStore.getItemAsync(key);
-			return this.parseData(data, true);
+			const data = await AsyncStorage.getItem(key);
+			const bytes = CryptoJS.AES.decrypt(this.parseData(data, true), this.getEncryptionKey());
+
+			return bytes.toString(CryptoJS.enc.Utf8);
 		} catch (err) {
 			throw 'Impossible de récupérer les données';
 		}
@@ -56,19 +56,17 @@ class Storage {
 	setSensitiveData = async (key, value) => {
 		if (!key) throw 'Clé non définie !';
 		if (!value) throw 'Valeur non définie !';
-		if (!this.checkSensitiveKey(key))
-			throw 'La clé ne doit contenir que des charactères alphanumeric et ._-';
 
 		const data = await this.stringifyData(value, true);
-		return SecureStore.setItemAsync(key, data);
+		const bytes = CryptoJS.AES.encrypt(data, this.getEncryptionKey());
+
+		return AsyncStorage.setItem(key, bytes.toString());
 	};
 
 	removeSensitiveData = async key => {
 		if (!key) throw 'Clé non définie !';
-		if (!this.checkSensitiveKey(key))
-			throw 'La clé ne doit contenir que des charactères alphanumeric et ._-';
 
-		return SecureStore.deleteItemAsync(key);
+		return AsyncStorage.removeItem(key);
 	};
 
 	// ========== Helpers ==========
@@ -92,6 +90,10 @@ class Storage {
 
 	// Sensitive keys only contain alphanumeric characters and ._-
 	checkSensitiveKey = key => /^[\w.-]+$/.test(key);
+
+	getEncryptionKey = () => {
+		return 'zefrjgo32JFI43gh"isdvzev'; // Faux random pour l'instant :p
+	};
 }
 
 export default new Storage();

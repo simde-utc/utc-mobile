@@ -130,7 +130,8 @@ export default class ConnectionScreen extends React.Component {
 							.then(() => {
 								return this.register();
 							})
-							.catch(() => {
+							.catch(e => {
+								console.warn(e);
 								this.setState(prevState => {
 									prevState.loading = false;
 
