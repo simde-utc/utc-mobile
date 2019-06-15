@@ -14,8 +14,8 @@ puis, dans une fonction asynchrone :
 ```
 myFunc = async () => {
     let key = "test_sauvegarde"
-    await Storage.setItem(key, value);
-    Storage.getItem(key)
+    await Storage.setData(key, value);
+    Storage.getData(key)
         .then(valueRead => console.log(valueRead));
         .catch(error => console.warn("Error fetching data", error))
 }
@@ -39,9 +39,9 @@ Les arguments sont
 
 Ici, les informations ne sont pas cryptées, il ne faut donc pas y stocker de données sensibles.
 
-- **getItem(key)**
-- **setItem(key, value)**
-- **removeItem(key)**
+- **getData(key)**
+- **setData(key, value)**
+- **removeData(key)**
 
 ### Sauvegarde sécurisée
 
