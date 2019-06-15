@@ -25,12 +25,7 @@ export default class ProfileHeader extends React.Component {
 
 	render() {
 		const { onPress } = this.props;
-		const { login } = this.state;
-		const imagePath = CASAuth.isConnected()
-			? {
-					uri: `https://demeter.utc.fr/portal/pls/portal30/portal30.get_photo_utilisateur?username=${login}`,
-			  }
-			: utcIcon;
+		const imagePath = PortailApi.isConnected() ? { uri: PortailApi.getUser().image } : utcIcon;
 		const fullName = PortailApi.getUser().name;
 
 		// TODO: prévoir le cas lorsque l'utilisateur n'est pas connecté
