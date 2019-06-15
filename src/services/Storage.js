@@ -10,14 +10,13 @@
 
 import { AsyncStorage } from 'react-native';
 import CryptoJS from 'crypto-js';
-import Generate from '../utils/Generate';
-
-const ENCRYPTION_KEY_NAME = 'encryption_key';
 
 class Storage {
+	encryptionKey;
+
 	// ========== Normal Storage ==========
 
-	getItem = async key => {
+	getData = async key => {
 		if (!key) throw 'Clé non définie !';
 
 		try {
@@ -28,7 +27,7 @@ class Storage {
 		}
 	};
 
-	setItem = async (key, value) => {
+	setData = async (key, value) => {
 		if (!key) throw 'Clé non définie !';
 		if (!value) throw 'Valeur non définie !';
 
@@ -36,7 +35,7 @@ class Storage {
 		return AsyncStorage.setItem(key, data);
 	};
 
-	removeItem = async key => {
+	removeData = async key => {
 		if (!key) throw 'Clé non définie !';
 
 		return AsyncStorage.removeItem(key);
@@ -92,24 +91,12 @@ class Storage {
 		}
 	};
 
-	// Sensitive keys only contain alphanumeric characters and ._-
-	checkSensitiveKey = key => /^[\w.-]+$/.test(key);
-
-	// Pour chaque application, une nouvelle clé spéciale est générée pour le chiffrement en interne.
-	getEncryptionKey = async () => {
-		let key = await this.getItem(ENCRYPTION_KEY_NAME);
-
-		if (!key) {
-			key = Generate.key(64);
-			await this.setItem(ENCRYPTION_KEY_NAME, key);
-		}
-
-		return key;
+	setEncryptionKey = key => {
+		this.encryptionKey = key;
 	};
 
-	// Invalidation des données chiffrées
-	invalidateEncrytionData = async () => {
-		await this.removeItem(ENCRYPTION_KEY_NAME);
+	getEncryptionKey = () => {
+		return this.encryptionKey;
 	};
 }
 
