@@ -45,9 +45,9 @@ class Storage {
 
 		try {
 			const data = await AsyncStorage.getItem(key);
-			const bytes = CryptoJS.AES.decrypt(this.parseData(data, true), this.getEncryptionKey());
+			const bytes = CryptoJS.AES.decrypt(data, this.getEncryptionKey());
 
-			return bytes.toString(CryptoJS.enc.Utf8);
+			return this.parseData(bytes.toString(CryptoJS.enc.Utf8), true);
 		} catch (err) {
 			throw 'Impossible de récupérer les données';
 		}
