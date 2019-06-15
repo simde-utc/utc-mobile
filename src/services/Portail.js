@@ -52,7 +52,17 @@ export class Portail extends Api {
 		if (Object.keys(this.token).length !== 0) {
 			headers.Authorization = `${this.token.token_type} ${this.token.access_token}`;
 		}
-		return super.call(request, method, queries, body, headers, validStatus, true);
+
+		return super
+			.call(request, method, queries, body, headers, validStatus, true)
+			.catch(([data, status]) => {
+				// On gère le cas où on a plus de rien à retourner.
+				if (status === 416) {
+					return [[], status];
+				}
+
+				return [data, status];
+			});
 	}
 
 	callWithoutJSON(request, method, queries, body, validStatus) {
