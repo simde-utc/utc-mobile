@@ -28,7 +28,6 @@ export default class WelcomeScreen extends React.Component {
 				indicatorSize={65}
 			>
 				<WelcomeMessageScreen />
-				<AppPurposeScreen />
 				<SetPreferencesScreen navigation={navigation} />
 			</Carousel>
 		);
