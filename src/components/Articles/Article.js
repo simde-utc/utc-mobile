@@ -105,8 +105,8 @@ export default class ArticleComponent extends React.PureComponent {
 						}));
 					}
 				})
-				.catch(([error, code]) =>
-					console.warn(`Error ${code} while loading actions and comments : ${error}`)
+				.catch(([{ message }, code]) =>
+					console.warn(`Error ${code} while loading actions and comments : ${message}`)
 				);
 		}
 	}
