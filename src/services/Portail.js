@@ -80,7 +80,7 @@ export class Portail extends Api {
 
 	setData(login, password) {
 		return this.login(login, password).then(() => {
-			return Storage.setSensitiveData('portail', {
+			return Storage.setData('portail', {
 				app_id: login,
 				password,
 				token: this.token,
@@ -96,14 +96,16 @@ export class Portail extends Api {
 		this.user = {};
 		this.token = {};
 
-		return Storage.removeSensitiveData('portail');
+		return Storage.removeData('portail');
 	}
 
 	autoLogin() {
-		return Storage.getSensitiveData('portail').then(data => {
+		return Storage.getData('portail').then(data => {
 			if (data) {
 				return this.login(data.app_id, data.password)
 					.then(user => {
+						this.getAppData(); // On récupère et défini la clé de chiffrement.
+
 						return user;
 					})
 					.catch(() => {
@@ -151,9 +153,11 @@ export class Portail extends Api {
 				client_secret: PORTAIL_CLIENT_SECRET,
 			}
 		)
-			.then(([response]) => {
-				response.scopes = this.scopes;
-				this.token = response;
+			.then(([data]) => {
+				this.token = {
+					...data,
+					scopes: this.scopes,
+				};
 
 				return this.call(
 					`${this.API_V1}users`,
@@ -164,13 +168,13 @@ export class Portail extends Api {
 					}
 				);
 			})
-			.then(([response]) => {
-				this.user = response;
+			.then(([data]) => {
+				this.user = data;
 
 				return this.createAppAuthentification(app_id);
 			})
 			.then(() => {
-				return Storage.getSensitiveData('portail');
+				return Storage.getData('portail');
 			})
 			.then(data => {
 				return this.login(data.app_id, data.password);
@@ -194,7 +198,10 @@ export class Portail extends Api {
 					password,
 				},
 			}
-		).then(data => {
+		).then(([data]) => {
+			// On défini la clé de chiffrement retournée par le Portail.
+			Storage.setEncryptionKey(data.key);
+
 			return this.setData(app_id, password).then(() => {
 				return data;
 			});
@@ -238,8 +245,36 @@ export class Portail extends Api {
 			this.checkConnected();
 		}
 
-		return this.call(`${this.API_V1}user`).then(([response]) => {
-			this.user = response;
+		return this.call(`${this.API_V1}user`).then(response => {
+			const [data] = response;
+			this.user = data;
+
+			return response;
+		});
+	}
+
+	getAppData(userMustBeConnected = true) {
+		if (userMustBeConnected) {
+			this.checkConnected();
+		}
+
+		return Storage.getData('portail').then(({ app_id }) => {
+			return this.call(`${this.API_V1}user/auths/app/`).then(response => {
+				const [data, status] = response;
+
+				for (const key in data) {
+					const app = data[key];
+
+					// On retoruve la bonne application parmi toutes celles existantes.
+					if (app.app_id === app_id) {
+						Storage.setEncryptionKey(app.key);
+
+						return [app, status];
+					}
+				}
+
+				throw "Impossible de retrouver l'application, wtf ?";
+			});
 		});
 	}
 
