@@ -23,7 +23,7 @@ export default class Comments extends React.PureComponent {
 				keyExtractor={comment => comment.id}
 				renderItem={comment => <Comment data={comment.item} />}
 				ref={this.flatListRef}
-				getItemLayout={(data, index) => ({
+				getDataLayout={(data, index) => ({
 					length: styles.comment.container.height,
 					offset: styles.comment.container.height * index,
 					index,
