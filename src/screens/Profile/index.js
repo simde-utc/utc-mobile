@@ -71,7 +71,9 @@ export default class ProfileScreen extends React.Component {
 
 	render() {
 		const { loading } = this.state;
-		const headerImagePath = PortailApi.isConnected() ? { uri: PortailApi.getUser().image } : utcIcon;
+		const headerImagePath = PortailApi.isConnected()
+			? { uri: PortailApi.getUser().image }
+			: utcIcon;
 		const headerImageStyle = PortailApi.isConnected()
 			? styles.img.bigAvatar
 			: styles.img.bigThumbnail;
