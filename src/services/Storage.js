@@ -2,6 +2,7 @@
  * Permet de gérer les données stockées localement
  * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
@@ -11,9 +12,11 @@ import { AsyncStorage } from 'react-native';
 import CryptoJS from 'crypto-js';
 
 class Storage {
+	encryptionKey;
+
 	// ========== Normal Storage ==========
 
-	getItem = async key => {
+	getData = async key => {
 		if (!key) throw 'Clé non définie !';
 
 		try {
@@ -24,7 +27,7 @@ class Storage {
 		}
 	};
 
-	setItem = async (key, value) => {
+	setData = async (key, value) => {
 		if (!key) throw 'Clé non définie !';
 		if (!value) throw 'Valeur non définie !';
 
@@ -32,7 +35,7 @@ class Storage {
 		return AsyncStorage.setItem(key, data);
 	};
 
-	removeItem = async key => {
+	removeData = async key => {
 		if (!key) throw 'Clé non définie !';
 
 		return AsyncStorage.removeItem(key);
@@ -45,7 +48,7 @@ class Storage {
 
 		try {
 			const data = await AsyncStorage.getItem(key);
-			const bytes = CryptoJS.AES.decrypt(data, this.getEncryptionKey());
+			const bytes = CryptoJS.AES.decrypt(data, await this.getEncryptionKey());
 
 			return this.parseData(bytes.toString(CryptoJS.enc.Utf8), true);
 		} catch (err) {
@@ -58,7 +61,7 @@ class Storage {
 		if (!value) throw 'Valeur non définie !';
 
 		const data = await this.stringifyData(value, true);
-		const bytes = CryptoJS.AES.encrypt(data, this.getEncryptionKey());
+		const bytes = CryptoJS.AES.encrypt(data, await this.getEncryptionKey());
 
 		return AsyncStorage.setItem(key, bytes.toString());
 	};
@@ -88,11 +91,12 @@ class Storage {
 		}
 	};
 
-	// Sensitive keys only contain alphanumeric characters and ._-
-	checkSensitiveKey = key => /^[\w.-]+$/.test(key);
+	setEncryptionKey = key => {
+		this.encryptionKey = key;
+	};
 
 	getEncryptionKey = () => {
-		return 'zefrjgo32JFI43gh"isdvzev'; // Faux random pour l'instant :p
+		return this.encryptionKey;
 	};
 }
 

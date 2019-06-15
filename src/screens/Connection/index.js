@@ -64,7 +64,9 @@ export default class ConnectionScreen extends React.Component {
 				[{ text: 'Continuer' }],
 				{ cancelable: true }
 			);
-		} else this.connect();
+		} else {
+			this.connect();
+		}
 	}
 
 	connect() {
