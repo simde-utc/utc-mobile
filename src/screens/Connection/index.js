@@ -64,7 +64,9 @@ export default class ConnectionScreen extends React.Component {
 				[{ text: 'Continuer' }],
 				{ cancelable: true }
 			);
-		} else this.connect();
+		} else {
+			this.connect();
+		}
 	}
 
 	connect() {
@@ -130,7 +132,8 @@ export default class ConnectionScreen extends React.Component {
 							.then(() => {
 								return this.register();
 							})
-							.catch(() => {
+							.catch(e => {
+								console.warn(e);
 								this.setState(prevState => {
 									prevState.loading = false;
 

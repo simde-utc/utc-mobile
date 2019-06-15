@@ -27,6 +27,25 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
+	static prettyDate(string, locale) {
+		const date = new Date(string);
+		switch (locale) {
+			case 'fr-FR':
+				return ArticleComponent.renderDate(
+					`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+				);
+			case 'en-US':
+			default:
+				return ArticleComponent.renderDate(
+					`${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`
+				);
+		}
+	}
+
+	static renderDate(string) {
+		return <Text style={styles.article.dateText}>{string}</Text>;
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -160,21 +179,6 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
-	prettyDate(string, locale) {
-		const date = new Date(string);
-		switch (locale) {
-			case 'fr-FR':
-				return ArticleComponent.renderDate(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`);
-			case 'en-US':
-			default:
-				return ArticleComponent.renderDate(`${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`);
-		}
-	}
-
-	static renderDate(string) {
-		return <Text style={styles.article.dateText}>{string}</Text>;
-	}
-
 	handleMedia() {
 		const { data } = this.props;
 
@@ -258,8 +262,8 @@ export default class ArticleComponent extends React.PureComponent {
 					{/** *DATE** */}
 					<View style={styles.article.dateContainer}>
 						{data.created_at
-							? this.prettyDate(data.created_at, 'fr-FR')
-							: this.prettyDate(data.date_gmt, 'fr-FR')}
+							? ArticleComponent.prettyDate(data.created_at, 'fr-FR')
+							: ArticleComponent.prettyDate(data.date_gmt, 'fr-FR')}
 					</View>
 					{/** *TODO: locale** */}
 				</View>
