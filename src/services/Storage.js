@@ -2,6 +2,7 @@
  * Permet de gérer les données stockées localement
  * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
@@ -9,6 +10,9 @@
 
 import { AsyncStorage } from 'react-native';
 import CryptoJS from 'crypto-js';
+import Generate from '../utils/Generate';
+
+const ENCRYPTION_KEY_NAME = 'encryption_key';
 
 class Storage {
 	// ========== Normal Storage ==========
@@ -45,7 +49,7 @@ class Storage {
 
 		try {
 			const data = await AsyncStorage.getItem(key);
-			const bytes = CryptoJS.AES.decrypt(data, this.getEncryptionKey());
+			const bytes = CryptoJS.AES.decrypt(data, await this.getEncryptionKey());
 
 			return this.parseData(bytes.toString(CryptoJS.enc.Utf8), true);
 		} catch (err) {
@@ -58,7 +62,7 @@ class Storage {
 		if (!value) throw 'Valeur non définie !';
 
 		const data = await this.stringifyData(value, true);
-		const bytes = CryptoJS.AES.encrypt(data, this.getEncryptionKey());
+		const bytes = CryptoJS.AES.encrypt(data, await this.getEncryptionKey());
 
 		return AsyncStorage.setItem(key, bytes.toString());
 	};
@@ -91,8 +95,21 @@ class Storage {
 	// Sensitive keys only contain alphanumeric characters and ._-
 	checkSensitiveKey = key => /^[\w.-]+$/.test(key);
 
-	getEncryptionKey = () => {
-		return 'zefrjgo32JFI43gh"isdvzev'; // Faux random pour l'instant :p
+	// Pour chaque application, une nouvelle clé spéciale est générée pour le chiffrement en interne.
+	getEncryptionKey = async () => {
+		let key = await this.getItem(ENCRYPTION_KEY_NAME);
+
+		if (!key) {
+			key = Generate.key(64);
+			await this.setItem(ENCRYPTION_KEY_NAME, key);
+		}
+
+		return key;
+	};
+
+	// Invalidation des données chiffrées
+	invalidateEncrytionData = async () => {
+		await this.removeItem(ENCRYPTION_KEY_NAME);
 	};
 }
 
