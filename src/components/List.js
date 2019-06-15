@@ -78,8 +78,6 @@ export default class List extends React.Component {
 		super(props);
 
 		this.renderItem = this.renderItem.bind(this);
-		this.isNativeIcon = this.isNativeIcon.bind(this);
-		this.iconKeyToSvg = this.iconKeyToSvg.bind(this);
 	}
 
 	renderItem({ item }) {
@@ -91,12 +89,12 @@ export default class List extends React.Component {
 					<View style={listStyle.elementView}>
 						<View style={listStyle.iconContainer}>
 							{item.icon &&
-								(this.isNativeIcon(item.icon) ? (
+								(List.isNativeIcon(item.icon) ? (
 									<Icon
 										style={listStyle.icon}
 										height={25}
 										width={25}
-										image={this.iconKeyToSvg(item.icon)}
+										image={List.iconKeyToSvg(item.icon)}
 									/>
 								) : (
 									<Image source={item.icon} style={{ height: 25, width: 25 }} />
@@ -117,7 +115,7 @@ export default class List extends React.Component {
 			<FlatList
 				contentContainerStyle={listStyle.container}
 				data={data}
-				keyExtractor={keyExtractor || this.keyExtractor}
+				keyExtractor={keyExtractor || List.keyExtractor}
 				renderItem={renderItem || this.renderItem}
 			/>
 		);
