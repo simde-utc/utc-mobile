@@ -14,9 +14,9 @@ import Storage from './Storage';
 import Generate from '../utils/Generate';
 
 export class Portail extends Api {
-	OAUTH = 'oauth/';
+	static OAUTH = 'oauth/';
 
-	API_V1 = 'api/v1/';
+	static API_V1 = 'api/v1/';
 
 	token = {};
 
@@ -131,7 +131,7 @@ export class Portail extends Api {
 
 	login(login, password) {
 		return this.call(
-			`${this.OAUTH}token`,
+			`${Portail.OAUTH}token`,
 			Api.POST,
 			{},
 			{
@@ -158,7 +158,7 @@ export class Portail extends Api {
 		const app_id = Generate.UUIDv4();
 
 		return this.call(
-			`${this.OAUTH}token`,
+			`${Portail.OAUTH}token`,
 			Api.POST,
 			{},
 			{
@@ -174,7 +174,7 @@ export class Portail extends Api {
 				};
 
 				return this.call(
-					`${this.API_V1}users`,
+					`${Portail.API_V1}users`,
 					Api.POST,
 					{},
 					{
@@ -202,7 +202,7 @@ export class Portail extends Api {
 		const password = Generate.key();
 
 		return this.call(
-			`${this.API_V1}users/${this.user.id}/auths`,
+			`${Portail.API_V1}users/${this.user.id}/auths`,
 			Api.POST,
 			{},
 			{
@@ -226,7 +226,7 @@ export class Portail extends Api {
 		this.checkConnected();
 
 		return this.call(
-			`${this.API_V1}users/${this.user.id}/auths`,
+			`${Portail.API_V1}users/${this.user.id}/auths`,
 			Api.POST,
 			{},
 			{
@@ -259,7 +259,7 @@ export class Portail extends Api {
 			this.checkConnected();
 		}
 
-		return this.call(`${this.API_V1}user`).then(response => {
+		return this.call(`${Portail.API_V1}user`).then(response => {
 			const [data] = response;
 			this.user = data;
 
@@ -273,7 +273,7 @@ export class Portail extends Api {
 		}
 
 		return Storage.getData('portail').then(({ app_id }) => {
-			return this.call(`${this.API_V1}user/auths/app`).then(response => {
+			return this.call(`${Portail.API_V1}user/auths/app`).then(response => {
 				const [data, status] = response;
 
 				for (const key in data) {
@@ -299,7 +299,7 @@ export class Portail extends Api {
 			week += ',timestamp';
 		}
 
-		return this.call(`${this.API_V1}articles`, Api.GET, {
+		return this.call(`${Portail.API_V1}articles`, Api.GET, {
 			paginate,
 			page,
 			order,
@@ -323,7 +323,7 @@ export class Portail extends Api {
 		deleted = deleted ? 'with' : 'without';
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}assos?deleted=${deleted}`, Api.GET, {
+			this.call(`${Portail.API_V1}assos?deleted=${deleted}`, Api.GET, {
 				stages: `${stageDown},${stageUp},${tree}`,
 			})
 				.then(([data]) => {
@@ -342,7 +342,7 @@ export class Portail extends Api {
 
 		if (this.user.assos === undefined || forceReload) {
 			return new Promise((resolve, reject) => {
-				this.call(`${this.API_V1}user/assos`, Api.GET)
+				this.call(`${Portail.API_V1}user/assos`, Api.GET)
 					.then(([data]) => {
 						this.user.assos = data;
 						resolve(data);
@@ -365,7 +365,7 @@ export class Portail extends Api {
 		}
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}assos/${id}`, Api.GET, {})
+			this.call(`${Portail.API_V1}assos/${id}`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})
@@ -384,7 +384,7 @@ export class Portail extends Api {
 		}
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}assos/${id}/members`, Api.GET, {})
+			this.call(`${Portail.API_V1}assos/${id}/members`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})
@@ -400,7 +400,7 @@ export class Portail extends Api {
 		}
 		this.checkConnected();
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}roles/${roleId}?owner=${roleId}`, Api.GET, {})
+			this.call(`${Portail.API_V1}roles/${roleId}?owner=${roleId}`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})
@@ -427,7 +427,7 @@ export class Portail extends Api {
 	getEvents(month) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}events`, Api.GET, {
+		return this.call(`${Portail.API_V1}events`, Api.GET, {
 			order: 'oldest',
 			month,
 		});
@@ -436,13 +436,13 @@ export class Portail extends Api {
 	getEvent(event_id) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}events/${event_id}`, Api.GET);
+		return this.call(`${Portail.API_V1}events/${event_id}`, Api.GET);
 	}
 
 	getEventsFromCalendar(calendar_id, month) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}calendars/${calendar_id}/events`, Api.GET, {
+		return this.call(`${Portail.API_V1}calendars/${calendar_id}/events`, Api.GET, {
 			order: 'oldest',
 			month,
 		});
@@ -451,25 +451,25 @@ export class Portail extends Api {
 	getUserCalendars() {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}user/calendars`, Api.GET);
+		return this.call(`${Portail.API_V1}user/calendars`, Api.GET);
 	}
 
 	getUserArticleActions(uuid) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}user/articles/${uuid}/actions/`, Api.GET);
+		return this.call(`${Portail.API_V1}user/articles/${uuid}/actions/`, Api.GET);
 	}
 
 	getArticleRootComments(uuid) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}articles/${uuid}/comments/`, Api.GET);
+		return this.call(`${Portail.API_V1}articles/${uuid}/comments/`, Api.GET);
 	}
 
 	setArticleRootComment(uuid, body, visibilityId) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}articles/${uuid}/comments/`, Api.POST, {
+		return this.call(`${Portail.API_V1}articles/${uuid}/comments/`, Api.POST, {
 			body,
 			visibility_id: visibilityId,
 		});
@@ -478,13 +478,13 @@ export class Portail extends Api {
 	getArticleSubComment(artId, commId) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}articles/${artId}/comments/${commId}/comments/`, Api.GET);
+		return this.call(`${Portail.API_V1}articles/${artId}/comments/${commId}/comments/`, Api.GET);
 	}
 
 	setArticleSubComment(artId, commId, body, visibilityId) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}articles/${artId}/comments/${commId}/comments/`, Api.POST, {
+		return this.call(`${Portail.API_V1}articles/${artId}/comments/${commId}/comments/`, Api.POST, {
 			body,
 			visibility_id: visibilityId,
 		});
@@ -493,13 +493,13 @@ export class Portail extends Api {
 	getthisVisibilities() {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}visibilities`);
+		return this.call(`${Portail.API_V1}visibilities`);
 	}
 
 	updateArticleAction(uuid, key, value) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}user/articles/${uuid}/actions/${key}`, Api.PUT, {
+		return this.call(`${Portail.API_V1}user/articles/${uuid}/actions/${key}`, Api.PUT, {
 			value,
 		});
 	}
@@ -507,7 +507,7 @@ export class Portail extends Api {
 	createArticleAction(uuid, key, value) {
 		this.checkConnected();
 
-		return this.call(`${this.API_V1}user/articles/${uuid}/actions`, Api.POST, {
+		return this.call(`${Portail.API_V1}user/articles/${uuid}/actions`, Api.POST, {
 			key,
 			value,
 		});
@@ -516,14 +516,14 @@ export class Portail extends Api {
 	deleteArticleAction(uuid, key) {
 		this.checkConnected();
 
-		return this.callWithoutJSON(`${this.API_V1}user/articles/${uuid}/actions/${key}`, Api.DELETE);
+		return this.callWithoutJSON(`${Portail.API_V1}user/articles/${uuid}/actions/${key}`, Api.DELETE);
 	}
 
 	getFAQs() {
 		this.checkConnected();
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}faqs`, Api.GET, {})
+			this.call(`${Portail.API_V1}faqs`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})
@@ -537,7 +537,7 @@ export class Portail extends Api {
 		this.checkConnected();
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}faqs/${categoryId}`, Api.GET, {})
+			this.call(`${Portail.API_V1}faqs/${categoryId}`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})
@@ -551,7 +551,7 @@ export class Portail extends Api {
 		this.checkConnected();
 
 		return new Promise((resolve, reject) => {
-			this.call(`${this.API_V1}faqs/${categoryId}/questions`, Api.GET, {})
+			this.call(`${Portail.API_V1}faqs/${categoryId}/questions`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})

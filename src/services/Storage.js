@@ -12,7 +12,7 @@ import { AsyncStorage } from 'react-native';
 import CryptoJS from 'crypto-js';
 
 class Storage {
-	encryptionKey;
+	static encryptionKey;
 
 	// ========== Normal Storage ==========
 
@@ -92,11 +92,11 @@ class Storage {
 	};
 
 	setEncryptionKey = key => {
-		this.encryptionKey = key;
+		Storage.encryptionKey = key;
 	};
 
 	getEncryptionKey = () => {
-		return this.encryptionKey;
+		return Storage.encryptionKey;
 	};
 }
 
