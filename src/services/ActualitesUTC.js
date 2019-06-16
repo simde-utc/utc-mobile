@@ -32,7 +32,7 @@ export default class ActualitesUTC extends Api {
 	loadArticles() {
 		return this.call(ActualitesUTC.st, Api.GET).then(([response]) => {
 			this.articles = Array.from(JSON.parse(response));
-			this.articles.forEach(this.normalizeArray);
+			this.articles.forEach(ActualitesUTC.normalizeArray);
 
 			let i = 0;
 			this.articles.forEach(article => {
@@ -63,14 +63,14 @@ export default class ActualitesUTC extends Api {
 		return this.articles !== undefined && ActualitesUTC.articlesWereLoaded;
 	}
 
-	_checkArtLoaded() {
+	checkArtLoaded() {
 		if (!this.articlesWereLoaded()) {
 			throw ActualitesUTC.NO_ARTICLES_LOADED_EXCEPTION;
 		}
 	}
 
 	getArticles(paginate, page, order, week) {
-		ActualitesUTC.checkArtLoaded();
+		this.checkArtLoaded();
 
 		let result;
 
@@ -100,7 +100,7 @@ export default class ActualitesUTC extends Api {
 		switch (order) {
 			case 'latest':
 				result.reverse();
-				this.restrainArray(result, (page - 1) * paginate, page * paginate - 1);
+				ActualitesUTC.restrainArray(result, (page - 1) * paginate, page * paginate - 1);
 
 				break;
 
@@ -124,7 +124,7 @@ export default class ActualitesUTC extends Api {
 
 			case 'oldest':
 			default:
-				this.restrainArray(result, (page - 1) * paginate, page * paginate - 1);
+				ActualitesUTC.restrainArray(result, (page - 1) * paginate, page * paginate - 1);
 
 				break;
 		}
@@ -133,7 +133,7 @@ export default class ActualitesUTC extends Api {
 	}
 
 	getRandomArticleId() {
-		ActualitesUTC.checkArtLoaded();
+		this.checkArtLoaded();
 
 		return this.articles[Math.floor(Math.random() * this.articles.length)].id;
 	}
@@ -143,7 +143,7 @@ export default class ActualitesUTC extends Api {
 			throw 'No id provided!';
 		}
 
-		ActualitesUTC.checkArtLoaded();
+		this.checkArtLoaded();
 
 		if (!this.wpIndexDico.has(id) || this.wpIndexDico.get(id) > this.articles.length) {
 			throw 'Article unavailable in local cache.';

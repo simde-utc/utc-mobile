@@ -158,24 +158,17 @@ export default class ArticlesScreen extends React.Component {
 	loadPortailArticles() {
 		const { pagination, page } = this.state;
 
-		return PortailApi.getArticles(pagination, page + 1, 'latest')
-			.then(([response]) => {
-				return response.map(article => {
-					article.article_type = 'assos';
-					article.created_at = article.created_at.replace(' ', 'T');
-					return article;
-				});
-			})
-			.catch(([_, status]) => {
-				if (this.willUnmount) {
-					return;
-				}
+		return PortailApi.getArticles(pagination, page + 1, 'latest').then(([articles, status]) => {
+			if (status === 416) {
+				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }));
+			}
 
-				if (status === 416)
-					this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }));
-
-				return [];
+			return articles.map(article => {
+				article.article_type = 'assos';
+				article.created_at = article.created_at.replace(' ', 'T');
+				return article;
 			});
+		});
 	}
 
 	loadUTCArticles() {
@@ -195,6 +188,8 @@ export default class ArticlesScreen extends React.Component {
 						});
 					})
 					.catch(([response, status]) => {
+						console.log([response, status]);
+
 						if (this.willUnmount) {
 							return;
 						}
