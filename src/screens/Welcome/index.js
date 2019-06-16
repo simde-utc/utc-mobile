@@ -1,12 +1,25 @@
 import React from 'react';
-// import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
-// import styles from '../../styles'
-import Carousel from 'react-native-carousel';
-import { colors } from '../../styles/variables';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import styles from '../../styles';
 
 import WelcomeMessageScreen from './WelcomeMessage';
 import AppPurposeScreen from './AppPurpose';
 import SetPreferencesScreen from './SetPreferences';
+
+const slides = [
+	{
+		key: 'Welcome',
+		screen: WelcomeMessageScreen,
+	},
+	{
+		key: 'AppPurpose',
+		screen: AppPurposeScreen,
+	},
+	{
+		key: 'SetPreferences',
+		screen: SetPreferencesScreen,
+	},
+];
 
 export default class WelcomeScreen extends React.Component {
 	static navigationOptions = {
@@ -16,20 +29,22 @@ export default class WelcomeScreen extends React.Component {
 		},
 	};
 
-	render() {
+	renderSlide(slide) {
 		const { navigation } = this.props;
 
+		return <slide.screen navigation={navigation} />;
+	}
+
+	render() {
 		return (
-			<Carousel
-				indicatorOffset={-10}
-				inactiveIndicatorColor={colors.gray}
-				indicatorColor={colors.yellow}
-				animate={false}
-				indicatorSize={65}
-			>
-				<WelcomeMessageScreen />
-				<SetPreferencesScreen navigation={navigation} />
-			</Carousel>
+			<AppIntroSlider
+				slides={slides}
+				renderItem={this.renderSlide.bind(this)}
+				dotStyle={styles.bg.gray}
+				activeDotStyle={styles.bg.yellow}
+				showNextButton={false}
+				showDoneButton={false}
+			/>
 		);
 	}
 }

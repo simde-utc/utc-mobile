@@ -21,10 +21,10 @@ class CASAuth extends Api {
 
 	call(request, method, queries, body, headers, validStatus) {
 		return new Promise((resolve, reject) => {
-			fetch(super.urlWithQueries(this.baseUrl + request, queries), {
+			return fetch(Api.urlWithQueries(this.baseUrl + request, queries), {
 				method: method || Api.GET,
 				headers: headers || {},
-				body: super.serialize(body),
+				body: Api.serialize(body),
 			})
 				.then(response => {
 					if ((validStatus || Api.VALID_STATUS).includes(response.status)) {
@@ -51,6 +51,7 @@ class CASAuth extends Api {
 			return Storage.setSensitiveData('cas', {
 				login,
 				password,
+				ticket: this.tgt,
 			});
 		});
 	}
@@ -61,36 +62,46 @@ class CASAuth extends Api {
 		return Storage.removeSensitiveData('cas');
 	}
 
-	static getData() {
+	// eslint-disable-next-line class-methods-use-this
+	getData() {
 		return Storage.getSensitiveData('cas');
 	}
 
-	static getLogin() {
+	// eslint-disable-next-line class-methods-use-this
+	getLogin() {
 		return Storage.getSensitiveData('cas').then(data => {
 			return data.login;
 		});
 	}
 
+	isTgtValid() {
+		return this.call(this.tgt, Api.GET);
+	}
+
 	autoLogin() {
 		return this.getData().then(data => {
-			return this.login(data.login, data.password)
-				.then(response => {
-					return response;
-				})
-				.catch(() => {
-					return PortailApi.forget();
-				});
+			this.tgt = data.ticket;
+
+			return this.isTgtValid().catch(() => {
+				return this.login(data.login, data.password)
+					.then(response => {
+						return this.setData(data.login, data.password).then(() => response);
+					})
+					.catch(() => {
+						return PortailApi.forget();
+					});
+			});
 		});
 	}
 
-	login(login, passwd) {
+	login(login, password) {
 		return this.call(
 			'',
 			Api.POST,
 			'',
 			{
 				username: login,
-				password: passwd,
+				password,
 			},
 			CASAuth.HEADER_FORM_URLENCODED,
 			[201]
@@ -107,7 +118,7 @@ class CASAuth extends Api {
 		return this.call(
 			this.tgt,
 			Api.POST,
-			'',
+			{},
 			{
 				service,
 			},
@@ -117,6 +128,7 @@ class CASAuth extends Api {
 	}
 
 	static error(e) {
+		console.warn(e);
 		if (e instanceof TypeError) return [JSON.stringify(e), 523, ''];
 
 		if (Array.isArray(e) && e.length === 3) {
