@@ -61,7 +61,7 @@ export class Portail extends Api {
 					return [[], status];
 				}
 
-				return [data, status];
+				throw [data, status];
 			});
 	}
 
@@ -141,9 +141,11 @@ export class Portail extends Api {
 				password,
 				scope: this.scopes.join(' '),
 			}
-		).then(([response]) => {
-			response.scopes = this.scopes;
-			this.token = response;
+		).then(([data]) => {
+			this.token = {
+				...data,
+				scopes: this.scopes,
+			};
 
 			return this.getUserData(false);
 		});
