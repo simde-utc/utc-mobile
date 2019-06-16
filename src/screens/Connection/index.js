@@ -148,21 +148,8 @@ export default class ConnectionScreen extends React.Component {
 								);
 							});
 					})
-					.catch((e, a) => {
-						console.log(e, a);
-						if (e[0].exception !== undefined) {
-							const error = e[0];
-
-							console.log(`Error ${e[1]}: ${error.exception}: ${error.message}`);
-
-							for (const ntrace in error.trace) {
-								const trace = error.trace[ntrace];
-								console.log(`\tAt: ${trace.file}:${trace.line}`);
-							}
-						} else {
-							console.log(e);
-						}
-
+					.catch(e => {
+						console.log(e);
 						this.badLogin();
 					});
 			}
