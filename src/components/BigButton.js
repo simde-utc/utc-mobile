@@ -1,14 +1,17 @@
 import React from 'react';
-import Button from 'react-native-button';
+import { TouchableHighlight, Text } from 'react-native';
 
 import styles from '../styles';
 
 const BigButton = ({ label, onPress, style }) => {
-	const btnStyle = [styles.get('bigButton', 'bg.lightBlue', 'text.white'), style];
+	const btnStyle = [styles.get('bigButton', 'bg.lightBlue'), style];
+
 	return (
-		<Button style={btnStyle} onPress={checked => onPress(checked)}>
-			{label}
-		</Button>
+		<TouchableHighlight style={btnStyle} onPress={checked => onPress(checked)}>
+			<Text style={[styles.get('text.white', 'text.h4'), { width: '100%', textAlign: 'center' }]}>
+				{label}
+			</Text>
+		</TouchableHighlight>
 	);
 };
 

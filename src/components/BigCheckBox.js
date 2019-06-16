@@ -25,7 +25,7 @@ export default class BigCheckBox extends React.Component {
 			<TouchableHighlight onPress={onPress} underlayColor="#fff0">
 				<View style={styles.bigButton}>
 					{this.getCheckBox()}
-					<Text style={labelStyle}>{label}</Text>
+					<Text style={[labelStyle, { width: 200 }]}>{label}</Text>
 				</View>
 			</TouchableHighlight>
 		);
