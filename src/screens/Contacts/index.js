@@ -27,7 +27,7 @@ class SocialNetwork extends React.PureComponent {
     }
 }
 
-export class ContactsScreen extends React.PureComponent {
+export default class ContactsScreen extends React.PureComponent {
     static navigationOptions = {
         headerTitle: 'Contacts',
         headerStyle: {

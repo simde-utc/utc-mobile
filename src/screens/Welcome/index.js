@@ -1,9 +1,8 @@
 import React from 'react';
 // import { View, Image, Text, ScrollView, Dimensions } from 'react-native';
 // import styles from '../../styles'
-import { colors } from '../../styles/variables';
-
 import Carousel from 'react-native-carousel';
+import { colors } from '../../styles/variables';
 
 import WelcomeMessageScreen from './WelcomeMessage';
 import AppPurposeScreen from './AppPurpose';
@@ -14,10 +13,12 @@ export default class WelcomeScreen extends React.Component {
 		title: 'Bienvenue',
 		headerStyle: {
 			display: 'none',
-		}
+		},
 	};
 
 	render() {
+		const { navigation } = this.props;
+
 		return (
 			<Carousel
 				indicatorOffset={-10}
@@ -27,25 +28,8 @@ export default class WelcomeScreen extends React.Component {
 				indicatorSize={65}
 			>
 				<WelcomeMessageScreen />
-				<AppPurposeScreen />
-				<SetPreferencesScreen navigation={ this.props.navigation }/>
+				<SetPreferencesScreen navigation={navigation} />
 			</Carousel>
 		);
-
-		/*
-		AUTRE SOLUTION : Avec ScrollView
-		const width = Dimensions.get('window').width
-		const imageLayout = {
-			width: 	width,
-			height: width/2,
-		}
-		return (
-			<ScrollView pagingEnabled directionalLockEnabled horizontal>
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-				<Image source={require('../img/logo_utc.png')} style={imageLayout} resizeMode={'center'} />
-			</ScrollView>
-		)
-		*/
 	}
 }

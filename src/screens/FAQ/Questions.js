@@ -1,8 +1,7 @@
-import React from "react";
-import {Alert, FlatList, ScrollView, SectionList, Text, TouchableHighlight, View} from "react-native";
-import Icon from "../../components/Icon";
-import Portail from "../../services/Portail";
-import styles from "../../styles";
+import React from 'react';
+import { Alert, ScrollView, SectionList, Text, TouchableHighlight, View } from 'react-native';
+import Icon from '../../components/Icon';
+import Portail from '../../services/Portail';
 
 class Question extends React.PureComponent {
     constructor(props) {
@@ -21,7 +20,7 @@ class Question extends React.PureComponent {
                         paddingBottom: 0,
                         backgroundColor: '#fff',
                     }}>
-                        <Text style={{fontSize: 16, fontWeight: 'bold'}}>{this.props.title}</Text>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', color: '#6d6f71'}}>{this.props.title}</Text>
                         <View style={{
                             flex: 1,
                             flexDirection: 'column',
@@ -67,7 +66,7 @@ class FakeQuestion extends React.PureComponent {
     }
 }
 
-export class QuestionsScreen extends React.PureComponent {
+export default class QuestionsScreen extends React.PureComponent {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: navigation.getParam('category').name,
         headerStyle: {
@@ -92,9 +91,6 @@ export class QuestionsScreen extends React.PureComponent {
             .then(category => {
                 this._fetchQuestions(category);
                 category.children.forEach(child => this._fetchQuestions(child));
-
-                this.setState({loading: false});
-
             })
             .catch(reason => {
                 console.warn(reason);
@@ -109,11 +105,15 @@ export class QuestionsScreen extends React.PureComponent {
     _fetchQuestions(category) {
         Portail.getFAQQuestions(category.id)
             .then(questions => {
-                questions.forEach(question => this.setState({questionsByCategory: [...this.state.questionsByCategory, { category: category.name, question: question}]}));
-            })
+                questions.forEach(question => this.setState({
+                  questionsByCategory: [...this.state.questionsByCategory, { category: category.name, question: question}],
+                  loading: false
+                }));
+						})
             .catch(reason => {
                 console.warn(reason);
-            })
+                this.setState({loading: false})
+						})
     }
 
     sortQuestionsInSections(questionsByCategories) {
@@ -138,7 +138,7 @@ export class QuestionsScreen extends React.PureComponent {
 
     render() {
         if (this.state.loading)
-            return <ScrollView><FakeQuestion title={'Chargement...'}/></ScrollView>;
+            return <ScrollView style={{backgroundColor: '#f4f4f4'}}><FakeQuestion title={'Chargement...'}/></ScrollView>;
         return (
             <SectionList
                 style={{backgroundColor: '#f4f4f4'}}
@@ -146,7 +146,7 @@ export class QuestionsScreen extends React.PureComponent {
                 renderSectionHeader={({section: {title}}) => (
                     <View style={{
                         padding: 10,
-                        backgroundColor: '#f4f4f4',
+                        backgroundColor: '#fff',
                         flex: 1,
                         flexDirection: 'row',
                         alignItems: 'center'
@@ -156,27 +156,16 @@ export class QuestionsScreen extends React.PureComponent {
                 )}
                 sections={
                     this.sortQuestionsInSections(this.state.questionsByCategory)
-                    //[{title: 'Titre', data: this.state.questionsByCategory.map(item => { return { key: item.question.id, category: item.category, question: item.question}})},]
                 }
                 keyExtractor={(item, index) => item + index}
                 ItemSeparatorComponent={() => <View style={{
-                    borderBottomWidth: 5,
+                    borderBottomWidth: 1,
                     borderBottomColor: '#f4f4f4'
                 }} />}
+                renderSectionFooter={() => <View style={{
+									borderBottomWidth: 7,
+									borderBottomColor: '#f4f4f4'}}/>}
                 ListEmptyComponent={() => <FakeQuestion title={"Aucune question n'a été trouvée"}/>}/>
-            /*
-            <FlatList style={{backgroundColor: '#f4f4f4'}}
-                      data={this.state.questions.map(question => {return {key: question.id, question: question}})}
-                      renderItem={({item}) => { return (
-                          <View style={{flex: 1, flexDirection: 'column'}}>
-                              <Question title={item.question.question} answer={item.question.answer}/>
-                          </View>
-                      )}}
-                      ItemSeparatorComponent={() => <View style={{
-                          borderBottomWidth: 5,
-                          borderBottomColor: '#f4f4f4'
-                      }} />}
-                      ListEmptyComponent={() => <FakeQuestion title={"Aucune question n'a été trouvée"}/>}/>*/
         )
     }
 }

@@ -30,7 +30,7 @@ const NotificationsScreen = () => show('Notifications')
 
 const ICON_SIZE = Platform.OS === 'android' ? 25 : 20;
 
-export default MainLayout = createBottomTabNavigator ({
+const MainLayout = createBottomTabNavigator ({
 	// Storage: StorageTestScreen,	// DEBUG
 	Home: {
         screen: HomeScreen,
@@ -87,3 +87,5 @@ export default MainLayout = createBottomTabNavigator ({
 		}
 	},
 });
+
+export default MainLayout;

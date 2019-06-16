@@ -3,6 +3,7 @@ import {Alert, FlatList, ScrollView, Text, TouchableHighlight, View} from "react
 import Icon from "../../components/Icon";
 import Portail from "../../services/Portail";
 import styles from "../../styles";
+import withNavigation from 'react-navigation/src/views/withNavigation';
 
 class Category extends React.PureComponent {
     render() {
@@ -46,7 +47,7 @@ class FakeCategory extends React.PureComponent {
     }
 }
 
-export class CategoriesScreen extends React.PureComponent {
+export default class CategoriesScreen extends React.PureComponent {
     static navigationOptions = {
         headerTitle: 'Foire aux questions',
         headerStyle: {
@@ -94,10 +95,10 @@ export class CategoriesScreen extends React.PureComponent {
                                         onPress={() => { this.props.navigation.navigate({
                                             key: item.key,
                                             routeName: 'Questions',
-                                            params: {category: item.category}})} }/>}
+                                            params: {category: item.category}})} }/>
                           </View>
                       )}}
-                      ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
+                      ItemSeparatorComponent={() => <View style={styles.associations.separator}/>}
                       ListEmptyComponent={() => <FakeCategory title={"Aucune question n'a été trouvée"}/>}/>
         )
     }

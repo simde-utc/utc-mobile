@@ -1,4 +1,4 @@
-export const associations = {
+export default {
     list: {},
 
     separator: {

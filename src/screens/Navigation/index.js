@@ -5,13 +5,14 @@ import ProfileScreen from "../Profile";
 import Icon from "../../components/Icon";
 import Arrow from '../../img/icons/arrow_yellow.png'
 import styles from '../../styles'
-import {ProfileHeader} from "../Profile/ProfileHeader";
+import ProfileHeader from '../Profile/ProfileHeader';
 import AssociationsListScreen from "../Associations";
 import AssociationScreen from "../Associations/Association";
-import {MapNavigator} from "../Map";
-import {InteractionsScreen} from "../Interactions";
-import {ContactsScreen} from "../Contacts";
-import {FAQNavigator} from "../FAQ";
+import MapNavigator from "../Map";
+import InteractionsScreen from "../Interactions";
+import ContactsScreen from "../Contacts";
+import CategoriesScreen from '../FAQ/Categories';
+import QuestionsScreen from '../FAQ/Questions';
 
 export class FullWidthButton extends React.Component {
     render() {
@@ -68,7 +69,7 @@ export class NavigationScreen extends React.Component {
     }
 }
 
-export default NavigationNavigator = createStackNavigator({
+const NavigationNavigator = createStackNavigator({
     Navigation: {
         screen: NavigationScreen,
         navigationOptions: {
@@ -83,11 +84,11 @@ export default NavigationNavigator = createStackNavigator({
         screen: AssociationScreen
     },
     FAQ: {
-        screen: FAQNavigator,
-        navigationOptions: {
-            header: null,
-        }
+        screen: CategoriesScreen,
     },
+	  Questions: {
+		    screen: QuestionsScreen,
+	  },
     Map: {
         screen: MapNavigator,
         navigationOptions: {
@@ -112,3 +113,5 @@ export default NavigationNavigator = createStackNavigator({
 },{
     initialRouteName: 'Navigation'
 });
+
+export default NavigationNavigator;

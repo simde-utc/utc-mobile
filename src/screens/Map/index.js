@@ -55,7 +55,7 @@ class LocationsScreen extends React.PureComponent {
     }
 }
 
-export const MapNavigator = createMaterialTopTabNavigator({
+const MapNavigator = createMaterialTopTabNavigator({
     Buildings: {
         screen: MapScreen,
         navigationOptions: {
@@ -81,3 +81,5 @@ export const MapNavigator = createMaterialTopTabNavigator({
     },
     initialRouteName: 'Buildings'
 });
+
+export default MapNavigator;
