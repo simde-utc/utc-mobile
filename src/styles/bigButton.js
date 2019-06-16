@@ -2,7 +2,6 @@ import { colors } from './variables';
 
 export default {
 	flexDirection: 'row',
-	flexWrap: 'wrap',
 	alignItems: 'center',
 	borderColor: colors.lightGray,
 	borderWidth: 1,
