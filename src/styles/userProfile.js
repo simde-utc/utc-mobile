@@ -10,13 +10,13 @@ export default {
 		borderRadius: 50,
 		borderWidth: 2,
 		borderColor: '#007383',
-		marginBottom: 10
+		marginBottom: 10,
 	},
 
 	name: {
 		fontSize: 25,
 		color: '#007383',
 		fontWeight: 'bold',
-		paddingHorizontal: '5%'
+		paddingHorizontal: '5%',
 	},
 };

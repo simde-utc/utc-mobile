@@ -19,7 +19,7 @@ export default {
 		text: {
 			fontSize: 20,
 			fontWeight: 'bold',
-			color: '#007383'
-		}
+			color: '#007383',
+		},
 	},
 };
