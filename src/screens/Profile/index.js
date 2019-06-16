@@ -10,7 +10,7 @@ import React from 'react';
 import {ScrollView, View} from 'react-native';
 import PortailApi from '../../services/Portail'
 import CASAuth from '../../services/CASAuth';
-import {ProfileHeader} from "./ProfileHeader";
+import ProfileHeader from './ProfileHeader';
 import {FullWidthButton} from "../Navigation";
 
 export default class ProfileScreen extends React.Component {

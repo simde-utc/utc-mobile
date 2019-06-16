@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, WebView} from 'react-native'
 
-export class InteractionsScreen extends React.PureComponent {
+export default class InteractionsScreen extends React.PureComponent {
     static navigationOptions = {
         headerTitle: 'Interactions',
         headerStyle: {

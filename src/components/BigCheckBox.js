@@ -1,24 +1,31 @@
 import React from 'react';
-import { TouchableHighlight, View } from 'react-native';
+import { Text, TouchableHighlight, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import CheckBox from 'react-native-checkbox-svg';
 import { colors } from '../styles/variables';
-import styles from '../styles'
-
+import styles from '../styles';
 
 export default class BigCheckBox extends React.Component {
-	render() {
+	getCheckBox() {
+		const { checked } = this.props;
+
 		return (
-			<TouchableHighlight onPress={this.onPressButton} underlayColor={"#fff0"}>
-				<View style={ styles.bigButton }>
-					<CheckBox
-						checked={ this.props.checked }
-						onChange={ (checked) => this.props.onChange(checked) }
-						label={ this.props.label }
-						labelBefore={ false }
-						style={ this.props.style }
-						labelStyle={ this.props.labelStyle }
-					/>
+			<FontAwesomeIcon
+				icon={['far', checked ? 'check-square' : 'square']}
+				size={22}
+				style={{ marginRight: 10, color: colors.yellow }}
+			/>
+		);
+	}
+
+	render() {
+		const { onPress, labelStyle, label } = this.props;
+
+		return (
+			<TouchableHighlight onPress={onPress} underlayColor="#fff0">
+				<View style={styles.bigButton}>
+					{this.getCheckBox()}
+					<Text style={labelStyle}>{label}</Text>
 				</View>
 			</TouchableHighlight>
 		);

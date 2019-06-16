@@ -1,11 +1,13 @@
 import { colors } from './variables';
 
-export const bigButton = {
+export default {
+	flexDirection: 'row',
+	flexWrap: 'wrap',
+	alignItems: 'center',
 	borderColor: colors.lightGray,
 	borderWidth: 1,
 	borderRadius: 50,
 	padding: 15,
 	margin: 5,
-	justifyContent: 'center',
-	width: 250
-}
+	width: 250,
+};

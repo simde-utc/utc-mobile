@@ -1,114 +1,124 @@
-import React from 'react'
-import { ScrollView, View, Text } from 'react-native'
+import React from 'react';
+import { ScrollView, View, Text } from 'react-native';
 
-import BlockGrid from './Grid'
+import BlockGrid from './Grid';
 
-import styles from '../../styles'
+import styles from '../../styles';
 
 export default class BlockHandler extends React.Component {
-    constructor (props) {
-        super(props)
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            blocks: this.props.blocks,
-            editMode: this.props.editMode,
-            deleteMode: this.props.deleteMode,
-        }
-    }
+		this.state = {
+			blocks: props.blocks,
+			editMode: props.editMode,
+			deleteMode: props.deleteMode,
+		};
+	}
 
-    onEditModeChange (editMode) {
-        if (this.props.onEditMode)
-            this.props.onEditMode(editMode)
+	onEditModeChange(editMode) {
+		const { onEditMode } = this.props;
 
-        this.setState((prevState) => {
-            prevState.editMode = editMode
+		if (onEditMode) {
+			onEditMode(editMode);
+		}
 
-            return prevState
-        })
-    }
+		this.setState(prevState => {
+			prevState.editMode = editMode;
 
-    onDeleteModeChange (deleteMode) {
-        if (this.props.onDeleteMode)
-            this.props.onDeleteMode(deleteMode)
+			return prevState;
+		});
+	}
 
-        this.setState((prevState) => {
-            prevState.deleteMode = deleteMode
+	onDeleteModeChange(deleteMode) {
+		const { onDeleteMode } = this.props;
 
-            return prevState
-        })
-    }
+		if (onDeleteMode) {
+			onDeleteMode(deleteMode);
+		}
 
-    _getConfig (_config) {
-        config = _config.slice(0)
+		this.setState(prevState => {
+			prevState.deleteMode = deleteMode;
 
-        if (this.props.addTools !== false) {
-            const toolBlocks = [
-                {},
-                {
-                    text: 'Nouveau dossier',
-                    editable: false,
-                    deletable: false,
-                },
-                {
-                    children: (
-                        <View style={[ styles.container.center, this.state.editMode ? styles.bg.lightGray : {} ]}>
-                            <Text style={{ textAlign: 'center' }}>Mode édition</Text>
-                        </View>
-                    ),
-                    editable: false,
-                    deletable: false,
-                    onPress: () => {
-                        this.onEditModeChange(!this.state.editMode)
-                    }
-                },
-                {
-                    children: (
-                        <View style={[ styles.container.center, this.state.deleteMode ? { backgroundColor: '#F00' } : {} ]}>
-                            <Text style={{ textAlign: 'center' }}>Mode suppression</Text>
-                        </View>
-                    ),
-                    editable: false,
-                    deletable: false,
-                    onPress: () => {
-                        this.onDeleteModeChange(!this.state.deleteMode)
-                    }
-                }
-            ]
+			return prevState;
+		});
+	}
 
-            config.push(toolBlocks)
-        }
+	getConfig(_config) {
+		const { addTools } = this.props;
+		const { editMode, deleteMode } = this.state;
+		const config = _config.slice(0);
 
-        return config
-    }
+		if (addTools !== false) {
+			const toolBlocks = [
+				{},
+				{
+					text: 'Nouveau dossier',
+					editable: false,
+					deletable: false,
+				},
+				{
+					children: (
+						<View style={[styles.container.center, editMode ? styles.bg.lightGray : {}]}>
+							<Text style={{ textAlign: 'center' }}>Mode édition</Text>
+						</View>
+					),
+					editable: false,
+					deletable: false,
+					onPress: () => {
+						this.onEditModeChange(!editMode);
+					},
+				},
+				{
+					children: (
+						<View style={[styles.container.center, deleteMode ? { backgroundColor: '#F00' } : {}]}>
+							<Text style={{ textAlign: 'center' }}>Mode suppression</Text>
+						</View>
+					),
+					editable: false,
+					deletable: false,
+					onPress: () => {
+						this.onDeleteModeChange(!deleteMode);
+					},
+				},
+			];
 
-    render() {
-        const style = [
-            {
-                paddingVertical: 5
-            },
-            this.props.style
-        ]
+			config.push(toolBlocks);
+		}
+
+		return config;
+	}
+
+	render() {
+		const { style: propsStyle, propsBlocks, addTools, onPressNewBlock } = this.props;
+		const { editMode, deleteMode, blocks } = this.state;
+		const style = [
+			{
+				paddingVertical: 5,
+			},
+			propsStyle,
+		];
 
 		return (
-            <ScrollView style={ style }>
-                <BlockGrid
-                    style={ this.props.style }
-                    editMode={ this.state.editMode }
-                    onEditMode={ this.onEditModeChange.bind(this) }
-                    deleteMode={ this.state.deleteMode }
-                    onDeleteMode={ this.onDeleteModeChange.bind(this) }
-                    blocks={ this._getConfig(this.state.blocks) }
-                    onPressNewBlock={ (index) => {
-                        // Si on demande d'ajouter un block via l'utlitaire, on ajoute un block dans la grille global,
-                        // pas dans le dossier d'outils
-                        if (this.props.addTools !== false && index[0] === this.props.blocks.length)
-                            index = [ index[0] ]
+			<ScrollView style={style}>
+				<BlockGrid
+					style={propsStyle}
+					editMode={editMode}
+					onEditMode={this.onEditModeChange.bind(this)}
+					deleteMode={deleteMode}
+					onDeleteMode={this.onDeleteModeChange.bind(this)}
+					blocks={this.getConfig(blocks)}
+					onPressNewBlock={index => {
+						// Si on demande d'ajouter un block via l'utlitaire, on ajoute un block dans la grille global,
+						// pas dans le dossier d'outils
+						if (addTools !== false && index[0] === propsBlocks.length) {
+							index = [index[0]];
+						}
 
-                        if (this.props.onPressNewBlock)
-                            this.props.onPressNewBlock(index)
-                    }}
-                />
-            </ScrollView>
-		)
+						if (onPressNewBlock) onPressNewBlock(index);
+					}}
+				/>
+			</ScrollView>
+		);
 	}
 }
