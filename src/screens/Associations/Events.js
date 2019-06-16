@@ -1,8 +1,8 @@
-import React from "react";
-import {Text} from "react-native";
+import React from 'react';
+import { Text } from 'react-native';
 
 export class EventsView extends React.PureComponent {
-    render() {
-        return <Text>Events</Text>
-    }
+	render() {
+		return <Text>Events</Text>;
+	}
 }

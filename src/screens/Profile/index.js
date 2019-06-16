@@ -4,30 +4,29 @@
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
-**/
+ * */
 
 import React from 'react';
-import {ScrollView, View} from 'react-native';
-import PortailApi from '../../services/Portail'
+import { ScrollView, View } from 'react-native';
+import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
 import ProfileHeader from './ProfileHeader';
-import {FullWidthButton} from "../Navigation";
+import { FullWidthButton } from '../Navigation';
 
 export default class ProfileScreen extends React.Component {
-    static navigationOptions = {
-        headerTitle: 'Mon compte',
-        headerStyle: {
-            backgroundColor: '#fff'
-        },
-        headerTintColor: '#007383',
-        headerForceInset: { top: 'never' }
-    };
+	static navigationOptions = {
+		headerTitle: 'Mon compte',
+		headerStyle: {
+			backgroundColor: '#fff',
+		},
+		headerTintColor: '#007383',
+		headerForceInset: { top: 'never' },
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		if (!PortailApi.isActive())
-			props.navigation.navigate('Connection')
+		if (!PortailApi.isActive()) props.navigation.navigate('Connection');
 
 		this.state = {
 			loading: false,
@@ -35,41 +34,40 @@ export default class ProfileScreen extends React.Component {
 		};
 
 		if (CASAuth.isConnected()) {
-			CASAuth.getLogin().then((login) => {
-				this.setState((prevState) => {
-					prevState.login = login
+			CASAuth.getLogin().then(login => {
+				this.setState(prevState => {
+					prevState.login = login;
 
-					return prevState
-				})
-			})
+					return prevState;
+				});
+			});
 		}
-
 	}
 
-	logout () {
+	logout() {
 		this.setState(prevState => {
-			prevState.loading = true
+			prevState.loading = true;
 
-			return prevState
+			return prevState;
 		});
 
 		PortailApi.logout().then(() => {
 			this.setState(prevState => {
 				prevState.loading = false;
 
-				return prevState
+				return prevState;
 			});
 
-			this.props.navigation.navigate('Connection')
-		})
+			this.props.navigation.navigate('Connection');
+		});
 	}
 
-	render () {
+	render() {
 		return (
-			<ScrollView style={{backgroundColor: '#f4f4f4'}}>
-                <ProfileHeader/>
-				<View style={{borderTopWidth: 1, borderTopColor: '#f4f4f4'}}>
-                    <FullWidthButton name={'Déconnexion'} onPress={() => this.logout()}/>
+			<ScrollView style={{ backgroundColor: '#f4f4f4' }}>
+				<ProfileHeader />
+				<View style={{ borderTopWidth: 1, borderTopColor: '#f4f4f4' }}>
+					<FullWidthButton name="Déconnexion" onPress={() => this.logout()} />
 				</View>
 			</ScrollView>
 		);
