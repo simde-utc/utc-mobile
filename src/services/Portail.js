@@ -114,9 +114,10 @@ export class Portail extends Api {
 			if (data) {
 				return this.login(data.app_id, data.password)
 					.then(user => {
-						this.getAppData(); // On récupère et défini la clé de chiffrement.
-
-						return user;
+						// On récupère et défini la clé de chiffrement.
+						return this.getAppData().then(() => {
+							return user;
+						});
 					})
 					.catch(() => {
 						return this.forget();
@@ -269,7 +270,7 @@ export class Portail extends Api {
 		}
 
 		return Storage.getData('portail').then(({ app_id }) => {
-			return this.call(`${this.API_V1}user/auths/app/`).then(response => {
+			return this.call(`${this.API_V1}user/auths/app`).then(response => {
 				const [data, status] = response;
 
 				for (const key in data) {
