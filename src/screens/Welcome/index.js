@@ -29,15 +29,17 @@ export default class WelcomeScreen extends React.Component {
 		},
 	};
 
-	static renderSlide(slide) {
-		return <slide.screen />;
+	renderSlide(slide) {
+		const { navigation } = this.props;
+
+		return <slide.screen navigation={navigation} />;
 	}
 
 	render() {
 		return (
 			<AppIntroSlider
 				slides={slides}
-				renderItem={WelcomeScreen.renderSlide}
+				renderItem={this.renderSlide.bind(this)}
 				dotStyle={{ backgroundColor: colors.gray }}
 				activeDotStyle={{ backgroundColor: colors.yellow }}
 				showNextButton={false}
