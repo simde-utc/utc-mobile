@@ -58,6 +58,13 @@ const PurposeTabs = createMaterialTopTabNavigator(
 	}
 );
 
+const bottomStyle = {
+	flex: 2,
+	justifyContent: 'center',
+	paddingHorizontal: 15,
+	marginBottom: '15%',
+};
+
 const AppPurposeScreen = () => (
 	<View style={styles.container.default}>
 		<HeaderView
@@ -69,7 +76,7 @@ const AppPurposeScreen = () => (
 			<View style={{ flex: 6, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>
-			<View style={{ flex: 2, justifyContent: 'center', paddingHorizontal: 15, marginBottom: 40 }}>
+			<View style={bottomStyle}>
 				<Text style={endMessageStyle}>
 					Et bien d'autres fonctionnalités à découvrir dans l'application !
 				</Text>

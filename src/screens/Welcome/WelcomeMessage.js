@@ -11,8 +11,10 @@ const WelcomeMessageScreen = () => (
 	<View style={styles.container.center}>
 		<Image source={utcLogo} style={styles.img.logoStyle} resizeMode="center" />
 		<Text style={titleStyle}>Bienvenue !</Text>
-		<Text style={[subtitleStyle, { marginBottom: 50 }]}>Découvrons ensemble l'application</Text>
-		<View style={{ position: 'absolute', bottom: 50 }}>
+		<Text style={[subtitleStyle, { marginBottom: '12.5%' }]}>
+			Découvrons ensemble l'application
+		</Text>
+		<View style={{ position: 'absolute', bottom: '12.5%' }}>
 			<Text style={subsubtitleStyle}>Glissez vers la droite pour commencer</Text>
 		</View>
 	</View>
