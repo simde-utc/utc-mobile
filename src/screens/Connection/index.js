@@ -181,7 +181,9 @@ export default class ConnectionScreen extends React.Component {
 			});
 
 			return CASAuth.setData(emailOrLogin, password)
-				.catch(() => {
+				.catch(e => {
+					console.log(e);
+
 					this.setState(prevState => {
 						prevState.loading = false;
 
