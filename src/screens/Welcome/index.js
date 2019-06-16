@@ -1,6 +1,6 @@
 import React from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { colors } from '../../styles/variables';
+import styles from '../../styles';
 
 import WelcomeMessageScreen from './WelcomeMessage';
 import AppPurposeScreen from './AppPurpose';
@@ -40,8 +40,8 @@ export default class WelcomeScreen extends React.Component {
 			<AppIntroSlider
 				slides={slides}
 				renderItem={this.renderSlide.bind(this)}
-				dotStyle={{ backgroundColor: colors.gray }}
-				activeDotStyle={{ backgroundColor: colors.yellow }}
+				dotStyle={styles.bg.gray}
+				activeDotStyle={styles.bg.yellow}
 				showNextButton={false}
 				showDoneButton={false}
 			/>
