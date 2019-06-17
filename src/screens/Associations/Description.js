@@ -93,7 +93,7 @@ export default class Description extends React.PureComponent {
 					</View>
 					<View style={{ padding: 15 }}>
 						<FullWidthButton
-							name="Moyens de contacts"
+							name="Moyens de contact"
 							onPress={() =>
 								navigation.navigate({
 									routeName: 'AssociationContacts',
