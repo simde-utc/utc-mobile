@@ -6,18 +6,29 @@ export default {
 	},
 
 	fullWidthButton: {
+		touchable: {
+			marginBottom: 7,
+		},
+
 		view: {
+			paddingVertical: 7,
+			paddingLeft: 5,
+			paddingRight: 7,
 			backgroundColor: '#fff',
-			height: 50,
-			marginTop: 10,
-			paddingHorizontal: '5%',
 			flex: 1,
 			flexDirection: 'row',
 			alignItems: 'center',
 		},
 
+		textView: {
+			borderLeftWidth: 2,
+			borderLeftColor: '#fff',
+			paddingLeft: 2,
+			flex: 1,
+		},
+
 		text: {
-			fontSize: 20,
+			fontSize: 17,
 			fontWeight: 'bold',
 			color: '#007383',
 		},
