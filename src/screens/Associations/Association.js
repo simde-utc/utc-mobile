@@ -1,19 +1,13 @@
 import React from 'react';
-import { createSwitchNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation';
 import DescriptionScreen from './Description';
 import ArticleScreen from './Articles';
-import ContactsScreen from './Contacts';
 import MemberScreen from './Members';
-
-const DetailsNavigator = createSwitchNavigator({
-	AssociationDescription: DescriptionScreen,
-	AssociationContacts: ContactsScreen,
-});
 
 const TopTabNavigator = createMaterialTopTabNavigator(
 	{
 		AssociationDetails: {
-			screen: DetailsNavigator,
+			screen: DescriptionScreen,
 			navigationOptions: {
 				title: 'Détails',
 			},
