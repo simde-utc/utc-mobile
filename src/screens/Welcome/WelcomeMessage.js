@@ -8,7 +8,7 @@ const subtitleStyle = styles.get('text.gray', 'text.h4', 'text.center', 'mb.xl')
 const subsubtitleStyle = styles.get('text.lightGray', 'text.h5', 'text.center', 'mb.xs');
 
 const WelcomeMessageScreen = () => (
-	<View style={styles.container.center}>
+	<View style={[styles.container.center, { paddingBottom: '7.5%' }]}>
 		<Image source={utcLogo} style={styles.img.logoStyle} resizeMode="center" />
 		<Text style={titleStyle}>Bienvenue !</Text>
 		<Text style={[subtitleStyle, { marginBottom: '12.5%' }]}>
