@@ -11,7 +11,7 @@ import { ScrollView, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
 import ProfileHeader from './ProfileHeader';
-import { FullWidthButton } from '../Navigation';
+import FullWidthButton from '../../components/FullWidthButton';
 
 export default class ProfileScreen extends React.Component {
 	static navigationOptions = {
@@ -45,6 +45,8 @@ export default class ProfileScreen extends React.Component {
 	}
 
 	logout() {
+		const { navigation } = this.props;
+
 		this.setState(prevState => {
 			prevState.loading = true;
 
@@ -58,7 +60,7 @@ export default class ProfileScreen extends React.Component {
 				return prevState;
 			});
 
-			this.props.navigation.navigate('Connection');
+			navigation.navigate('Connection');
 		});
 	}
 

@@ -1,32 +1,32 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
-import { DetailsView } from './Details';
-import { ArticlesView } from './Articles';
-import { EventsView } from './Events';
-import { MembersView } from './Members';
+import DetailScreen from './Details';
+import ArticleScreen from './Articles';
+// import EventsScreen from './Events';
+import MemberScreen from './Members';
 
 const TopTabNavigator = createMaterialTopTabNavigator(
 	{
 		AssociationDetails: {
-			screen: DetailsView,
+			screen: DetailScreen,
 			navigationOptions: {
 				title: 'En bref',
 			},
 		},
 		AssociationArticles: {
-			screen: ArticlesView,
+			screen: ArticleScreen,
 			navigationOptions: {
 				title: 'Articles',
 			},
 		},
-		AssociationEvents: {
-			screen: EventsView,
-			navigationOptions: {
-				title: 'Évents',
-			},
-		},
+		// AssociationEvents: {
+		// 	screen: EventsScreen,
+		// 	navigationOptions: {
+		// 		title: 'Évents',
+		// 	},
+		// },
 		AssociationMembers: {
-			screen: MembersView,
+			screen: MemberScreen,
 			navigationOptions: {
 				title: 'Trombi',
 			},
@@ -46,7 +46,7 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 	}
 );
 
-export default class AssociationScreen extends React.Component {
+export default class Association extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerTitle:
 			typeof navigation.state.params !== 'undefined' &&
@@ -64,6 +64,8 @@ export default class AssociationScreen extends React.Component {
 	static router = TopTabNavigator.router;
 
 	render() {
-		return <TopTabNavigator navigation={this.props.navigation} />;
+		const { navigation } = this.props;
+
+		return <TopTabNavigator navigation={navigation} />;
 	}
 }

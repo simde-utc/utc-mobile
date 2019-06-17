@@ -1,25 +1,8 @@
 import React from 'react';
-import { Linking, SectionList, Text, TouchableHighlight, View } from 'react-native';
+import { SectionList, Text, View } from 'react-native';
 import styles from '../../styles';
-import Icon from '../../components/Icon';
-
-class SocialNetwork extends React.PureComponent {
-	render() {
-		return (
-			<TouchableHighlight onPress={() => Linking.openURL(this.props.app.url)}>
-				<View style={styles.scrollable.item.view}>
-					<View style={{ flex: 1 }}>
-						<Text style={styles.scrollable.item.title}>{this.props.app.name}</Text>
-						<Text style={styles.scrollable.item.subtitle}>{this.props.app.shortName}</Text>
-					</View>
-					<View>
-						<Icon image={require('../../img/icons/open.png')} />
-					</View>
-				</View>
-			</TouchableHighlight>
-		);
-	}
-}
+import networkData from '../../data/social_networks';
+import SocialNetwork from '../../components/SocialNetwork';
 
 export default class ContactsScreen extends React.PureComponent {
 	static navigationOptions = {
@@ -35,7 +18,7 @@ export default class ContactsScreen extends React.PureComponent {
 		return (
 			<SectionList
 				style={styles.scrollable.list}
-				renderItem={({ item }) => <SocialNetwork app={item.app}/>}
+				renderItem={({ item }) => <SocialNetwork app={item.app} />}
 				renderSectionHeader={({ section: { title } }) => (
 					<View style={styles.scrollable.sectionHeader.view}>
 						<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
@@ -44,14 +27,14 @@ export default class ContactsScreen extends React.PureComponent {
 				sections={[
 					{
 						title: 'Réseaux sociaux',
-						data: require('../../data/social_networks').map(app => {
-							return { key: app.name, app: app };
+						data: networkData.map(app => {
+							return { key: app.name, app };
 						}),
 					},
 				]}
 				keyExtractor={(item, index) => item + index}
-				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator}/>}
-				renderSectionFooter={() => <View style={styles.scrollable.sectionSeparator}/>}
+				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+				renderSectionFooter={() => <View style={styles.scrollable.sectionSeparator} />}
 			/>
 		);
 	}
