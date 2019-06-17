@@ -46,7 +46,7 @@ const AppSwitch = createSwitchNavigator(
 const paddingTop =
 	Platform.OS === 'android' ? StatusBar.currentHeight || (Platform.Version < 23 ? 25 : 24) : 0;
 
-YellowBox.ignoreWarnings(['Require cycle:']);
+YellowBox.ignoreWarnings(['Require cycle:', 'AsyncStorage', 'ViewPagerAndroid']);
 
 export default class App extends React.Component {
 	static checkEnvVariables() {
