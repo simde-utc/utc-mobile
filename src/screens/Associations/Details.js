@@ -1,11 +1,12 @@
 import React from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
-import Portail from '../../services/Portail';
+import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 
-export class DetailsView extends React.PureComponent {
+export default class Details extends React.PureComponent {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			association: null,
 			loading: true,
@@ -13,26 +14,29 @@ export class DetailsView extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		const associationId = this.props.navigation.state.params.id;
+		const { navigation } = this.props;
+		const associationId = navigation.state.params.id;
 
-		if (!Portail.isConnected()) {
-			this.props.navigation.goBack(associationId);
+		if (!PortailApi.isConnected()) {
+			navigation.goBack(associationId);
+
 			Alert.alert(
 				'Association non disponible',
 				'Le Portail des Associations est actuellement inaccessible.'
 			);
 		}
 
-		Portail.getAssoDetails(associationId)
+		PortailApi.getAssoDetails(associationId)
 			.then(association => {
 				this.setState({
 					association,
 					loading: false,
 				});
 			})
-			.catch(reason => {
-				console.log(reason);
-				this.props.navigation.goBack(associationId);
+			.catch(e => {
+				console.log(e);
+				navigation.goBack(associationId);
+
 				Alert.alert(
 					'Association non disponible',
 					'Une erreur est survenue lors de la récupération des informations.'
@@ -42,17 +46,21 @@ export class DetailsView extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-		if (Portail !== undefined) Portail.abortRequest();
+		if (PortailApi !== undefined) PortailApi.abortRequest();
 	}
 
-	_renderLogo() {
-		if (!this.state.association.image) return null;
+	renderLogo() {
+		const { association } = this.state;
+
+		if (!association.image) {
+			return null;
+		}
 
 		return (
 			<View style={styles.associations.details.logoView}>
 				<Image
 					style={{ height: 200, width: 200, margin: 5 }}
-					source={{ uri: this.state.association.image }}
+					source={{ uri: association.image }}
 					resizeMode="contain"
 				/>
 			</View>
@@ -60,22 +68,20 @@ export class DetailsView extends React.PureComponent {
 	}
 
 	render() {
-		if (!this.state.loading && this.state.association)
+		const { loading, association } = this.state;
+
+		if (!loading && association)
 			return (
 				<ScrollView style={{ backgroundColor: '#fff' }}>
-					{this._renderLogo()}
+					{this.renderLogo()}
 					<View style={{ padding: 15 }}>
-						<Text style={styles.associations.details.textView.title}>
-							{this.state.association.shortname}
-						</Text>
-						<Text style={styles.associations.details.textView.subtitle}>
-							{this.state.association.name}
-						</Text>
+						<Text style={styles.associations.details.textView.title}>{association.shortname}</Text>
+						<Text style={styles.associations.details.textView.subtitle}>{association.name}</Text>
 					</View>
 					<View style={styles.associations.separator} />
 					<View style={{ padding: 15 }}>
 						<Text style={styles.associations.details.textView.description}>
-							{this.state.association.description}
+							{association.description}
 						</Text>
 					</View>
 				</ScrollView>

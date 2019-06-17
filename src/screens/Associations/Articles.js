@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlatList, Text} from "react-native";
-import Portail from "../../services/Portail";
+import { FlatList, Text } from 'react-native';
+import PortailApi from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
 
-export class ArticlesView extends React.PureComponent {
+export default class Articles extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -12,9 +12,10 @@ export class ArticlesView extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		const associationId = this.props.navigation.state.params.id;
+		const { navigation } = this.props;
+		const associationId = navigation.state.params.id;
 
-		Portail.getArticles() // TODO: gérer la pagination et le chargement dynamique
+		PortailApi.getArticles() // TODO: gérer la pagination et le chargement dynamique
 			.then(articles => {
 				this.setState({
 					articles: articles[0].filter(
@@ -30,30 +31,32 @@ export class ArticlesView extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-		if (Portail !== undefined) Portail.abortRequest();
+		if (PortailApi !== undefined) PortailApi.abortRequest();
 	}
 
 	render() {
+		const { navigation } = this.props;
+		const { loading, articles } = this.state;
+
 		// This will evolve with new ArticleComponent view
-		if (this.state.loading) return <Text>Loading...</Text>;
-		else if (this.state.articles.length === 0) return <Text>Aucun article</Text>;
-		else
-			return (
-				<FlatList
-					data={this.state.articles.map(article => {
-						return { key: article.id, article: article };
-					})}
-					renderItem={({ item }) => {
-						return (
-							<ArticleComponent
-								navigation={this.props.navigation}
-								data={item.article}
-								portailInstance={Portail}
-								fullActions={true}
-							/>
-						);
-					}}
-				/>
-			);
+		if (loading) return <Text>Loading...</Text>;
+		if (articles.length === 0) return <Text>Aucun article</Text>;
+		return (
+			<FlatList
+				data={articles.map(article => {
+					return { key: article.id, article };
+				})}
+				renderItem={({ item }) => {
+					return (
+						<ArticleComponent
+							navigation={navigation}
+							data={item.article}
+							portailInstance={PortailApi}
+							fullActions
+						/>
+					);
+				}}
+			/>
+		);
 	}
 }

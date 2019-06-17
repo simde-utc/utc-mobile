@@ -1,7 +1,7 @@
 import React from 'react';
-import { Platform, View, Text, Image } from 'react-native';
-import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
-import styles from "../styles"
+import { Platform, View, Text } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
+import styles from '../styles';
 
 // Screens
 // import HomeScreen from './Home/';
@@ -34,6 +34,14 @@ const NotificationsScreen = () => show('Notifications');
 
 const ICON_SIZE = Platform.OS === 'android' ? 25 : 20;
 
+const generateTabBar = (On, Off) => {
+	const focusedIcon = ({ focused }) => (
+		<Icon image={focused ? On : Off} height={ICON_SIZE} width={ICON_SIZE} />
+	);
+
+	return focusedIcon;
+};
+
 const MainLayout = createBottomTabNavigator(
 	{
 		// Storage: StorageTestScreen,	// DEBUG
@@ -41,49 +49,35 @@ const MainLayout = createBottomTabNavigator(
 			screen: HomeScreen,
 			navigationOptions: {
 				title: 'Accueil',
-				tabBarIcon: ({ focused }) => (
-					<Icon image={focused ? HomeOn : HomeOff} height={ICON_SIZE} width={ICON_SIZE} />
-				),
+				tabBarIcon: generateTabBar(HomeOn, HomeOff),
 			},
 		},
 		News: {
 			screen: ArticlesScreen,
 			navigationOptions: {
 				title: 'Actus',
-				tabBarIcon: ({ focused }) => (
-					<Icon image={focused ? NewsOn : NewsOff} height={ICON_SIZE} width={ICON_SIZE} />
-				),
+				tabBarIcon: generateTabBar(NewsOn, NewsOff),
 			},
 		},
 		Events: {
 			screen: EventsNavigator,
 			navigationOptions: {
 				title: 'Calendrier',
-				tabBarIcon: ({ focused }) => (
-					<Icon image={focused ? EventsOn : EventsOff} height={ICON_SIZE} width={ICON_SIZE} />
-				),
+				tabBarIcon: generateTabBar(EventsOn, EventsOff),
 			},
 		},
 		Notifications: {
 			screen: NotificationsScreen,
 			navigationOptions: {
 				title: 'Notifications',
-				tabBarIcon: ({ focused }) => (
-					<Icon
-						image={focused ? NotificationsOn : NotificationsOff}
-						height={ICON_SIZE}
-						width={ICON_SIZE}
-					/>
-				),
+				tabBarIcon: generateTabBar(NotificationsOn, NotificationsOff),
 			},
 		},
 		Hamburger: {
 			screen: NavigationScreen,
 			navigationOptions: {
 				title: 'Navigation',
-				tabBarIcon: ({ focused }) => (
-					<Icon image={focused ? HamburgerOn : HamburgerOff} height={ICON_SIZE} width={ICON_SIZE} />
-				),
+				tabBarIcon: generateTabBar(HamburgerOn, HamburgerOff),
 			},
 		},
 	},
