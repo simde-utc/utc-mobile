@@ -1,6 +1,6 @@
 export default {
 	list: {
-		backgroundColor: '#f4f4f4'
+		backgroundColor: '#f4f4f4',
 	},
 
 	sectionHeader: {
@@ -9,14 +9,14 @@ export default {
 			backgroundColor: '#fff',
 			flex: 1,
 			flexDirection: 'row',
-			alignItems: 'center'
+			alignItems: 'center',
 		},
 
 		title: {
 			fontSize: 18,
 			fontWeight: 'bold',
-			color: '#007383'
-		}
+			color: '#007383',
+		},
 	},
 
 	sectionSeparator: {
@@ -30,7 +30,7 @@ export default {
 			backgroundColor: '#fff',
 			flex: 1,
 			flexDirection: 'row',
-			alignItems: 'center'
+			alignItems: 'center',
 		},
 
 		largeView: {
@@ -39,34 +39,34 @@ export default {
 			backgroundColor: '#fff',
 			flex: 1,
 			flexDirection: 'row',
-			alignItems: 'center'
+			alignItems: 'center',
 		},
 
 		title: {
 			fontSize: 16,
-			fontWeight: 'bold'
+			fontWeight: 'bold',
 		},
 
 		lightTitle: {
 			fontSize: 16,
 			fontWeight: 'bold',
-			color: '#d3d3d3'
+			color: '#d3d3d3',
 		},
 
 		subtitle: {
 			fontSize: 13,
 			fontWeight: 'bold',
-			color: '#6d6f71'
+			color: '#6d6f71',
 		},
 
 		subsubtitle: {
 			fontSize: 11,
-			color: '#6d6f71'
-		}
+			color: '#6d6f71',
+		},
 	},
 
 	itemSeparator: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#f1f1f1',
-	}
-}
+	},
+};

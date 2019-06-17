@@ -415,7 +415,7 @@ export class Portail extends Api {
 		this.checkConnected();
 		return new Promise((resolve, reject) => {
 			this.call(`${Portail.API_V1}roles/${roleId}`, Api.GET, {})
-				.then(([data, status]) => {
+				.then(([data]) => {
 					resolve(data);
 				})
 				.catch(([response, status]) => {
@@ -516,7 +516,10 @@ export class Portail extends Api {
 	deleteArticleAction(uuid, key) {
 		this.checkConnected();
 
-		return this.callWithoutJSON(`${Portail.API_V1}user/articles/${uuid}/actions/${key}`, Api.DELETE);
+		return this.callWithoutJSON(
+			`${Portail.API_V1}user/articles/${uuid}/actions/${key}`,
+			Api.DELETE
+		);
 	}
 
 	getFAQs() {
