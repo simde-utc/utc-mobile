@@ -14,7 +14,7 @@ export default {
 	},
 
 	name: {
-		fontSize: 25,
+		fontSize: 22,
 		color: '#007383',
 		fontWeight: 'bold',
 		paddingHorizontal: '5%',
