@@ -1,16 +1,27 @@
 import React from 'react';
-import { Alert, Image, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, SectionList, Text, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
-import FullWidthButton from '../../components/FullWidthButton';
+import Contact from '../../components/Contact';
+import FakeItem from '../../components/FakeItem';
 
 export default class Description extends React.PureComponent {
+	static pushContact(section, contact) {
+		section.push({
+			url: contact.value,
+			title: contact.type.name,
+			subtitle: contact.value,
+		});
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			association: null,
 			loading: true,
+			contacts: null,
+			loadingContacts: true,
 		};
 	}
 
@@ -44,10 +55,81 @@ export default class Description extends React.PureComponent {
 				);
 				this.setState({ loading: false });
 			});
+
+		PortailApi.getAssoContacts(associationId)
+			.then(contacts => {
+				this.setState({
+					contacts,
+					loadingContacts: false,
+				});
+			})
+			.catch(e => {
+				console.log(e);
+				navigation.goBack(associationId);
+
+				Alert.alert(
+					'Association non disponible',
+					'Une erreur est survenue lors de la récupération des moyens de contact.'
+				);
+
+				this.setState({ loadingContacts: false });
+			});
 	}
 
 	componentWillUnmount() {
 		if (PortailApi !== undefined) PortailApi.abortRequest();
+	}
+
+	getSections() {
+		const { contacts } = this.state;
+
+		// On défini 3 catégories:
+		const [sections, classics, networks, others] = [[], [], [], []];
+
+		for (const key in contacts) {
+			const contact = contacts[key];
+
+			switch (contact.type.type) {
+				case 'other':
+					Description.pushContact(others, contact);
+					break;
+
+				case 'facebook':
+				case 'twitter':
+				case 'linkedin':
+				case 'snapchat':
+				case 'instagram':
+					Description.pushContact(networks, contact);
+					break;
+
+				default:
+					Description.pushContact(classics, contact);
+					break;
+			}
+		}
+
+		if (classics.length) {
+			sections.push({
+				title: 'Moyens de contact',
+				data: classics,
+			});
+		}
+
+		if (networks.length) {
+			sections.push({
+				title: 'Réseaux sociaux',
+				data: networks,
+			});
+		}
+
+		if (others.length) {
+			sections.push({
+				title: 'Autre',
+				data: others,
+			});
+		}
+
+		return sections;
 	}
 
 	renderLogo() {
@@ -69,8 +151,7 @@ export default class Description extends React.PureComponent {
 	}
 
 	render() {
-		const { navigation } = this.props;
-		const { loading, association } = this.state;
+		const { loading, association, loadingContacts } = this.state;
 
 		if (!loading && association)
 			return (
@@ -91,17 +172,25 @@ export default class Description extends React.PureComponent {
 							{association.description}
 						</Text>
 					</View>
-					<View style={{ padding: 15 }}>
-						<FullWidthButton
-							name="Moyens de contact"
-							onPress={() =>
-								navigation.navigate({
-									routeName: 'AssociationContacts',
-									params: navigation.state.params,
-								})
-							}
+					{loadingContacts ? (
+						<ScrollView style={styles.scrollable.list}>
+							<FakeItem title="Chargement..." />
+						</ScrollView>
+					) : (
+						<SectionList
+							style={styles.scrollable.list}
+							renderItem={({ item }) => <Contact contact={item} />}
+							renderSectionHeader={({ section: { title } }) => (
+								<View style={styles.scrollable.sectionHeader.view}>
+									<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
+								</View>
+							)}
+							sections={this.getSections()}
+							keyExtractor={(item, index) => item + index}
+							ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+							renderSectionFooter={() => <View style={styles.scrollable.sectionSeparator} />}
 						/>
-					</View>
+					)}
 				</ScrollView>
 			);
 		return null;
