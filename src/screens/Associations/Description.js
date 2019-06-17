@@ -2,8 +2,9 @@ import React from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
+import FullWidthButton from '../../components/FullWidthButton';
 
-export default class Details extends React.PureComponent {
+export default class Description extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
@@ -68,6 +69,7 @@ export default class Details extends React.PureComponent {
 	}
 
 	render() {
+		const { navigation } = this.props;
 		const { loading, association } = this.state;
 
 		if (!loading && association)
@@ -83,6 +85,22 @@ export default class Details extends React.PureComponent {
 						<Text style={styles.associations.details.textView.description}>
 							{association.description}
 						</Text>
+					</View>
+					<View style={{ padding: 15 }}>
+						<Text style={styles.associations.details.textView.description}>
+							{association.description}
+						</Text>
+					</View>
+					<View style={{ padding: 15 }}>
+						<FullWidthButton
+							name="Moyens de contacts"
+							onPress={() =>
+								navigation.navigate({
+									routeName: 'AssociationContacts',
+									params: navigation.state.params,
+								})
+							}
+						/>
 					</View>
 				</ScrollView>
 			);
