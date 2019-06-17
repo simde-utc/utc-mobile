@@ -72,7 +72,7 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<SafeAreaView style={{ flex: 1, paddingTop }}>
+				<SafeAreaView style={{ flex: 1, paddingTop }} forceInset={{ bottom: 'never' }}>
 					<StatusBar translucent />
 					<AppSwitch />
 				</SafeAreaView>

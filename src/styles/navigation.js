@@ -2,12 +2,12 @@ export default {
 	scrollView: {
 		flex: 1,
 		flexDirection: 'column',
-		backgroundColor: '#007383',
+		backgroundColor: '#f4f4f4',
 	},
 
 	fullWidthButton: {
 		view: {
-			backgroundColor: '#007d94',
+			backgroundColor: '#fff',
 			height: 50,
 			marginTop: 10,
 			paddingHorizontal: '5%',
@@ -19,7 +19,7 @@ export default {
 		text: {
 			fontSize: 20,
 			fontWeight: 'bold',
-			color: '#fff',
+			color: '#007383',
 		},
 	},
 };
