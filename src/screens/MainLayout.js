@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, View, Text } from 'react-native';
-import { createMaterialTopTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation';
 import styles from '../styles';
 
 // Screens
@@ -8,6 +8,7 @@ import styles from '../styles';
 // import StorageTestScree from './StorageTest'; // DEBUG
 import EventsNavigator from './Events';
 import ArticlesScreen from './Articles';
+import NavigationScreen from './Navigation';
 
 // Icons
 import Icon from '../components/Icon';
@@ -21,7 +22,6 @@ import NotificationsOn from '../img/icons/navbar/bell-on.png';
 import NotificationsOff from '../img/icons/navbar/bell-off.png';
 import HamburgerOn from '../img/icons/navbar/hamburger-on.png';
 import HamburgerOff from '../img/icons/navbar/hamburger-off.png';
-import NavigationScreen from './Navigation';
 
 // DEBUG
 const show = text => (
@@ -32,65 +32,65 @@ const show = text => (
 const HomeScreen = () => show('Home');
 const NotificationsScreen = () => show('Notifications');
 
-const tabBarOptions =
-	Platform.OS === 'ios'
-		? {
-				// iOS tabBarOptions
-				showIcon: true,
-				showLabel: false,
-				style: styles.mainLayout.tabBar,
-				indicatorStyle: styles.mainLayout.indicator,
-				iconStyle: styles.mainLayout.icon,
-		  }
-		: {
-				// Android tabBarOptions
-				showIcon: true,
-				showLabel: false,
-				style: styles.mainLayout.tabBar,
-				indicatorStyle: styles.mainLayout.indicator,
-				iconStyle: styles.mainLayout.icon,
-		  };
+const ICON_SIZE = Platform.OS === 'android' ? 25 : 20;
 
-const FocusedIcon = (on, off, focused) => <Icon image={focused ? on : off} />;
+const generateTabBar = (On, Off) => {
+	const focusedIcon = ({ focused }) => (
+		<Icon image={focused ? On : Off} height={ICON_SIZE} width={ICON_SIZE} />
+	);
 
-export default createMaterialTopTabNavigator(
+	return focusedIcon;
+};
+
+const MainLayout = createBottomTabNavigator(
 	{
 		// Storage: StorageTestScreen,	// DEBUG
 		Home: {
 			screen: HomeScreen,
-			navigationOptions: () => ({
-				tabBarIcon: ({ focused }) => FocusedIcon(HomeOn, HomeOff, focused),
-			}),
+			navigationOptions: {
+				title: 'Accueil',
+				tabBarIcon: generateTabBar(HomeOn, HomeOff),
+			},
 		},
 		News: {
 			screen: ArticlesScreen,
-			navigationOptions: () => ({
-				tabBarIcon: ({ focused }) => FocusedIcon(NewsOn, NewsOff, focused),
-			}),
+			navigationOptions: {
+				title: 'Actus',
+				tabBarIcon: generateTabBar(NewsOn, NewsOff),
+			},
 		},
 		Events: {
 			screen: EventsNavigator,
-			navigationOptions: () => ({
-				tabBarIcon: ({ focused }) => FocusedIcon(EventsOn, EventsOff, focused),
-			}),
+			navigationOptions: {
+				title: 'Calendrier',
+				tabBarIcon: generateTabBar(EventsOn, EventsOff),
+			},
 		},
 		Notifications: {
 			screen: NotificationsScreen,
-			navigationOptions: () => ({
-				tabBarIcon: ({ focused }) => FocusedIcon(NotificationsOn, NotificationsOff, focused),
-			}),
+			navigationOptions: {
+				title: 'Notifications',
+				tabBarIcon: generateTabBar(NotificationsOn, NotificationsOff),
+			},
 		},
 		Hamburger: {
 			screen: NavigationScreen,
-			navigationOptions: () => ({
-				tabBarIcon: ({ focused }) => FocusedIcon(HamburgerOn, HamburgerOff, focused),
-			}),
+			navigationOptions: {
+				title: 'Navigation',
+				tabBarIcon: generateTabBar(HamburgerOn, HamburgerOff),
+			},
 		},
 	},
 	{
 		initialRouteName: 'Home',
-		tabBarOptions,
-		tabBarPosition: 'bottom',
-		swipeEnabled: false,
+		tabBarOptions: {
+			showLabel: Platform.OS !== 'android', // On Android, we don't display icons label
+			activeTintColor: '#007383',
+			style: {
+				borderTopColor: '#f1f1f1',
+			},
+		},
 	}
 );
+
+export default MainLayout;

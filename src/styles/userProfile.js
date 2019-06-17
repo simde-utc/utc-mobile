@@ -8,14 +8,14 @@ export default {
 		height: 100,
 		width: 100,
 		borderRadius: 50,
-		borderWidth: 1,
-		borderColor: '#fff',
+		borderWidth: 2,
+		borderColor: '#007383',
 		marginBottom: 10,
 	},
 
 	name: {
 		fontSize: 25,
-		color: '#fff',
+		color: '#007383',
 		fontWeight: 'bold',
 		paddingHorizontal: '5%',
 	},

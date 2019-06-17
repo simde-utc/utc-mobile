@@ -7,25 +7,20 @@
  * */
 
 import React from 'react';
-import { Text, View, Image } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
-import styles from '../../styles';
-import utcIcon from '../../img/icon.png';
-
-// Components
-import HeaderView from '../../components/HeaderView';
-import BigButton from '../../components/BigButton';
-
-// API
+import { ScrollView, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
+import ProfileHeader from './ProfileHeader';
+import FullWidthButton from '../../components/FullWidthButton';
 
 export default class ProfileScreen extends React.Component {
 	static navigationOptions = {
-		title: 'Compte',
+		headerTitle: 'Mon compte',
 		headerStyle: {
-			display: 'none',
+			backgroundColor: '#fff',
 		},
+		headerTintColor: '#007383',
+		headerForceInset: { top: 'never' },
 	};
 
 	constructor(props) {
@@ -70,41 +65,13 @@ export default class ProfileScreen extends React.Component {
 	}
 
 	render() {
-		const { loading } = this.state;
-		const headerImagePath = PortailApi.isConnected()
-			? { uri: PortailApi.getUser().image }
-			: utcIcon;
-		const headerImageStyle = PortailApi.isConnected()
-			? styles.img.bigAvatar
-			: styles.img.bigThumbnail;
-		const viewStyle = [styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'), { flex: 7 }];
-
 		return (
-			<View style={styles.container.default}>
-				<View>
-					<Spinner
-						visible={loading}
-						textContent="Déconnexion en cours..."
-						textStyle={{ color: '#FFF' }}
-					/>
+			<ScrollView style={{ backgroundColor: '#f4f4f4' }}>
+				<ProfileHeader />
+				<View style={{ borderTopWidth: 1, borderTopColor: '#f4f4f4' }}>
+					<FullWidthButton name="Déconnexion" onPress={() => this.logout()} />
 				</View>
-				<HeaderView>
-					<Image style={headerImageStyle} source={headerImagePath} />
-					<Text style={styles.get('text.h1', 'text.yellow')}>{PortailApi.getUser().name}</Text>
-				</HeaderView>
-				<View style={viewStyle}>
-					<Text style={[styles.get('text.h2', 'text.center'), { margin: 20 }]}>
-						Bla bla bla bla des infos...
-					</Text>
-					<BigButton
-						label="Se déconnecter"
-						style={styles.mt.lg}
-						onPress={() => {
-							this.logout();
-						}}
-					/>
-				</View>
-			</View>
+			</ScrollView>
 		);
 	}
 }

@@ -1,0 +1,73 @@
+[
+  {
+    "name": "Centre Benjamin Franklin",
+    "shortName": "BF",
+    "street": "rue Roger Couttolenc",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.415203,
+    "longitude": 2.819114
+  },
+  {
+    "name": "Centre de Recherche",
+    "shortName": "CR",
+    "street": "rue Personne de Roberval",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.399833,
+    "longitude": 2.798216
+  },
+  {
+    "name": "Centre Pierre Guillaumat 1",
+    "shortName": "PG1",
+    "street": "rue du docteur Schweitzer",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.400446,
+    "longitude": 2.799938
+  },
+  {
+    "name": "Centre Pierre Guillaumat 2",
+    "shortName": "PG2",
+    "street": "rue du docteur Schweitzer",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.401375,
+    "longitude": 2.801217
+  },
+  {
+    "name": "Centre de Transfert",
+    "shortName": "CT",
+    "street": "avenue de Landshut",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.401281,
+    "longitude": 2.795807
+  },
+  {
+    "name": "Halle des Sports",
+    "street": "avenue de Landshut",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.401404,
+    "longitude": 2.794522
+  },
+  {
+    "name": "Centre d'Innovation",
+    "shortName": "CI",
+    "street": "avenue de Landshut",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.401944,
+    "longitude": 2.795650
+  },
+  {
+    "name": "Génie Informatique",
+    "shortName": "GI",
+    "street": "avenue de Landshut",
+    "city": "Compiègne",
+    "zip": 60200,
+    "latitude": 49.400861,
+    "longitude": 2.795120
+  }
+]

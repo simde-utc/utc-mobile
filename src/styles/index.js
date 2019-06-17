@@ -14,6 +14,8 @@ import mainLayout from './mainLayout';
 import comment from './comment';
 import navigation from './navigation';
 import userProfile from './userProfile';
+import associations from './associations';
+import scrollable from './scrollable';
 
 export default {
 	// General styles
@@ -32,6 +34,8 @@ export default {
 	comment,
 	navigation,
 	userProfile,
+	associations,
+	scrollable,
 
 	// Getter function
 	get(...paths) {
