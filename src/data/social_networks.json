@@ -1,32 +1,32 @@
 [
   {
-    "name": "LinkedIn",
-    "shortName": "Université de Technologie de Compiègne",
-    "iconName": "../../img/icons/social-networks/linkedin.png",
+    "title": "LinkedIn",
+    "subtitle": "Université de Technologie de Compiègne",
+    "icon": "../../img/icons/social-networks/linkedin.png",
     "url": "https://www.linkedin.com/school/universit-de-technologie-de-compi-gne/"
   },
   {
-    "name": "Twitter",
-    "shortName": "@utcompiegne",
-    "iconName": "../../img/icons/social-networks/twitter.png",
+    "title": "Twitter",
+    "subtitle": "@utcompiegne",
+    "icon": "../../img/icons/social-networks/twitter.png",
     "url": "https://twitter.com/utcompiegne"
   },
   {
-    "name": "YouTube",
-    "shortName": "KomUTC",
-    "iconName": "../../img/icons/social-networks/youtube.png",
+    "title": "YouTube",
+    "subtitle": "KomUTC",
+    "icon": "../../img/icons/social-networks/youtube.png",
     "url": "https://www.youtube.com/user/KomUTC"
   },
   {
-    "name": "Facebook",
-    "shortName": "Université de Technologie de Compiègne",
-    "iconName": "../../img/icons/social-networks/facebook.png",
+    "title": "Facebook",
+    "subtitle": "Université de Technologie de Compiègne",
+    "icon": "../../img/icons/social-networks/facebook.png",
     "url": "https://www.facebook.com/utcompiegne/"
   },
   {
-    "name": "Instagram",
-    "shortName": "@utcompiegne",
-    "iconName": "../../img/icons/social-networks/instagram.png",
+    "title": "Instagram",
+    "subtitle": "@utcompiegne",
+    "icon": "../../img/icons/social-networks/instagram.png",
     "url": "https://www.instagram.com/utcompiegne/"
   }
 ]
