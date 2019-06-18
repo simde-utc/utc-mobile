@@ -113,5 +113,9 @@
 		"cancel": "cancel",
 		"questions": "questions",
 		"categories": "categories",
+		"home": "home",
+		"actualities": "actus",
+		"notifications": "notifications",
+		"navigation": "navigation"
 	},
 }
