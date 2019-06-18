@@ -47,38 +47,38 @@ const MainLayout = createBottomTabNavigator(
 		// Storage: StorageTestScreen,	// DEBUG
 		Home: {
 			screen: HomeScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: 'Accueil',
 				tabBarIcon: generateTabBar(HomeOn, HomeOff),
-			},
+			}),
 		},
 		News: {
 			screen: ArticlesScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: 'Actus',
 				tabBarIcon: generateTabBar(NewsOn, NewsOff),
-			},
+			}),
 		},
 		Events: {
 			screen: EventsNavigator,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: 'Calendrier',
 				tabBarIcon: generateTabBar(EventsOn, EventsOff),
-			},
+			}),
 		},
 		Notifications: {
 			screen: NotificationsScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: 'Notifications',
 				tabBarIcon: generateTabBar(NotificationsOn, NotificationsOff),
-			},
+			}),
 		},
 		Hamburger: {
 			screen: NavigationScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: 'Navigation',
 				tabBarIcon: generateTabBar(HamburgerOn, HamburgerOff),
-			},
+			}),
 		},
 	},
 	{

@@ -5,14 +5,14 @@ import { INTERACTIONS_URL } from '../../../config';
 import { _ } from '../../utils/i18n';
 
 export default class Interactions extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		headerTitle: _('interactions'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#961039',
 		headerForceInset: { top: 'never' },
-	};
+	});
 
 	render() {
 		return (

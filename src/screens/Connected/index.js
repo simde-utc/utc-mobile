@@ -17,12 +17,12 @@ import styles from '../../styles';
 import { _, e, Connected as t } from '../../utils/i18n';
 
 export default class ConnectedScreen extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: _('connected'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	constructor(props) {
 		super(props);

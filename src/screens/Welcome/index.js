@@ -23,12 +23,12 @@ const slides = [
 ];
 
 export default class WelcomeScreen extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: _('welcome'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	renderSlide(slide) {
 		const { navigation } = this.props;

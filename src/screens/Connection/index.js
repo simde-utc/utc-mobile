@@ -20,12 +20,12 @@ import styles from '../../styles';
 import { _, Connection as t } from '../../utils/i18n';
 
 export default class ConnectionScreen extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: _('connection'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	constructor(props) {
 		super(props);

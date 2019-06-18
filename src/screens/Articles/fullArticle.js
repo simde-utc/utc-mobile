@@ -4,9 +4,9 @@ import { ScrollView } from 'react-native';
 import { _, e } from '../../utils/i18n';
 
 export default class fullArticleScreen extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: _('article'),
-	};
+	});
 
 	constructor(props) {
 		super(props);
