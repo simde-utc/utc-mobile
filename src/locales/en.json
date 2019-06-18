@@ -3,13 +3,53 @@
 		"AppLoader": {
 			"loading": "Application loading...",
 			"check_secure_data": "Checking encrypted data...",
-			"error_on_loading": "Error when retrieving data",
 			"check_cas": "Checking CAS-UTC connection...",
 			"connect_cas": "Reconnecting to the CAS-UTC...",
 			"get_user_data": "Retrieving user data...",
 			"reset_data": "Reseting data...",
 			"reconnection": "Reconnection...",
 			"go_intro": "Redirecting to introduction..."
+		},
+		"Articles": {
+			"no_articles": "No articles"
+		},
+		"Associations": {
+			"no_members": "No members"
+		},
+		"Connected": {
+			"you_are_connected": "%{name}, you are connected !",
+			"you_are_not_connected": "You are not connected",
+			"personnalize": "and personnalize it",
+			"registering": "Application registring...",
+			"ready_to_use": "You are ready to use the app",
+			"go_home": "Go home"
 		}
-	}
+	},
+	"errors": {
+		"data_loading": "Error when retrieving data",
+		"no_articles": "No articles provided",
+		"association_not_available": "Association not available",
+		"associations_not_available": "Associations not available",
+		"get_association_error": "Une erreur est survenue lors de la récupération des associations",
+		"portail_error": "Le Portail des Associations est actuellement inaccessible",
+		"retrieving_error": "Une erreur est survenue lors de la récupération des informations",
+		"wrong_filter": "Wrong filter index",
+		"registering_error": "Une erreur a été détectée lors de l'enregistrement de l'application. Veuillez relancer l'application"
+	},
+	"words": {
+		"loading": "loading...",
+		"articles": "articles",
+		"article": "article",
+		"association": "association",
+		"associations": "associations",
+		"all": "tous",
+		"ok": "ok",
+		"details": "details",
+		"member": "member",
+		"members": "members",
+		"connected": "connected",
+		"registering": "registering",
+		"continue": "continue",
+		"welcome": "welcome"
+	},
 }
