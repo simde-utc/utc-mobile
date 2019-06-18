@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import ArticleComponent from '../../components/Articles/Article';
 import styles from '../../styles';
-import Comments from '../../components/Articles/Comments';
+import PortailApi from '../../services/Portail';
 
 export default class fullArticleScreen extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
@@ -32,7 +32,7 @@ export default class fullArticleScreen extends React.PureComponent {
 	render() {
 		return (
 			<ScrollView style={styles.scrollable.list}>
-				<ArticleComponent data={this.article} navigation={this.navigation} full />
+				<ArticleComponent data={this.article} navigation={this.navigation} full={true} portailInstance={PortailApi} />
 			</ScrollView>
 		);
 	}
