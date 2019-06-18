@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, TouchableHighlight, Image, Linking } from 'react-native';
+import { Dimensions, Image, Linking, Text, TouchableHighlight, View } from 'react-native';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
 import styles from '../../styles';
@@ -12,6 +12,7 @@ import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
 import CommentsIcon from './CommentsIcon';
 import Comments from './Comments';
+
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
@@ -240,28 +241,33 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
-	renderOwnerImage(owned_by) {
-		const source = (owned_by && owned_by.image) ? {uri: owned_by.image} : LogoUTC;
+	static renderOwnerImage(owned_by) {
+		const source = owned_by && owned_by.image ? { uri: owned_by.image } : LogoUTC;
 
-		return <Image style={{height: 40, width: 40, padding: 10, borderWidth: 1, borderColor: '#007383', borderRadius: 40 / 2, marginRight: 10}}
-							 		source={source}
-							 		resizeMode={'contain'}/>
+		return <Image style={styles.article.icon} source={source} resizeMode="contain" />;
 	}
 
 	renderTextDescription(description) {
 		const { folded } = this.state;
+		const { full } = this.props;
 
-		if (folded && description.length > FOLDED_MAX_LENGTH)
-			return <View>
-				<Text style={styles.scrollable.item.subsubtitle}>
-					{description.substring(0, 200) + '...'}
-				</Text>
-				<TouchableHighlight onPress={() => this.contentTap()}>
-					<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
-				</TouchableHighlight>
-			</View>;
+		if (folded && !full && description.length > FOLDED_MAX_LENGTH)
+			return (
+				<View style={{ marginBottom: 5 }}>
+					<Markdown styles={styles.article.markdownStyles}>
+						{`${description.substring(0, 200)}...`}
+					</Markdown>
+					<TouchableHighlight style={{ marginTop: 10 }} onPress={() => this.contentTap()}>
+						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+					</TouchableHighlight>
+				</View>
+			);
 
-		return <Text style={styles.scrollable.item.subsubtitle}>{description}</Text>
+		return (
+			<View style={{ marginBottom: 5 }}>
+				<Markdown styles={styles.article.markdownStyles}>{description}</Markdown>
+			</View>
+		);
 	}
 
 	renderHTMLDescription(excerpt, content) {
@@ -269,184 +275,90 @@ export default class ArticleComponent extends React.PureComponent {
 
 		if (folded)
 			return (
-				<View>
-					<HTML baseFontStyle={styles.scrollable.item.subsubtitle}
-								html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
-								imagesMaxWidth={Dimensions.get('window').width}/>
+				<View style={{ marginBottom: 5 }}>
+					<HTML
+						baseFontStyle={styles.scrollable.item.subsubtitle}
+						html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
+						imagesMaxWidth={Dimensions.get('window').width}
+						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
+					/>
+
 					<TouchableHighlight onPress={() => this.contentTap()}>
 						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
 					</TouchableHighlight>
 				</View>
 			);
 
-		return <HTML baseFontStyle={styles.scrollable.item.subsubtitle}
-								 html={content}
-								 imagesMaxWidth={Dimensions.get('window').width}/>
-
+		return (
+			<HTML
+				baseFontStyle={styles.scrollable.item.subsubtitle}
+				html={content}
+				imagesMaxWidth={Dimensions.get('window').width}
+			/>
+		);
 	}
 
 	render() {
-		const { data, fullScreen } = this.props;
+		const { data, navigation } = this.props;
 		const { folded, comments, liked, disliked, fullActions } = this.state;
 
 		return (
 			<View style={styles.scrollable.item.view}>
-					<View style={{ flex: 1, flexDirection: 'row'}}>
-						{this.renderOwnerImage(data.item.owned_by)}
+				<View style={{ flex: 1, flexDirection: 'row' }}>
+					{ArticleComponent.renderOwnerImage(data.item.owned_by)}
 
-						<View style={{ flex: 6}}>
-							<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-								<Text style={styles.scrollable.item.subtitle}>{data.item.owned_by ? data.item.owned_by.shortname : 'UTC'}</Text>
+					<View style={{ flex: 6 }}>
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+							<Text style={styles.scrollable.item.subtitle}>
+								{data.item.owned_by ? data.item.owned_by.shortname : 'UTC'}
+							</Text>
 
-								<Text style={styles.article.date}>
-									{data.item.created_at
-										? ArticleComponent.prettyDate(data.item.created_at, 'fr-FR')
-										: ArticleComponent.prettyDate(data.item.date_gmt, 'fr-FR')}
-								</Text>
+							<Text style={styles.article.date}>
+								{data.item.created_at
+									? ArticleComponent.prettyDate(data.item.created_at, 'fr-FR')
+									: ArticleComponent.prettyDate(data.item.date_gmt, 'fr-FR')}
+							</Text>
+						</View>
+
+						<TouchableHighlight
+							onPress={() =>
+								navigation.navigate('fullArticle', {
+									article: data,
+									navigation,
+									title: data.item.title,
+								})
+							}
+							underlayColor="#fff"
+						>
+							<View>
+								<View style={{ marginBottom: 5 }}>
+									<HTML baseFontStyle={styles.scrollable.item.title} html={data.item.title} />
+								</View>
+
+								{data.item.description
+									? this.renderTextDescription(data.item.description)
+									: this.renderHTMLDescription(data.item.excerpt, data.item.content)}
 							</View>
+						</TouchableHighlight>
 
-							<View style={{marginBottom: 5}}>
-								<HTML baseFontStyle={styles.scrollable.item.title}
-											html={data.item.title}/>
-							</View>
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+							<TouchableHighlight onPress={() => this.touchLike()} underlayColor="#ffffff33">
+								<Image source={liked ? LikeOn : LikeOff} style={{ width: 30, height: 30 }} />
+							</TouchableHighlight>
 
-							{data.item.description ? this.renderTextDescription(data.item.description) : this.renderHTMLDescription(data.item.excerpt, data.item.content)}
-							</View>
-					</View>
-			</View>
-		);
-
-		return (
-			<View style={styles.article.container}>
-				{/** *HEADER** */}
-				<View style={styles.article.headersContainer}>
-					{/** *AUTEUR** */}
-					<View style={styles.article.authorContainer}>
-						<Image
-							style={styles.article.authorImage}
-							source={data.owned_by && data.owned_by.image ? { uri: data.owned_by.image } : LogoUTC}
-							resizeMode="contain"
-							resizeMethod="resize"
-						/>
-						<Text style={styles.article.authorText}>
-							{data.owned_by ? data.owned_by.shortname : 'UTC'}
-						</Text>
-					</View>
-					{/** *DATE** */}
-					<View style={styles.article.dateContainer}>
-						{data.created_at
-							? ArticleComponent.prettyDate(data.created_at, 'fr-FR')
-							: ArticleComponent.prettyDate(data.date_gmt, 'fr-FR')}
-					</View>
-					{/** *TODO: locale** */}
-				</View>
-				{/** *TITRE** */}
-				<View style={styles.article.titleContainer}>
-					<HTML html={`<span style="${styles.article.title}">${data.title}</span>`} />
-					{/** * on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ** */}
-				</View>
-				<TouchableHighlight
-					onPress={() => this.contentTap()}
-					underlayColor={folded ? '#ffffff00' : '#33333333'}
-				>
-					<View>
-						{/** *IMAGE** */}
-						{this.image && (
-							<View style={styles.article.imageContainer}>
+							<TouchableHighlight
+								style={{ marginLeft: 5 }}
+								onPress={() => this.touchDislike()}
+								underlayColor="#ffffff33"
+							>
 								<Image
-									style={{ height: 100, width: Dimensions.get('window').width }}
-									resizeMode={this.imageResizeMode}
-									resizeMethod="scale"
-									source={{ uri: this.image }}
+									source={disliked ? DislikeOn : DislikeOff}
+									style={{ width: 30, height: 30 }}
 								/>
-							</View>
-						)}
-						<View style={styles.article.contentContainer}>
-							{/** *DESCRIPTION** */}
-							{!folded && !fullScreen && (
-								<View style={{ maxHeight: 50 }}>
-									{data.description ? (
-										<Text
-											style={{
-												textAlign: 'left',
-												margin: 0,
-												padding: 0,
-												color: styles.article.descriptionConstants.textColor,
-											}}
-										>
-											{data.description}
-										</Text>
-									) : (
-										<HTML
-											style={{ textAlign: 'left', flex: 1 }}
-											html={data.excerpt}
-											imagesMaxWidth={Dimensions.get('window').width}
-										/>
-									)}
-								</View>
-							)}
-							{/** *CONTENU** */}
-							{fullScreen && (
-								<View>
-									{data.article_type === 'utc' ? (
-										<HTML
-											html={data.content}
-											onLinkPress={(e, href) => {
-												ArticleComponent.openURI(href);
-											}}
-											imagesMaxWidth={Dimensions.get('window').width}
-										/>
-									) : (
-										<Markdown styles={styles.article.contentMarkdown}>{data.content}</Markdown>
-									)}
-								</View>
-							)}
+							</TouchableHighlight>
 						</View>
 					</View>
-				</TouchableHighlight>
-				{/** * BOUTONS D'ACTION ** */}
-				{fullActions && data.article_type === 'assos' ? (
-					<View style={styles.article.fullActionsContainer}>
-						<TouchableHighlight onPress={() => this.touchLike()} underlayColor="#ffffff33">
-							<Image source={liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
-						</TouchableHighlight>
-
-						<TouchableHighlight onPress={() => this.touchDislike()} underlayColor="#ffffff33">
-							<Image source={disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
-						</TouchableHighlight>
-
-						<TouchableHighlight onPress={() => this.touchComments()} underlayColor="#ffffff33">
-							<CommentsIcon number={comments} />
-						</TouchableHighlight>
-					</View>
-				) : (
-					<View style={styles.article.onlyCommentsActionsContainer}>
-						<TouchableHighlight onPress={() => this.touchComments()} underlayColor="#ffffff33">
-							<CommentsIcon number={comments} />
-						</TouchableHighlight>
-					</View>
-				)}
-				{/** *BOUTON DE DEVELOPPEMENT** */}
-				{!fullScreen && (
-					<TouchableHighlight
-						onPress={() => this.toggleFolded()}
-						style={styles.article.buttonContainer}
-						underlayColor="#33333333"
-					>
-						<Image
-							style={styles.article.buttonImage}
-							resizeMode="contain"
-							resizeMethod="resize"
-							source={folded ? DownBlueDevelopArrow : UpYellowDevelopArrow}
-						/>
-					</TouchableHighlight>
-				)}
-				{/** *COMMENTAIRES** */}
-				{fullScreen && comments > 0 && comments && (
-					<View style={{ marginTop: 5 }}>
-						<Comments data={comments} />
-					</View>
-				)}
+				</View>
 			</View>
 		);
 	}

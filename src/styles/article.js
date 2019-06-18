@@ -1,21 +1,33 @@
-import { colors } from './variables';
-
 export default {
-
 	date: {
 		fontSize: 11,
 		color: '#6d6f71',
 		textAlign: 'right',
 	},
 
+	icon: {
+		height: 40,
+		width: 40,
+		padding: 10,
+		borderWidth: 1,
+		borderColor: '#007383',
+		borderRadius: 40 / 2,
+		marginRight: 10,
+	},
+
 	descriptionLink: {
 		fontSize: 11,
 		color: '#6d6f71',
-		textDecorationLine: 'underline'
-	}
+		textDecorationLine: 'underline',
+	},
 
-
-}
+	markdownStyles: {
+		text: {
+			fontSize: 11,
+			color: '#6d6f71',
+		},
+	},
+};
 
 /*
 export default {
@@ -133,4 +145,3 @@ export default {
 	},
 };
 */
-
