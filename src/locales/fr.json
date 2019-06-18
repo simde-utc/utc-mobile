@@ -67,6 +67,7 @@
 	},
 	"errors": {
 		"data_loading": "Une erreur a été détectée lors de la récupération de données",
+		"no_data_provided": "Aucune donnée reçue",
 		"no_articles": "Aucun article récupéré",
 		"association_not_available": "Association non disponible",
 		"associations_not_available": "Associations non disponibles",
@@ -117,6 +118,9 @@
 		"actualities": "actus",
 		"notifications": "notifications",
 		"menu": "menu",
-		"others": "autres"
+		"others": "autres",
+		"search": "rechercher",
+		"back": "retour",
+		"here": "ici"
 	},
 }

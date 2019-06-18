@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text, Dimensions, TouchableHighlight, Image, Linking } from 'react-native';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
-import styles from '../../styles';
+
+import CommentsIcon from './CommentsIcon';
+import Comments from './Comments';
 import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
 import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 import LogoUTC from '../../img/icon.png';
@@ -10,8 +12,7 @@ import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
-import CommentsIcon from './CommentsIcon';
-import Comments from './Comments';
+import styles from '../../styles';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
