@@ -8,9 +8,9 @@ import FakeItem from '../../components/FakeItem';
 export default class Description extends React.PureComponent {
 	static pushContact(section, contact) {
 		section.push({
-			url: contact.value,
 			title: contact.type.name,
-			subtitle: contact.value,
+			icon: contact.type.type,
+			url: contact.value,
 		});
 	}
 
@@ -179,7 +179,7 @@ export default class Description extends React.PureComponent {
 					) : (
 						<SectionList
 							style={styles.scrollable.list}
-							renderItem={({ item }) => <Contact contact={item} />}
+							renderItem={({ item }) => <Contact {...item} />}
 							renderSectionHeader={({ section: { title } }) => (
 								<View style={styles.scrollable.sectionHeader.view}>
 									<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>

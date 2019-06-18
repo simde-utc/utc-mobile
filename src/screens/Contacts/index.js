@@ -18,7 +18,7 @@ export default class ContactsScreen extends React.PureComponent {
 		return (
 			<SectionList
 				style={styles.scrollable.list}
-				renderItem={({ item }) => <Contact contact={item.app} />}
+				renderItem={({ item }) => <Contact {...item} />}
 				renderSectionHeader={({ section: { title } }) => (
 					<View style={styles.scrollable.sectionHeader.view}>
 						<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
@@ -27,9 +27,7 @@ export default class ContactsScreen extends React.PureComponent {
 				sections={[
 					{
 						title: 'Réseaux sociaux',
-						data: networkData.map(app => {
-							return { key: app.name, app };
-						}),
+						data: networkData,
 					},
 				]}
 				keyExtractor={(item, index) => item + index}
