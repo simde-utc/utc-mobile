@@ -253,18 +253,17 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	renderTextDescription(description) {
-		const { folded } = this.state;
 		const { full } = this.props;
 
-		if (folded && !full && description.length > FOLDED_MAX_LENGTH)
+		if (!full && description.length > FOLDED_MAX_LENGTH)
 			return (
 				<View style={{ marginBottom: 5 }}>
 					<Markdown styles={styles.article.markdownStyles}>
 						{`${description.substring(0, 200)}...`}
 					</Markdown>
-					<TouchableHighlight style={{ marginTop: 10 }} onPress={() => this.contentTap()}>
+					<View style={{ marginTop: 10 }}>
 						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
-					</TouchableHighlight>
+					</View>
 				</View>
 			);
 
@@ -276,10 +275,9 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	renderHTMLDescription(excerpt, content) {
-		const { folded } = this.state;
 		const { full } = this.props;
 
-		if (folded && !full)
+		if (!full)
 			return (
 				<View>
 					<HTML
@@ -289,9 +287,7 @@ export default class ArticleComponent extends React.PureComponent {
 						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
 					/>
 
-					<TouchableHighlight onPress={() => this.contentTap()}>
-						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
-					</TouchableHighlight>
+					<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
 				</View>
 			);
 
