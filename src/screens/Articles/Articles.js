@@ -325,7 +325,7 @@ export default class ArticlesScreen extends React.Component {
 			<FlatList
 				style={styles.scrollable.list}
 				data={articles}
-				renderItem={item => <ArticleComponent data={item} navigation={navigation} />}
+				renderItem={item => <ArticleComponent data={item} navigation={navigation}/>}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
 				onEndReached={this.loadMoreContentAsync.bind(this)}
 				onEndReachedThreshold={THRESHOLD}

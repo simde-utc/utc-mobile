@@ -75,10 +75,10 @@ export default class ArticleComponent extends React.PureComponent {
 	getActionsAndComments() {
 		const { data, portailInstance } = this.props;
 
-		if (data.article_type === 'assos') {
+		if (data.item.article_type === 'assos') {
 			Promise.all([
-				portailInstance.getUserArticleActions(data.id),
-				portailInstance.getArticleRootComments(data.id),
+				portailInstance.getUserArticleActions(data.item.id),
+				portailInstance.getArticleRootComments(data.item.id),
 			])
 				.then(([[responseActions], [responseComments]]) => {
 					let liked;
