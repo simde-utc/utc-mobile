@@ -3,15 +3,11 @@ import { Dimensions, Image, Linking, Text, TouchableHighlight, View } from 'reac
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
 import styles from '../../styles';
-import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
-import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 import LogoUTC from '../../img/icon.png';
 import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
-import CommentsIcon from './CommentsIcon';
-import Comments from './Comments';
 
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
@@ -272,10 +268,11 @@ export default class ArticleComponent extends React.PureComponent {
 
 	renderHTMLDescription(excerpt, content) {
 		const { folded } = this.state;
+		const { full } = this.props;
 
-		if (folded)
+		if (folded && !full)
 			return (
-				<View style={{ marginBottom: 5 }}>
+				<View>
 					<HTML
 						baseFontStyle={styles.scrollable.item.subsubtitle}
 						html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
