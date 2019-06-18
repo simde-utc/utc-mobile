@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
+import i18nJs from 'i18n-js';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +13,10 @@ import utcLogo from '../img/logo_utc.png';
 
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
+
+import { getTranslationsFor } from '../utils/i18n';
+
+const t = getTranslationsFor('screens.AppLoader');
 
 export default class AppLoaderScreen extends React.Component {
 	static loadLocale() {
@@ -49,6 +54,7 @@ export default class AppLoaderScreen extends React.Component {
 		};
 
 		LocaleConfig.defaultLocale = 'fr';
+		i18nJs.locale = 'fr';
 	}
 
 	static loadFonts() {
@@ -63,7 +69,7 @@ export default class AppLoaderScreen extends React.Component {
 		super(props);
 
 		this.state = {
-			text: "Chargement de l'application",
+			text: '',
 			screen: 'Welcome',
 		};
 	}
@@ -81,6 +87,10 @@ export default class AppLoaderScreen extends React.Component {
 		// Download fonts, images etc...
 		AppLoaderScreen.loadLocale();
 		AppLoaderScreen.loadFonts();
+
+		this.setState({
+			text: t('loading'),
+		});
 
 		return PortailApi.autoLogin()
 			.then(() => {
