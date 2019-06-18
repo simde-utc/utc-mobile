@@ -1,16 +1,24 @@
+
+/*
+ * Récupère et affiche la liste des actualités (UTC et associatives).
+ * @author Arthur Martello <arthur.martello@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2019, SiMDE-UTC
+ * @license AGPL-3.0
+ */
+
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Platform, View } from 'react-native';
 import styles from '../../styles';
 import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
 import CASAuth from '../../services/CASAuth';
 import PortailApi from '../../services/Portail';
 import ActualitesUTC from '../../services/ActualitesUTC';
-
-import Generate from '../../utils/Generate';
 import ArticleComponent from '../../components/Articles/Article';
 import FakeItem from '../../components/FakeItem';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { SearchBar } from 'react-native-elements';
 
 const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
@@ -24,6 +32,7 @@ export default class ArticlesScreen extends React.Component {
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
+
 	};
 
 	constructor(props) {
@@ -214,11 +223,30 @@ export default class ArticlesScreen extends React.Component {
 		);
 	}
 
+	renderSearchBar() {
+		const { search } = this.state;
+
+		return <SearchBar
+			placeholder="Rechercher..."
+			platform={Platform.OS}
+			value={search}
+			onChangeText={search => this.setState({search: search})}
+			lightTheme={true}
+			containerStyle={{backgroundColor: '#fff'}}
+			inputContainerStyle={{backgroundColor: '#f4f4f4'}}
+			cancelButtonTitle={'Annuler'}
+			cancelButtonProps={{buttonTextStyle: {color: '#007383'}}}
+			round={true}
+		/>
+	}
+
 	render() {
 		const { navigation } = this.props;
 		const { search, articles, filters, selectedFilterIndex } = this.state;
 
 		const filteredArticles = selectedFilterIndex === 0 ? articles : articles.filter(article => article.article_type === filters[selectedFilterIndex].filterTag);
+
+		// TODO: filtrer en fonction de la recherche (barre de recherche dans this.renderSearchBar
 
 		return (
 			<FlatList
