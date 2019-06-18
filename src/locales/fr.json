@@ -1,7 +1,15 @@
 {
 	"screens": {
 		"AppLoader": {
-			"loading": "Chargement de l'application..."
+			"loading": "Chargement de l'application...",
+			"check_secure_data": "Vérification des données chiffrées...",
+			"error_on_loading": "Erreur lors de la récupération des données",
+			"check_cas": "Vérification de la connexion CAS-UTC...",
+			"connect_cas": "Reconnexion au CAS-UTC...",
+			"get_user_data": "Récupération des données uttilisateurs...",
+			"reset_data": "Réinitialisation des données...",
+			"reconnection": "Reconnexion...",
+			"go_intro": "Redirection vers l'introduction..."
 		}
 	}
 }
