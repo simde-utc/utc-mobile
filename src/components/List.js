@@ -17,6 +17,7 @@ import Map from '../img/icons/map.png';
 import Bell from '../img/icons/bell.png';
 import Calendar from '../img/icons/calendar.png';
 import Arrow from '../img/icons/arrow_yellow.png';
+import i18n from '../utils/i18n';
 
 const nativeIcons = ['news', 'map', 'bell', 'calendar'];
 
@@ -80,27 +81,27 @@ export default class List extends React.Component {
 		this.renderItem = this.renderItem.bind(this);
 	}
 
-	renderItem({ item }) {
+	renderItem({ item: { onPress, icon, text, lazyText, customElmtStyle } }) {
 		const { arrow } = this.props;
 
 		return (
-			<TouchableHighlight underlayColor="#ffffff" activeOpacity={50} onPress={item.onPress}>
-				<View style={item.customElmtStyle || listStyle.rowWithArrowView}>
+			<TouchableHighlight underlayColor="#ffffff" activeOpacity={50} onPress={onPress}>
+				<View style={customElmtStyle || listStyle.rowWithArrowView}>
 					<View style={listStyle.elementView}>
 						<View style={listStyle.iconContainer}>
-							{item.icon &&
-								(List.isNativeIcon(item.icon) ? (
+							{icon &&
+								(List.isNativeIcon(icon) ? (
 									<Icon
 										style={listStyle.icon}
 										height={25}
 										width={25}
-										image={List.iconKeyToSvg(item.icon)}
+										image={List.iconKeyToSvg(icon)}
 									/>
 								) : (
-									<Image source={item.icon} style={{ height: 25, width: 25 }} />
+									<Image source={icon} style={{ height: 25, width: 25 }} />
 								))}
 						</View>
-						<Text style={listStyle.text}>{item.text}</Text>
+						<Text style={listStyle.text}>{text || i18n.t(lazyText)}</Text>
 					</View>
 					{arrow && <Icon style={listStyle.arrowStyle} height={25} width={25} image={Arrow} />}
 				</View>
