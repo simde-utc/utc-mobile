@@ -72,7 +72,7 @@ const AppPurposeScreen = () => (
 			title="A quoi ça sert ?"
 			subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux associations, étudiants, personnels et enseignants de l'UTC, mais aussi aux entreprises et personnes interessées par l'UTC : entreprises, compiégnois."
 		/>
-		<View style={{ flex: 7, justifyContent: 'space-between' }}>
+		<View style={{ flex: 7, justifyContent: 'space-between', width: '100%' }}>
 			<View style={{ flex: 6, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>
