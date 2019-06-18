@@ -1,10 +1,12 @@
 import React from 'react';
 import { Alert, ScrollView, SectionList, Text, View } from 'react-native';
-import PortailApi from '../../services/Portail';
-import styles from '../../styles';
+
 import FakeItem from '../../components/FakeItem';
 import Question from '../../components/FAQs/Question';
 import FakeQuestion from '../../components/FAQs/FakeQuestion';
+import PortailApi from '../../services/Portail';
+import styles from '../../styles';
+import { _, FAQs as t, e } from '../../utils/i18n';
 
 export default class Questions extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
@@ -58,11 +60,9 @@ export default class Questions extends React.PureComponent {
 			})
 			.catch(reason => {
 				console.warn(reason);
-				Alert.alert(
-					'Impossible de récupérer les questions',
-					'Une erreur est survenue lors de la récupération des questions.',
-					[{ text: 'OK', onPress: () => navigation.goBack() }]
-				);
+				Alert.alert(_('questions'), e('get_question_error'), [
+					{ text: _('ok'), onPress: () => navigation.goBack() },
+				]);
 				this.setState({ loading: false });
 			});
 	}
@@ -91,7 +91,7 @@ export default class Questions extends React.PureComponent {
 		if (loading)
 			return (
 				<ScrollView style={styles.scrollable.list}>
-					<FakeQuestion title="Chargement..." />
+					<FakeQuestion title={_('loading')} />
 				</ScrollView>
 			);
 
@@ -110,7 +110,7 @@ export default class Questions extends React.PureComponent {
 				keyExtractor={(item, index) => item + index}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
 				renderSectionFooter={() => <View style={styles.scrollable.sectionSeparator} />}
-				ListEmptyComponent={() => <FakeItem title={"Aucune question n'a été trouvée"} />}
+				ListEmptyComponent={() => <FakeItem title={t('no_questions')} />}
 			/>
 		);
 	}

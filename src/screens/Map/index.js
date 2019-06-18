@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import { showLocation } from 'react-native-map-link';
-import styles from '../../styles';
+
 import Icon from '../../components/Icon';
 import mapIcon from '../../img/map.png';
 import openIcon from '../../img/icons/open.png';
 import locationData from '../../data/locations';
+import styles from '../../styles';
+import { _, Map as t } from '../../utils/i18n';
 
 const height = (1662 * Dimensions.get('window').width) / 783; // todo: find a better way
 
@@ -31,9 +33,9 @@ const Location = ({ location }) => (
 				latitude: location.latitude,
 				longitude: location.longitude,
 				title: `UTC - ${location.name}`,
-				dialogTitle: 'Ouvrir dans la carte', // optional (default: 'Open in Maps')
-				dialogMessage: 'Sur quelle application souhaitez-vous afficher le lieu ?', // optional (default: 'What app would you like to use?')
-				cancelText: 'Annuler',
+				dialogTitle: t('open_maps'),
+				dialogMessage: t('app_to_use'),
+				cancelText: _('cancel'),
 			})
 		}
 	>
@@ -74,13 +76,13 @@ const MapNavigator = createMaterialTopTabNavigator(
 		Buildings: {
 			screen: MapScreen,
 			navigationOptions: {
-				title: 'Carte',
+				title: _('buildings'),
 			},
 		},
 		Locations: {
 			screen: LocationsScreen,
 			navigationOptions: {
-				title: 'Lieux',
+				title: _('places'),
 			},
 		},
 	},

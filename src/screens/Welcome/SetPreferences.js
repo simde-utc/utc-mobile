@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import styles from '../../styles';
 
-// Components
 import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
 import BigButton from '../../components/BigButton';
+import styles from '../../styles';
+import { _, Welcome as t } from '../../utils/i18n';
 
 export default class SetPreferencesScreen extends React.Component {
 	constructor(props) {
@@ -54,30 +54,27 @@ export default class SetPreferencesScreen extends React.Component {
 
 		return (
 			<View style={container.default}>
-				<HeaderView
-					title="Nous aimerions mieux vous connaître"
-					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
-				/>
+				<HeaderView title={t('learn_more')} subtitle={t('allow_param')} />
 				<View style={viewStyle}>
 					<BigCheckBox
 						checked={checked.utcNews}
 						labelStyle={text.h5}
-						label="Afficher les actualités UTC"
+						label={t('show_utc')}
 						onPress={() => this.toggleCheck('utcNews')}
 					/>
 					<BigCheckBox
 						checked={checked.assoLife}
 						labelStyle={text.h5}
-						label="Afficher la vie associative"
+						label={t('show_assos')}
 						onPress={() => this.toggleCheck('assoLife')}
 					/>
 					<BigCheckBox
 						checked={checked.utcMember}
 						labelStyle={text.h5}
-						label="Etes-vous un membre UTC/BDE ?"
+						label={t('utc_member')}
 						onPress={() => this.toggleCheck('utcMember')}
 					/>
-					<BigButton label="Valider" style={mt.lg} onPress={this.validate.bind(this)} />
+					<BigButton label={_('confirm')} style={mt.lg} onPress={this.validate.bind(this)} />
 				</View>
 			</View>
 		);

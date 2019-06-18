@@ -5,6 +5,7 @@ export const PORTAIL_URL = 'https://assos.utc.fr/';
 export const PORTAIL_CLIENT_ID = '';
 export const PORTAIL_CLIENT_SECRET = '';
 export const ACTUS_UTC_FEED_LOGIN = '';
+export const INTERACTIONS_URL = '';
 
 export default {
 	APP_NAME,
@@ -13,4 +14,5 @@ export default {
 	PORTAIL_CLIENT_ID,
 	PORTAIL_CLIENT_SECRET,
 	ACTUS_UTC_FEED_LOGIN,
+	INTERACTIONS_URL,
 };

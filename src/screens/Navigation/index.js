@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { ScrollView } from 'react-native';
+
 import ProfileScreen from '../Profile';
 import FullWidthButton from '../../components/FullWidthButton';
 import ProfileHeader from '../Profile/ProfileHeader';
@@ -12,16 +13,17 @@ import ContactsScreen from '../Contacts';
 import CategoriesScreen from '../FAQs/Categories';
 import QuestionsScreen from '../FAQs/Questions';
 import styles from '../../styles';
+import { _ } from '../../utils/i18n';
 
 const NavigationScreen = ({ navigation }) => (
 	<ScrollView style={styles.navigation.scrollView}>
 		<ProfileHeader onPress={() => navigation.navigate('Profile')} />
-		<FullWidthButton name="Mon compte" onPress={() => navigation.navigate('Profile')} />
-		<FullWidthButton name="Associations" onPress={() => navigation.navigate('Associations')} />
-		<FullWidthButton name="Foire aux questions" onPress={() => navigation.navigate('FAQ')} />
-		<FullWidthButton name="Interactions" onPress={() => navigation.navigate('Interactions')} />
-		<FullWidthButton name="Plan" onPress={() => navigation.navigate('Map')} />
-		<FullWidthButton name="Contacts" onPress={() => navigation.navigate('Contacts')} />
+		<FullWidthButton name={_('my_account')} onPress={() => navigation.navigate('Profile')} />
+		<FullWidthButton name={_('associations')} onPress={() => navigation.navigate('Associations')} />
+		<FullWidthButton name={_('faq')} onPress={() => navigation.navigate('FAQ')} />
+		<FullWidthButton name={_('interactions')} onPress={() => navigation.navigate('Interactions')} />
+		<FullWidthButton name={_('map')} onPress={() => navigation.navigate('Map')} />
+		<FullWidthButton name={_('contacts')} onPress={() => navigation.navigate('Contacts')} />
 	</ScrollView>
 );
 
@@ -49,7 +51,7 @@ const NavigationNavigator = createStackNavigator(
 		Map: {
 			screen: MapNavigator,
 			navigationOptions: {
-				headerTitle: 'Plan',
+				headerTitle: _('map'),
 				headerStyle: {
 					backgroundColor: '#fff',
 				},
