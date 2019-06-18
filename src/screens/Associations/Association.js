@@ -1,10 +1,10 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
+
 import DetailScreen from './Details';
 import ArticleScreen from './Articles';
 // import EventsScreen from './Events';
 import MemberScreen from './Members';
-
 import { _ } from '../../utils/i18n';
 
 const TopTabNavigator = createMaterialTopTabNavigator(
@@ -50,11 +50,7 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 
 export default class Association extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerTitle:
-			typeof navigation.state.params !== 'undefined' &&
-			typeof navigation.state.params.title !== 'undefined'
-				? navigation.state.params.title
-				: _('association'),
+		headerTitle: navigation.getParam('title', _('association')),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},

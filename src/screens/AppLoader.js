@@ -17,16 +17,13 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { colors } from '../styles/variables';
-import styles from '../styles';
-import utcLogo from '../img/logo_utc.png';
 
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
-
-import { getTranslationsFor } from '../utils/i18n';
-
-const t = getTranslationsFor('screens.AppLoader');
+import { colors } from '../styles/variables';
+import styles from '../styles';
+import utcLogo from '../img/logo_utc.png';
+import { _, AppLoader as t } from '../utils/i18n';
 
 export default class AppLoaderScreen extends React.Component {
 	static loadLocale() {
@@ -171,7 +168,7 @@ export default class AppLoaderScreen extends React.Component {
 		AppLoaderScreen.loadFonts();
 
 		this.setState({
-			text: t('loading'),
+			text: _('loading'),
 		});
 
 		return PortailApi.getData()

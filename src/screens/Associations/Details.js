@@ -1,8 +1,8 @@
 import React from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
+
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
-
 import { e } from '../../utils/i18n';
 
 export default class Details extends React.PureComponent {

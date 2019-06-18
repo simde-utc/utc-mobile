@@ -1,11 +1,9 @@
 import React from 'react';
 import { FlatList, Text } from 'react-native';
+
 import PortailApi from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
-
-import { _, getTranslationsFor } from '../../utils/i18n';
-
-const t = getTranslationsFor('screens.Articles');
+import { _, Articles as t } from '../../utils/i18n';
 
 export default class Articles extends React.PureComponent {
 	constructor(props) {
