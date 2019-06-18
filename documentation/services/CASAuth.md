@@ -36,7 +36,7 @@ Il est possible de passer en paramètre l'adresse du racine de l'API ticket du C
 
 * Obtenir le TGT (normalement vous n'avez pas besoin de ça, mais c'est pratique pour le debug)
 
-		cas.tgt
+		cas.ticket
 
 * Demander un ST
 
