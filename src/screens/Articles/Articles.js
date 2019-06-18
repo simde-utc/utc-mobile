@@ -16,12 +16,12 @@ const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargemen
 const THRESHOLD = 0.4;
 
 export default class ArticlesScreen extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: _('articles'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	constructor(props) {
 		super(props);

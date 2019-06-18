@@ -7,14 +7,14 @@ import styles from '../../styles';
 import { _ } from '../../utils/i18n';
 
 export default class ContactsScreen extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		headerTitle: _('contacts'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-	};
+	});
 
 	/* eslint-disable-next-line class-methods-use-this */
 	getSections() {

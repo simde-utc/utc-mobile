@@ -16,14 +16,14 @@ import FullWidthButton from '../../components/FullWidthButton';
 import { _ } from '../../utils/i18n';
 
 export default class ProfileScreen extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		headerTitle: _('my_account'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-	};
+	});
 
 	constructor(props) {
 		super(props);

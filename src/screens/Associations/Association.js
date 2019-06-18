@@ -11,15 +11,15 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 	{
 		AssociationDetails: {
 			screen: DetailScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: _('details'),
-			},
+			}),
 		},
 		AssociationArticles: {
 			screen: ArticleScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: _('articles'),
-			},
+			}),
 		},
 		// AssociationEvents: {
 		// 	screen: EventsScreen,
@@ -29,9 +29,9 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 		// },
 		AssociationMembers: {
 			screen: MemberScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: _('members'),
-			},
+			}),
 		},
 	},
 	{

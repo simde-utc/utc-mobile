@@ -75,15 +75,15 @@ const MapNavigator = createMaterialTopTabNavigator(
 	{
 		Buildings: {
 			screen: MapScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: _('buildings'),
-			},
+			}),
 		},
 		Locations: {
 			screen: LocationsScreen,
-			navigationOptions: {
+			navigationOptions: () => ({
 				title: _('places'),
-			},
+			}),
 		},
 	},
 	{

@@ -9,7 +9,7 @@ import styles from '../../styles';
 import { _, FAQs as t, e } from '../../utils/i18n';
 
 export default class CategoriesScreen extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		headerTitle: _('faq'),
 		headerStyle: {
 			backgroundColor: '#fff',
@@ -17,7 +17,7 @@ export default class CategoriesScreen extends React.PureComponent {
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
 		headerBackTitle: _('categories'),
-	};
+	});
 
 	constructor(props) {
 		super(props);

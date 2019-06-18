@@ -10,14 +10,14 @@ import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 
 export class AssociationsList extends React.PureComponent {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		headerTitle: _('associations'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-	};
+	});
 
 	constructor(props) {
 		super(props);

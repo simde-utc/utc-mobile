@@ -20,7 +20,7 @@ const NavigationScreen = ({ navigation }) => (
 		<ProfileHeader onPress={() => navigation.navigate('Profile')} />
 		<FullWidthButton name={_('my_account')} onPress={() => navigation.navigate('Profile')} />
 		<FullWidthButton name={_('associations')} onPress={() => navigation.navigate('Associations')} />
-		<FullWidthButton name={_('faq')} onPress={() => navigation.navigate('FAQ')} />
+		<FullWidthButton name={_('faq')} onPress={() => navigation.navigate('FAQs')} />
 		<FullWidthButton name={_('interactions')} onPress={() => navigation.navigate('Interactions')} />
 		<FullWidthButton name={_('map')} onPress={() => navigation.navigate('Map')} />
 		<FullWidthButton name={_('contacts')} onPress={() => navigation.navigate('Contacts')} />
@@ -42,7 +42,7 @@ const NavigationNavigator = createStackNavigator(
 		Association: {
 			screen: AssociationScreen,
 		},
-		FAQ: {
+		FAQs: {
 			screen: CategoriesScreen,
 		},
 		Questions: {
@@ -50,14 +50,14 @@ const NavigationNavigator = createStackNavigator(
 		},
 		Map: {
 			screen: MapNavigator,
-			navigationOptions: {
+			navigationOptions: () => ({
 				headerTitle: _('map'),
 				headerStyle: {
 					backgroundColor: '#fff',
 				},
 				headerTintColor: '#007383',
 				headerForceInset: { top: 'never' },
-			},
+			}),
 		},
 		Interactions: {
 			screen: InteractionsScreen,
