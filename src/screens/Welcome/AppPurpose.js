@@ -10,27 +10,15 @@ import { _, Welcome as t } from '../../utils/i18n';
 const endMessageStyle = styles.get('text.yellow', 'text.center', 'text.h4');
 
 const forMembersData = [
-	{
-		icon: 'news',
-		text: t('member_news'),
-	},
-	{
-		icon: 'map',
-		text: t('member_map'),
-	},
-	{
-		icon: 'bell',
-		text: t('member_notif'),
-	},
-	{
-		icon: 'calendar',
-		text: t('member_calendar'),
-	},
+	{ icon: 'news', lazyText: 'screens.Welcome.member_news' },
+	{ icon: 'map', lazyText: 'screens.Welcome.member_map' },
+	{ icon: 'bell', lazyText: 'screens.Welcome.member_notif' },
+	{ icon: 'calendar', lazyText: 'screens.Welcome.member_calendar' },
 ];
 const forInterestedData = [
-	{ icon: 'news', text: t('interested_news') },
-	{ icon: 'map', text: t('interested_map') },
-	{ icon: 'calendar', text: t('interested_calendar') },
+	{ icon: 'news', lazyText: 'screens.Welcome.interested_news' },
+	{ icon: 'map', lazyText: 'screens.Welcome.interested_map' },
+	{ icon: 'calendar', lazyText: 'screens.Welcome.interested_calendar' },
 ];
 
 const ListData = data => <List data={data} />;
