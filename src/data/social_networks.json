@@ -1,32 +1,32 @@
 [
   {
     "title": "LinkedIn",
+    "icon": "linkedin",
     "subtitle": "Université de Technologie de Compiègne",
-    "icon": "../../img/icons/social-networks/linkedin.png",
     "url": "https://www.linkedin.com/school/universit-de-technologie-de-compi-gne/"
   },
   {
     "title": "Twitter",
+    "icon": "twitter",
     "subtitle": "@utcompiegne",
-    "icon": "../../img/icons/social-networks/twitter.png",
     "url": "https://twitter.com/utcompiegne"
   },
   {
     "title": "YouTube",
+    "icon": "youtube",
     "subtitle": "KomUTC",
-    "icon": "../../img/icons/social-networks/youtube.png",
     "url": "https://www.youtube.com/user/KomUTC"
   },
   {
     "title": "Facebook",
+    "icon": "facebook",
     "subtitle": "Université de Technologie de Compiègne",
-    "icon": "../../img/icons/social-networks/facebook.png",
     "url": "https://www.facebook.com/utcompiegne/"
   },
   {
     "title": "Instagram",
+    "icon": "instagram",
     "subtitle": "@utcompiegne",
-    "icon": "../../img/icons/social-networks/instagram.png",
     "url": "https://www.instagram.com/utcompiegne/"
   }
 ]
