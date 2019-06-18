@@ -1,9 +1,10 @@
 /**
- * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app
+ * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app.
+ *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
- * @license AGPL-3.0
+ * @license GPL-3.0
  * */
 
 import React from 'react';
@@ -229,7 +230,11 @@ export default class ConnectionScreen extends React.Component {
 		return (
 			<View style={styles.container.default}>
 				<View>
-					<Spinner visible={loading} textContent={loadingText} textStyle={{ color: '#FFF' }} />
+					<Spinner
+						visible={loading}
+						textContent={loadingText}
+						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
+					/>
 				</View>
 				<HeaderView title="Connectez-vous" subtitle="pour utiliser pleinement l'application" />
 				<View style={viewStyle}>
