@@ -1,3 +1,12 @@
+
+/*
+ * Bloc affichant les informations d'un article.
+ * @author Arthur Martello <arthur.martello@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2019, SiMDE-UTC
+ * @license AGPL-3.0
+ */
+
 import React from 'react';
 import { Dimensions, Image, Linking, Text, TouchableHighlight, View } from 'react-native';
 import HTML from 'react-native-render-html';
