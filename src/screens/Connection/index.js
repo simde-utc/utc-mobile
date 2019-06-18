@@ -230,7 +230,11 @@ export default class ConnectionScreen extends React.Component {
 		return (
 			<View style={styles.container.default}>
 				<View>
-					<Spinner visible={loading} textContent={loadingText} textStyle={{ color: '#FFF' }} />
+					<Spinner
+						visible={loading}
+						textContent={loadingText}
+						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
+					/>
 				</View>
 				<HeaderView title="Connectez-vous" subtitle="pour utiliser pleinement l'application" />
 				<View style={viewStyle}>
