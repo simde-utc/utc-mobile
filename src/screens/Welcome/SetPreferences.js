@@ -15,7 +15,7 @@ export default class SetPreferencesScreen extends React.Component {
 			checked: {
 				utcNews: true,
 				assoLife: true,
-				utcMember: false,
+				utcMember: true,
 			},
 		};
 
