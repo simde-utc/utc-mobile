@@ -1,18 +1,15 @@
 import React from 'react';
 import { FlatList, View, ActivityIndicator } from 'react-native';
-import styles from '../../styles';
-import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
 import CASAuth from '../../services/CASAuth';
 import PortailApi from '../../services/Portail';
 import ActualitesUTC from '../../services/ActualitesUTC';
-
 import Generate from '../../utils/Generate';
-
 import Filter from '../../components/Filter';
 import ArticleComponent from '../../components/Articles/Article';
-
 import { _ } from '../../utils/i18n';
+import styles from '../../styles';
+import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
 const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents

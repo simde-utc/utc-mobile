@@ -9,14 +9,12 @@
 import React from 'react';
 import { Text, View, Alert } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+
 import HeaderView from '../../components/HeaderView';
 import BigButton from '../../components/BigButton';
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
-
-import { _, getTranslationsFor, e } from '../../utils/i18n';
-
-const t = getTranslationsFor('screens.Connected');
+import { _, e, Connected as t } from '../../utils/i18n';
 
 export default class ConnectedScreen extends React.Component {
 	static navigationOptions = {

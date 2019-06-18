@@ -2,13 +2,12 @@ import React from 'react';
 import { Alert, FlatList, View } from 'react-native';
 import withNavigation from 'react-navigation/src/views/withNavigation';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import PortailApi from '../../services/Portail';
-import styles from '../../styles';
 
 import AssociationBlock from '../../components/Associations/AssociationBlock';
 import FakeAssociationBlock from '../../components/Associations/FakeAssociationBlock';
-
 import { _, e } from '../../utils/i18n';
+import PortailApi from '../../services/Portail';
+import styles from '../../styles';
 
 export class AssociationsList extends React.PureComponent {
 	static navigationOptions = {
