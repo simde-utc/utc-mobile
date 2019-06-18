@@ -66,6 +66,7 @@
 	},
 	"errors": {
 		"data_loading": "An error occured when retrieving data",
+		"no_data_provided": "No data provided",
 		"no_articles": "No articles provided",
 		"association_not_available": "Association not available",
 		"associations_not_available": "Associations not available",
@@ -117,6 +118,9 @@
 		"actualities": "actus",
 		"notifications": "notifications",
 		"navigation": "navigation",
-		"others": "others"
+		"others": "others",
+		"search": "search",
+		"back": "back",
+		"here": "here"
 	},
 }

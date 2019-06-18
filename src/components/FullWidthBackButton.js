@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+
 import Icon from './Icon';
-import styles from '../styles';
 import yellowArrowIcon from '../img/icons/arrow_yellow_back.png';
+import styles from '../styles';
+import { _ } from '../utils/i18n';
 
 const buttonStyles = styles.navigation.fullWidthButton;
 
@@ -18,7 +20,7 @@ const FullWidthBackButton = ({ onPress, name }) => (
 				<Icon image={yellowArrowIcon} />
 			</View>
 			<View style={buttonStyles.textBackView}>
-				<Text style={buttonStyles.textBack}>{name || 'Retour'}</Text>
+				<Text style={buttonStyles.textBack}>{name || _('back')}</Text>
 			</View>
 		</View>
 	</TouchableHighlight>

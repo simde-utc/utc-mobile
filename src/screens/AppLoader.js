@@ -209,7 +209,7 @@ export default class AppLoaderScreen extends React.Component {
 				<ActivityIndicator size="large" color={colors.yellow} />
 				<Text
 					style={[
-						styles.get('text.h3', 'text.center', 'my.lg'),
+						styles.get('text.h3', 'text.center', 'text.h3'),
 						{ height: 100, width: 250, marginTop: 10 },
 					]}
 				>
