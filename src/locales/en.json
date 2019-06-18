@@ -1,0 +1,7 @@
+{
+	"screens": {
+		"AppLoader": {
+			"loading": "Application loading..."
+		}
+	}
+}
