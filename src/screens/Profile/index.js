@@ -4,18 +4,20 @@
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
- * */
+ */
 
 import React from 'react';
 import { ScrollView, View } from 'react-native';
+
 import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
 import ProfileHeader from './ProfileHeader';
 import FullWidthButton from '../../components/FullWidthButton';
+import { _ } from '../../utils/i18n';
 
 export default class ProfileScreen extends React.Component {
 	static navigationOptions = {
-		headerTitle: 'Mon compte',
+		headerTitle: _('my_account'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
@@ -69,7 +71,7 @@ export default class ProfileScreen extends React.Component {
 			<ScrollView style={{ backgroundColor: '#f4f4f4' }}>
 				<ProfileHeader />
 				<View style={{ borderTopWidth: 1, borderTopColor: '#f4f4f4' }}>
-					<FullWidthButton name="Déconnexion" onPress={() => this.logout()} />
+					<FullWidthButton name={_('disconnect')} onPress={() => this.logout()} />
 				</View>
 			</ScrollView>
 		);

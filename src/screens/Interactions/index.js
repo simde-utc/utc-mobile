@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, WebView } from 'react-native';
 
-export default class InteractionsScreen extends React.PureComponent {
+import { INTERACTIONS_URL } from '../../../config';
+import { _ } from '../../utils/i18n';
+
+export default class Interactions extends React.PureComponent {
 	static navigationOptions = {
-		headerTitle: 'Interactions',
+		headerTitle: _('interactions'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
@@ -14,7 +17,7 @@ export default class InteractionsScreen extends React.PureComponent {
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
-				<WebView source={{ uri: 'https://interactions.utc.fr/' }} useWebKit />
+				<WebView source={{ uri: INTERACTIONS_URL }} useWebKit />
 			</View>
 		);
 	}

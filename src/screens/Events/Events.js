@@ -3,12 +3,11 @@ import { View, Text, ScrollView, StyleSheet, TouchableHighlight } from 'react-na
 import { Agenda } from 'react-native-calendars';
 import moment from 'moment';
 
-import Generate from '../../utils/Generate';
-
 import Filter from '../../components/Filter';
-
 import PortailApi from '../../services/Portail';
 import ColorUtils from '../../utils/Color';
+import Generate from '../../utils/Generate';
+import { _ } from '../../utils/i18n';
 
 const styles = StyleSheet.create({
 	event: {
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
 export default class EventsScreen extends React.Component {
 	static navigationOptions = () => {
 		return {
-			title: 'Calendrier',
+			title: _('calendar'),
 			headerStyle: {
 				display: 'none',
 			},
