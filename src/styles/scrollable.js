@@ -42,6 +42,10 @@ export default {
 			alignItems: 'center',
 		},
 
+		icon: {
+			paddingRight: 8,
+		},
+
 		title: {
 			fontSize: 16,
 			fontWeight: 'bold',
