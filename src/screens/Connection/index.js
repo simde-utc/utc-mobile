@@ -1,9 +1,10 @@
 /**
- * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app
+ * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app.
+ *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
- * @license AGPL-3.0
+ * @license GPL-3.0
  * */
 
 import React from 'react';

@@ -1,11 +1,12 @@
 /**
- * Télécharger des données du portail des associations du BDE-UTC et des services de l'UTC
+ * Télécharger des données du portail des associations du BDE-UTC et des services de l'UTC.
+ *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
- * @license AGPL-3.0
- * */
+ * @license GPL-3.0
+ */
 
 import { PORTAIL_URL, PORTAIL_CLIENT_ID, PORTAIL_CLIENT_SECRET } from '../../config';
 
@@ -99,6 +100,11 @@ export class Portail extends Api {
 		});
 	}
 
+	/* eslint-disable-next-line class-methods-use-this */
+	getData() {
+		return Storage.getData('portail');
+	}
+
 	getUser() {
 		return this.user;
 	}
@@ -108,25 +114,6 @@ export class Portail extends Api {
 		this.token = {};
 
 		return Storage.removeData('portail');
-	}
-
-	autoLogin() {
-		return Storage.getData('portail').then(data => {
-			if (data) {
-				return this.login(data.app_id, data.password)
-					.then(user => {
-						// On récupère et défini la clé de chiffrement.
-						return this.getAppData().then(() => {
-							return user;
-						});
-					})
-					.catch(() => {
-						return this.forget();
-					});
-			}
-
-			return Promise.reject('Non connecté');
-		});
 	}
 
 	login(login, password) {
