@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import { ScrollView, FlatList, Text, View, SectionList } from 'react-native';
 import styles from '../../styles';
 import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
 
@@ -11,6 +11,7 @@ import Generate from '../../utils/Generate';
 
 import Filter from '../../components/Filter';
 import ArticleComponent from '../../components/Articles/Article';
+import FakeItem from '../../components/FakeItem';
 
 const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
@@ -18,10 +19,12 @@ const THRESHOLD = 0.4;
 
 export default class ArticlesScreen extends React.Component {
 	static navigationOptions = {
-		title: 'Articles',
+		headerTitle: 'Actualités',
 		headerStyle: {
-			display: 'none',
+			backgroundColor: '#fff',
 		},
+		headerTintColor: '#007383',
+		headerForceInset: { top: 'never' },
 	};
 
 	constructor(props) {
@@ -223,11 +226,15 @@ export default class ArticlesScreen extends React.Component {
 
 		const promises = [];
 
+
+
 		if (CASAuth.isConnected() && canLoadMoreUTCArticles) {
 			const UTCArticles = this.loadUTCArticles();
 
 			promises.push(UTCArticles);
 		}
+
+
 
 		if (PortailApi.isConnected() && canLoadMorePortailArticles) {
 			const PortailArticles = this.loadPortailArticles();
@@ -290,7 +297,7 @@ export default class ArticlesScreen extends React.Component {
 		const { search, articles, filters, selectedFilters, loading } = this.state;
 		const toMatch = search.toLowerCase().split(' ');
 
-		const data = articles.filter(article => {
+		/*const data = articles.filter(article => {
 			// if (!selectedFilters.includes(article['article_type']))
 			//	return false
 			let filtered = true;
@@ -316,40 +323,24 @@ export default class ArticlesScreen extends React.Component {
 			}
 
 			return true;
-		});
+		});*/
 
-		return (
-			<View style={styles.article.articlesFeedContainer}>
-				<Filter
-					filters={Object.values(filters)}
-					selectedFilters={selectedFilters}
-					onFilterUnselected={this.unselectFilter.bind(this)}
-					onFilterSelected={this.selectFilter.bind(this)}
-					onFilterLongPressed={this.onlySelectFilter.bind(this)}
-					searchButton={false}
-					onSearchTextChange={this.onSearchTextChange.bind(this)}
-				/>
-				<FlatList
-					ref={component => (this.flatList = component)}
-					data={data}
-					renderItem={({ item }) => (
-						<ArticleComponent
-							navigation={navigation}
-							data={item}
-							portailInstance={PortailApi}
-							fullActions
-						/>
-					)}
-					onEndReached={this.loadMoreContentAsync.bind(this)}
-					onEndReachedThreshold={THRESHOLD}
-					keyExtractor={article => `${article.article_type}_${article.id}`}
-					ListFooterComponent={
-						<View style={styles.article.loadingIndicatorContainer}>
-							{loading && <ActivityIndicator size="small" color="#0000ff" />}
-						</View>
-					}
-				/>
-			</View>
-		);
+		//if (loading)
+		//	return <ScrollView style={styles.scrollable.list}><FakeItem title={"Chargement..."}/></ScrollView>;
+		return <FlatList style={styles.scrollable.list}
+										 data={articles}
+										 renderItem={(item) => <ArticleComponent data={item} navigation={navigation}/>}
+										 ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator}/>}
+										 onEndReached={this.loadMoreContentAsync.bind(this)}
+										 onEndReachedThreshold={THRESHOLD}
+										 keyExtractor={article => `${article.article_type}_${article.id}`}
+										 ListFooterComponent={
+											 <View>
+												 {articles.length > 0 ? <View style={styles.scrollable.sectionSeparator}/> : null}
+												 <FakeItem title={"Chargement..."}/>
+											 </View>
+										 }
+
+		/>
 	}
 }

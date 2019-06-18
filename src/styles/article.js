@@ -1,15 +1,31 @@
 import { colors } from './variables';
 
 export default {
+
+	date: {
+		fontSize: 11,
+		color: '#6d6f71',
+		textAlign: 'right',
+	},
+
+	descriptionLink: {
+		fontSize: 11,
+		color: '#6d6f71',
+		textDecorationLine: 'underline'
+	}
+
+
+}
+
+/*
+export default {
 	container: {
-		borderWidth: 1,
 		borderColor: colors.lightGray,
 		marginHorizontal: 5,
 		marginBottom: 10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		padding: 10,
 		paddingBottom: 5,
 	},
 
@@ -116,3 +132,5 @@ export default {
 		width: 30,
 	},
 };
+*/
+

@@ -15,6 +15,7 @@ import Comments from './Comments';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+const FOLDED_MAX_LENGTH = 200;
 
 export default class ArticleComponent extends React.PureComponent {
 	static openURI(uri) {
@@ -213,7 +214,7 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 	}
 
-	_contentTap() {
+	contentTap() {
 		const { folded } = this.state;
 
 		if (!folded) {
@@ -223,7 +224,7 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 	}
 
-	_navigateFullArticle() {
+	navigateFullArticle() {
 		const { navigation } = this.props;
 
 		navigation.navigate('fullArticle', {
@@ -239,9 +240,81 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
+	renderOwnerImage(owned_by) {
+		const source = (owned_by && owned_by.image) ? {uri: owned_by.image} : LogoUTC;
+
+		return <Image style={{height: 40, width: 40, padding: 10, borderWidth: 1, borderColor: '#007383', borderRadius: 40 / 2, marginRight: 10}}
+							 		source={source}
+							 		resizeMode={'contain'}/>
+	}
+
+	renderTextDescription(description) {
+		const { folded } = this.state;
+
+		if (folded && description.length > FOLDED_MAX_LENGTH)
+			return <View>
+				<Text style={styles.scrollable.item.subsubtitle}>
+					{description.substring(0, 200) + '...'}
+				</Text>
+				<TouchableHighlight onPress={() => this.contentTap()}>
+					<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+				</TouchableHighlight>
+			</View>;
+
+		return <Text style={styles.scrollable.item.subsubtitle}>{description}</Text>
+	}
+
+	renderHTMLDescription(excerpt, content) {
+		const { folded } = this.state;
+
+		if (folded)
+			return (
+				<View>
+					<HTML baseFontStyle={styles.scrollable.item.subsubtitle}
+								html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
+								imagesMaxWidth={Dimensions.get('window').width}/>
+					<TouchableHighlight onPress={() => this.contentTap()}>
+						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+					</TouchableHighlight>
+				</View>
+			);
+
+		return <HTML baseFontStyle={styles.scrollable.item.subsubtitle}
+								 html={content}
+								 imagesMaxWidth={Dimensions.get('window').width}/>
+
+	}
+
 	render() {
 		const { data, fullScreen } = this.props;
 		const { folded, comments, liked, disliked, fullActions } = this.state;
+
+		return (
+			<View style={styles.scrollable.item.view}>
+					<View style={{ flex: 1, flexDirection: 'row'}}>
+						{this.renderOwnerImage(data.item.owned_by)}
+
+						<View style={{ flex: 6}}>
+							<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+								<Text style={styles.scrollable.item.subtitle}>{data.item.owned_by ? data.item.owned_by.shortname : 'UTC'}</Text>
+
+								<Text style={styles.article.date}>
+									{data.item.created_at
+										? ArticleComponent.prettyDate(data.item.created_at, 'fr-FR')
+										: ArticleComponent.prettyDate(data.item.date_gmt, 'fr-FR')}
+								</Text>
+							</View>
+
+							<View style={{marginBottom: 5}}>
+								<HTML baseFontStyle={styles.scrollable.item.title}
+											html={data.item.title}/>
+							</View>
+
+							{data.item.description ? this.renderTextDescription(data.item.description) : this.renderHTMLDescription(data.item.excerpt, data.item.content)}
+							</View>
+					</View>
+			</View>
+		);
 
 		return (
 			<View style={styles.article.container}>
