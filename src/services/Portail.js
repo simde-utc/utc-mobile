@@ -42,6 +42,7 @@ export class Portail extends Api {
 		'user-get-roles-assos-assigned',
 		'user-get-roles-assos-owned',
 		'user-get-faqs',
+		'user-get-contacts-assos',
 	];
 
 	constructor() {
@@ -353,6 +354,25 @@ export class Portail extends Api {
 
 		return new Promise((resolve, reject) => {
 			this.call(`${Portail.API_V1}assos/${id}`, Api.GET, {})
+				.then(([data]) => {
+					resolve(data);
+				})
+				.catch(([response, status]) => {
+					reject([response, status]);
+				});
+		});
+	}
+
+	getAssoContacts(id = 1) {
+		this.checkConnected();
+
+		// les undefined sont gérés mais pas les strings vides
+		if (id === '') {
+			id = 1;
+		}
+
+		return new Promise((resolve, reject) => {
+			this.call(`${Portail.API_V1}assos/${id}/contacts`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})

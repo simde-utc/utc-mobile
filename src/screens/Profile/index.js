@@ -12,7 +12,7 @@ import { ScrollView, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
 import ProfileHeader from './ProfileHeader';
-import FullWidthButton from '../../components/FullWidthButton';
+import FullWidthBackButton from '../../components/FullWidthBackButton';
 import { _ } from '../../utils/i18n';
 
 export default class ProfileScreen extends React.Component {
@@ -71,7 +71,7 @@ export default class ProfileScreen extends React.Component {
 			<ScrollView style={{ backgroundColor: '#f4f4f4' }}>
 				<ProfileHeader />
 				<View style={{ borderTopWidth: 1, borderTopColor: '#f4f4f4' }}>
-					<FullWidthButton name={_('disconnect')} onPress={() => this.logout()} />
+					<FullWidthBackButton name={_('disconnect')} onPress={() => this.logout()} />
 				</View>
 			</ScrollView>
 		);

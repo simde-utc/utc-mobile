@@ -1,7 +1,7 @@
 import React from 'react';
 import { SectionList, Text, View } from 'react-native';
 
-import SocialNetwork from '../../components/SocialNetwork';
+import Contact from '../../components/Contact';
 import networkData from '../../data/social_networks';
 import styles from '../../styles';
 import { _ } from '../../utils/i18n';
@@ -32,7 +32,7 @@ export default class ContactsScreen extends React.PureComponent {
 		return (
 			<SectionList
 				style={styles.scrollable.list}
-				renderItem={({ item }) => <SocialNetwork app={item.app} />}
+				renderItem={({ item }) => <Contact {...item} />}
 				renderSectionHeader={({ section: { title } }) => (
 					<View style={styles.scrollable.sectionHeader.view}>
 						<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
