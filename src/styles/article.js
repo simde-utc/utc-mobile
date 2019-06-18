@@ -9,9 +9,6 @@ export default {
 		height: 40,
 		width: 40,
 		padding: 10,
-		borderWidth: 1,
-		borderColor: '#007383',
-		borderRadius: 40 / 2,
 		marginRight: 10,
 	},
 
