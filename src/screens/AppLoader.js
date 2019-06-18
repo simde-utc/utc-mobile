@@ -1,3 +1,13 @@
+/**
+ * Page de chargement et de préparation des données.
+ *
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
+ * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2018, SiMDE-UTC
+ * @license GPL-3.0
+ */
+
 import React from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
@@ -74,34 +84,106 @@ export default class AppLoaderScreen extends React.Component {
 			.catch(error => AppLoaderScreen.handleError.bind(this, error));
 	}
 
-	// ========== App Bootstrapping Methods ==========
-
-	// Load async data and store it in the App store
-	async bootstrap() {
-		// Download fonts, images etc...
-		AppLoaderScreen.loadLocale();
-		AppLoaderScreen.loadFonts();
-
-		return PortailApi.autoLogin()
+	getUserData() {
+		return PortailApi.getAppData()
 			.then(() => {
-				this.setState(prevState => ({
-					...prevState,
-					isConnected: PortailApi.isConnected(),
-				}));
+				this.setState({
+					text: 'Vérification des données chiffrées',
+				});
 
-				if (PortailApi.isConnected()) {
-					this.setState(prevState => ({
-						...prevState,
-						text: 'Connexion...',
-						screen: 'Home',
-					}));
+				return this.getCasData();
+			})
+			.catch(() => {
+				this.setState({
+					text: 'Erreur lors de la récupération des données',
+					screen: 'Welcome',
+				});
 
-					return CASAuth.autoLogin().catch(() => true);
+				return new Promise.all(PortailApi.forget(), CASAuth.forget());
+			});
+	}
+
+	getCasData() {
+		return CASAuth.getData()
+			.then(data => {
+				if (data) {
+					this.setState({
+						text: 'Vérification de la connexion CAS-UTC',
+					});
+
+					return this.checkCasConnexion(data.ticket, data.login, data.password);
 				}
 
 				return true;
 			})
 			.catch(() => true);
+	}
+
+	checkCasConnexion(ticket, login, password) {
+		return CASAuth.isTicketValid(ticket)
+			.then(() => {
+				return true;
+			})
+			.catch(() => {
+				this.setState({
+					text: 'Reconnexion au CAS-UTC',
+				});
+
+				return CASAuth.login(login, password)
+					.then(() => {
+						return CASAuth.setData(login, password);
+					})
+					.catch(() => this.reinitData());
+			});
+	}
+
+	login(login, password) {
+		return PortailApi.login(login, password)
+			.then(() => {
+				this.setState({
+					text: 'Récupération des données utilisateurs',
+				});
+
+				// On récupère les données utilisateurs.
+				return this.getUserData();
+			})
+			.catch(() => this.reinitData());
+	}
+
+	reinitData() {
+		this.setState({
+			text: 'Réinitialisation des données',
+			screen: 'Welcome',
+		});
+
+		return new Promise.all(PortailApi.forget(), CASAuth.forget());
+	}
+
+	bootstrap() {
+		// Download fonts, images etc...
+		AppLoaderScreen.loadLocale();
+		AppLoaderScreen.loadFonts();
+
+		return PortailApi.getData()
+			.then(data => {
+				if (data) {
+					this.setState({
+						text: 'Reconnexion',
+						screen: 'Home',
+					});
+
+					// On connecte si on a bien de données de connexion stockées.
+					return this.login(data.app_id, data.password);
+				}
+
+				return false;
+			})
+			.catch(() => {
+				this.setState({
+					text: "Affichage de l'introduction",
+					screen: 'Welcome',
+				});
+			});
 	}
 
 	appLoaded() {
@@ -121,7 +203,7 @@ export default class AppLoaderScreen extends React.Component {
 				<Text
 					style={[
 						styles.get('text.h3', 'text.center', 'my.lg'),
-						{ marginTop: 10, marginBottom: 50 },
+						{ height: 100, width: 250, marginTop: 10 },
 					]}
 				>
 					{text}

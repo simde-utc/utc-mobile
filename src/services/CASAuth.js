@@ -1,17 +1,17 @@
 /**
- * Intéragir avec le CAS UTC
+ * Intéragir avec le CAS UTC.
+ *
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
- * @license AGPL-3.0
- * */
+ * @license GPL-3.0
+ */
 
 import { Alert } from 'react-native';
 import { CAS_URL } from '../../config';
 
 import Api from './Api';
-import PortailApi from './Portail';
 import Storage from './Storage';
 
 class CASAuth extends Api {
@@ -43,7 +43,7 @@ class CASAuth extends Api {
 	}
 
 	isConnected() {
-		return this.tgt && this.tgt.length > 0;
+		return this.ticket && this.ticket.length > 0;
 	}
 
 	setData(login, password) {
@@ -51,13 +51,13 @@ class CASAuth extends Api {
 			return Storage.setSensitiveData('cas', {
 				login,
 				password,
-				ticket: this.tgt,
+				ticket: this.ticket,
 			});
 		});
 	}
 
 	forget() {
-		this.tgt = '';
+		this.ticket = '';
 
 		return Storage.removeSensitiveData('cas');
 	}
@@ -74,23 +74,15 @@ class CASAuth extends Api {
 		});
 	}
 
-	isTgtValid() {
-		return this.call(this.tgt, Api.GET);
+	setTicket(ticket) {
+		this.ticket = ticket;
 	}
 
-	autoLogin() {
-		return this.getData().then(data => {
-			this.tgt = data.ticket;
+	isTicketValid(ticket) {
+		return this.call(ticket, Api.GET).then(() => {
+			this.ticket = ticket;
 
-			return this.isTgtValid().catch(() => {
-				return this.login(data.login, data.password)
-					.then(response => {
-						return this.setData(data.login, data.password).then(() => response);
-					})
-					.catch(() => {
-						return PortailApi.forget();
-					});
-			});
+			return true;
 		});
 	}
 
@@ -107,7 +99,7 @@ class CASAuth extends Api {
 			[201]
 		)
 			.then(([response, status, url]) => {
-				this.tgt = CASAuth.parseTgt(response);
+				this.ticket = CASAuth.parseTgt(response);
 
 				return [response, status, url];
 			})
@@ -116,7 +108,7 @@ class CASAuth extends Api {
 
 	getService(service) {
 		return this.call(
-			this.tgt,
+			this.ticket,
 			Api.POST,
 			{},
 			{

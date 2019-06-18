@@ -1,5 +1,6 @@
 /**
- * Fichier chargé pour lancer l'application. Définie toutes les routes qui suivent
+ * Fichier chargé pour lancer l'application. Défini toutes les routes qui suivent.
+ *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
  *
@@ -9,9 +10,7 @@
 
 import React from 'react';
 import { Platform, StatusBar, YellowBox } from 'react-native';
-import { Provider } from 'react-redux';
 import { createSwitchNavigator, createStackNavigator, SafeAreaView } from 'react-navigation';
-import store from './src/redux/store';
 import {
 	PORTAIL_URL,
 	PORTAIL_CLIENT_ID,
@@ -46,7 +45,7 @@ const AppSwitch = createSwitchNavigator(
 const paddingTop =
 	Platform.OS === 'android' ? StatusBar.currentHeight || (Platform.Version < 23 ? 25 : 24) : 0;
 
-YellowBox.ignoreWarnings(['Require cycle:']);
+YellowBox.ignoreWarnings(['Require cycle:', 'AsyncStorage', 'ViewPagerAndroid']);
 
 export default class App extends React.Component {
 	static checkEnvVariables() {
@@ -71,12 +70,10 @@ export default class App extends React.Component {
 
 	render() {
 		return (
-			<Provider store={store}>
-				<SafeAreaView style={{ flex: 1, paddingTop }} forceInset={{ bottom: 'never' }}>
-					<StatusBar translucent />
-					<AppSwitch />
-				</SafeAreaView>
-			</Provider>
+			<SafeAreaView style={{ flex: 1, paddingTop }} forceInset={{ bottom: 'never' }}>
+				<StatusBar translucent />
+				<AppSwitch />
+			</SafeAreaView>
 		);
 	}
 }
