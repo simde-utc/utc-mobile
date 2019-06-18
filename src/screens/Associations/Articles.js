@@ -3,6 +3,10 @@ import { FlatList, Text } from 'react-native';
 import PortailApi from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
 
+import { _, getTranslationsFor } from '../../utils/i18n';
+
+const t = getTranslationsFor('screens.Articles');
+
 export default class Articles extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -39,8 +43,8 @@ export default class Articles extends React.PureComponent {
 		const { loading, articles } = this.state;
 
 		// This will evolve with new ArticleComponent view
-		if (loading) return <Text>Loading...</Text>;
-		if (articles.length === 0) return <Text>Aucun article</Text>;
+		if (loading) return <Text>{_('loading')}</Text>;
+		if (articles.length === 0) return <Text>{t('no_articles')}</Text>;
 		return (
 			<FlatList
 				data={articles.map(article => {

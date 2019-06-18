@@ -1,9 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
+import { _, e } from '../../utils/i18n';
+
 export default class fullArticleScreen extends React.PureComponent {
 	static navigationOptions = {
-		title: 'Article',
+		title: _('article'),
 	};
 
 	constructor(props) {
@@ -12,7 +14,7 @@ export default class fullArticleScreen extends React.PureComponent {
 		this.article = props.navigation.getParam('article', 'NODATA');
 
 		if (this.article === 'NOARTICLE') {
-			throw 'No article provided';
+			throw e('no_articles');
 		}
 	}
 
