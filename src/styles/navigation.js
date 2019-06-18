@@ -7,13 +7,13 @@ export default {
 
 	fullWidthButton: {
 		touchable: {
+			backgroundColor: '#fff',
 			marginBottom: 7,
+			minHeight: 45,
 		},
 
 		view: {
-			paddingVertical: 7,
-			paddingLeft: 5,
-			paddingRight: 7,
+			padding: 7,
 			backgroundColor: '#fff',
 			flex: 1,
 			flexDirection: 'row',
@@ -21,9 +21,6 @@ export default {
 		},
 
 		textView: {
-			borderLeftWidth: 2,
-			borderLeftColor: '#fff',
-			paddingLeft: 2,
 			flex: 1,
 		},
 
@@ -31,6 +28,29 @@ export default {
 			fontSize: 17,
 			fontWeight: 'bold',
 			color: '#007383',
+		},
+
+		icon: {
+			width: 25,
+		},
+
+		backView: {
+			padding: 7,
+			flex: 1,
+			backgroundColor: '#fff',
+			flexDirection: 'row',
+			alignItems: 'center',
+		},
+
+		textBackView: {
+			flex: 1,
+		},
+
+		textBack: {
+			fontSize: 17,
+			fontWeight: 'bold',
+			color: '#007383',
+			textAlign: 'right',
 		},
 	},
 };

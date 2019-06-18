@@ -85,7 +85,7 @@ Voici la liste des fonctionnalités à développer ou à paufiner dans le cadre 
 - Améliorer l'affichage des associations:
     - supprimer l'en-tête inutile
     - ne pas afficher, ou cacher les associations mortes
-    - afficher et gérer les moyens de contacts sur les pages association
+    - afficher et gérer les moyens de contact sur les pages association
     - afficher le flux d'articles de l'association comme pour la page articles
     - afficher les événements de l'association
     - améliorer l'affichage du trombinoscope:
@@ -113,7 +113,7 @@ Voici la liste des fonctionnalités à développer ou à paufiner dans le cadre 
     - Profil UTC (mon dossier étu)
     - UVs
 - Afficher le titre de la page en haut, sur un fond grisaillé
-- Afficher les moyens de contacts:
+- Afficher les moyens de contact:
     - réseaux sociaux
     - urls
     - contacts rapides et centraux
