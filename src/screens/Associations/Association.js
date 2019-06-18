@@ -5,18 +5,20 @@ import ArticleScreen from './Articles';
 // import EventsScreen from './Events';
 import MemberScreen from './Members';
 
+import { _ } from '../../utils/i18n';
+
 const TopTabNavigator = createMaterialTopTabNavigator(
 	{
 		AssociationDetails: {
 			screen: DetailScreen,
 			navigationOptions: {
-				title: 'En bref',
+				title: _('details'),
 			},
 		},
 		AssociationArticles: {
 			screen: ArticleScreen,
 			navigationOptions: {
-				title: 'Articles',
+				title: _('articles'),
 			},
 		},
 		// AssociationEvents: {
@@ -28,7 +30,7 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 		AssociationMembers: {
 			screen: MemberScreen,
 			navigationOptions: {
-				title: 'Trombi',
+				title: _('members'),
 			},
 		},
 	},
@@ -52,7 +54,7 @@ export default class Association extends React.Component {
 			typeof navigation.state.params !== 'undefined' &&
 			typeof navigation.state.params.title !== 'undefined'
 				? navigation.state.params.title
-				: 'Association',
+				: _('association'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},

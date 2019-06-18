@@ -3,6 +3,8 @@ import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 
+import { e } from '../../utils/i18n';
+
 export default class Details extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -20,10 +22,7 @@ export default class Details extends React.PureComponent {
 		if (!PortailApi.isConnected()) {
 			navigation.goBack(associationId);
 
-			Alert.alert(
-				'Association non disponible',
-				'Le Portail des Associations est actuellement inaccessible.'
-			);
+			Alert.alert(e('association_not_available'), e('portail_error'));
 		}
 
 		PortailApi.getAssoDetails(associationId)
@@ -37,10 +36,7 @@ export default class Details extends React.PureComponent {
 				console.log(e);
 				navigation.goBack(associationId);
 
-				Alert.alert(
-					'Association non disponible',
-					'Une erreur est survenue lors de la récupération des informations.'
-				);
+				Alert.alert(e('association_not_available'), e('retrieving_error'));
 				this.setState({ loading: false });
 			});
 	}

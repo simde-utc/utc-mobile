@@ -12,13 +12,15 @@ import Generate from '../../utils/Generate';
 import Filter from '../../components/Filter';
 import ArticleComponent from '../../components/Articles/Article';
 
+import { _ } from '../../utils/i18n';
+
 const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.4;
 
 export default class ArticlesScreen extends React.Component {
 	static navigationOptions = {
-		title: 'Articles',
+		title: _('articles'),
 		headerStyle: {
 			display: 'none',
 		},
