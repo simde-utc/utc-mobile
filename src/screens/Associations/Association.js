@@ -3,7 +3,6 @@ import { createMaterialTopTabNavigator } from 'react-navigation';
 
 import DetailScreen from './Details';
 import ArticleScreen from './Articles';
-// import EventsScreen from './Events';
 import MemberScreen from './Members';
 import { _ } from '../../utils/i18n';
 
@@ -21,12 +20,6 @@ const TopTabNavigator = createMaterialTopTabNavigator(
 				title: _('articles'),
 			}),
 		},
-		// AssociationEvents: {
-		// 	screen: EventsScreen,
-		// 	navigationOptions: {
-		// 		title: 'Évents',
-		// 	},
-		// },
 		AssociationMembers: {
 			screen: MemberScreen,
 			navigationOptions: () => ({

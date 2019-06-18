@@ -116,6 +116,7 @@
 		"home": "home",
 		"actualities": "actus",
 		"notifications": "notifications",
-		"navigation": "navigation"
+		"navigation": "navigation",
+		"others": "others"
 	},
 }
