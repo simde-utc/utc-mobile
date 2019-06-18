@@ -1,20 +1,27 @@
+
+/*
+ * Bloc affichant les informations d'un article.
+ * @author Arthur Martello <arthur.martello@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2019, SiMDE-UTC
+ * @license AGPL-3.0
+ */
+
 import React from 'react';
-import { View, Text, Dimensions, TouchableHighlight, Image, Linking } from 'react-native';
+import { Dimensions, Image, Linking, Text, TouchableHighlight, View } from 'react-native';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
 import styles from '../../styles';
-import DownBlueDevelopArrow from '../../img/down_blue_develop_arrow.png';
-import UpYellowDevelopArrow from '../../img/up_yellow_develop_arrow.png';
 import LogoUTC from '../../img/icon.png';
 import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
-import CommentsIcon from './CommentsIcon';
-import Comments from './Comments';
+
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+const FOLDED_MAX_LENGTH = 200;
 
 export default class ArticleComponent extends React.PureComponent {
 	static openURI(uri) {
@@ -73,10 +80,10 @@ export default class ArticleComponent extends React.PureComponent {
 	getActionsAndComments() {
 		const { data, portailInstance } = this.props;
 
-		if (data.article_type === 'assos') {
+		if (data.item.article_type === 'assos') {
 			Promise.all([
-				portailInstance.getUserArticleActions(data.id),
-				portailInstance.getArticleRootComments(data.id),
+				portailInstance.getUserArticleActions(data.item.id),
+				portailInstance.getArticleRootComments(data.item.id),
 			])
 				.then(([[responseActions], [responseComments]]) => {
 					let liked;
@@ -213,7 +220,7 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 	}
 
-	_contentTap() {
+	contentTap() {
 		const { folded } = this.state;
 
 		if (!folded) {
@@ -223,7 +230,7 @@ export default class ArticleComponent extends React.PureComponent {
 		}
 	}
 
-	_navigateFullArticle() {
+	navigateFullArticle() {
 		const { navigation } = this.props;
 
 		navigation.navigate('fullArticle', {
@@ -239,141 +246,121 @@ export default class ArticleComponent extends React.PureComponent {
 		});
 	}
 
+	static renderOwnerImage(owned_by) {
+		const source = owned_by && owned_by.image ? { uri: owned_by.image } : LogoUTC;
+
+		return <Image style={styles.article.icon} source={source} resizeMode="contain" />;
+	}
+
+	renderTextDescription(description) {
+		const { full } = this.props;
+
+		if (!full && description.length > FOLDED_MAX_LENGTH)
+			return (
+				<View style={{ marginBottom: 5 }}>
+					<Markdown styles={styles.article.markdownStyles}>
+						{`${description.substring(0, 200)}...`}
+					</Markdown>
+					<View style={{ marginTop: 10 }}>
+						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+					</View>
+				</View>
+			);
+
+		return (
+			<View style={{ marginBottom: 5 }}>
+				<Markdown styles={styles.article.markdownStyles}>{description}</Markdown>
+			</View>
+		);
+	}
+
+	renderHTMLDescription(excerpt, content) {
+		const { full } = this.props;
+
+		if (!full)
+			return (
+				<View>
+					<HTML
+						baseFontStyle={styles.scrollable.item.subsubtitle}
+						html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
+						imagesMaxWidth={Dimensions.get('window').width}
+						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
+					/>
+
+					<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+				</View>
+			);
+
+		return (
+			<HTML
+				baseFontStyle={styles.scrollable.item.subsubtitle}
+				html={content}
+				imagesMaxWidth={Dimensions.get('window').width}
+			/>
+		);
+	}
+
 	render() {
-		const { data, fullScreen } = this.props;
+		const { data, navigation } = this.props;
 		const { folded, comments, liked, disliked, fullActions } = this.state;
 
 		return (
-			<View style={styles.article.container}>
-				{/** *HEADER** */}
-				<View style={styles.article.headersContainer}>
-					{/** *AUTEUR** */}
-					<View style={styles.article.authorContainer}>
-						<Image
-							style={styles.article.authorImage}
-							source={data.owned_by && data.owned_by.image ? { uri: data.owned_by.image } : LogoUTC}
-							resizeMode="contain"
-							resizeMethod="resize"
-						/>
-						<Text style={styles.article.authorText}>
-							{data.owned_by ? data.owned_by.shortname : 'UTC'}
-						</Text>
-					</View>
-					{/** *DATE** */}
-					<View style={styles.article.dateContainer}>
-						{data.created_at
-							? ArticleComponent.prettyDate(data.created_at, 'fr-FR')
-							: ArticleComponent.prettyDate(data.date_gmt, 'fr-FR')}
-					</View>
-					{/** *TODO: locale** */}
-				</View>
-				{/** *TITRE** */}
-				<View style={styles.article.titleContainer}>
-					<HTML html={`<span style="${styles.article.title}">${data.title}</span>`} />
-					{/** * on est obligé de mettre un html pour le titre des actus. Même s'il n'y a pas de balise, il y a des entités html (par exemple &amp; -> "&") utilisées souvent pour les accents français.} ** */}
-				</View>
-				<TouchableHighlight
-					onPress={() => this.contentTap()}
-					underlayColor={folded ? '#ffffff00' : '#33333333'}
-				>
-					<View>
-						{/** *IMAGE** */}
-						{this.image && (
-							<View style={styles.article.imageContainer}>
-								<Image
-									style={{ height: 100, width: Dimensions.get('window').width }}
-									resizeMode={this.imageResizeMode}
-									resizeMethod="scale"
-									source={{ uri: this.image }}
-								/>
+			<View style={styles.scrollable.item.view}>
+				<View style={{ flex: 1, flexDirection: 'row' }}>
+					{ArticleComponent.renderOwnerImage(data.item.owned_by)}
+
+					<View style={{ flex: 6 }}>
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+							<Text style={styles.scrollable.item.subtitle}>
+								{data.item.owned_by ? data.item.owned_by.shortname : 'UTC'}
+							</Text>
+
+							<Text style={styles.article.date}>
+								{data.item.created_at
+									? ArticleComponent.prettyDate(data.item.created_at, 'fr-FR')
+									: ArticleComponent.prettyDate(data.item.date_gmt, 'fr-FR')}
+							</Text>
+						</View>
+
+						<TouchableHighlight
+							onPress={() =>
+								navigation.navigate('fullArticle', {
+									article: data,
+									navigation,
+									title: data.item.title,
+								})
+							}
+							underlayColor="#fff"
+						>
+							<View>
+								<View style={{ marginBottom: 5 }}>
+									<HTML baseFontStyle={styles.scrollable.item.title} html={data.item.title} />
+								</View>
+
+								{data.item.description
+									? this.renderTextDescription(data.item.description)
+									: this.renderHTMLDescription(data.item.excerpt, data.item.content)}
 							</View>
-						)}
-						<View style={styles.article.contentContainer}>
-							{/** *DESCRIPTION** */}
-							{!folded && !fullScreen && (
-								<View style={{ maxHeight: 50 }}>
-									{data.description ? (
-										<Text
-											style={{
-												textAlign: 'left',
-												margin: 0,
-												padding: 0,
-												color: styles.article.descriptionConstants.textColor,
-											}}
-										>
-											{data.description}
-										</Text>
-									) : (
-										<HTML
-											style={{ textAlign: 'left', flex: 1 }}
-											html={data.excerpt}
-											imagesMaxWidth={Dimensions.get('window').width}
-										/>
-									)}
-								</View>
-							)}
-							{/** *CONTENU** */}
-							{fullScreen && (
-								<View>
-									{data.article_type === 'utc' ? (
-										<HTML
-											html={data.content}
-											onLinkPress={(e, href) => {
-												ArticleComponent.openURI(href);
-											}}
-											imagesMaxWidth={Dimensions.get('window').width}
-										/>
-									) : (
-										<Markdown styles={styles.article.contentMarkdown}>{data.content}</Markdown>
-									)}
-								</View>
-							)}
+						</TouchableHighlight>
+
+						<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+							<TouchableHighlight onPress={() => this.touchLike()} underlayColor="#ffffff33">
+								<Image source={liked ? LikeOn : LikeOff} style={{ width: 30, height: 30 }} />
+							</TouchableHighlight>
+
+							<TouchableHighlight
+								style={{ marginLeft: 5 }}
+								onPress={() => this.touchDislike()}
+								underlayColor="#ffffff33"
+							>
+								<Image
+									source={disliked ? DislikeOn : DislikeOff}
+									style={{ width: 30, height: 30 }}
+								/>
+							</TouchableHighlight>
 						</View>
 					</View>
-				</TouchableHighlight>
-				{/** * BOUTONS D'ACTION ** */}
-				{fullActions && data.article_type === 'assos' ? (
-					<View style={styles.article.fullActionsContainer}>
-						<TouchableHighlight onPress={() => this.touchLike()} underlayColor="#ffffff33">
-							<Image source={liked ? LikeOn : LikeOff} style={styles.article.actionIcon} />
-						</TouchableHighlight>
-
-						<TouchableHighlight onPress={() => this.touchDislike()} underlayColor="#ffffff33">
-							<Image source={disliked ? DislikeOn : DislikeOff} style={styles.article.actionIcon} />
-						</TouchableHighlight>
-
-						<TouchableHighlight onPress={() => this.touchComments()} underlayColor="#ffffff33">
-							<CommentsIcon number={comments} />
-						</TouchableHighlight>
-					</View>
-				) : (
-					<View style={styles.article.onlyCommentsActionsContainer}>
-						<TouchableHighlight onPress={() => this.touchComments()} underlayColor="#ffffff33">
-							<CommentsIcon number={comments} />
-						</TouchableHighlight>
-					</View>
-				)}
-				{/** *BOUTON DE DEVELOPPEMENT** */}
-				{!fullScreen && (
-					<TouchableHighlight
-						onPress={() => this.toggleFolded()}
-						style={styles.article.buttonContainer}
-						underlayColor="#33333333"
-					>
-						<Image
-							style={styles.article.buttonImage}
-							resizeMode="contain"
-							resizeMethod="resize"
-							source={folded ? DownBlueDevelopArrow : UpYellowDevelopArrow}
-						/>
-					</TouchableHighlight>
-				)}
-				{/** *COMMENTAIRES** */}
-				{fullScreen && comments > 0 && comments && (
-					<View style={{ marginTop: 5 }}>
-						<Comments data={comments} />
-					</View>
-				)}
+				</View>
 			</View>
 		);
 	}

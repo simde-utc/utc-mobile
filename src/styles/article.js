@@ -1,15 +1,40 @@
-import { colors } from './variables';
+export default {
+	date: {
+		fontSize: 11,
+		color: '#6d6f71',
+		textAlign: 'right',
+	},
 
+	icon: {
+		height: 40,
+		width: 40,
+		padding: 10,
+		marginRight: 10,
+	},
+
+	descriptionLink: {
+		fontSize: 11,
+		color: '#6d6f71',
+		textDecorationLine: 'underline',
+	},
+
+	markdownStyles: {
+		text: {
+			fontSize: 11,
+			color: '#6d6f71',
+		},
+	},
+};
+
+/*
 export default {
 	container: {
-		borderWidth: 1,
 		borderColor: colors.lightGray,
 		marginHorizontal: 5,
 		marginBottom: 10,
 		backgroundColor: colors.white,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
-		padding: 10,
 		paddingBottom: 5,
 	},
 
@@ -116,3 +141,4 @@ export default {
 		width: 30,
 	},
 };
+*/
