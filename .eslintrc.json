@@ -10,7 +10,6 @@
 
   "plugins": [
     "react",
-    "react-redux",
     "jsx",
     "prettier"
   ],
@@ -22,7 +21,6 @@
     "ReactDOM": true,
     "process": true,
     "module": true,
-    "axios": true,
     "_": true
   },
 
@@ -37,7 +35,6 @@
     "airbnb",
     "prettier",
     "plugin:react/recommended",
-    "plugin:react-redux/recommended",
     "prettier/babel",
     "prettier/react"
   ],
@@ -74,8 +71,6 @@
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 2,
-    "react-redux/connect-prefer-named-arguments": 0,
-    "react-redux/mapStateToProps-prefer-parameters-names": 0,
     "react/jsx-wrap-multilines": ["error", {
             "declaration": true,
             "assignment": true,
