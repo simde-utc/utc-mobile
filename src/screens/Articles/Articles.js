@@ -1,4 +1,3 @@
-
 /*
  * Récupère et affiche la liste des actualités (UTC et associatives).
  * @author Arthur Martello <arthur.martello@etu.utc.fr>
@@ -8,32 +7,31 @@
  */
 
 import React from 'react';
-import { FlatList, Platform, View } from 'react-native';
-import styles from '../../styles';
-import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
+import { FlatList, View, Platform, SearchBar } from 'react-native';
+import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import CASAuth from '../../services/CASAuth';
 import PortailApi from '../../services/Portail';
 import ActualitesUTC from '../../services/ActualitesUTC';
 import ArticleComponent from '../../components/Articles/Article';
 import FakeItem from '../../components/FakeItem';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { SearchBar } from 'react-native-elements';
+import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
+import styles from '../../styles';
+import { _, e } from '../../utils/i18n';
 
 const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.4;
 
 export default class ArticlesScreen extends React.Component {
-	static navigationOptions = {
-		headerTitle: 'Actualités',
+	static navigationOptions = () => ({
+		title: _('actualities'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-
-	};
+	});
 
 	constructor(props) {
 		super(props);
@@ -46,9 +44,9 @@ export default class ArticlesScreen extends React.Component {
 			canLoadMorePortailArticles: true,
 			articles: [],
 			filters: [
-				{displayName: 'Toutes', filterTag: 'all'},
-				{displayName: 'UTC', filterTag: 'utc'},
-				{displayName: 'Associations', filterTag: 'assos'},
+				{ displayName: _('all'), filterTag: 'all' },
+				{ displayName: _('utc'), filterTag: 'utc' },
+				{ displayName: _('associations'), filterTag: 'assos' },
 			],
 			selectedFilterIndex: 0,
 			loading: false,
@@ -197,8 +195,9 @@ export default class ArticlesScreen extends React.Component {
 	renderFilters() {
 		const { selectedFilterIndex, filters } = this.state;
 
-		if (filters.length <= 0)
-			throw "No filter has been defined";
+		if (filters.length <= 0) {
+			throw e('no_filters');
+		}
 
 		return (
 			<View
@@ -216,8 +215,8 @@ export default class ArticlesScreen extends React.Component {
 					values={filters.map(filter => filter.displayName)}
 					selectedIndex={selectedFilterIndex}
 					onTabPress={index => {
-						this.setState({selectedFilterIndex: index})}
-					}
+						this.setState({ selectedFilterIndex: index });
+					}}
 				/>
 			</View>
 		);
@@ -226,25 +225,32 @@ export default class ArticlesScreen extends React.Component {
 	renderSearchBar() {
 		const { search } = this.state;
 
-		return <SearchBar
-			placeholder="Rechercher..."
-			platform={Platform.OS}
-			value={search}
-			onChangeText={search => this.setState({search: search})}
-			lightTheme={true}
-			containerStyle={{backgroundColor: '#fff'}}
-			inputContainerStyle={{backgroundColor: '#f4f4f4'}}
-			cancelButtonTitle={'Annuler'}
-			cancelButtonProps={{buttonTextStyle: {color: '#007383'}}}
-			round={true}
-		/>
+		return (
+			<SearchBar
+				placeholder={_('search')}
+				platform={Platform.OS}
+				value={search}
+				onChangeText={search => this.setState({ search })}
+				lightTheme
+				containerStyle={{ backgroundColor: '#fff' }}
+				inputContainerStyle={{ backgroundColor: '#f4f4f4' }}
+				cancelButtonTitle={_('cancel')}
+				cancelButtonProps={{ buttonTextStyle: { color: '#007383' } }}
+				round
+			/>
+		);
 	}
 
 	render() {
 		const { navigation } = this.props;
-		const { search, articles, filters, selectedFilterIndex } = this.state;
+		const { articles, filters, selectedFilterIndex } = this.state;
 
-		const filteredArticles = selectedFilterIndex === 0 ? articles : articles.filter(article => article.article_type === filters[selectedFilterIndex].filterTag);
+		const filteredArticles =
+			selectedFilterIndex === 0
+				? articles
+				: articles.filter(
+						article => article.article_type === filters[selectedFilterIndex].filterTag
+				  );
 
 		// TODO: filtrer en fonction de la recherche (barre de recherche dans this.renderSearchBar
 
@@ -252,7 +258,9 @@ export default class ArticlesScreen extends React.Component {
 			<FlatList
 				style={styles.scrollable.list}
 				data={filteredArticles}
-				renderItem={item => <ArticleComponent data={item} navigation={navigation} portailInstance={PortailApi}/>}
+				renderItem={item => (
+					<ArticleComponent data={item} navigation={navigation} portailInstance={PortailApi} />
+				)}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
 				onEndReached={this.loadMoreContentAsync.bind(this)}
 				onEndReachedThreshold={THRESHOLD}
@@ -260,8 +268,10 @@ export default class ArticlesScreen extends React.Component {
 				ListHeaderComponent={this.renderFilters()}
 				ListFooterComponent={
 					<View>
-						{filteredArticles.length > 0 ? <View style={styles.scrollable.sectionSeparator} /> : null}
-						<FakeItem title="Chargement..." />
+						{filteredArticles.length > 0 ? (
+							<View style={styles.scrollable.sectionSeparator} />
+						) : null}
+						<FakeItem title={_('loading')} />
 					</View>
 				}
 			/>

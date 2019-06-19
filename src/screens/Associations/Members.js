@@ -1,8 +1,10 @@
 import React from 'react';
 import { FlatList, Image, ScrollView, Text, View } from 'react-native';
+
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 import pictureIcon from '../../img/icons/picture.png';
+import { _, Associations as t } from '../../utils/i18n';
 
 export class Member extends React.PureComponent {
 	constructor(props) {
@@ -113,7 +115,7 @@ export default class Members extends React.PureComponent {
 		if (loading)
 			return (
 				<ScrollView style={styles.scrollable.list}>
-					<FakeMember title="Chargement..." />
+					<FakeMember title={_('loading')} />
 				</ScrollView>
 			);
 		return (
@@ -126,7 +128,7 @@ export default class Members extends React.PureComponent {
 					return <Member member={item.member} />;
 				}}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-				ListEmptyComponent={() => <FakeMember title="Aucun membre" />}
+				ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
 			/>
 		);
 	}

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+
 import Comments from './Comments';
 import styles from '../../styles';
 import { colors } from '../../styles/variables';
+import { e } from '../../utils/i18n';
 
 // TODO: factoriser le nametag
 
@@ -11,7 +13,7 @@ export default class Comment extends React.PureComponent {
 		super(props);
 
 		if (!props.data) {
-			throw 'No data provided';
+			throw e('no_data_provided');
 		}
 	}
 

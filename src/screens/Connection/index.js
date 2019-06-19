@@ -5,29 +5,27 @@
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license GPL-3.0
- * */
+ */
 
 import React from 'react';
 import { View, TextInput, Alert } from 'react-native';
 import Button from 'react-native-button';
 import Spinner from 'react-native-loading-spinner-overlay';
-import styles from '../../styles';
 
-// Components
 import BigButton from '../../components/BigButton';
 import HeaderView from '../../components/HeaderView';
-
-// API
 import PortailApi from '../../services/Portail';
 import CASAuth from '../../services/CASAuth';
+import styles from '../../styles';
+import { _, Connection as t } from '../../utils/i18n';
 
 export default class ConnectionScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Connexion',
+	static navigationOptions = () => ({
+		title: _('connection'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	constructor(props) {
 		super(props);
@@ -36,9 +34,8 @@ export default class ConnectionScreen extends React.Component {
 			emailOrLogin: '',
 			password: '',
 			allowEmail: false,
-			forceCreation: false,
 			loading: false,
-			loadingText: 'Connexion en cours...',
+			loadingText: t('connecting'),
 		};
 	}
 
@@ -46,12 +43,9 @@ export default class ConnectionScreen extends React.Component {
 		const { emailOrLogin, password, allowEmail } = this.state;
 
 		if (emailOrLogin.length === 0 || password.length === 0) {
-			Alert.alert(
-				'Connexion',
-				'Il est nécessaire de remplir les deux champs',
-				[{ text: 'Continuer' }],
-				{ cancelable: true }
-			);
+			Alert.alert(_('connection'), t('fill_all_inputs'), [{ text: _('continue') }], {
+				cancelable: true,
+			});
 		} else if (emailOrLogin.includes('@') && !allowEmail) {
 			this.setState(prevState => {
 				prevState.allowEmail = true;
@@ -59,19 +53,16 @@ export default class ConnectionScreen extends React.Component {
 				return prevState;
 			});
 
-			Alert.alert(
-				'Connexion',
-				'Il est préférable de se connecter via son compte CAS. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-				[{ text: 'Continuer' }],
-				{ cancelable: true }
-			);
+			Alert.alert(_('connection'), t('prefer_cas'), [{ text: _('continue') }], {
+				cancelable: true,
+			});
 		} else {
 			this.connect();
 		}
 	}
 
 	connect() {
-		const { emailOrLogin, password, forceCreation } = this.state;
+		const { emailOrLogin, password } = this.state;
 
 		this.setState(prevState => {
 			prevState.loading = true;
@@ -79,82 +70,35 @@ export default class ConnectionScreen extends React.Component {
 			return prevState;
 		});
 
-		new Promise(() => {
-			if (PortailApi.isConnected() && !emailOrLogin.includes('@') && !forceCreation) {
-				if (emailOrLogin.includes('@') && !forceCreation) {
-					this.setState(prevState => {
-						prevState.forceCreation = true;
-						prevState.loading = false;
+		return PortailApi.login(emailOrLogin, password)
+			.then(() => {
+				this.setState(prevState => {
+					prevState.loadingText = t('registering');
 
-						return prevState;
-					});
+					return prevState;
+				});
 
-					Alert.alert(
-						'Connexion',
-						'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-						[{ text: 'Continuer' }],
-						{ cancelable: false }
-					);
-				} else {
-					return PortailApi.createCasAuthentification(emailOrLogin, password).catch(
-						([_, status]) => {
-							if (status === 400) {
-								this.badLogin();
-
-								return;
-							}
-
-							this.setState(prevState => {
-								prevState.forceCreation = true;
-								prevState.loading = false;
-
-								return prevState;
-							});
-
-							Alert.alert(
-								'Connexion',
-								'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-								[{ text: 'Continuer' }],
-								{ cancelable: false }
-							);
-						}
-					);
-				}
-			} else {
-				return PortailApi.login(emailOrLogin, password)
+				return PortailApi.createAppAuthentification()
 					.then(() => {
+						return this.register();
+					})
+					.catch(e => {
+						console.warn(e);
 						this.setState(prevState => {
-							prevState.loadingText = "Enregistrement de l'appareil...";
+							prevState.loading = false;
 
 							return prevState;
 						});
 
-						return PortailApi.createAppAuthentification()
-							.then(() => {
-								return this.register();
-							})
-							.catch(e => {
-								console.warn(e);
-								this.setState(prevState => {
-									prevState.loading = false;
-
-									return prevState;
-								});
-
-								Alert.alert(
-									'Connexion',
-									"Une erreur a été rencontrée lors de l'enregistrement de l'application. Réessayez",
-									[{ text: 'Continuer' }],
-									{ cancelable: false }
-								);
-							});
-					})
-					.catch(e => {
-						console.log(e);
-						this.badLogin();
+						Alert.alert(_('connection'), e('registering_error'), [{ text: _('continue') }], {
+							cancelable: false,
+						});
 					});
-			}
-		}).then(this.register);
+			})
+			.catch(e => {
+				console.log(e);
+				this.badLogin();
+			});
 	}
 
 	register() {
@@ -163,7 +107,7 @@ export default class ConnectionScreen extends React.Component {
 
 		if (!emailOrLogin.includes('@')) {
 			this.setState(prevState => {
-				prevState.loadingText = 'Enregistrement des données CAS...';
+				prevState.loadingText = t('registering_cas');
 
 				return prevState;
 			});
@@ -178,12 +122,9 @@ export default class ConnectionScreen extends React.Component {
 						return prevState;
 					});
 
-					Alert.alert(
-						'Connexion',
-						'Une erreur a été rencontrée dans la sauvegarde de vos données CAS',
-						[{ text: 'Continuer' }],
-						{ cancelable: false }
-					);
+					Alert.alert(_('connection'), e('registering_cas_error'), [{ text: _('continue') }], {
+						cancelable: false,
+					});
 
 					navigation.navigate('Connected');
 				})
@@ -214,12 +155,9 @@ export default class ConnectionScreen extends React.Component {
 			return prevState;
 		});
 
-		Alert.alert(
-			'Connexion',
-			"Votre login et/ou votre mot de passe est incorrect, ou cette version de l'application n'est pas autorisée à se connecter.",
-			[{ text: 'Continuer' }],
-			{ cancelable: true }
-		);
+		Alert.alert(_('connection'), _('bad_login_password'), [{ text: _('continue') }], {
+			cancelable: true,
+		});
 	}
 
 	render() {
@@ -236,12 +174,12 @@ export default class ConnectionScreen extends React.Component {
 						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
 					/>
 				</View>
-				<HeaderView title="Connectez-vous" subtitle="pour utiliser pleinement l'application" />
+				<HeaderView title={_('login')} subtitle={t('simple_usage')} />
 				<View style={viewStyle}>
 					<TextInput
 						style={styles.bigButton}
 						underlineColorAndroid="transparent"
-						placeholder="Login CAS / Email"
+						placeholder={_('username')}
 						value={emailOrLogin}
 						onChangeText={text =>
 							this.setState(() => {
@@ -255,7 +193,7 @@ export default class ConnectionScreen extends React.Component {
 					<TextInput
 						style={styles.bigButton}
 						underlineColorAndroid="transparent"
-						placeholder="Mot de passe"
+						placeholder={_('password')}
 						value={password}
 						onChangeText={text =>
 							this.setState(() => {
@@ -267,12 +205,17 @@ export default class ConnectionScreen extends React.Component {
 						secureTextEntry
 					/>
 					<BigButton
-						label="Se connecter"
+						label={_('login')}
 						style={styles.get('mt.lg', 'mb.md')}
 						onPress={() => this.tryToConnect()}
 					/>
-					<Button style={styles.lightBlueText} onPress={() => navigation.navigate('Connected')}>
-						Je ne souhaite pas me connecter
+				</View>
+				<View style={{ position: 'absolute', bottom: 20, width: '90%' }}>
+					<Button
+						style={styles.get('text.lightBlue', 'text.h5')}
+						onPress={() => navigation.navigate('Connected')}
+					>
+						{t('dont_login')}
 					</Button>
 				</View>
 			</View>

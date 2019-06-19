@@ -11,17 +11,19 @@
 import React from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
+import i18nJs from 'i18n-js';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { colors } from '../styles/variables';
-import styles from '../styles';
-import utcLogo from '../img/logo_utc.png';
 
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
+import { colors } from '../styles/variables';
+import styles from '../styles';
+import utcLogo from '../img/logo_utc.png';
+import { _, AppLoader as t } from '../utils/i18n';
 
 export default class AppLoaderScreen extends React.Component {
 	static loadLocale() {
@@ -59,6 +61,7 @@ export default class AppLoaderScreen extends React.Component {
 		};
 
 		LocaleConfig.defaultLocale = 'fr';
+		i18nJs.locale = 'fr';
 	}
 
 	static loadFonts() {
@@ -73,7 +76,7 @@ export default class AppLoaderScreen extends React.Component {
 		super(props);
 
 		this.state = {
-			text: "Chargement de l'application",
+			text: '',
 			screen: 'Welcome',
 		};
 	}
@@ -88,14 +91,14 @@ export default class AppLoaderScreen extends React.Component {
 		return PortailApi.getAppData()
 			.then(() => {
 				this.setState({
-					text: 'Vérification des données chiffrées',
+					text: t('check_secure_data'),
 				});
 
 				return this.getCasData();
 			})
 			.catch(() => {
 				this.setState({
-					text: 'Erreur lors de la récupération des données',
+					text: t('error_on_loading'),
 					screen: 'Welcome',
 				});
 
@@ -108,7 +111,7 @@ export default class AppLoaderScreen extends React.Component {
 			.then(data => {
 				if (data) {
 					this.setState({
-						text: 'Vérification de la connexion CAS-UTC',
+						text: t('check_cas'),
 					});
 
 					return this.checkCasConnexion(data.ticket, data.login, data.password);
@@ -126,7 +129,7 @@ export default class AppLoaderScreen extends React.Component {
 			})
 			.catch(() => {
 				this.setState({
-					text: 'Reconnexion au CAS-UTC',
+					text: t('connect_cas'),
 				});
 
 				return CASAuth.login(login, password)
@@ -141,7 +144,7 @@ export default class AppLoaderScreen extends React.Component {
 		return PortailApi.login(login, password)
 			.then(() => {
 				this.setState({
-					text: 'Récupération des données utilisateurs',
+					text: t('get_user_data'),
 				});
 
 				// On récupère les données utilisateurs.
@@ -152,7 +155,7 @@ export default class AppLoaderScreen extends React.Component {
 
 	reinitData() {
 		this.setState({
-			text: 'Réinitialisation des données',
+			text: t('reset_data'),
 			screen: 'Welcome',
 		});
 
@@ -164,11 +167,15 @@ export default class AppLoaderScreen extends React.Component {
 		AppLoaderScreen.loadLocale();
 		AppLoaderScreen.loadFonts();
 
+		this.setState({
+			text: _('loading'),
+		});
+
 		return PortailApi.getData()
 			.then(data => {
 				if (data) {
 					this.setState({
-						text: 'Reconnexion',
+						text: t('reconnection'),
 						screen: 'Home',
 					});
 
@@ -180,7 +187,7 @@ export default class AppLoaderScreen extends React.Component {
 			})
 			.catch(() => {
 				this.setState({
-					text: "Affichage de l'introduction",
+					text: t('go_intro'),
 					screen: 'Welcome',
 				});
 			});
@@ -202,7 +209,7 @@ export default class AppLoaderScreen extends React.Component {
 				<ActivityIndicator size="large" color={colors.yellow} />
 				<Text
 					style={[
-						styles.get('text.h3', 'text.center', 'my.lg'),
+						styles.get('text.h3', 'text.center', 'text.h3'),
 						{ height: 100, width: 250, marginTop: 10 },
 					]}
 				>

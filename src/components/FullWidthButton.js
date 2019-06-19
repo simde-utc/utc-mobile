@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+
 import Icon from './Icon';
-import styles from '../styles';
 import yellowArrowIcon from '../img/icons/arrow_yellow.png';
+import styles from '../styles';
 
 const buttonStyles = styles.navigation.fullWidthButton;
 

@@ -1,14 +1,16 @@
 import React from 'react';
 import { FlatList } from 'react-native';
+
 import Comment from './Comment';
 import styles from '../../styles';
+import { e } from '../../utils/i18n';
 
 export default class Comments extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
 		if (!props.data) {
-			throw 'No data provided';
+			throw e('no_data_provided');
 		}
 
 		this.flatListRef = React.createRef();

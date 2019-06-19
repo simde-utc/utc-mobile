@@ -1,10 +1,11 @@
 import React from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import styles from '../../styles';
 
 import WelcomeMessageScreen from './WelcomeMessage';
 import AppPurposeScreen from './AppPurpose';
 import SetPreferencesScreen from './SetPreferences';
+import styles from '../../styles';
+import { _ } from '../../utils/i18n';
 
 const slides = [
 	{
@@ -22,12 +23,12 @@ const slides = [
 ];
 
 export default class WelcomeScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Bienvenue',
+	static navigationOptions = () => ({
+		title: _('welcome'),
 		headerStyle: {
 			display: 'none',
 		},
-	};
+	});
 
 	renderSlide(slide) {
 		const { navigation } = this.props;

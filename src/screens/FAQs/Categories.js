@@ -1,21 +1,23 @@
 import React from 'react';
 import { Alert, SectionList, ScrollView, View, Text } from 'react-native';
-import PortailApi from '../../services/Portail';
-import styles from '../../styles';
+
 import FakeItem from '../../components/FakeItem';
 import Category from '../../components/FAQs/Category';
 import FakeCategory from '../../components/FAQs/FakeCategory';
+import PortailApi from '../../services/Portail';
+import styles from '../../styles';
+import { _, FAQs as t, e } from '../../utils/i18n';
 
 export default class CategoriesScreen extends React.PureComponent {
-	static navigationOptions = {
-		headerTitle: 'Foire aux questions',
+	static navigationOptions = () => ({
+		headerTitle: _('faq'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-		headerBackTitle: 'Catégories',
-	};
+		headerBackTitle: _('categories'),
+	});
 
 	constructor(props) {
 		super(props);
@@ -34,11 +36,9 @@ export default class CategoriesScreen extends React.PureComponent {
 			.catch(reason => {
 				console.warn(reason);
 
-				Alert.alert(
-					'Foire aux questions non disponible',
-					'Une erreur est survenue lors de la récupération des questions.',
-					[{ text: 'OK', onPress: () => navigation.goBack() }]
-				);
+				Alert.alert(_('faq'), e('get_question_error'), [
+					{ text: _('ok'), onPress: () => navigation.goBack() },
+				]);
 
 				this.setState({ loading: false });
 			});
@@ -49,7 +49,7 @@ export default class CategoriesScreen extends React.PureComponent {
 
 		return [
 			{
-				title: 'Catégories',
+				title: _('categories'),
 				data: categories
 					.filter(category => category.parent == null)
 					.map(category => {
@@ -66,7 +66,7 @@ export default class CategoriesScreen extends React.PureComponent {
 		if (loading)
 			return (
 				<ScrollView style={styles.scrollable.list}>
-					<FakeCategory title="Chargement..." />
+					<FakeCategory title={_('loading')} />
 				</ScrollView>
 			);
 
@@ -95,7 +95,7 @@ export default class CategoriesScreen extends React.PureComponent {
 						</View>
 					)}
 					ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-					ListEmptyComponent={() => <FakeItem title={"Aucune question n'a été trouvée"} />}
+					ListEmptyComponent={() => <FakeItem title={t('no_questions')} />}
 				/>
 			</View>
 		);

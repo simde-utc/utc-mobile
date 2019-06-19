@@ -1,32 +1,24 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
-import List from '../../components/List';
 
-import styles from '../../styles';
+import List from '../../components/List';
 import HeaderView from '../../components/HeaderView';
+import styles from '../../styles';
+import { _, Welcome as t } from '../../utils/i18n';
 
 const endMessageStyle = styles.get('text.yellow', 'text.center', 'text.h4');
 
 const forMembersData = [
-	{
-		icon: 'news',
-		text: "Suivre et être notifié des actualités de l'UTC et de vos associations préférées",
-	},
-	{ icon: 'map', text: 'Se repérer dans le campus' },
-	{
-		icon: 'bell',
-		text: "Etre notifié des résultats des examens et d'événements qui vous intéressent",
-	},
-	{
-		icon: 'calendar',
-		text: 'Consulter et synchroniser son agenda scolaire, associatif et personnel',
-	},
+	{ icon: 'news', lazyText: 'screens.Welcome.member_news' },
+	{ icon: 'map', lazyText: 'screens.Welcome.member_map' },
+	{ icon: 'bell', lazyText: 'screens.Welcome.member_notif' },
+	{ icon: 'calendar', lazyText: 'screens.Welcome.member_calendar' },
 ];
 const forInterestedData = [
-	{ icon: 'news', text: "Suivre les actualités de l'UTC" },
-	{ icon: 'map', text: 'Se repérer dans le campus' },
-	{ icon: 'calendar', text: 'Consulter et synchroniser son agenda associatif et personnel' },
+	{ icon: 'news', lazyText: 'screens.Welcome.interested_news' },
+	{ icon: 'map', lazyText: 'screens.Welcome.interested_map' },
+	{ icon: 'calendar', lazyText: 'screens.Welcome.interested_calendar' },
 ];
 
 const ListData = data => <List data={data} />;
@@ -37,13 +29,13 @@ const PurposeTabs = createMaterialTopTabNavigator(
 		Members: {
 			screen: () => ListData(forMembersData),
 			navigationOptions: () => ({
-				title: 'Membre UTC',
+				title: _('utc_member'),
 			}),
 		},
 		Interested: {
 			screen: () => ListData(forInterestedData),
 			navigationOptions: () => ({
-				title: 'Intéressé',
+				title: _('interested'),
 			}),
 		},
 	},
@@ -67,19 +59,13 @@ const bottomStyle = {
 
 const AppPurposeScreen = () => (
 	<View style={styles.container.default}>
-		<HeaderView
-			style={{ flex: 3 }}
-			title="A quoi ça sert ?"
-			subtitle="En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux associations, étudiants, personnels et enseignants de l'UTC, mais aussi aux entreprises et personnes interessées par l'UTC : entreprises, compiégnois."
-		/>
+		<HeaderView style={{ flex: 3 }} title={t('goal')} subtitle={t('goal_explanation')} />
 		<View style={{ flex: 7, justifyContent: 'space-between', width: '100%' }}>
 			<View style={{ flex: 6, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>
 			<View style={bottomStyle}>
-				<Text style={endMessageStyle}>
-					Et bien d'autres fonctionnalités à découvrir dans l'application !
-				</Text>
+				<Text style={endMessageStyle}>{t('more_functionalities')}</Text>
 			</View>
 		</View>
 	</View>
