@@ -60,7 +60,7 @@ const bottomStyle = {
 const AppPurposeScreen = () => (
 	<View style={styles.container.default}>
 		<HeaderView style={{ flex: 3 }} title={t('goal')} subtitle={t('goal_explanation')} />
-		<View style={{ flex: 7, justifyContent: 'space-between' }}>
+		<View style={{ flex: 7, justifyContent: 'space-between', width: '100%' }}>
 			<View style={{ flex: 6, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>

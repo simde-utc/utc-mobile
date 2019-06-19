@@ -51,7 +51,7 @@ const MainLayout = createBottomTabNavigator(
 		News: {
 			screen: ArticlesScreen,
 			navigationOptions: () => ({
-				title: _('actualities'),
+				title: _('actus'),
 				tabBarIcon: generateTabBar(NewsOn, NewsOff),
 			}),
 		},
