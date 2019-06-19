@@ -4,13 +4,11 @@ import ArticleComponent from '../../components/Articles/Article';
 import styles from '../../styles';
 import PortailApi from '../../services/Portail';
 
+import { _, e } from '../../utils/i18n';
+
 export default class fullArticleScreen extends React.PureComponent {
 	static navigationOptions = ({ navigation }) => ({
-		headerTitle:
-			typeof navigation.state.params !== 'undefined' &&
-			typeof navigation.state.params.title !== 'undefined'
-				? navigation.state.params.title
-				: 'Article',
+		headerTitle: navigation.getParam('title', _('article')),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
@@ -24,15 +22,24 @@ export default class fullArticleScreen extends React.PureComponent {
 		this.article = props.navigation.getParam('article', 'NOARTICLE');
 		this.navigation = props.navigation.getParam('navigation', 'NONAVIGATION');
 
-		if (this.article === 'NOARTICLE') throw 'No article provided';
+		if (this.article === 'NOARTICLE') {
+			throw e('no_articles');
+		}
 
-		if (this.navigation === 'NONAVIGATION') throw 'No navigation provided';
+		if (this.navigation === 'NONAVIGATION') {
+			throw e('no_navigation');
+		}
 	}
 
 	render() {
 		return (
 			<ScrollView style={styles.scrollable.list}>
-				<ArticleComponent data={this.article} navigation={this.navigation} full={true} portailInstance={PortailApi} />
+				<ArticleComponent
+					data={this.article}
+					navigation={this.navigation}
+					full
+					portailInstance={PortailApi}
+				/>
 			</ScrollView>
 		);
 	}

@@ -1,16 +1,10 @@
 import React from 'react';
 import { Platform, View, Text } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
-import styles from '../styles';
 
-// Screens
-// import HomeScreen from './Home/';
-// import StorageTestScree from './StorageTest'; // DEBUG
 import EventsNavigator from './Events';
 import ArticlesScreen from './Articles';
 import NavigationScreen from './Navigation';
-
-// Icons
 import Icon from '../components/Icon';
 import HomeOn from '../img/icons/navbar/home-on.png';
 import HomeOff from '../img/icons/navbar/home-off.png';
@@ -22,6 +16,8 @@ import NotificationsOn from '../img/icons/navbar/bell-on.png';
 import NotificationsOff from '../img/icons/navbar/bell-off.png';
 import HamburgerOn from '../img/icons/navbar/hamburger-on.png';
 import HamburgerOff from '../img/icons/navbar/hamburger-off.png';
+import styles from '../styles';
+import { _ } from '../utils/i18n';
 
 // DEBUG
 const show = text => (
@@ -47,38 +43,38 @@ const MainLayout = createBottomTabNavigator(
 		// Storage: StorageTestScreen,	// DEBUG
 		Home: {
 			screen: HomeScreen,
-			navigationOptions: {
-				title: 'Accueil',
+			navigationOptions: () => ({
+				title: _('home'),
 				tabBarIcon: generateTabBar(HomeOn, HomeOff),
-			},
+			}),
 		},
 		News: {
 			screen: ArticlesScreen,
-			navigationOptions: {
-				title: 'Actus',
+			navigationOptions: () => ({
+				title: _('actus'),
 				tabBarIcon: generateTabBar(NewsOn, NewsOff),
-			},
+			}),
 		},
 		Events: {
 			screen: EventsNavigator,
-			navigationOptions: {
-				title: 'Calendrier',
+			navigationOptions: () => ({
+				title: _('calendar'),
 				tabBarIcon: generateTabBar(EventsOn, EventsOff),
-			},
+			}),
 		},
 		Notifications: {
 			screen: NotificationsScreen,
-			navigationOptions: {
-				title: 'Notifications',
+			navigationOptions: () => ({
+				title: _('notifications'),
 				tabBarIcon: generateTabBar(NotificationsOn, NotificationsOff),
-			},
+			}),
 		},
 		Hamburger: {
 			screen: NavigationScreen,
-			navigationOptions: {
-				title: 'Navigation',
+			navigationOptions: () => ({
+				title: _('menu'),
 				tabBarIcon: generateTabBar(HamburgerOn, HamburgerOff),
-			},
+			}),
 		},
 	},
 	{

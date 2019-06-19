@@ -2,18 +2,17 @@ import React from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import openMap from 'react-native-open-maps';
-import styles from '../../styles';
 
-// Components
 import BigButton from '../../components/BigButton';
 import Map from '../../components/Map';
-
 import PortailApi from '../../services/Portail';
+import styles from '../../styles';
+import { _, Events as t } from '../../utils/i18n';
 
 export default class EventScreen extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		return {
-			title: navigation.getParam('name', 'Evènement'),
+			title: navigation.getParam('name', _('evenement')),
 		};
 	};
 
@@ -96,11 +95,7 @@ export default class EventScreen extends React.Component {
 		return (
 			<View style={styles.container.default}>
 				<View>
-					<Spinner
-						visible={loading}
-						textContent="Chargement de l'évènement..."
-						textStyle={{ color: '#FFF' }}
-					/>
+					<Spinner visible={loading} textContent={_('loading')} textStyle={{ color: '#FFF' }} />
 				</View>
 				<TouchableHighlight
 					style={{ backgroundColor: '#F00', width: '100%', aspectRatio: 2 }}
@@ -113,12 +108,12 @@ export default class EventScreen extends React.Component {
 				<Text>{event.owned_by && event.owned_by.name}</Text>
 				<View style={viewStyle}>
 					<BigButton
-						label="Ajouter dans un calendrier"
+						label={t('add_calendar')}
 						style={styles.get('mt.lg', 'mb.md')}
 						onPress={() => this.connect()}
 					/>
 					<BigButton
-						label="Partager"
+						label={_('share')}
 						style={styles.get('mt.lg', 'mb.md')}
 						onPress={() => this.connect()}
 					/>

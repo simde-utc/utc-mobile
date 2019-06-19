@@ -10,9 +10,8 @@ import React from 'react';
 import { View, Text, TextInput, Image, ScrollView, TouchableHighlight } from 'react-native';
 
 import Color from '../utils/Color';
-
-import styles from '../styles';
 import searchIcon from '../img/search.png';
+import styles from '../styles';
 
 const viewStyle = {
 	height: 50,
@@ -175,7 +174,7 @@ export default class Filter extends React.Component {
 						<TextInput
 							style={searchTextStyle}
 							underlineColorAndroid="transparent"
-							placeHolder={searchText || 'Rechercher'}
+							placeHolder={searchText || _('search')}
 							value={searchText || search}
 							onChangeText={text => {
 								if (onSearchTextChange) text = onSearchTextChange(text) || text;

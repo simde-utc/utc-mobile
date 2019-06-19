@@ -2,21 +2,22 @@ import React from 'react';
 import { Alert, FlatList, View } from 'react-native';
 import withNavigation from 'react-navigation/src/views/withNavigation';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import PortailApi from '../../services/Portail';
-import styles from '../../styles';
 
 import AssociationBlock from '../../components/Associations/AssociationBlock';
 import FakeAssociationBlock from '../../components/Associations/FakeAssociationBlock';
+import { _, e } from '../../utils/i18n';
+import PortailApi from '../../services/Portail';
+import styles from '../../styles';
 
 export class AssociationsList extends React.PureComponent {
-	static navigationOptions = {
-		headerTitle: 'Associations',
+	static navigationOptions = () => ({
+		headerTitle: _('associations'),
 		headerStyle: {
 			backgroundColor: '#fff',
 		},
 		headerTintColor: '#007383',
 		headerForceInset: { top: 'never' },
-	};
+	});
 
 	constructor(props) {
 		super(props);
@@ -24,7 +25,7 @@ export class AssociationsList extends React.PureComponent {
 		this.state = {
 			entities: [],
 			filteredEntities: [],
-			filters: ['Toutes', 'PAE', 'PTE', 'PVDC', 'PSEC', 'BDE-UTC'],
+			filters: [_('all'), 'PAE', 'PTE', 'PVDC', 'PSEC', 'BDE-UTC'],
 			selectedFilterIndex: 0,
 		};
 
@@ -37,10 +38,7 @@ export class AssociationsList extends React.PureComponent {
 		if (!PortailApi.isConnected()) {
 			navigation.goBack();
 
-			Alert.alert(
-				'Association non disponible',
-				'Le PortailApi des Associations est actuellement inaccessible.'
-			);
+			Alert.alert(e('association_not_available'), e('portail_error'));
 		}
 
 		const entities = [];
@@ -56,11 +54,9 @@ export class AssociationsList extends React.PureComponent {
 			})
 			.catch(reason => {
 				console.warn(reason);
-				Alert.alert(
-					'Associations non disponibles',
-					'Une erreur est survenue lors de la récupération des associations.',
-					[{ text: 'OK', onPress: () => navigation.goBack() }]
-				);
+				Alert.alert(e('associations_not_available'), e('get_association_error'), [
+					{ text: _('ok'), onPress: () => navigation.goBack() },
+				]);
 			});
 	}
 
@@ -83,7 +79,7 @@ export class AssociationsList extends React.PureComponent {
 					entity => entity.parent != null && entity.parent.shortname === filters[index]
 				),
 			});
-		else throw 'Wrong filter index';
+		else throw e('wrong_filter');
 
 		// Scroll to the first of the FlatList
 		this.associationList.current.scrollToOffset({ animated: true, offset: 0 });
@@ -142,7 +138,7 @@ export class AssociationsList extends React.PureComponent {
 				ListHeaderComponent={this.renderFilters()}
 				stickyHeaderIndices={[0]}
 				ItemSeparatorComponent={() => <View style={styles.associations.separator} />}
-				ListEmptyComponent={() => <FakeAssociationBlock title="Chargement..." />}
+				ListEmptyComponent={() => <FakeAssociationBlock title={_('loading')} />}
 				initialNumToRender={5}
 			/>
 		);

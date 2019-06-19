@@ -1,0 +1,131 @@
+{
+	"screens": {
+		"AppLoader": {
+			"loading": "Application loading...",
+			"check_secure_data": "Checking encrypted data...",
+			"check_cas": "Checking CAS-UTC connection...",
+			"connect_cas": "Reconnecting to the CAS-UTC...",
+			"get_user_data": "Retrieving user data...",
+			"reset_data": "Reseting data...",
+			"reconnection": "Reconnection...",
+			"go_intro": "Redirecting to introduction..."
+		},
+		"Articles": {
+			"no_articles": "No articles",
+			"to_remove": " Lire la suite. </a>",
+			"show_more": "Show more...",
+		},
+		"Associations": {
+			"no_members": "No members"
+		},
+		"Connected": {
+			"you_are_connected": "%{name}, you are connected !",
+			"you_are_not_connected": "You are not connected",
+			"personnalize": "and personnalize it",
+			"registering": "Registering the app...",
+			"ready_to_use": "You are ready to use the app",
+			"go_home": "Go home"
+		},
+		"Connection": {
+			"connecting": "Connecting...",
+			"fill_all_inputs": "You need to fill the two inputs",
+			"prefer_cas": "It is prefered to connect with the CAS-UTC credentials. If you still want to log in with your email adress, press 'Continue'",
+			"registering": "Registering the app...",
+			"registering_cas": "Registering CAS-UTC data...",
+			"bad_login_password": "Bad login and/or password",
+			"simple_usage": "Use simply the application",
+			"dont_login": "I don't want to log in or I have no accounts"
+		},
+		"Events": {
+			"add_calendar": "Add to a calendar"
+		},
+		"FAQs": {
+			"no_questions": "No questions available"
+		},
+		"Map": {
+			"open_maps": "Open in Maps",
+			"app_to_use": "What app would you like to use?"
+		},
+		"Welcome": {
+			"learn_more": "We would know more about you",
+			"allow_param": "It will allow us to define the best settings for you",
+			"show_utc": "Show UTC news",
+			"show_assos": "Show the associative life",
+			"utc_member": "Are member of the UTC/BDE-UTC?",
+			"discover": "Discover the app together",
+			"swap_to_begin": "Swap right to begin",
+			"member_news": "Follow and be notified of all news and events",
+			"member_map": "Do not get lost in the UTC",
+			"member_notif": "Follow and be notified of all news and events. Receive also your exam results",
+			"member_calendar": "Consult and synchronize your associative, cursus and personal agenda",
+			"interested_news": "Follow the UTC news",
+			"interested_map": "Do not get lost in the UTC",
+			"interested_calendar": "Consult and synchronize your associative and personal agenda",
+			"goal": "What is the goal?",
+			"goal_explanation": "Depending on your situation, you will discover some features of this application. It is intended for associations, students, staff and teachers of the UTC, but also for companies and people interested in the UTC: companies, compiégnois",
+			"more_functionalities": "And more functionalities to discover !"
+		}
+	},
+	"errors": {
+		"data_loading": "An error occured when retrieving data",
+		"no_data_provided": "No data provided",
+		"no_articles": "No articles provided",
+		"no_navigation": "No navigation data provided",
+		"association_not_available": "Association not available",
+		"associations_not_available": "Associations not available",
+		"get_association_error": "An error occured when retrieving associations",
+		"portail_error": "An unexpected error occured",
+		"retrieving_error": "An error occured when retrieving information",
+		"wrong_filter": "Wrong filter index",
+		"registering_error": "An error occured when registring the application. Please, restart the application after killing it",
+		"registering_cas_error": "An error occured when saving CAS-UTC data",
+		"get_question_error": "An error occured when retrieving questions"
+	},
+	"words": {
+		"loading": "loading...",
+		"search": "search...",
+		"articles": "articles",
+		"article": "article",
+		"association": "association",
+		"associations": "associations",
+		"all": "all",
+		"ok": "ok",
+		"details": "details",
+		"member": "member",
+		"members": "members",
+		"connected": "connected",
+		"connection": "connection",
+		"registering": "registering",
+		"continue": "continue",
+		"welcome": "welcome",
+		"login": "log in",
+		"username": "login CAS-UTC or email",
+		"password": "password",
+		"contacts": "contacts",
+		"social_networks": "social networks",
+		"calendar": "calendar",
+		"share": "share",
+		"confirm": "confirm",
+		"utc": "UTC",
+		"utc_member": "member UTC",
+		"interested": "interested",
+		"my_account": "my account",
+		"disconnect": "disconnect",
+		"faq": "frequently asked questions",
+		"map": "map",
+		"interactions": "interactions",
+		"buildings": "buildings",
+		"places": "places",
+		"cancel": "cancel",
+		"questions": "questions",
+		"categories": "categories",
+		"home": "home",
+		"actus": "actus",
+		"actualities": "actualities",
+		"notifications": "notifications",
+		"navigation": "navigation",
+		"others": "others",
+		"back": "back",
+		"here": "here"
+	},
+}

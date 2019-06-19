@@ -1,4 +1,3 @@
-
 /*
  * Bloc affichant les informations d'un article.
  * @author Arthur Martello <arthur.martello@etu.utc.fr>
@@ -11,13 +10,14 @@ import React from 'react';
 import { Dimensions, Image, Linking, Text, TouchableHighlight, View } from 'react-native';
 import HTML from 'react-native-render-html';
 import Markdown from 'react-native-simple-markdown';
-import styles from '../../styles';
+
 import LogoUTC from '../../img/icon.png';
 import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
-
+import styles from '../../styles';
+import { Articles as t } from '../../utils/i18n';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
 
 const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
@@ -57,11 +57,9 @@ export default class ArticleComponent extends React.PureComponent {
 		super(props);
 
 		this.state = props.initialState || {
-			folded: true,
 			liked: false,
 			disliked: false,
 			seen: false,
-			comments: 0,
 		};
 		this.image = null;
 		this.imageResizeMode = 'cover';
@@ -262,7 +260,7 @@ export default class ArticleComponent extends React.PureComponent {
 						{`${description.substring(0, 200)}...`}
 					</Markdown>
 					<View style={{ marginTop: 10 }}>
-						<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+						<Text style={styles.article.descriptionLink}>{t('show_more')}</Text>
 					</View>
 				</View>
 			);
@@ -282,12 +280,12 @@ export default class ArticleComponent extends React.PureComponent {
 				<View>
 					<HTML
 						baseFontStyle={styles.scrollable.item.subsubtitle}
-						html={excerpt.replace(' Lire la suite. </a>', '')} // L'API impose son lien vers la suite
+						html={excerpt.replace(t('to_remove'), '')} // L'API impose son lien vers la suite
 						imagesMaxWidth={Dimensions.get('window').width}
 						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
 					/>
 
-					<Text style={styles.article.descriptionLink}>Afficher plus...</Text>
+					<Text style={styles.article.descriptionLink}>{t('show_more')}</Text>
 				</View>
 			);
 
@@ -302,7 +300,7 @@ export default class ArticleComponent extends React.PureComponent {
 
 	render() {
 		const { data, navigation } = this.props;
-		const { folded, comments, liked, disliked, fullActions } = this.state;
+		const { liked, disliked } = this.state;
 
 		return (
 			<View style={styles.scrollable.item.view}>

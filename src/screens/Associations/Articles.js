@@ -1,9 +1,11 @@
 import React from 'react';
-import { FlatList, ScrollView, Text, View } from 'react-native';
+import { FlatList, ScrollView, View } from 'react-native';
+
 import PortailApi from '../../services/Portail';
 import ArticleComponent from '../../components/Articles/Article';
-import styles from '../../styles';
 import FakeItem from '../../components/FakeItem';
+import styles from '../../styles';
+import { _, Articles as t } from '../../utils/i18n';
 
 export default class Articles extends React.PureComponent {
 	constructor(props) {
@@ -42,12 +44,16 @@ export default class Articles extends React.PureComponent {
 
 		// This will evolve with new ArticleComponent view
 		if (loading)
-			return <ScrollView style={styles.scrollable.list}><FakeItem title="Chargement..." /></ScrollView>
+			return (
+				<ScrollView style={styles.scrollable.list}>
+					<FakeItem title={_('loading')} />
+				</ScrollView>
+			);
 		return (
 			<FlatList
 				style={styles.scrollable.list}
 				data={articles.map(article => {
-					return { key: article.id, article: {item: article} };
+					return { key: article.id, article: { item: article } };
 				})}
 				renderItem={({ item }) => {
 					console.warn(item);
@@ -60,7 +66,7 @@ export default class Articles extends React.PureComponent {
 					);
 				}}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
-				ListEmptyComponent={() => <FakeItem title="Aucun article." />}
+				ListEmptyComponent={() => <FakeItem title={t('no_articles')} />}
 			/>
 		);
 	}
