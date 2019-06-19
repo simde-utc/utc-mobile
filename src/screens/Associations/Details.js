@@ -95,6 +95,7 @@ export default class Details extends React.PureComponent {
 				case 'linkedin':
 				case 'snapchat':
 				case 'instagram':
+				case 'youtube':
 					Details.pushContact(networks, contact);
 					break;
 

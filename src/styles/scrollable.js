@@ -43,7 +43,7 @@ export default {
 		},
 
 		icon: {
-			paddingRight: 8,
+			paddingRight: 10,
 		},
 
 		title: {
