@@ -1,13 +1,10 @@
 import React from 'react';
 import { Linking, Text, TouchableHighlight, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
 import styles from '../styles';
 import Icon from './Icon';
 import openIcon from '../img/icons/open.png';
-import FacebookIcon from '../img/icons/social-networks/facebook.png';
-import InstagramIcon from '../img/icons/social-networks/instagram.png';
-import LinkedinIcon from '../img/icons/social-networks/linkedin.png';
-import TwitterIcon from '../img/icons/social-networks/twitter.png';
-import YoutubeIcon from '../img/icons/social-networks/youtube.png';
 
 export default class Contact extends React.Component {
 	onPress() {
@@ -42,32 +39,45 @@ export default class Contact extends React.Component {
 
 		switch (name) {
 			case 'facebook':
-				icon = FacebookIcon;
+				icon = ['fab', 'facebook-f'];
 				break;
 
 			case 'instagram':
-				icon = InstagramIcon;
+				icon = ['fab', 'instagram'];
 				break;
 
 			case 'linkedin':
-				icon = LinkedinIcon;
+				icon = ['fab', 'linkedin-in'];
 				break;
 
 			case 'twitter':
-				icon = TwitterIcon;
+				icon = ['fab', 'twitter'];
 				break;
 
 			case 'youtube':
-				icon = YoutubeIcon;
+				icon = ['fab', 'youtube'];
+				break;
+
+			case 'email':
+				icon = ['far', 'envelope'];
+				break;
+
+			case 'url':
+				icon = ['fas', 'globe'];
 				break;
 
 			default:
-				return;
+				if (name) {
+					icon = ['fas', name];
+					break;
+				} else {
+					return;
+				}
 		}
 
 		return (
 			<View style={styles.scrollable.item.icon}>
-				<Icon image={icon} />
+				<FontAwesomeIcon icon={icon} size={22} style={styles.text.lightBlue} />
 			</View>
 		);
 	}
@@ -88,7 +98,7 @@ export default class Contact extends React.Component {
 						<Text style={styles.scrollable.item.subtitle}>{subtitle || url}</Text>
 					</View>
 					<View>
-						<Icon image={openIcon} />
+						<FontAwesomeIcon icon={['fas', 'external-link-alt']} size={22} style={styles.text.yellow} />
 					</View>
 				</View>
 			</TouchableHighlight>
