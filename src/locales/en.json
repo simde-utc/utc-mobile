@@ -11,7 +11,9 @@
 			"go_intro": "Redirecting to introduction..."
 		},
 		"Articles": {
-			"no_articles": "No articles"
+			"no_articles": "No articles",
+			"to_remove": " Lire la suite. </a>",
+			"show_more": "Show more...",
 		},
 		"Associations": {
 			"no_members": "No members"
@@ -68,6 +70,7 @@
 		"data_loading": "An error occured when retrieving data",
 		"no_data_provided": "No data provided",
 		"no_articles": "No articles provided",
+		"no_navigation": "No navigation data provided",
 		"association_not_available": "Association not available",
 		"associations_not_available": "Associations not available",
 		"get_association_error": "An error occured when retrieving associations",
@@ -80,6 +83,7 @@
 	},
 	"words": {
 		"loading": "loading...",
+		"search": "search...",
 		"articles": "articles",
 		"article": "article",
 		"association": "association",
@@ -102,6 +106,7 @@
 		"calendar": "calendar",
 		"share": "share",
 		"confirm": "confirm",
+		"utc": "UTC",
 		"utc_member": "member UTC",
 		"interested": "interested",
 		"my_account": "my account",
@@ -115,11 +120,11 @@
 		"questions": "questions",
 		"categories": "categories",
 		"home": "home",
-		"actualities": "actus",
+		"actus": "actus",
+		"actualities": "actualities",
 		"notifications": "notifications",
 		"navigation": "navigation",
 		"others": "others",
-		"search": "search",
 		"back": "back",
 		"here": "here"
 	},

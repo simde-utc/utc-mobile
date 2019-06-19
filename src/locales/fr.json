@@ -12,7 +12,9 @@
 			"go_intro": "Redirection vers l'introduction..."
 		},
 		"Articles": {
-			"no_articles": "Aucun article disponible"
+			"no_articles": "Aucun article disponible",
+			"to_remove": " Lire la suite. </a>",
+			"show_more": "Afficher plus...",
 		},
 		"Associations": {
 			"no_members": "Aucun membre"
@@ -69,6 +71,7 @@
 		"data_loading": "Une erreur a été détectée lors de la récupération de données",
 		"no_data_provided": "Aucune donnée reçue",
 		"no_articles": "Aucun article récupéré",
+		"no_navigation": "Aucune donnée de navigation fournie",
 		"association_not_available": "Association non disponible",
 		"associations_not_available": "Associations non disponibles",
 		"get_association_error": "Une erreur est survenue lors de la récupération des associations",
@@ -80,7 +83,8 @@
 		"get_question_error": "Une erreur est survenue lors de la récupération des questions"
 	},
 	"words": {
-		"loading": "Chargement...",
+		"loading": "chargement...",
+		"search": "rechercher...",
 		"articles": "articles",
 		"article": "article",
 		"association": "association",
@@ -103,6 +107,7 @@
 		"calendar": "calendrier",
 		"share": "partager",
 		"confirm": "confirmer",
+		"utc": "UTC",
 		"utc_member": "membre UTC",
 		"interested": "interessé",
 		"my_account": "mon compte",
@@ -115,11 +120,11 @@
 		"cancel": "annuler",
 		"questions": "questions",
 		"categories": "catégories",
-		"actualities": "actus",
+		"actus": "actus",
+		"actualities": "actualités",
 		"notifications": "notifications",
 		"menu": "menu",
 		"others": "autres",
-		"search": "rechercher",
 		"back": "retour",
 		"here": "ici"
 	},
