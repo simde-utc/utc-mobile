@@ -96,7 +96,11 @@ export default class Contact extends React.Component {
 						<Text style={styles.scrollable.item.subtitle}>{subtitle || url}</Text>
 					</View>
 					<View>
-						<FontAwesomeIcon icon={['fas', 'external-link-alt']} size={22} style={styles.text.yellow} />
+						<FontAwesomeIcon
+							icon={['fas', 'external-link-alt']}
+							size={22}
+							style={styles.text.yellow}
+						/>
 					</View>
 				</View>
 			</TouchableHighlight>

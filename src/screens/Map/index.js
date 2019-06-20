@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import { showLocation } from 'react-native-map-link';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import Icon from '../../components/Icon';
 import mapIcon from '../../img/map.png';
-import openIcon from '../../img/icons/open.png';
 import locationData from '../../data/locations';
 import styles from '../../styles';
 import { _, Map as t } from '../../utils/i18n';
@@ -50,7 +49,7 @@ const Location = ({ location }) => (
 				</Text>
 			</View>
 			<View>
-				<Icon image={openIcon} />
+				<FontAwesomeIcon icon={['fas', 'external-link-alt']} size={22} style={styles.text.yellow} />
 			</View>
 		</View>
 	</TouchableHighlight>
