@@ -71,7 +71,6 @@ export default class CategoriesScreen extends React.PureComponent {
 			);
 
 		return (
-			<View>
 				<SectionList
 					style={styles.scrollable.list}
 					sections={this.getSections()}
@@ -97,7 +96,6 @@ export default class CategoriesScreen extends React.PureComponent {
 					ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
 					ListEmptyComponent={() => <FakeItem title={t('no_questions')} />}
 				/>
-			</View>
 		);
 	}
 }

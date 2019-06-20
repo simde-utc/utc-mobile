@@ -56,7 +56,6 @@ export default class Articles extends React.PureComponent {
 					return { key: article.id, article: { item: article } };
 				})}
 				renderItem={({ item }) => {
-					console.warn(item);
 					return (
 						<ArticleComponent
 							navigation={navigation}
