@@ -151,7 +151,11 @@ export default class Details extends React.PureComponent {
 		const { loading, association, loadingContacts } = this.state;
 
 		if (loading)
-			return <ScrollView style={styles.scrollable.list}><FakeItem title={_('loading')} /></ScrollView>;
+			return (
+				<ScrollView style={styles.scrollable.list}>
+					<FakeItem title={_('loading')} />
+				</ScrollView>
+			);
 
 		if (association)
 			return (
@@ -169,7 +173,7 @@ export default class Details extends React.PureComponent {
 					</View>
 					{loadingContacts ? (
 						<ScrollView style={styles.scrollable.list}>
-							<View style={styles.scrollable.sectionSeparator}/>
+							<View style={styles.scrollable.sectionSeparator} />
 							<FakeItem title={_('loading')} />
 						</ScrollView>
 					) : (
@@ -178,7 +182,7 @@ export default class Details extends React.PureComponent {
 							renderItem={({ item }) => <Contact {...item} />}
 							renderSectionHeader={({ section: { title } }) => (
 								<View>
-									<View style={styles.scrollable.sectionSeparator}/>
+									<View style={styles.scrollable.sectionSeparator} />
 
 									<View style={styles.scrollable.sectionHeader.view}>
 										<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
