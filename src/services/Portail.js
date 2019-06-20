@@ -43,6 +43,7 @@ export class Portail extends Api {
 		'user-get-roles-assos-owned',
 		'user-get-faqs',
 		'user-get-contacts-assos',
+		'user-get-notifications',
 	];
 
 	constructor() {
@@ -562,6 +563,20 @@ export class Portail extends Api {
 
 		return new Promise((resolve, reject) => {
 			this.call(`${Portail.API_V1}faqs/${categoryId}/questions`, Api.GET, {})
+				.then(([data]) => {
+					resolve(data);
+				})
+				.catch(([response, status]) => {
+					reject([response, status]);
+				});
+		});
+	}
+
+	getUserNotifications() {
+		this.checkConnected();
+
+		return new Promise((resolve, reject) => {
+			this.call(`${Portail.API_V1}user/notifications`, Api.GET, {})
 				.then(([data]) => {
 					resolve(data);
 				})

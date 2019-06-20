@@ -6,7 +6,7 @@
 			"check_cas": "Checking CAS-UTC connection...",
 			"connect_cas": "Reconnecting to the CAS-UTC...",
 			"get_user_data": "Retrieving user data...",
-			"reset_data": "Reseting data...",
+			"reset_data": "Resetting data...",
 			"reconnection": "Reconnection...",
 			"go_intro": "Redirecting to introduction..."
 		},
@@ -21,7 +21,7 @@
 		"Connected": {
 			"you_are_connected": "%{name}, you are connected !",
 			"you_are_not_connected": "You are not connected",
-			"personnalize": "and personnalize it",
+			"personnalize": "and personalize it",
 			"registering": "Registering the app...",
 			"ready_to_use": "You are ready to use the app",
 			"go_home": "Go home"
@@ -29,7 +29,7 @@
 		"Connection": {
 			"connecting": "Connecting...",
 			"fill_all_inputs": "You need to fill the two inputs",
-			"prefer_cas": "It is prefered to connect with the CAS-UTC credentials. If you still want to log in with your email adress, press 'Continue'",
+			"prefer_cas": "It is preferred to connect with the CAS-UTC credentials. If you still want to log in with your email address, press 'Continue'",
 			"registering": "Registering the app...",
 			"registering_cas": "Registering CAS-UTC data...",
 			"bad_login_password": "Bad login and/or password",
@@ -38,6 +38,9 @@
 		},
 		"Events": {
 			"add_calendar": "Add to a calendar"
+		},
+		"Notifications": {
+			"no_notifications": "No new notification"
 		},
 		"FAQs": {
 			"no_questions": "No questions available"
@@ -63,23 +66,25 @@
 			"interested_calendar": "Consult and synchronize your associative and personal agenda",
 			"goal": "What is the goal?",
 			"goal_explanation": "Depending on your situation, you will discover some features of this application. It is intended for associations, students, staff and teachers of the UTC, but also for companies and people interested in the UTC: companies, compiégnois",
-			"more_functionalities": "And more functionalities to discover !"
+			"more_functionalities": "And more features to discover !"
 		}
 	},
 	"errors": {
-		"data_loading": "An error occured when retrieving data",
+		"data_loading": "An error occurred when retrieving data",
 		"no_data_provided": "No data provided",
 		"no_articles": "No articles provided",
 		"no_navigation": "No navigation data provided",
-		"association_not_available": "Association not available",
-		"associations_not_available": "Associations not available",
-		"get_association_error": "An error occured when retrieving associations",
-		"portail_error": "An unexpected error occured",
-		"retrieving_error": "An error occured when retrieving information",
+		"association_not_available": "Association is not available",
+		"associations_not_available": "Associations are not available",
+		"get_association_error": "An error occurred when retrieving associations",
+		"portail_error": "An unexpected error occurred",
+		"retrieving_error": "An error occurred when retrieving information",
 		"wrong_filter": "Wrong filter index",
-		"registering_error": "An error occured when registring the application. Please, restart the application after killing it",
-		"registering_cas_error": "An error occured when saving CAS-UTC data",
-		"get_question_error": "An error occured when retrieving questions"
+		"registering_error": "An error occurred when registering the application. Please, restart the application after killing it",
+		"registering_cas_error": "An error occurred when saving CAS-UTC data",
+		"get_question_error": "An error occurred when retrieving questions",
+		"notifications_not_available": "Notification are not available",
+		"get_notification_error": "An error occurred while retrieving notifications"
 	},
 	"words": {
 		"loading": "loading...",
@@ -120,8 +125,8 @@
 		"questions": "questions",
 		"categories": "categories",
 		"home": "home",
-		"actus": "actus",
-		"actualities": "actualities",
+		"actus": "news",
+		"actualities": "news",
 		"notifications": "notifications",
 		"navigation": "navigation",
 		"others": "others",
