@@ -10,16 +10,9 @@
 
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import Icon from './Icon';
-import News from '../img/icons/news.png';
-import Map from '../img/icons/map.png';
-import Bell from '../img/icons/bell.png';
-import Calendar from '../img/icons/calendar.png';
-import Arrow from '../img/icons/arrow_yellow.png';
 import i18n from '../utils/i18n';
-
-const nativeIcons = ['news', 'map', 'bell', 'calendar'];
 
 const listStyle = StyleSheet.create({
 	container: {
@@ -57,24 +50,6 @@ export default class List extends React.Component {
 		return String(index);
 	}
 
-	static iconKeyToSvg(key) {
-		switch (key) {
-			case 'news':
-				return News;
-			case 'map':
-				return Map;
-			case 'bell':
-				return Bell;
-			case 'calendar':
-			default:
-				return Calendar;
-		}
-	}
-
-	static isNativeIcon(icon) {
-		return nativeIcons.includes(icon);
-	}
-
 	constructor(props) {
 		super(props);
 
@@ -89,21 +64,11 @@ export default class List extends React.Component {
 				<View style={customElmtStyle || listStyle.rowWithArrowView}>
 					<View style={listStyle.elementView}>
 						<View style={listStyle.iconContainer}>
-							{icon &&
-								(List.isNativeIcon(icon) ? (
-									<Icon
-										style={listStyle.icon}
-										height={25}
-										width={25}
-										image={List.iconKeyToSvg(icon)}
-									/>
-								) : (
-									<Image source={icon} style={{ height: 25, width: 25 }} />
-								))}
+							<Image source={icon} style={{ height: 24, width: 24 }} />
 						</View>
 						<Text style={listStyle.text}>{text || i18n.t(lazyText)}</Text>
 					</View>
-					{arrow && <Icon style={listStyle.arrowStyle} height={25} width={25} image={Arrow} />}
+					{arrow && <FontAwesomeIcon style={['fas', 'arrow-right']} size={25} />}
 				</View>
 			</TouchableHighlight>
 		);
