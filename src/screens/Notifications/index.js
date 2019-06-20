@@ -14,7 +14,7 @@ export default createStackNavigator(
 	{
 		Notifications: {
 			screen: NotificationsScreen,
-		}
+		},
 	},
 	{
 		initialRouteName: 'Notifications',
