@@ -71,31 +71,31 @@ export default class CategoriesScreen extends React.PureComponent {
 			);
 
 		return (
-				<SectionList
-					style={styles.scrollable.list}
-					sections={this.getSections()}
-					renderItem={({ item }) => {
-						return (
-							<Category
-								category={item.category}
-								onPress={() => {
-									navigation.navigate({
-										key: item.key,
-										routeName: 'Questions',
-										params: { category: item.category },
-									});
-								}}
-							/>
-						);
-					}}
-					renderSectionHeader={({ section: { title } }) => (
-						<View style={styles.scrollable.sectionHeader.view}>
-							<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
-						</View>
-					)}
-					ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-					ListEmptyComponent={() => <FakeItem title={t('no_questions')} />}
-				/>
+			<SectionList
+				style={styles.scrollable.list}
+				sections={this.getSections()}
+				renderItem={({ item }) => {
+					return (
+						<Category
+							category={item.category}
+							onPress={() => {
+								navigation.navigate({
+									key: item.key,
+									routeName: 'Questions',
+									params: { category: item.category },
+								});
+							}}
+						/>
+					);
+				}}
+				renderSectionHeader={({ section: { title } }) => (
+					<View style={styles.scrollable.sectionHeader.view}>
+						<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
+					</View>
+				)}
+				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+				ListEmptyComponent={() => <FakeItem title={t('no_questions')} />}
+			/>
 		);
 	}
 }
