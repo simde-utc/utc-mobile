@@ -1,6 +1,8 @@
 /**
+ * Affiche toutes les notifications.
  *
  * @author Arthur Martello <arthur.martello@etu.utc.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2019, SiMDE-UTC
  * @license GPL-3.0
@@ -51,7 +53,8 @@ export default class NotificationsScreen extends React.PureComponent {
 	}
 
 	render() {
-		const { loading } = this.state;
+		const { navigation } = this.props;
+		const { loading, notifications } = this.state;
 
 		if (loading)
 			return (
@@ -60,13 +63,12 @@ export default class NotificationsScreen extends React.PureComponent {
 				</ScrollView>
 			);
 
-		const { notifications } = this.state;
-
 		return (
 			<FlatList
 				style={styles.scrollable.list}
 				data={notifications}
-				renderItem={item => <Notification data={item} key={item.id} />}
+				keyExtractor={item => item.id}
+				renderItem={item => <Notification {...item.item} navigation={navigation} />}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
 				ListEmptyComponent={() => <FakeItem title={t('no_notifications')} />}
 			/>
