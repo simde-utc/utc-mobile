@@ -3,8 +3,6 @@ import { Linking, Text, TouchableHighlight, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import styles from '../styles';
-import Icon from './Icon';
-import openIcon from '../img/icons/open.png';
 
 export default class Contact extends React.Component {
 	onPress() {

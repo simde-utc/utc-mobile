@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import Icon from './Icon';
-import yellowArrowIcon from '../img/icons/arrow_yellow_back.png';
 import styles from '../styles';
 import { _ } from '../utils/i18n';
 
@@ -17,7 +16,7 @@ const FullWidthBackButton = ({ onPress, name }) => (
 	>
 		<View style={buttonStyles.backView}>
 			<View style={buttonStyles.icon}>
-				<Icon image={yellowArrowIcon} />
+				<FontAwesomeIcon icon={['fas', 'arrow-left']} size={22} style={styles.text.yellow} />
 			</View>
 			<View style={buttonStyles.textBackView}>
 				<Text style={buttonStyles.textBack}>{name || _('back')}</Text>
