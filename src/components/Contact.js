@@ -24,7 +24,6 @@ export default class Contact extends React.Component {
 		}
 
 		Linking.canOpenURL(url).then(supported => {
-			console.log(supported);
 			if (supported) {
 				Linking.openURL(url);
 			}
