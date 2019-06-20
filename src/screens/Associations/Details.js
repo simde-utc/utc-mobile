@@ -150,7 +150,10 @@ export default class Details extends React.PureComponent {
 	render() {
 		const { loading, association, loadingContacts } = this.state;
 
-		if (!loading && association)
+		if (loading)
+			return <ScrollView style={styles.scrollable.list}><FakeItem title={_('loading')} /></ScrollView>;
+
+		if (association)
 			return (
 				<ScrollView style={{ backgroundColor: '#fff' }}>
 					{this.renderLogo()}
@@ -166,25 +169,28 @@ export default class Details extends React.PureComponent {
 					</View>
 					{loadingContacts ? (
 						<ScrollView style={styles.scrollable.list}>
-							<FakeItem title="Chargement..." />
+							<View style={styles.scrollable.sectionSeparator}/>
+							<FakeItem title={_('loading')} />
 						</ScrollView>
 					) : (
 						<SectionList
 							style={styles.scrollable.list}
 							renderItem={({ item }) => <Contact {...item} />}
 							renderSectionHeader={({ section: { title } }) => (
-								<View style={styles.scrollable.sectionHeader.view}>
-									<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
+								<View>
+									<View style={styles.scrollable.sectionSeparator}/>
+
+									<View style={styles.scrollable.sectionHeader.view}>
+										<Text style={styles.scrollable.sectionHeader.title}>{title}</Text>
+									</View>
 								</View>
 							)}
 							sections={this.getSections()}
 							keyExtractor={(item, index) => item + index}
 							ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-							renderSectionFooter={() => <View style={styles.scrollable.sectionSeparator} />}
 						/>
 					)}
 				</ScrollView>
 			);
-		return null;
 	}
 }
