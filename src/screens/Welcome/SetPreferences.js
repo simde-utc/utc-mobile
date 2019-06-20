@@ -5,6 +5,7 @@ import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
 import BigButton from '../../components/BigButton';
 import styles from '../../styles';
+import Preferences from '../../utils/Preferences';
 import { _, Welcome as t } from '../../utils/i18n';
 
 export default class SetPreferencesScreen extends React.Component {
@@ -13,9 +14,9 @@ export default class SetPreferencesScreen extends React.Component {
 
 		this.state = {
 			checked: {
-				utcNews: true,
-				assoLife: true,
-				utcMember: true,
+				SHOW_UTC_ACTUALITIES: Preferences.SHOW_UTC_ACTUALITIES,
+				SHOW_ASSOS_ACTUALITIES: Preferences.SHOW_ASSOS_ACTUALITIES,
+				IS_UTC_BDE_MEMBER: Preferences.IS_UTC_BDE_MEMBER,
 			},
 		};
 
@@ -36,7 +37,11 @@ export default class SetPreferencesScreen extends React.Component {
 		const { checked } = this.state;
 		const { navigation } = this.props;
 
-		if (checked.utcMember) {
+		for (const key in checked) {
+			Preferences[key] = checked[key];
+		}
+
+		if (checked.IS_UTC_BDE_MEMBER) {
 			navigation.navigate('Connection');
 		} else {
 			navigation.navigate('Connected');
@@ -57,22 +62,22 @@ export default class SetPreferencesScreen extends React.Component {
 				<HeaderView title={t('learn_more')} subtitle={t('allow_param')} />
 				<View style={viewStyle}>
 					<BigCheckBox
-						checked={checked.utcNews}
+						checked={checked.SHOW_UTC_ACTUALITIES}
 						labelStyle={text.h5}
 						label={t('show_utc')}
-						onPress={() => this.toggleCheck('utcNews')}
+						onPress={() => this.toggleCheck('SHOW_UTC_ACTUALITIES')}
 					/>
 					<BigCheckBox
-						checked={checked.assoLife}
+						checked={checked.SHOW_ASSOS_ACTUALITIES}
 						labelStyle={text.h5}
 						label={t('show_assos')}
-						onPress={() => this.toggleCheck('assoLife')}
+						onPress={() => this.toggleCheck('SHOW_ASSOS_ACTUALITIES')}
 					/>
 					<BigCheckBox
-						checked={checked.utcMember}
+						checked={checked.IS_UTC_BDE_MEMBER}
 						labelStyle={text.h5}
 						label={t('utc_member')}
-						onPress={() => this.toggleCheck('utcMember')}
+						onPress={() => this.toggleCheck('IS_UTC_BDE_MEMBER')}
 					/>
 					<BigButton label={_('confirm')} style={mt.lg} onPress={this.validate.bind(this)} />
 				</View>
