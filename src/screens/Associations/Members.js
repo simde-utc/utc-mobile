@@ -1,10 +1,10 @@
 import React from 'react';
-import { FlatList, Image, ScrollView, Text, View } from 'react-native';
+import { Alert, FlatList, Image, ScrollView, Text, View } from 'react-native';
 
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 import pictureIcon from '../../img/icons/picture.png';
-import { _, Associations as t } from '../../utils/i18n';
+import { _, Associations as t, e } from '../../utils/i18n';
 
 export class Member extends React.PureComponent {
 	constructor(props) {
