@@ -21,9 +21,7 @@ export default class ContactsScreen extends React.PureComponent {
 		return [
 			{
 				title: _('social_networks'),
-				data: networkData.map(app => {
-					return { key: app.name, app };
-				}),
+				data: networkData,
 			},
 		];
 	}

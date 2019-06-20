@@ -7,18 +7,23 @@ import HeaderView from '../../components/HeaderView';
 import styles from '../../styles';
 import { _, Welcome as t } from '../../utils/i18n';
 
+import NewsIcon from '../../img/icons/purpose/news.png';
+import MapIcon from '../../img/icons/purpose/map.png';
+import BellIcon from '../../img/icons/purpose/bell.png';
+import CalendarIcon from '../../img/icons/purpose/calendar.png';
+
 const endMessageStyle = styles.get('text.yellow', 'text.center', 'text.h4');
 
 const forMembersData = [
-	{ icon: 'news', lazyText: 'screens.Welcome.member_news' },
-	{ icon: 'map', lazyText: 'screens.Welcome.member_map' },
-	{ icon: 'bell', lazyText: 'screens.Welcome.member_notif' },
-	{ icon: 'calendar', lazyText: 'screens.Welcome.member_calendar' },
+	{ icon: NewsIcon, lazyText: 'screens.Welcome.member_news' },
+	{ icon: MapIcon, lazyText: 'screens.Welcome.member_map' },
+	{ icon: BellIcon, lazyText: 'screens.Welcome.member_notif' },
+	{ icon: CalendarIcon, lazyText: 'screens.Welcome.member_calendar' },
 ];
 const forInterestedData = [
-	{ icon: 'news', lazyText: 'screens.Welcome.interested_news' },
-	{ icon: 'map', lazyText: 'screens.Welcome.interested_map' },
-	{ icon: 'calendar', lazyText: 'screens.Welcome.interested_calendar' },
+	{ icon: NewsIcon, lazyText: 'screens.Welcome.interested_news' },
+	{ icon: MapIcon, lazyText: 'screens.Welcome.interested_map' },
+	{ icon: CalendarIcon, lazyText: 'screens.Welcome.interested_calendar' },
 ];
 
 const ListData = data => <List data={data} />;

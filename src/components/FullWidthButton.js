@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import Icon from './Icon';
-import yellowArrowIcon from '../img/icons/arrow_yellow.png';
 import styles from '../styles';
 
 const buttonStyles = styles.navigation.fullWidthButton;
@@ -19,7 +18,7 @@ const FullWidthButton = ({ onPress, name }) => (
 				<Text style={buttonStyles.text}>{name}</Text>
 			</View>
 			<View>
-				<Icon image={yellowArrowIcon} />
+				<FontAwesomeIcon icon={['fas', 'arrow-right']} size={22} style={styles.text.yellow} />
 			</View>
 		</View>
 	</TouchableHighlight>
