@@ -39,6 +39,9 @@
 		"Events": {
 			"add_calendar": "Add to a calendar"
 		},
+		"Notifications": {
+			"no_notifications": "No new notification"
+		},
 		"FAQs": {
 			"no_questions": "No questions available"
 		},

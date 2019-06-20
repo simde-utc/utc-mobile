@@ -46,6 +46,7 @@ export const Associations = getTranslationsFor('screens.Associations');
 export const Connected = getTranslationsFor('screens.Connected');
 export const Connection = getTranslationsFor('screens.Connection');
 export const Events = getTranslationsFor('screens.Events');
+export const Notifications = getTranslationsFor('screens.Notifications');
 export const FAQs = getTranslationsFor('screens.FAQs');
 export const Map = getTranslationsFor('screens.Map');
 export const Welcome = getTranslationsFor('screens.Welcome');
