@@ -388,6 +388,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSecureStorage;
 		};
+		CD35C4E622BBC5E200CED73F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8034FC6926946ECB7707AB6 /* RNCViewpager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCViewpager;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -798,6 +805,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CD35C4BE22BBC5E200CED73F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD35C4E722BBC5E200CED73F /* libRNCViewpager.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -960,6 +975,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = CD35C4BE22BBC5E200CED73F /* Products */;
+					ProjectRef = B8034FC6926946ECB7707AB6 /* RNCViewpager.xcodeproj */;
 				},
 				{
 					ProductGroup = CD35C0E122B5333300CED73F /* Products */;
@@ -1297,6 +1316,13 @@
 			remoteRef = CD35C1B122B6E3BB00CED73F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CD35C4E722BBC5E200CED73F /* libRNCViewpager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCViewpager.a;
+			remoteRef = CD35C4E622BBC5E200CED73F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1438,6 +1464,7 @@
 			name = LaunchScreen.xib;
 			path = UTC;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 /* End PBXVariantGroup section */
 
