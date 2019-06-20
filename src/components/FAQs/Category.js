@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
-import Icon from '../Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
 import styles from '../../styles';
-import yellowArrowIcon from '../../img/icons/arrow_yellow.png';
 
 const Category = ({ onPress, category }) => (
 	<TouchableHighlight onPress={onPress}>
@@ -11,7 +11,7 @@ const Category = ({ onPress, category }) => (
 				<Text style={styles.scrollable.item.title}>{category.name}</Text>
 			</View>
 			<View>
-				<Icon image={yellowArrowIcon} />
+				<FontAwesomeIcon icon={['fas', 'arrow-right']} size={20} style={styles.text.yellow} />
 			</View>
 		</View>
 	</TouchableHighlight>

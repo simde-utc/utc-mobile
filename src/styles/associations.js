@@ -12,6 +12,12 @@ export default {
 			borderLeftWidth: 2,
 			borderLeftColor: '#fff',
 			flex: 1,
+			flexGrow: 10,
+		},
+		icon: {
+			flex: 1,
+			flexDirection: 'row',
+			alignItems: 'center',
 		},
 	},
 

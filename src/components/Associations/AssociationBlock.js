@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
 import styles from '../../styles';
-import Icon from '../Icon';
 import pictureIcon from '../../img/icons/picture.png';
-import yellowArrowIcon from '../../img/icons/arrow_yellow.png';
 
 class AssociationBlock extends React.PureComponent {
 	getPoleColor() {
@@ -63,8 +63,8 @@ class AssociationBlock extends React.PureComponent {
 							{entity.name.toLowerCase() !== entity.shortname.toLowerCase() ? entity.name : null}
 						</Text>
 					</View>
-					<View>
-						<Icon image={yellowArrowIcon} />
+					<View style={styles.associations.block.icon}>
+						<FontAwesomeIcon icon={['fas', 'arrow-right']} size={22} style={styles.text.yellow} />
 					</View>
 				</View>
 			</TouchableHighlight>

@@ -52,7 +52,7 @@
 			"allow_param": "Ceci nous permettra de configurer au mieux l'application pour votre utilisation",
 			"show_utc": "Afficher les actualités UTC",
 			"show_assos": "Afficher la vie associative",
-			"utc_member": "Etes-vous un membre UTC/BDE-UTC?",
+			"utc_member": "Etes-vous un membre UTC et/ou un cotisant BDE-UTC ?",
 			"discover": "Découvrons l'application ensemble",
 			"swap_to_begin": "Glissez vers la droite pour commencer",
 			"member_news": "Suivre et être notifié des actualités de l'UTC et de vos associations préférées",

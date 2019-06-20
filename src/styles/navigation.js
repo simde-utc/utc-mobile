@@ -9,6 +9,7 @@ export default {
 		touchable: {
 			backgroundColor: '#fff',
 			marginBottom: 7,
+			paddingHorizontal: 5,
 			minHeight: 45,
 		},
 

@@ -174,8 +174,6 @@ export default class ActualitesUTC extends Api {
 				response.text().then(text => {
 					throw [text, response.status];
 				});
-
-				console.log(url);
 			} else {
 				const data = await response.json();
 
