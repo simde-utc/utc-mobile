@@ -16,7 +16,7 @@ const FullWidthBackButton = ({ onPress, name }) => (
 	>
 		<View style={buttonStyles.backView}>
 			<View style={buttonStyles.icon}>
-				<FontAwesomeIcon icon={['fas', 'arrow-left']} size={22} style={styles.text.yellow} />
+				<FontAwesomeIcon icon={['fas', 'arrow-left']} size={22} style={styles.text.red} />
 			</View>
 			<View style={buttonStyles.textBackView}>
 				<Text style={buttonStyles.textBack}>{name || _('back')}</Text>
