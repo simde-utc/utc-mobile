@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import EventsNavigator from './Events';
 import ArticlesScreen from './Articles';
 import NavigationScreen from './Navigation';
+import NotificationsScreen from './Notifications';
 import Icon from '../components/Icon';
 import HomeOn from '../img/icons/navbar/home-on.png';
 import HomeOff from '../img/icons/navbar/home-off.png';
@@ -26,7 +27,6 @@ const show = text => (
 	</View>
 );
 const HomeScreen = () => show('Home');
-const NotificationsScreen = () => show('Notifications');
 
 const ICON_SIZE = Platform.OS === 'android' ? 25 : 20;
 

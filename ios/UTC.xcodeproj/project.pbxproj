@@ -388,7 +388,7 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSecureStorage;
 		};
-		CD35C4E622BBC5E200CED73F /* PBXContainerItemProxy */ = {
+		CD35C3C122BAA6F800CED73F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B8034FC6926946ECB7707AB6 /* RNCViewpager.xcodeproj */;
 			proxyType = 2;
@@ -805,10 +805,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CD35C4BE22BBC5E200CED73F /* Products */ = {
+		CD35C39922BAA6F700CED73F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CD35C4E722BBC5E200CED73F /* libRNCViewpager.a */,
+				CD35C3C222BAA6F800CED73F /* libRNCViewpager.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -977,7 +977,7 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = CD35C4BE22BBC5E200CED73F /* Products */;
+					ProductGroup = CD35C39922BAA6F700CED73F /* Products */;
 					ProjectRef = B8034FC6926946ECB7707AB6 /* RNCViewpager.xcodeproj */;
 				},
 				{
@@ -1316,11 +1316,11 @@
 			remoteRef = CD35C1B122B6E3BB00CED73F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CD35C4E722BBC5E200CED73F /* libRNCViewpager.a */ = {
+		CD35C3C222BAA6F800CED73F /* libRNCViewpager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNCViewpager.a;
-			remoteRef = CD35C4E622BBC5E200CED73F /* PBXContainerItemProxy */;
+			remoteRef = CD35C3C122BAA6F800CED73F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1464,7 +1464,6 @@
 			name = LaunchScreen.xib;
 			path = UTC;
 			sourceTree = "<group>";
-			tabWidth = 2;
 		};
 /* End PBXVariantGroup section */
 
