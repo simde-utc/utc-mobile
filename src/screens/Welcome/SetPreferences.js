@@ -41,11 +41,7 @@ export default class SetPreferencesScreen extends React.Component {
 			Preferences[key] = checked[key];
 		}
 
-		if (checked.IS_UTC_BDE_MEMBER) {
-			navigation.navigate('Connection');
-		} else {
-			navigation.navigate('Connected');
-		}
+		navigation.navigate('ToU');
 	}
 
 	render() {
