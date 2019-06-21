@@ -131,6 +131,8 @@
 		"navigation": "navigation",
 		"others": "others",
 		"back": "back",
-		"here": "here"
+		"here": "here",
+		"ToU": "Terms of Use",
+		"accept": "accept"
 	},
 }
