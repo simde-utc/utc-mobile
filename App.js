@@ -23,10 +23,12 @@ import AppLoader from './src/screens/AppLoader';
 import ConnectionScreen from './src/screens/Connection';
 import ConnectedScreen from './src/screens/Connected';
 import WelcomeScreen from './src/screens/Welcome';
+import ToUScreen from './src/screens/ToU';
 import MainLayout from './src/screens/MainLayout';
 
 const AuthStack = createStackNavigator({
 	Welcome: WelcomeScreen,
+	ToU: ToUScreen,
 	Connection: ConnectionScreen,
 	Connected: ConnectedScreen,
 });
