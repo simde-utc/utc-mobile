@@ -131,6 +131,8 @@
 		"menu": "menu",
 		"others": "autres",
 		"back": "retour",
-		"here": "ici"
+		"here": "ici",
+		"ToU": "conditions générales d'utilisation",
+		"accept": "accepter"
 	},
 }

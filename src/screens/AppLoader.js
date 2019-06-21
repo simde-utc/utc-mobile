@@ -23,6 +23,7 @@ import PortailApi from '../services/Portail';
 import { colors } from '../styles/variables';
 import styles from '../styles';
 import utcLogo from '../img/logo_utc.png';
+import Preferences from '../utils/Preferences';
 import { _, AppLoader as t } from '../utils/i18n';
 
 export default class AppLoaderScreen extends React.Component {
@@ -60,8 +61,8 @@ export default class AppLoaderScreen extends React.Component {
 			dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
 		};
 
-		LocaleConfig.defaultLocale = 'fr';
-		i18nJs.locale = 'fr';
+		LocaleConfig.defaultLocale = Preferences.LANG;
+		i18nJs.locale = Preferences.LANG;
 	}
 
 	static loadFonts() {
