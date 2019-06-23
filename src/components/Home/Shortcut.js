@@ -44,9 +44,7 @@ export default class Shortcut extends React.Component {
 				activeOpacity={0.7}
 			>
 				<View>
-					<View style={styles.shortcut.iconView}>
-						{this.getIcon()}
-					</View>
+					<View style={styles.shortcut.iconView}>{this.getIcon()}</View>
 					<View style={styles.shortcut.textView}>
 						<Text style={styles.shortcut.text}>{_(lazyTitle)}</Text>
 					</View>
