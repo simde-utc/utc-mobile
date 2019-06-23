@@ -1,6 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 
-export default () => {
-	<Text>Home</Text>;
-};
+import ShortcutGrid from '../../components/Home/ShortcutGrid';
+
+const Home = ({ navigation }) => <ShortcutGrid navigation={navigation} />;
+
+export default Home;
