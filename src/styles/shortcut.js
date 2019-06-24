@@ -3,7 +3,6 @@ export default {
 		flex: 1,
 		paddingBottom: '5%',
 		paddingRight: '5%',
-		backgroundColor: '#f1f1f1',
 	},
 
 	view: {
