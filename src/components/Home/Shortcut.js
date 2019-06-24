@@ -13,29 +13,37 @@ export default class Shortcut extends React.Component {
 		navigation.navigate(screen);
 	}
 
-	getIcon() {
+	getIconSource() {
 		const { icon } = this.props;
-		let image;
 
 		switch (icon) {
 			case 'interactions':
-				image = Interactions;
-				break;
+				return Interactions;
 
 			case 'map':
-				image = Map;
-				break;
+				return Map;
 
 			default:
-				break;
 		}
+	}
 
-		return <Image source={image} resizeMode="contain" style={styles.shortcut.icon} />;
+	getIcon() {
+		return (
+			<Image source={this.getIconSource()} resizeMode="contain" style={styles.shortcut.icon} />
+		);
+	}
+
+	getTitleText() {
+		const { lazyTitle } = this.props;
+
+		return _(lazyTitle);
+	}
+
+	getTitle() {
+		return <Text style={styles.shortcut.text}>{this.getTitleText()}</Text>;
 	}
 
 	render() {
-		const { lazyTitle } = this.props;
-
 		return (
 			<TouchableHighlight
 				style={styles.shortcut.view}
@@ -45,9 +53,7 @@ export default class Shortcut extends React.Component {
 			>
 				<View>
 					<View style={styles.shortcut.iconView}>{this.getIcon()}</View>
-					<View style={styles.shortcut.textView}>
-						<Text style={styles.shortcut.text}>{_(lazyTitle)}</Text>
-					</View>
+					<View style={styles.shortcut.textView}>{this.getTitle()}</View>
 				</View>
 			</TouchableHighlight>
 		);

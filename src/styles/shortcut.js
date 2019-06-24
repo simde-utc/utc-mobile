@@ -21,11 +21,11 @@ export default {
 
 	iconView: {
 		height: '60%',
-		width: '100%',
-		paddingTop: '15%',
+		paddingTop: '10%',
 	},
 
 	icon: {
+		paddingTop: '5%',
 		height: '100%',
 	},
 
@@ -36,5 +36,17 @@ export default {
 	text: {
 		textAlign: 'center',
 		fontSize: 20,
+	},
+
+	blankView: {
+		padding: 10,
+		marginTop: '5%',
+		marginLeft: '5%',
+		flex: 1,
+	},
+
+	associationIcon: {
+		height: '110%',
+		width: '100%',
 	},
 };
