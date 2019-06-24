@@ -324,6 +324,14 @@ export class Portail extends Api {
 		});
 	}
 
+	getAsso(id) {
+		if (!this.isConnected()) {
+			return Promise.reject('Not connected.');
+		}
+
+		return this.call(`${Portail.API_V1}assos/${id}`, Api.GET);
+	}
+
 	getUserAssos(forceReload = false) {
 		if (!this.isConnected()) {
 			return Promise.reject('Not connected.');
