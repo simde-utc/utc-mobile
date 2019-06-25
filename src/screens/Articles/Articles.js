@@ -41,6 +41,7 @@ export default class Articles extends React.Component {
 		this.willUnmount = false;
 		this.state = {
 			date,
+			noArticlesCounter: 0,
 			portailArticles: [],
 			utcArticles: [],
 			filters: [
@@ -65,20 +66,22 @@ export default class Articles extends React.Component {
 	loadPortailArticles(page = 0) {
 		const { date } = this.state;
 
-		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(([articles]) => {
-			this.setState(prevState => ({
-				...prevState,
-				portailArticles: prevState.portailArticles.concat(articles),
-			}));
+		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(
+			([articles]) => {
+				this.setState(prevState => ({
+					...prevState,
+					portailArticles: prevState.portailArticles.concat(articles),
+				}));
 
-			// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
-			if (articles.length === MAX_PER_PAGE) {
-				return MAX_PER_PAGE + this.loadPortailArticles(page + 1);
+				// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+				if (articles.length === MAX_PER_PAGE) {
+					return MAX_PER_PAGE + this.loadPortailArticles(page + 1);
+				}
+
+				// Tout a été chargé pour la semaine demandée.
+				return articles.length;
 			}
-
-			// Tout a été chargé pour la semaine demandée.
-			return articles.length;
-		});
+		);
 	}
 
 	loadUTCArticles(page = 0) {
@@ -148,24 +151,31 @@ export default class Articles extends React.Component {
 		if (promises.length) {
 			this.setState({ loading: true });
 
-			return new Promise.all(promises)
-				.then(nbrNewArticles => {
-					this.setState(prevState => {
-						prevState.date.setDate(prevState.date.getDate() - MAX_DAYS);
+			new Promise.all(promises).then(nbrNewArticles => {
+				const { noArticlesCounter, date } = this.state;
+				const sumNbr = nbrNewArticles.reduce((acc, val) => acc + (val || 0), 0);
+				date.setDate(date.getDate() - MAX_DAYS);
 
-						return {
-							...prevState,
-							loading: false
-						};
-					}, () => {
-						const sumNbr = nbrNewArticles.reduce((acc, val) => acc + (val || 0), 0);
+				// On a chargé aucun nouvel article, chargeons pour les dates suivantes.
+				if (sumNbr === 0) {
+					// Eviter le chargement infini.
+					if (noArticlesCounter < 5) {
+						return this.setState(
+							prevState => ({
+								...prevState,
+								loading: false,
+								noArticlesCounter: prevState.noArticlesCounter + 1,
+							}),
+							() => this.loadMoreContent()
+						);
+					}
+				}
 
-						// On a chargé aucun nouvel article, chargeons pour les dates suivantes.
-						if (sumNbr === 0) {
-							this.loadMoreContent();
-						}
-					});
+				this.setState({
+					loading: false,
+					noArticlesCounter: 0,
 				});
+			});
 		}
 	}
 
@@ -225,9 +235,12 @@ export default class Articles extends React.Component {
 
 		// console.log(portailArticles, utcArticles);
 
-		const filteredArticles = selectedFilterIndex === 0 ? articles : articles.filter(
-			article => article.article_type === filters[selectedFilterIndex].filterTag
-	  	);
+		const filteredArticles =
+			selectedFilterIndex === 0
+				? articles
+				: articles.filter(
+						article => article.article_type === filters[selectedFilterIndex].filterTag
+				  );
 
 		// TODO: filtrer en fonction de la recherche (barre de recherche dans this.renderSearchBar
 
