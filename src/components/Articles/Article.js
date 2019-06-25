@@ -16,6 +16,7 @@ import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
+import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 import { Articles as t } from '../../utils/i18n';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
@@ -76,12 +77,12 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	getActionsAndComments() {
-		const { data, portailInstance } = this.props;
+		const { data } = this.props;
 
 		if (data.item.article_type === 'assos') {
 			Promise.all([
-				portailInstance.getUserArticleActions(data.item.id),
-				portailInstance.getArticleRootComments(data.item.id),
+				PortailApi.getUserArticleActions(data.item.id),
+				PortailApi.getArticleRootComments(data.item.id),
 			])
 				.then(([[responseActions], [responseComments]]) => {
 					let liked;
@@ -117,40 +118,40 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	touchLike() {
-		const { portailInstance, data } = this.props;
+		const { data } = this.props;
 		const { liked, disliked } = this.state;
 		let promise;
 
 		if (!liked && !disliked) {
-			promise = portailInstance.createArticleAction(data.id, 'liked', 'true');
+			promise = PortailApi.createArticleAction(data.id, 'liked', 'true');
 		}
 
 		if (!liked && disliked) {
-			promise = portailInstance.updateArticleAction(data.id, 'liked', 'true');
+			promise = PortailApi.updateArticleAction(data.id, 'liked', 'true');
 		}
 
 		if (liked) {
-			promise = portailInstance.deleteArticleAction(data.id, 'liked');
+			promise = PortailApi.deleteArticleAction(data.id, 'liked');
 		}
 
 		this.handleLikeDislikePromise(promise);
 	}
 
 	touchDislike() {
-		const { portailInstance, data } = this.props;
+		const { data } = this.props;
 		const { liked, disliked } = this.state;
 		let promise;
 
 		if (!disliked && !liked) {
-			promise = portailInstance.createArticleAction(data.id, 'liked', 'false');
+			promise = PortailApi.createArticleAction(data.id, 'liked', 'false');
 		}
 
 		if (!disliked && liked) {
-			promise = portailInstance.updateArticleAction(data.id, 'liked', 'false');
+			promise = PortailApi.updateArticleAction(data.id, 'liked', 'false');
 		}
 
 		if (disliked) {
-			promise = portailInstance.deleteArticleAction(data.id, 'liked');
+			promise = PortailApi.deleteArticleAction(data.id, 'liked');
 		}
 
 		this.handleLikeDislikePromise(promise);
