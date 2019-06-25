@@ -78,6 +78,10 @@ class CASAuth extends Api {
 		this.ticket = ticket;
 	}
 
+	getTicket() {
+		return this.ticket;
+	}
+
 	isTicketValid(ticket) {
 		return this.call(ticket, Api.GET).then(() => {
 			this.ticket = ticket;

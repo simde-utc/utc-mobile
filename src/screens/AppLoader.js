@@ -20,6 +20,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
+import ActualitesUTC from '../services/ActualitesUTC';
 import { colors } from '../styles/variables';
 import styles from '../styles';
 import utcLogo from '../img/logo_utc.png';
@@ -126,7 +127,7 @@ export default class AppLoaderScreen extends React.Component {
 	checkCasConnexion(ticket, login, password) {
 		return CASAuth.isTicketValid(ticket)
 			.then(() => {
-				return true;
+				return this.connectServices();
 			})
 			.catch(() => {
 				this.setState({
@@ -135,10 +136,22 @@ export default class AppLoaderScreen extends React.Component {
 
 				return CASAuth.login(login, password)
 					.then(() => {
-						return CASAuth.setData(login, password);
+						return CASAuth.setData(login, password).then(() => {
+							this.connectServices();
+						});
 					})
 					.catch(() => this.reinitData());
 			});
+	}
+
+	connectServices() {
+		this.setState({
+			text: t('connect_services'),
+		});
+
+		return ActualitesUTC.connect()
+			.then(() => true)
+			.catch(() => this.reinitData());
 	}
 
 	login(login, password) {
