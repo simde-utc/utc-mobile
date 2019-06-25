@@ -46,6 +46,10 @@ export class Actualites extends Api {
 			});
 	}
 
+	isConnected() {
+		return this.connected;
+	}
+
 	getArticles(queries) {
 		return this.call(`${API_URI}/posts`, Api.GET, queries);
 	}
