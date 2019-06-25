@@ -6,6 +6,7 @@
 			"error_on_loading": "Erreur lors de la récupération des données",
 			"check_cas": "Vérification de la connexion CAS-UTC...",
 			"connect_cas": "Reconnexion au CAS-UTC...",
+			"connect_services": "Connexion aux services...",
 			"get_user_data": "Récupération des données uttilisateurs...",
 			"reset_data": "Réinitialisation des données...",
 			"reconnection": "Reconnexion...",
