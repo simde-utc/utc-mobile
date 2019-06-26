@@ -25,6 +25,10 @@ const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/
 const FOLDED_MAX_LENGTH = 200;
 
 export default class ArticleComponent extends React.PureComponent {
+	static PORTAIL_ARTICLE_TYPE = 'portail';
+
+	static UTC_ARTICLE_TYPE = 'utc';
+
 	static openURI(uri) {
 		Linking.canOpenURL(uri).then(supported => {
 			if (supported) {
@@ -76,10 +80,20 @@ export default class ArticleComponent extends React.PureComponent {
 		this.unmounted = true;
 	}
 
+	getTitle() {
+		const { data } = this.props;
+
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			return data.item.title;
+		}
+
+		return data.item.title.rendered;
+	}
+
 	getActionsAndComments() {
 		const { data } = this.props;
 
-		if (data.item.article_type === 'assos') {
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
 			Promise.all([
 				PortailApi.getUserArticleActions(data.item.id),
 				PortailApi.getArticleRootComments(data.item.id),
@@ -274,14 +288,14 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	renderHTMLDescription(excerpt, content) {
-		const { full } = this.props;
+		const { full, data } = this.props;
 
-		if (!full)
+		if (!full) {
 			return (
 				<View>
 					<HTML
 						baseFontStyle={styles.scrollable.item.subsubtitle}
-						html={excerpt.replace(t('to_remove'), '')} // L'API impose son lien vers la suite
+						html={excerpt.rendered.replace(t('to_remove'), '')} // L'API impose son lien vers la suite
 						imagesMaxWidth={Dimensions.get('window').width}
 						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
 					/>
@@ -289,11 +303,22 @@ export default class ArticleComponent extends React.PureComponent {
 					<Text style={styles.article.descriptionLink}>{t('show_more')}</Text>
 				</View>
 			);
+		}
+
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			return (
+				<HTML
+					baseFontStyle={styles.scrollable.item.subsubtitle}
+					html={content}
+					imagesMaxWidth={Dimensions.get('window').width}
+				/>
+			);
+		}
 
 		return (
 			<HTML
 				baseFontStyle={styles.scrollable.item.subsubtitle}
-				html={content}
+				html={content.rendered}
 				imagesMaxWidth={Dimensions.get('window').width}
 			/>
 		);
@@ -326,14 +351,14 @@ export default class ArticleComponent extends React.PureComponent {
 								navigation.navigate('fullArticle', {
 									article: data,
 									navigation,
-									title: data.item.title,
+									title: this.getTitle(),
 								})
 							}
 							underlayColor="#fff"
 						>
 							<View>
 								<View style={{ marginBottom: 5 }}>
-									<HTML baseFontStyle={styles.scrollable.item.title} html={data.item.title} />
+									<HTML baseFontStyle={styles.scrollable.item.title} html={this.getTitle()} />
 								</View>
 
 								{data.item.description
