@@ -38,7 +38,6 @@ export default class fullArticleScreen extends React.PureComponent {
 					data={this.article}
 					navigation={this.navigation}
 					full
-					portailInstance={PortailApi}
 				/>
 			</ScrollView>
 		);

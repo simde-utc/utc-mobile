@@ -15,6 +15,7 @@ import ActualitesUTC from '../../services/ActualitesUTC';
 import ArticleComponent from '../../components/Articles/Article';
 import FakeItem from '../../components/FakeItem';
 import styles from '../../styles';
+import { stringDate } from '../../utils/Generate';
 import { _, e } from '../../utils/i18n';
 
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
@@ -68,6 +69,13 @@ export default class Articles extends React.Component {
 
 		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(
 			([articles]) => {
+				articles.map(article => {
+					article.article_type = ArticleComponent.PORTAIL_ARTICLE_TYPE;
+					article.created_at = article.created_at.replace(' ', 'T');
+
+					return article;
+				});
+
 				this.setState(prevState => ({
 					...prevState,
 					portailArticles: prevState.portailArticles.concat(articles),
@@ -84,46 +92,38 @@ export default class Articles extends React.Component {
 		);
 	}
 
-	loadUTCArticles(page = 0) {
-		// const { date } = this.state;
-		//
-		// return CASAuth.getService(ACTUS_UTC_FEED_LOGIN)
-		// 	.then(([serviceTicket]) => {
-		// 		const actus = new ActualitesUTC(serviceTicket);
-		//
-		// 		return actus
-		// 			.loadArticles()
-		// 			.then(() => {
-		// 				return actus.getArticles(pagination, page + 1, 'latest').map(article => {
-		// 					article.article_type = 'utc';
-		//
-		// 					return article;
-		// 				});
-		// 			})
-		// 			.catch(([response, status]) => {
-		// 				console.log([response, status]);
-		//
-		// 				if (this.willUnmount) {
-		// 					return;
-		// 				}
-		// 				switch (status) {
-		// 					case 416:
-		// 						this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-		// 						break;
-		// 					case 523:
-		// 					default:
-		// 						// TODO: afficher réseau ou inconnue
-		// 						console.warn([response, status]);
-		// 						this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-		// 						break;
-		// 				}
-		//
-		// 				return [];
-		// 			});
-		// 	})
-		// 	.catch(() => {
-		// 		return [];
-		// 	});
+	loadUTCArticles(page = 1) {
+		const { date } = this.state;
+		const afterDate = new Date();
+		afterDate.setTime(date.getTime());
+		afterDate.setDate(afterDate.getDate() - MAX_DAYS);
+
+		const queries = {
+			per_page: MAX_PER_PAGE,
+			page,
+			after: stringDate(afterDate),
+			before: stringDate(date),
+		};
+
+		return ActualitesUTC.getArticles(queries).then(([articles]) => {
+			articles.map(article => {
+				article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
+
+				return article;
+			});
+
+			this.setState(prevState => ({
+				...prevState,
+				portailArticles: prevState.portailArticles.concat(articles),
+			}));
+
+			// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+			if (articles.length === MAX_PER_PAGE) {
+				return MAX_PER_PAGE + this.loadUTCArticles(page + 1);
+			}
+
+			return articles.length;
+		});
 	}
 
 	loadMoreContent() {
