@@ -56,7 +56,7 @@ export default class Api {
 
 	call(request, method, queries, body, headers, validStatus, json = false) {
 		const parameters = {
-			credentials: 'include',
+			credentials: 'same-origin',
 			method: method || Api.GET,
 			headers: headers || {},
 			signal: this.signal,

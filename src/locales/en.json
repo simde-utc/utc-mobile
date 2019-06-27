@@ -5,6 +5,7 @@
 			"check_secure_data": "Checking encrypted data...",
 			"check_cas": "Checking CAS-UTC connection...",
 			"connect_cas": "Reconnecting to the CAS-UTC...",
+			"connect_services": "Connecting to services...",
 			"get_user_data": "Retrieving user data...",
 			"reset_data": "Resetting data...",
 			"reconnection": "Reconnection...",
