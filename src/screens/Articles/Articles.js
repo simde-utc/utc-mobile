@@ -33,6 +33,25 @@ export default class Articles extends React.Component {
 		headerForceInset: { top: 'never' },
 	});
 
+	static sortArticles(a, b) {
+		let aDate;
+		let bDate;
+
+		if (a.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			aDate = new Date(a.created_at);
+		} else {
+			aDate = new Date(a.date);
+		}
+
+		if (b.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			bDate = new Date(b.created_at);
+		} else {
+			bDate = new Date(b.date);
+		}
+
+		return aDate.getTime() < bDate.getTime();
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -43,6 +62,7 @@ export default class Articles extends React.Component {
 		this.state = {
 			date,
 			noArticlesCounter: 0,
+			articles: [],
 			portailArticles: [],
 			utcArticles: [],
 			filters: [
@@ -94,15 +114,14 @@ export default class Articles extends React.Component {
 
 	loadUTCArticles(page = 1) {
 		const { date } = this.state;
-		const afterDate = new Date();
-		afterDate.setTime(date.getTime());
-		afterDate.setDate(afterDate.getDate() - MAX_DAYS);
+		const beforeDate = new Date(date);
+		beforeDate.setDate(beforeDate.getDate() + MAX_DAYS);
 
 		const queries = {
 			per_page: MAX_PER_PAGE,
 			page,
-			after: stringDate(afterDate),
-			before: stringDate(date),
+			before: stringDate(beforeDate),
+			after: stringDate(date),
 		};
 
 		return ActualitesUTC.getArticles(queries).then(([articles]) => {
@@ -171,9 +190,17 @@ export default class Articles extends React.Component {
 					}
 				}
 
-				this.setState({
-					loading: false,
-					noArticlesCounter: 0,
+				this.setState(prevState => {
+					return {
+						...prevState,
+						articles: prevState.articles
+							.concat(prevState.portailArticles, prevState.utcArticles)
+							.sort(Articles.sortArticles),
+						portailArticles: [],
+						utcArticles: [],
+						loading: false,
+						noArticlesCounter: 0,
+					};
 				});
 			});
 		}
@@ -230,15 +257,15 @@ export default class Articles extends React.Component {
 
 	render() {
 		const { navigation } = this.props;
-		const { portailArticles, utcArticles, filters, selectedFilterIndex } = this.state;
-		const articles = [].concat(portailArticles, utcArticles);
+		const { articles, utcArticles, portailArticles, filters, selectedFilterIndex } = this.state;
 
-		// console.log(portailArticles, utcArticles);
+		const newArticles = [].concat(portailArticles, utcArticles).sort(Articles.sortArticles);
+		const resultedArticles = [].concat(articles, newArticles);
 
 		const filteredArticles =
 			selectedFilterIndex === 0
-				? articles
-				: articles.filter(
+				? resultedArticles
+				: resultedArticles.filter(
 						article => article.article_type === filters[selectedFilterIndex].filterTag
 				  );
 
