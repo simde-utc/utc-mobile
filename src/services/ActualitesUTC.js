@@ -15,6 +15,10 @@ import { ACTUS_UTC_FEED_LOGIN } from '../../config';
 
 const LOGIN_URI = 'wp-login.php';
 const API_URI = 'wp-json/wp/v2';
+const LOGIN_PARAMS = {
+	external: 'cas',
+	redirect_to: 'wp-json',
+};
 
 export class Actualites extends Api {
 	connected = false;
@@ -24,30 +28,28 @@ export class Actualites extends Api {
 	}
 
 	connect() {
-		CASAuth.getServiceTicket(ACTUS_UTC_FEED_LOGIN).then(([ticket]) => {
-			if (!ticket) {
-				throw 'No tickets !';
+		return CASAuth.getServiceTicket(ACTUS_UTC_FEED_LOGIN + LOGIN_URI, LOGIN_PARAMS).then(
+			([ticket]) => {
+				if (!ticket) {
+					throw 'No tickets !';
+				}
+
+				return this.call(LOGIN_URI, Api.GET, {
+					...LOGIN_PARAMS,
+					ticket,
+				})
+					.then(() => {
+						this.connected = true;
+
+						return true;
+					})
+					.catch(() => {
+						this.connected = false;
+
+						throw false;
+					});
 			}
-
-			CASAuth.getService(ACTUS_UTC_FEED_LOGIN).then(data => console.log(data));
-
-			return this.call(LOGIN_URI, Api.GET, {
-				external: 'cas',
-				redirect_to: 'wp-json',
-				ticket,
-			})
-			.then(data => {
-				console.log(data);
-				this.connected = true;
-
-				return true;
-			})
-			.catch(() => {
-				this.connected = false;
-
-				throw false;
-			});
-		});
+		);
 	}
 
 	isConnected() {
