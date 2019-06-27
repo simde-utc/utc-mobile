@@ -24,17 +24,20 @@ export class Actualites extends Api {
 	}
 
 	connect() {
-		const ticket = CASAuth.getTicket();
+		CASAuth.getServiceTicket(ACTUS_UTC_FEED_LOGIN).then(([ticket]) => {
+			if (!ticket) {
+				throw 'No tickets !';
+			}
 
-		if (!ticket) {
-			throw 'No tickets !';
-		}
+			CASAuth.getService(ACTUS_UTC_FEED_LOGIN).then(data => console.log(data));
 
-		return this.call(LOGIN_URI, Api.GET, {
-			redirect_to: 'wp-json',
-			ticket,
-		})
-			.then(() => {
+			return this.call(LOGIN_URI, Api.GET, {
+				external: 'cas',
+				redirect_to: 'wp-json',
+				ticket,
+			})
+			.then(data => {
+				console.log(data);
 				this.connected = true;
 
 				return true;
@@ -44,6 +47,7 @@ export class Actualites extends Api {
 
 				throw false;
 			});
+		});
 	}
 
 	isConnected() {
