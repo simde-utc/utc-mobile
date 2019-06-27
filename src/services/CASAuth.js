@@ -110,7 +110,7 @@ class CASAuth extends Api {
 			.catch(CASAuth.error);
 	}
 
-	getService(service) {
+	getServiceTicket(service) {
 		return this.call(
 			this.ticket,
 			Api.POST,
