@@ -51,13 +51,15 @@ export default class ToU extends React.PureComponent {
 
 	render() {
 		return (
-			<ScrollView style={{
-				backgroundColor: '#f4f4f4',
-				paddingVertical: 10,
-				paddingHorizontal: 15
-			}}>
+			<ScrollView
+				style={{
+					backgroundColor: '#f4f4f4',
+					paddingVertical: 10,
+					paddingHorizontal: 15,
+				}}
+			>
 				<View>{ToU.getToU()}</View>
-				<View style={{alignItems: 'center', paddingVertical: 10, marginBottom: 15}}>
+				<View style={{ alignItems: 'center', paddingVertical: 10, marginBottom: 15 }}>
 					<BigButton label={_('accept')} onPress={() => this.accept()} />
 				</View>
 			</ScrollView>

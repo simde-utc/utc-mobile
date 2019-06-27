@@ -155,7 +155,7 @@ export default class ConnectionScreen extends React.Component {
 			return prevState;
 		});
 
-		Alert.alert(_('connection'), _('bad_login_password'), [{ text: _('continue') }], {
+		Alert.alert(_('connection'), t('bad_login_password'), [{ text: _('continue') }], {
 			cancelable: true,
 		});
 	}
