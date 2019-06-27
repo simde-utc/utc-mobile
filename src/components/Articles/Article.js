@@ -16,6 +16,7 @@ import LikeOn from '../../img/icons/like.png';
 import LikeOff from '../../img/icons/like-off.png';
 import DislikeOn from '../../img/icons/dislike.png';
 import DislikeOff from '../../img/icons/dislike-off.png';
+import PortailApi from '../../services/Portail';
 import styles from '../../styles';
 import { Articles as t } from '../../utils/i18n';
 // Faire attention: https://github.com/vault-development/react-native-svg-uri#known-bugs
@@ -24,6 +25,10 @@ const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/
 const FOLDED_MAX_LENGTH = 200;
 
 export default class ArticleComponent extends React.PureComponent {
+	static PORTAIL_ARTICLE_TYPE = 'portail';
+
+	static UTC_ARTICLE_TYPE = 'utc';
+
 	static openURI(uri) {
 		Linking.canOpenURL(uri).then(supported => {
 			if (supported) {
@@ -75,13 +80,23 @@ export default class ArticleComponent extends React.PureComponent {
 		this.unmounted = true;
 	}
 
-	getActionsAndComments() {
-		const { data, portailInstance } = this.props;
+	getTitle() {
+		const { data } = this.props;
 
-		if (data.item.article_type === 'assos') {
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			return data.item.title;
+		}
+
+		return data.item.title.rendered;
+	}
+
+	getActionsAndComments() {
+		const { data } = this.props;
+
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
 			Promise.all([
-				portailInstance.getUserArticleActions(data.item.id),
-				portailInstance.getArticleRootComments(data.item.id),
+				PortailApi.getUserArticleActions(data.item.id),
+				PortailApi.getArticleRootComments(data.item.id),
 			])
 				.then(([[responseActions], [responseComments]]) => {
 					let liked;
@@ -117,40 +132,40 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	touchLike() {
-		const { portailInstance, data } = this.props;
+		const { data } = this.props;
 		const { liked, disliked } = this.state;
 		let promise;
 
 		if (!liked && !disliked) {
-			promise = portailInstance.createArticleAction(data.id, 'liked', 'true');
+			promise = PortailApi.createArticleAction(data.id, 'liked', 'true');
 		}
 
 		if (!liked && disliked) {
-			promise = portailInstance.updateArticleAction(data.id, 'liked', 'true');
+			promise = PortailApi.updateArticleAction(data.id, 'liked', 'true');
 		}
 
 		if (liked) {
-			promise = portailInstance.deleteArticleAction(data.id, 'liked');
+			promise = PortailApi.deleteArticleAction(data.id, 'liked');
 		}
 
 		this.handleLikeDislikePromise(promise);
 	}
 
 	touchDislike() {
-		const { portailInstance, data } = this.props;
+		const { data } = this.props;
 		const { liked, disliked } = this.state;
 		let promise;
 
 		if (!disliked && !liked) {
-			promise = portailInstance.createArticleAction(data.id, 'liked', 'false');
+			promise = PortailApi.createArticleAction(data.id, 'liked', 'false');
 		}
 
 		if (!disliked && liked) {
-			promise = portailInstance.updateArticleAction(data.id, 'liked', 'false');
+			promise = PortailApi.updateArticleAction(data.id, 'liked', 'false');
 		}
 
 		if (disliked) {
-			promise = portailInstance.deleteArticleAction(data.id, 'liked');
+			promise = PortailApi.deleteArticleAction(data.id, 'liked');
 		}
 
 		this.handleLikeDislikePromise(promise);
@@ -273,14 +288,14 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	renderHTMLDescription(excerpt, content) {
-		const { full } = this.props;
+		const { full, data } = this.props;
 
-		if (!full)
+		if (!full) {
 			return (
 				<View>
 					<HTML
 						baseFontStyle={styles.scrollable.item.subsubtitle}
-						html={excerpt.replace(t('to_remove'), '')} // L'API impose son lien vers la suite
+						html={excerpt.rendered.replace(t('to_remove'), '')} // L'API impose son lien vers la suite
 						imagesMaxWidth={Dimensions.get('window').width}
 						onLinkPress={(e, href) => ArticleComponent.openURI(href)}
 					/>
@@ -288,11 +303,22 @@ export default class ArticleComponent extends React.PureComponent {
 					<Text style={styles.article.descriptionLink}>{t('show_more')}</Text>
 				</View>
 			);
+		}
+
+		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			return (
+				<HTML
+					baseFontStyle={styles.scrollable.item.subsubtitle}
+					html={content}
+					imagesMaxWidth={Dimensions.get('window').width}
+				/>
+			);
+		}
 
 		return (
 			<HTML
 				baseFontStyle={styles.scrollable.item.subsubtitle}
-				html={content}
+				html={content.rendered}
 				imagesMaxWidth={Dimensions.get('window').width}
 			/>
 		);
@@ -325,14 +351,14 @@ export default class ArticleComponent extends React.PureComponent {
 								navigation.navigate('fullArticle', {
 									article: data,
 									navigation,
-									title: data.item.title,
+									title: this.getTitle(),
 								})
 							}
 							underlayColor="#fff"
 						>
 							<View>
 								<View style={{ marginBottom: 5 }}>
-									<HTML baseFontStyle={styles.scrollable.item.title} html={data.item.title} />
+									<HTML baseFontStyle={styles.scrollable.item.title} html={this.getTitle()} />
 								</View>
 
 								{data.item.description

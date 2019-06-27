@@ -34,12 +34,7 @@ export default class fullArticleScreen extends React.PureComponent {
 	render() {
 		return (
 			<ScrollView style={styles.scrollable.list}>
-				<ArticleComponent
-					data={this.article}
-					navigation={this.navigation}
-					full
-					portailInstance={PortailApi}
-				/>
+				<ArticleComponent data={this.article} navigation={this.navigation} full />
 			</ScrollView>
 		);
 	}

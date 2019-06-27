@@ -10,20 +10,20 @@ import React from 'react';
 import { FlatList, View, Platform, SearchBar } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import CASAuth from '../../services/CASAuth';
 import PortailApi from '../../services/Portail';
 import ActualitesUTC from '../../services/ActualitesUTC';
 import ArticleComponent from '../../components/Articles/Article';
 import FakeItem from '../../components/FakeItem';
-import { ACTUS_UTC_FEED_LOGIN } from '../../../config';
 import styles from '../../styles';
+import { stringDate } from '../../utils/Generate';
 import { _, e } from '../../utils/i18n';
 
-const DEFAULT_ARTICLES_PAGINATION = 6; // debug pour bien vérifier le chargement en plusieurs fois
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.4;
+const MAX_PER_PAGE = 50;
+const MAX_DAYS = 7;
 
-export default class ArticlesScreen extends React.Component {
+export default class Articles extends React.Component {
 	static navigationOptions = () => ({
 		title: _('actualities'),
 		headerStyle: {
@@ -33,16 +33,38 @@ export default class ArticlesScreen extends React.Component {
 		headerForceInset: { top: 'never' },
 	});
 
+	static sortArticles(a, b) {
+		let aDate;
+		let bDate;
+
+		if (a.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			aDate = new Date(a.created_at);
+		} else {
+			aDate = new Date(a.date);
+		}
+
+		if (b.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			bDate = new Date(b.created_at);
+		} else {
+			bDate = new Date(b.date);
+		}
+
+		return aDate.getTime() < bDate.getTime();
+	}
+
 	constructor(props) {
 		super(props);
 
+		const date = new Date();
+		date.setDate(date.getDate() - MAX_DAYS);
+
 		this.willUnmount = false;
 		this.state = {
-			page: 0,
-			pagination: DEFAULT_ARTICLES_PAGINATION,
-			canLoadMoreUTCArticles: true,
-			canLoadMorePortailArticles: true,
+			date,
+			noArticlesCounter: 0,
 			articles: [],
+			portailArticles: [],
+			utcArticles: [],
 			filters: [
 				{ displayName: _('all'), filterTag: 'all' },
 				{ displayName: _('utc'), filterTag: 'utc' },
@@ -55,140 +77,132 @@ export default class ArticlesScreen extends React.Component {
 	}
 
 	componentDidMount() {
-		this.loadMoreContentAsync();
+		this.loadMoreContent();
 	}
 
 	componentWillUnmount() {
 		this.willUnmount = true;
 	}
 
-	loadPortailArticles() {
-		const { pagination, page } = this.state;
+	loadPortailArticles(page = 0) {
+		const { date } = this.state;
 
-		return PortailApi.getArticles(pagination, page + 1, 'latest').then(([articles, status]) => {
-			if (status === 416) {
-				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }));
+		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(
+			([articles]) => {
+				articles.map(article => {
+					article.article_type = ArticleComponent.PORTAIL_ARTICLE_TYPE;
+					article.created_at = article.created_at.replace(' ', 'T');
+
+					return article;
+				});
+
+				this.setState(prevState => ({
+					...prevState,
+					portailArticles: prevState.portailArticles.concat(articles),
+				}));
+
+				// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+				if (articles.length === MAX_PER_PAGE) {
+					return MAX_PER_PAGE + this.loadPortailArticles(page + 1);
+				}
+
+				// Tout a été chargé pour la semaine demandée.
+				return articles.length;
 			}
+		);
+	}
 
-			return articles.map(article => {
-				article.article_type = 'assos';
-				article.created_at = article.created_at.replace(' ', 'T');
+	loadUTCArticles(page = 1) {
+		const { date } = this.state;
+		const beforeDate = new Date(date);
+		beforeDate.setDate(beforeDate.getDate() + MAX_DAYS);
+
+		const queries = {
+			per_page: MAX_PER_PAGE,
+			page,
+			before: stringDate(beforeDate),
+			after: stringDate(date),
+		};
+
+		return ActualitesUTC.getArticles(queries).then(([articles]) => {
+			articles.map(article => {
+				article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
+
 				return article;
 			});
+
+			this.setState(prevState => ({
+				...prevState,
+				portailArticles: prevState.portailArticles.concat(articles),
+			}));
+
+			// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+			if (articles.length === MAX_PER_PAGE) {
+				return MAX_PER_PAGE + this.loadUTCArticles(page + 1);
+			}
+
+			return articles.length;
 		});
 	}
 
-	loadUTCArticles() {
-		const { pagination, page } = this.state;
+	loadMoreContent() {
+		const { loading } = this.state;
 
-		return CASAuth.getService(ACTUS_UTC_FEED_LOGIN)
-			.then(([serviceTicket]) => {
-				const actus = new ActualitesUTC(serviceTicket);
-
-				return actus
-					.loadArticles()
-					.then(() => {
-						return actus.getArticles(pagination, page + 1, 'latest').map(article => {
-							article.article_type = 'utc';
-
-							return article;
-						});
-					})
-					.catch(([response, status]) => {
-						console.log([response, status]);
-
-						if (this.willUnmount) {
-							return;
-						}
-						switch (status) {
-							case 416:
-								this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-								break;
-							case 523:
-							default:
-								// TODO: afficher réseau ou inconnue
-								console.warn([response, status]);
-								this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-								break;
-						}
-
-						return [];
-					});
-			})
-			.catch(() => {
-				return [];
-			});
-	}
-
-	loadMoreContentAsync() {
-		const { canLoadMorePortailArticles, canLoadMoreUTCArticles, loading } = this.state;
-
-		if (this.willUnmount) {
+		// On fait bien attention à ne pas demander de charger plusieurs fois en même temps.
+		if (loading || this.willUnmount) {
 			return;
-		} // à tester avant chaque setstate pour éviter les re-render inutiles et les "memory leaks" (d'après expo). Si on avait une biblio de gestion de l'état on aurait pas besoin de faire ça
-		if (!canLoadMorePortailArticles || loading) return;
+		}
 
 		const promises = [];
 
-		if (CASAuth.isConnected() && canLoadMoreUTCArticles) {
-			const UTCArticles = this.loadUTCArticles();
+		if (ActualitesUTC.isConnected()) {
+			const UTCPromise = this.loadUTCArticles();
 
-			promises.push(UTCArticles);
+			promises.push(UTCPromise);
 		}
 
-		if (PortailApi.isConnected() && canLoadMorePortailArticles) {
-			const PortailArticles = this.loadPortailArticles();
+		if (PortailApi.isConnected()) {
+			const PortailPromise = this.loadPortailArticles();
 
-			promises.push(PortailArticles);
+			promises.push(PortailPromise);
 		}
 
-		if (this.willUnmount) {
-			return;
-		}
-		if (promises) {
-			this.setState(prevState => ({ ...prevState, loading: true }));
+		if (promises.length) {
+			this.setState({ loading: true });
 
-			return new Promise.all(promises)
-				.then(([articles, articles2]) => {
-					if (!(articles || articles2)) return;
+			new Promise.all(promises).then(nbrNewArticles => {
+				const { noArticlesCounter, date } = this.state;
+				const sumNbr = nbrNewArticles.reduce((acc, val) => acc + (val || 0), 0);
+				date.setDate(date.getDate() - MAX_DAYS);
 
-					if (articles && articles2) articles = articles.concat(articles2);
-					else articles = articles || articles2;
-
-					articles.sort((article1, article2) => {
-						return new Date(article1.created_at || article1.date_gmt) >
-							new Date(article2.created_at || article2.date_gmt)
-							? -1
-							: 1;
-					});
-					if (this.willUnmount) {
-						return;
+				// On a chargé aucun nouvel article, chargeons pour les dates suivantes.
+				if (sumNbr === 0) {
+					// Eviter le chargement infini.
+					if (noArticlesCounter < 5) {
+						return this.setState(
+							prevState => ({
+								...prevState,
+								loading: false,
+								noArticlesCounter: prevState.noArticlesCounter + 1,
+							}),
+							() => this.loadMoreContent()
+						);
 					}
-					this.setState(
-						prevState => {
-							prevState.page++;
-							return prevState;
-						},
-						() => {
-							// il faut être sûr d'incrémenter la pagination avant d'autoriser le chargement de nouveaux articles
-							if (this.willUnmount) {
-								return;
-							}
-							this.setState(prevState => {
-								prevState.articles = prevState.articles.concat(articles);
-								prevState.loading = false;
-								return prevState;
-							});
-						}
-					);
-				})
-				.catch(e => {
-					console.warn(e);
-					if (this.willUnmount) {
-						return;
-					}
-					this.setState(prevState => ({ ...prevState, loading: false }));
+				}
+
+				this.setState(prevState => {
+					return {
+						...prevState,
+						articles: prevState.articles
+							.concat(prevState.portailArticles, prevState.utcArticles)
+							.sort(Articles.sortArticles),
+						portailArticles: [],
+						utcArticles: [],
+						loading: false,
+						noArticlesCounter: 0,
+					};
 				});
+			});
 		}
 	}
 
@@ -243,12 +257,15 @@ export default class ArticlesScreen extends React.Component {
 
 	render() {
 		const { navigation } = this.props;
-		const { articles, filters, selectedFilterIndex } = this.state;
+		const { articles, utcArticles, portailArticles, filters, selectedFilterIndex } = this.state;
+
+		const newArticles = [].concat(portailArticles, utcArticles).sort(Articles.sortArticles);
+		const resultedArticles = [].concat(articles, newArticles);
 
 		const filteredArticles =
 			selectedFilterIndex === 0
-				? articles
-				: articles.filter(
+				? resultedArticles
+				: resultedArticles.filter(
 						article => article.article_type === filters[selectedFilterIndex].filterTag
 				  );
 
@@ -258,11 +275,9 @@ export default class ArticlesScreen extends React.Component {
 			<FlatList
 				style={styles.scrollable.list}
 				data={filteredArticles}
-				renderItem={item => (
-					<ArticleComponent data={item} navigation={navigation} portailInstance={PortailApi} />
-				)}
+				renderItem={item => <ArticleComponent data={item} navigation={navigation} />}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
-				onEndReached={this.loadMoreContentAsync.bind(this)}
+				onEndReached={() => this.loadMoreContent()}
 				onEndReachedThreshold={THRESHOLD}
 				keyExtractor={article => `${article.article_type}_${article.id}`}
 				ListHeaderComponent={this.renderFilters()}

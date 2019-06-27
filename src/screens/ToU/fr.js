@@ -12,7 +12,7 @@ import { Text } from 'react-native';
 
 export default () => (
 	<Text>
-{`En vigueur à la publication de l’application le ______
+		{`En vigueur à la publication de l’application le ______
 Les présentes conditions générales d’utilisation (dites « CGU ») ont pour objet l’encadrement juridique des modalités de mise à disposition de l’application et des services, de définir les conditions d’accès et d’utilisation des services par l’utilisateur.
 Les présentes CGU sont accessibles via l’application mobile.
 Toute inscription ou utilisation de l’application implique l’acceptation sans aucune réserve ni restriction des présentes CGU par l’utilisateur. Lors de l’enregistrement sur l’application via le formulaire d’inscription, chaque utilisateur accepte expressément les présentes CGU en cochant la case précédant le texte suivant : « je reconnais avoir lu et compris les CGU et je les accepte ».
