@@ -78,6 +78,10 @@ class CASAuth extends Api {
 		this.ticket = ticket;
 	}
 
+	getTicket() {
+		return this.ticket;
+	}
+
 	isTicketValid(ticket) {
 		return this.call(ticket, Api.GET).then(() => {
 			this.ticket = ticket;
@@ -106,13 +110,13 @@ class CASAuth extends Api {
 			.catch(CASAuth.error);
 	}
 
-	getService(service) {
+	getServiceTicket(service, queries) {
 		return this.call(
 			this.ticket,
 			Api.POST,
 			{},
 			{
-				service,
+				service: Api.urlWithQueries(service, queries),
 			},
 			CASAuth.HEADER_FORM_URLENCODED,
 			[200]
@@ -121,13 +125,17 @@ class CASAuth extends Api {
 
 	static error(e) {
 		console.warn(e);
-		if (e instanceof TypeError) return [JSON.stringify(e), 523, ''];
+
+		if (e instanceof TypeError) {
+			return [JSON.stringify(e), 523, ''];
+		}
 
 		if (Array.isArray(e) && e.length === 3) {
 			const [a, b, c] = e;
 
 			return [JSON.stringify(a), JSON.stringify(b), JSON.stringify(c)];
 		}
+
 		return ['Erreur réseau', 523, ''];
 	}
 
