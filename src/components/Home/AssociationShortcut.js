@@ -53,8 +53,11 @@ export default class AssociationShortcut extends Shortcut {
 
 	getIcon() {
 		return (
-			<Image source={this.getIconSource()} resizeMode="contain" style={styles.shortcut.associationIcon} />
+			<Image
+				source={this.getIconSource()}
+				resizeMode="contain"
+				style={styles.shortcut.associationIcon}
+			/>
 		);
 	}
-
 }
