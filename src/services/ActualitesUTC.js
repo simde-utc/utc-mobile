@@ -15,6 +15,7 @@ import { ACTUS_UTC_FEED_LOGIN } from '../../config';
 
 const LOGIN_URI = 'wp-login.php';
 const API_URI = 'wp-json/wp/v2';
+const MEDIA_URI = 'wp-content/uploads';
 const LOGIN_PARAMS = {
 	external: 'cas',
 	redirect_to: 'wp-json',
@@ -56,9 +57,23 @@ export class Actualites extends Api {
 		return this.connected;
 	}
 
-	getArticles(queries) {
-		return this.call(`${API_URI}/posts`, Api.GET, queries).then(([response, status]) => {
+	call(...args) {
+		return super.call(...args).then(([response, status]) => {
 			return [JSON.parse(response), status];
+		});
+	}
+
+	getArticles(queries) {
+		return this.call(`${API_URI}/posts`, Api.GET, queries);
+	}
+
+	getMedia(id, queries) {
+		return this.call(`${API_URI}/media/${id}`, Api.GET, queries);
+	}
+
+	getImageFromMedia(id, queries) {
+		return this.getMedia(id, queries).then(([data]) => {
+			return `${this.baseUrl}${MEDIA_URI}/${data.media_details.file}`;
 		});
 	}
 }
