@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Dimensions, Image } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import TextTicker from 'react-native-text-ticker'
 
 import ArticleComponent from '../Articles/Article';
 import PortailApi from '../../services/Portail';
@@ -66,7 +67,11 @@ export default class ArticlesCaroussel extends React.Component {
 	renderItem(article) {
 		return (
 			<View style={{ height: HEIGHT_NEWS, backgroundColor: 'white' }}>
-				<Image resizeMode="contain" style={{ height: HEIGHT_NEWS }} source={{ uri: this.getImageFromArticle(article) }} />
+				<Image resizeMode="contain" style={{ height: HEIGHT_NEWS - 27 }} source={{ uri: this.getImageFromArticle(article) }} />
+				<View style={{ justifyContent: 'center',
+alignItems: 'center'  }}>
+					<TextTicker style={{ margin: 5, marginBottom: 2, height: 20, fontSize: 16, textAlign: 'center' }}>{article.title}</TextTicker>
+				</View>
 			</View>
 		);
 	}
@@ -88,13 +93,15 @@ export default class ArticlesCaroussel extends React.Component {
 
 		return (
 			<View>
-				<Carousel
-					data={this.getArticles()}
-					renderItem={item => this.renderItem(item.item)}
-					sliderWidth={sliderWidth}
-					itemWidth={sliderWidth * WIDTH_MULTIPLICATOR_NEWS}
-					onSnapToItem={activeDot => this.setState({ activeDot })}
-				/>
+				<View style={{ marginTop: 5, height: HEIGHT_NEWS }}>
+					<Carousel
+						data={this.getArticles()}
+						renderItem={item => this.renderItem(item.item)}
+						sliderWidth={sliderWidth}
+						itemWidth={sliderWidth * WIDTH_MULTIPLICATOR_NEWS}
+						onSnapToItem={activeDot => this.setState({ activeDot })}
+					/>
+				</View>
 				<Pagination
 					dotsLength={this.getNbrArticles()}
 					activeDotIndex={activeDot}
