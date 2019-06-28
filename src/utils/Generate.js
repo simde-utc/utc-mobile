@@ -48,7 +48,6 @@ export const normalizeArticle = (article, type) => {
 	type = type || article.article_type || ArticleComponent.UTC_ARTICLE_TYPE;
 
 	if (type === ArticleComponent.UTC_ARTICLE_TYPE) {
-		article.id = article.index;
 		article.description = article.excerpt.rendered.replace(tArticles('to_remove'), '');
 		article.title = article.title.rendered;
 		article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
