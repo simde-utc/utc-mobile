@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, Image } from 'react-native';
+import { TouchableHighlight, View, Dimensions, Image } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import TextTicker from 'react-native-text-ticker';
 
@@ -93,22 +93,37 @@ export default class ArticlesCaroussel extends React.Component {
 		return news.length + liked.length + utc.length;
 	}
 
+	showArticle(article) {
+		const { navigation } = this.props;
+
+		navigation.navigate('fullArticle', {
+			title: article.title,
+			article: { item: article },
+			navigation,
+		});
+	}
+
 	renderArticle(article) {
 		return (
-			<View style={{ height: HEIGHT_NEWS, backgroundColor: 'white' }}>
-				<Image
-					resizeMode="contain"
-					style={{ height: HEIGHT_NEWS - 27 }}
-					source={{ uri: this.getImageFromArticle(article) }}
-				/>
-				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-					<TextTicker
-						style={{ margin: 5, marginBottom: 2, height: 20, fontSize: 16, textAlign: 'center' }}
-					>
-						{article.title}
-					</TextTicker>
+			<TouchableHighlight
+				style={{ height: HEIGHT_NEWS, backgroundColor: 'white' }}
+				onPress={() => this.showArticle(article)}
+			>
+				<View>
+					<Image
+						resizeMode="contain"
+						style={{ height: HEIGHT_NEWS - 27 }}
+						source={{ uri: this.getImageFromArticle(article) }}
+					/>
+					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+						<TextTicker
+							style={{ margin: 5, marginBottom: 2, height: 20, fontSize: 16, textAlign: 'center' }}
+						>
+							{article.title}
+						</TextTicker>
+					</View>
 				</View>
-			</View>
+			</TouchableHighlight>
 		);
 	}
 
