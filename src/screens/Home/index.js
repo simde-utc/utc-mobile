@@ -7,7 +7,7 @@ import styles from '../../styles';
 
 const Home = ({ navigation }) => (
 	<ScrollView style={styles.bg.background}>
-		<ArticlesCaroussel />
+		<ArticlesCaroussel navigation={navigation} />
 		<ShortcutGrid navigation={navigation} />
 	</ScrollView>
 );
