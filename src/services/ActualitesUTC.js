@@ -57,12 +57,6 @@ export class Actualites extends Api {
 		return this.connected;
 	}
 
-	call(...args) {
-		return super.call(...args).then(([response, status]) => {
-			return [JSON.parse(response), status];
-		});
-	}
-
 	getArticles(queries) {
 		return this.call(`${API_URI}/posts`, Api.GET, queries);
 	}

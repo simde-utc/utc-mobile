@@ -18,12 +18,12 @@ export default class Api {
 
 	static DELETE = 'DELETE';
 
-	static HEADER_JSON = {
+	static HEADERS_JSON = {
 		Accept: 'application/json',
 		'Content-Type': 'application/json',
 	};
 
-	static HEADER_FORM_URLENCODED = {
+	static HEADERS_FORM_URLENCODED = {
 		'Content-Type': 'application/x-www-form-urlencoded',
 	};
 
@@ -54,15 +54,15 @@ export default class Api {
 		return `${url}?${Api.serialize(queries)}`;
 	}
 
-	call(request, method, queries, body, headers, validStatus, json = false) {
+	call(request, method, queries, body, headers, validStatus, json = true) {
 		const parameters = {
 			credentials: 'same-origin',
 			method: method || Api.GET,
-			headers: headers || {},
+			headers: headers || Api.HEADERS_JSON,
 			signal: this.signal,
 		};
 
-		if (method !== 'GET') {
+		if (method !== Api.GET) {
 			parameters.body = JSON.stringify(body);
 		}
 

@@ -19,6 +19,8 @@ export class Portail extends Api {
 
 	static API_V1 = 'api/v1/';
 
+	static PORTAIL_HEADERS = { ...Api.HEADERS_JSON };
+
 	token = {};
 
 	user = {};
@@ -51,14 +53,12 @@ export class Portail extends Api {
 	}
 
 	call(request, method, queries, body, validStatus) {
-		const headers = Api.HEADER_JSON;
-
 		if (Object.keys(this.token).length !== 0) {
-			headers.Authorization = `${this.token.token_type} ${this.token.access_token}`;
+			Portail.PORTAIL_HEADERS.Authorization = `${this.token.token_type} ${this.token.access_token}`;
 		}
 
 		return super
-			.call(request, method, queries, body, headers, validStatus, true)
+			.call(request, method, queries, body, Portail.PORTAIL_HEADERS, validStatus, true)
 			.catch(([data, status]) => {
 				// On gère le cas où on a plus de rien à retourner.
 				if (status === 416) {
@@ -70,12 +70,11 @@ export class Portail extends Api {
 	}
 
 	callWithoutJSON(request, method, queries, body, validStatus) {
-		const headers = Api.HEADER_JSON;
-
 		if (Object.keys(this.token).length !== 0) {
-			headers.Authorization = `${this.token.token_type} ${this.token.access_token}`;
+			Portail.PORTAIL_HEADERS.Authorization = `${this.token.token_type} ${this.token.access_token}`;
 		}
-		return super.call(request, method, queries, body, headers, validStatus, false);
+
+		return super.call(request, method, queries, body, Portail.PORTAIL_HEADERS, validStatus, false);
 	}
 
 	isConnected() {
