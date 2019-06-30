@@ -21,6 +21,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import CASAuth from '../services/CASAuth';
 import PortailApi from '../services/Portail';
 import ActualitesUTC from '../services/ActualitesUTC';
+import PayUTC from '../services/PayUTC';
 import { colors } from '../styles/variables';
 import styles from '../styles';
 import utcLogo from '../img/logo_utc.png';
@@ -149,7 +150,7 @@ export default class AppLoaderScreen extends React.Component {
 			text: t('connect_services'),
 		});
 
-		return ActualitesUTC.connect()
+		return new Promise.all(ActualitesUTC.connect(), PayUTC.connect())
 			.then(() => true)
 			.catch(() => this.reinitData());
 	}
