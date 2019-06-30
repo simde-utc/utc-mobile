@@ -32,6 +32,7 @@ class CASAuth extends Api {
 							return resolve([text, response.status, response.url]);
 						});
 					}
+
 					return response.text().then(text => {
 						return reject([text, response.status, response.url]);
 					});
@@ -99,7 +100,7 @@ class CASAuth extends Api {
 				username: login,
 				password,
 			},
-			CASAuth.HEADER_FORM_URLENCODED,
+			CASAuth.HEADERS_FORM_URLENCODED,
 			[201]
 		)
 			.then(([response, status, url]) => {
@@ -118,7 +119,7 @@ class CASAuth extends Api {
 			{
 				service: Api.urlWithQueries(service, queries),
 			},
-			CASAuth.HEADER_FORM_URLENCODED,
+			CASAuth.HEADERS_FORM_URLENCODED,
 			[200]
 		).catch(CASAuth.error);
 	}
