@@ -58,7 +58,6 @@ export default class ArticlesCaroussel extends React.Component {
 					article = normalizeArticle(article);
 
 					ActualitesUTC.getImageFromMedia(article.featured_media).then(image => {
-						console.log(image);
 						this.setState(prevState => {
 							prevState.utcImages[article.id] = image;
 

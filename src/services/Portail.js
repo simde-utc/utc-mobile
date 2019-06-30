@@ -12,7 +12,7 @@ import { PORTAIL_URL, PORTAIL_CLIENT_ID, PORTAIL_CLIENT_SECRET } from '../../con
 
 import Api from './Api';
 import Storage from './Storage';
-import Generate from '../utils/Generate';
+import { UUIDv4, key } from '../utils/Generate';
 
 export class Portail extends Api {
 	static OAUTH = 'oauth/';
@@ -143,7 +143,7 @@ export class Portail extends Api {
 	createInvitedAccount() {
 		this.checkConnected(false);
 
-		const app_id = Generate.UUIDv4();
+		const app_id = UUIDv4();
 
 		return this.call(
 			`${Portail.OAUTH}token`,
@@ -186,8 +186,8 @@ export class Portail extends Api {
 	createAppAuthentification(app) {
 		this.checkConnected();
 
-		const app_id = app || Generate.UUIDv4();
-		const password = Generate.key();
+		const app_id = app || UUIDv4();
+		const password = key();
 
 		return this.call(
 			`${Portail.API_V1}users/${this.user.id}/auths`,
