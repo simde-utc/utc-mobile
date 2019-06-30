@@ -15,6 +15,7 @@ export default class AssociationShortcut extends Shortcut {
 			image: null,
 		};
 
+		// Ici on se permet de charger dès construction puisque les assos sont libres d'accès.
 		PortailApi.getAsso(props.id).then(([data]) => {
 			this.setState({
 				id: data.id,

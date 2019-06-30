@@ -1,9 +1,8 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+
 import ArticleComponent from '../../components/Articles/Article';
 import styles from '../../styles';
-import PortailApi from '../../services/Portail';
-
 import { _, e } from '../../utils/i18n';
 
 export default class fullArticleScreen extends React.PureComponent {

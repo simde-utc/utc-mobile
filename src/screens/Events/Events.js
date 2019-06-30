@@ -6,7 +6,7 @@ import moment from 'moment';
 import Filter from '../../components/Filter';
 import PortailApi from '../../services/Portail';
 import ColorUtils from '../../utils/Color';
-import Generate from '../../utils/Generate';
+import { searchText } from '../../utils/Generate';
 import { _ } from '../../utils/i18n';
 
 const styles = StyleSheet.create({
@@ -98,7 +98,7 @@ export default class EventsScreen extends React.Component {
 	}
 
 	onSearchTextChange(text) {
-		text = Generate.searchText(text);
+		text = searchText(text);
 		this.setState(prevState => {
 			prevState.search = text;
 
