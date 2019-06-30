@@ -1,6 +1,15 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { ScrollView } from 'react-native';
 
-export default () => {
-	<Text>Home</Text>;
-};
+import ArticlesCaroussel from '../../components/Home/ArticlesCaroussel';
+import ShortcutGrid from '../../components/Home/ShortcutGrid';
+import styles from '../../styles';
+
+const Home = ({ navigation }) => (
+	<ScrollView style={styles.bg.background}>
+		<ArticlesCaroussel navigation={navigation} />
+		<ShortcutGrid navigation={navigation} />
+	</ScrollView>
+);
+
+export default Home;
