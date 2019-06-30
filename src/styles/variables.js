@@ -17,6 +17,7 @@ export const createStyleFromList = (list, property) =>
 	);
 
 export const colors = {
+	background: '#f1f1f1',
 	white: '#fff',
 	yellow: '#ffd515',
 	lightBlue: '#007d94',

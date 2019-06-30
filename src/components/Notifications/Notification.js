@@ -72,11 +72,14 @@ export default class Notification extends React.PureComponent {
 
 	render() {
 		const { data, created_at, read_at } = this.props;
-		const viewStyle = styles.scrollable.item.view;
+		let viewStyle = styles.scrollable.item.view;
 
 		if (!read_at) {
-			viewStyle.borderLeftColor = colors.lightBlue;
-			viewStyle.borderLeftWidth = 5;
+			viewStyle = {
+				...viewStyle,
+				borderLeftColor: colors.lightBlue,
+				borderLeftWidth: 5,
+			};
 		}
 
 		return (

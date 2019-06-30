@@ -6,6 +6,9 @@
  * @license AGPL-3.0
  * */
 
+import ArticleComponent from '../components/Articles/Article';
+import { Articles as tArticles } from './i18n';
+
 const CARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const DEFAULT_LENGTH = 32;
 
@@ -41,10 +44,23 @@ export const searchTagsText = text => {
 
 export const stringDate = date => date.toISOString().substring(0, 23);
 
+export const normalizeArticle = (article, type) => {
+	type = type || article.article_type || ArticleComponent.UTC_ARTICLE_TYPE;
+
+	if (type === ArticleComponent.UTC_ARTICLE_TYPE) {
+		article.description = article.excerpt.rendered.replace(tArticles('to_remove'), '');
+		article.title = article.title.rendered;
+		article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
+	}
+
+	return article;
+};
+
 export default {
 	key,
 	UUIDv4,
 	searchText,
 	searchTagsText,
 	stringDate,
+	normalizeArticle,
 };

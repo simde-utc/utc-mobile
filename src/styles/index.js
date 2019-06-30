@@ -16,6 +16,7 @@ import navigation from './navigation';
 import userProfile from './userProfile';
 import associations from './associations';
 import scrollable from './scrollable';
+import shortcut from './shortcut';
 
 export default {
 	// General styles
@@ -36,6 +37,7 @@ export default {
 	userProfile,
 	associations,
 	scrollable,
+	shortcut,
 
 	// Getter function
 	get(...paths) {

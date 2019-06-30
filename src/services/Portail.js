@@ -12,12 +12,14 @@ import { PORTAIL_URL, PORTAIL_CLIENT_ID, PORTAIL_CLIENT_SECRET } from '../../con
 
 import Api from './Api';
 import Storage from './Storage';
-import Generate from '../utils/Generate';
+import { UUIDv4, key } from '../utils/Generate';
 
 export class Portail extends Api {
 	static OAUTH = 'oauth/';
 
 	static API_V1 = 'api/v1/';
+
+	static PORTAIL_HEADERS = { ...Api.HEADERS_JSON };
 
 	token = {};
 
@@ -51,14 +53,12 @@ export class Portail extends Api {
 	}
 
 	call(request, method, queries, body, validStatus) {
-		const headers = Api.HEADER_JSON;
-
 		if (Object.keys(this.token).length !== 0) {
-			headers.Authorization = `${this.token.token_type} ${this.token.access_token}`;
+			Portail.PORTAIL_HEADERS.Authorization = `${this.token.token_type} ${this.token.access_token}`;
 		}
 
 		return super
-			.call(request, method, queries, body, headers, validStatus, true)
+			.call(request, method, queries, body, Portail.PORTAIL_HEADERS, validStatus, true)
 			.catch(([data, status]) => {
 				// On gère le cas où on a plus de rien à retourner.
 				if (status === 416) {
@@ -70,12 +70,11 @@ export class Portail extends Api {
 	}
 
 	callWithoutJSON(request, method, queries, body, validStatus) {
-		const headers = Api.HEADER_JSON;
-
 		if (Object.keys(this.token).length !== 0) {
-			headers.Authorization = `${this.token.token_type} ${this.token.access_token}`;
+			Portail.PORTAIL_HEADERS.Authorization = `${this.token.token_type} ${this.token.access_token}`;
 		}
-		return super.call(request, method, queries, body, headers, validStatus, false);
+
+		return super.call(request, method, queries, body, Portail.PORTAIL_HEADERS, validStatus, false);
 	}
 
 	isConnected() {
@@ -144,7 +143,7 @@ export class Portail extends Api {
 	createInvitedAccount() {
 		this.checkConnected(false);
 
-		const app_id = Generate.UUIDv4();
+		const app_id = UUIDv4();
 
 		return this.call(
 			`${Portail.OAUTH}token`,
@@ -187,8 +186,8 @@ export class Portail extends Api {
 	createAppAuthentification(app) {
 		this.checkConnected();
 
-		const app_id = app || Generate.UUIDv4();
-		const password = Generate.key();
+		const app_id = app || UUIDv4();
+		const password = key();
 
 		return this.call(
 			`${Portail.API_V1}users/${this.user.id}/auths`,
@@ -322,6 +321,14 @@ export class Portail extends Api {
 					reject([response, status]);
 				});
 		});
+	}
+
+	getAsso(id) {
+		if (!this.isConnected()) {
+			return Promise.reject('Not connected.');
+		}
+
+		return this.call(`${Portail.API_V1}assos/${id}`, Api.GET);
 	}
 
 	getUserAssos(forceReload = false) {
