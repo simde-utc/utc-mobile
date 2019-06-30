@@ -41,17 +41,13 @@ const Preferences = {
 			},
 		},
 		{
-			type: 'association',
-			data: {
-				id: '6e105220-3af5-11e9-95ce-1f406c6cfae9',
-				shortname: 'SiMDE',
-			},
+			type: 'payutc',
 		},
 		{
 			type: 'association',
 			data: {
-				id: '77065500-3af5-11e9-86f1-3b537cf9c27f',
-				shortname: 'Lightupcity',
+				id: '6e105220-3af5-11e9-95ce-1f406c6cfae9',
+				shortname: 'SiMDE',
 			},
 		},
 	],

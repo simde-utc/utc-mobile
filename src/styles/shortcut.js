@@ -26,6 +26,7 @@ export default {
 	icon: {
 		paddingTop: '5%',
 		height: '100%',
+		width: '100%',
 	},
 
 	textView: {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableHighlight, View, Text, Image } from 'react-native';
+import { TouchableHighlight, View, Image } from 'react-native';
+import TextTicker from 'react-native-text-ticker';
 
 import Interactions from '../../img/icons/interactions.png';
 import Map from '../../img/icons/map.png';
@@ -40,7 +41,7 @@ export default class Shortcut extends React.Component {
 	}
 
 	getTitle() {
-		return <Text style={styles.shortcut.text}>{this.getTitleText()}</Text>;
+		return <TextTicker style={styles.shortcut.text}>{this.getTitleText()}</TextTicker>;
 	}
 
 	render() {
