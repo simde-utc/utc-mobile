@@ -213,7 +213,10 @@ export default class ConnectionScreen extends React.Component {
 				<View style={{ position: 'absolute', bottom: 20, width: '90%' }}>
 					<Button
 						style={styles.get('text.lightBlue', 'text.h5')}
-						onPress={() => navigation.navigate('Connected')}
+						onPress={() => Alert.alert(
+							'Mode de connexion',
+							"La connexion extérieure n'est pas disponible pour la Beta"
+						)}
 					>
 						{t('dont_login')}
 					</Button>
