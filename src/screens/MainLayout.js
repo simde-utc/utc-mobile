@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 
-import EventsNavigator from './Events';
+// import EventsNavigator from './Events';
 import ArticlesScreen from './Articles';
 import HomeScreen from './Home';
 import NavigationScreen from './Navigation';
@@ -12,8 +12,8 @@ import HomeOn from '../img/icons/navbar/home-on.png';
 import HomeOff from '../img/icons/navbar/home-off.png';
 import NewsOn from '../img/icons/navbar/news-on.png';
 import NewsOff from '../img/icons/navbar/news-off.png';
-import EventsOn from '../img/icons/navbar/events-on.png';
-import EventsOff from '../img/icons/navbar/events-off.png';
+// import EventsOn from '../img/icons/navbar/events-on.png';
+// import EventsOff from '../img/icons/navbar/events-off.png';
 import NotificationsOn from '../img/icons/navbar/bell-on.png';
 import NotificationsOff from '../img/icons/navbar/bell-off.png';
 import HamburgerOn from '../img/icons/navbar/hamburger-on.png';
@@ -46,13 +46,13 @@ const MainLayout = createBottomTabNavigator(
 				tabBarIcon: generateTabBar(NewsOn, NewsOff),
 			}),
 		},
-		Events: {
-			screen: EventsNavigator,
-			navigationOptions: () => ({
-				title: _('calendar'),
-				tabBarIcon: generateTabBar(EventsOn, EventsOff),
-			}),
-		},
+		// Events: {
+		// 	screen: EventsNavigator,
+		// 	navigationOptions: () => ({
+		// 		title: _('calendar'),
+		// 		tabBarIcon: generateTabBar(EventsOn, EventsOff),
+		// 	}),
+		// },
 		Notifications: {
 			screen: NotificationsScreen,
 			navigationOptions: () => ({
