@@ -67,8 +67,8 @@ export default class Articles extends React.Component {
 			utcArticles: [],
 			filters: [
 				{ displayName: _('all'), filterTag: 'all' },
-				{ displayName: _('utc'), filterTag: 'utc' },
-				{ displayName: _('associations'), filterTag: 'assos' },
+				{ displayName: _('utc'), filterTag: ArticleComponent.UTC_ARTICLE_TYPE },
+				{ displayName: _('associations'), filterTag: ArticleComponent.PORTAIL_ARTICLE_TYPE },
 			],
 			selectedFilterIndex: 0,
 			loading: false,

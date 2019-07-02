@@ -58,11 +58,11 @@ export class Actualites extends Api {
 	}
 
 	getArticles(queries) {
-		return this.call(`${API_URI}/posts`, Api.GET, queries);
+		return this.connectedCall(`${API_URI}/posts`, Api.GET, queries);
 	}
 
 	getMedia(id, queries) {
-		return this.call(`${API_URI}/media/${id}`, Api.GET, queries);
+		return this.connectedCall(`${API_URI}/media/${id}`, Api.GET, queries);
 	}
 
 	getImageFromMedia(id, queries) {
