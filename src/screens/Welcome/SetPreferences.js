@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
@@ -73,7 +73,12 @@ export default class SetPreferencesScreen extends React.Component {
 						checked={checked.IS_UTC_BDE_MEMBER}
 						labelStyle={text.h5}
 						label={t('utc_member')}
-						onPress={() => this.toggleCheck('IS_UTC_BDE_MEMBER')}
+						onPress={() =>
+							Alert.alert(
+								'Mode de connexion',
+								"La connexion extérieure n'est pas disponible pour la Beta"
+							)
+						}
 					/>
 					<BigButton label={_('confirm')} style={mt.lg} onPress={this.validate.bind(this)} />
 				</View>

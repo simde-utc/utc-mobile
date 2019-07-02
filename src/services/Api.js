@@ -29,6 +29,8 @@ export default class Api {
 
 	static VALID_STATUS = [200, 201, 204];
 
+	connected = false;
+
 	constructor(url) {
 		this.baseUrl = url;
 		this.controller = new AbortController();
@@ -86,6 +88,24 @@ export default class Api {
 				.catch(e => {
 					return reject([e.message, 523]);
 				});
+		});
+	}
+
+	connectedCall(...args) {
+		const call = () => this.call(...args);
+
+		if (!this.connected) {
+			return this.connect().then(call);
+		}
+
+		return call().catch(([data, status]) => {
+			if (status === 401) {
+				this.connected = false;
+
+				return this.connect().then(call);
+			}
+
+			return [data, status];
 		});
 	}
 

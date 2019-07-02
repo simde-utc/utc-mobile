@@ -161,7 +161,7 @@ export default class ConnectionScreen extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
+		// const { navigation } = this.props;
 		const { loading, loadingText, emailOrLogin, password } = this.state;
 		const viewStyle = [styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'), { flex: 7 }];
 
@@ -213,7 +213,12 @@ export default class ConnectionScreen extends React.Component {
 				<View style={{ position: 'absolute', bottom: 20, width: '90%' }}>
 					<Button
 						style={styles.get('text.lightBlue', 'text.h5')}
-						onPress={() => navigation.navigate('Connected')}
+						onPress={() =>
+							Alert.alert(
+								'Mode de connexion',
+								"La connexion extérieure n'est pas disponible pour la Beta"
+							)
+						}
 					>
 						{t('dont_login')}
 					</Button>
