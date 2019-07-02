@@ -55,7 +55,7 @@ export class PayUTCApi extends Api {
 	}
 
 	getWalletDetails() {
-		return this.call('getWalletDetails', Api.POST, AUTH_QUERIES, Api.HEADERS_JSON);
+		return this.connectedCall('getWalletDetails', Api.POST, AUTH_QUERIES, Api.HEADERS_JSON);
 	}
 }
 
