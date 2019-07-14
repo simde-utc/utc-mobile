@@ -9,6 +9,6 @@
 - Si besoin installer `eslint` via npm de manière globale (`npm i -g eslint`)
 - Respecter le linter ESlint (c.f. `.eslintrc.json`) et vérifier en lançant `eslint .` depuis la racine du projet.
   - Il ne devrait pas y avoir d'erreurs
-	- si jamais `config.js` pose problème, l'ajout de `/* eslint-disable prettier/prettier */` (exceptionnellement) au début de ce fichier permet de les ignorer. C'est acceptable car `config.js` est dans le `.gitignore`
+  - si jamais `config.js` pose problème, l'ajout de `/* eslint-disable prettier/prettier */` (exceptionnellement) au début de ce fichier permet de les ignorer. C'est acceptable car `config.js` est dans le `.gitignore`
 - Si vous êtes une personne extérieure à l'association [SiMDE](https://assos.utc.fr/simde), pour contribuer il faut faire un fork du projet, puis créer une PR de votre fork vers le projet principal, comme expliqué [ici](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork)
 - Amusez-vous !
