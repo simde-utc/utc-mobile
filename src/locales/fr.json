@@ -23,7 +23,7 @@
 		"Connected": {
 			"you_are_connected": "%{name}, vous êtes maintenant connecté !",
 			"you_are_not_connected": "Vous n'êtes pas connecté",
-			"personnalize": "et personnalisé le",
+			"personnalize": "et à la personnaliser",
 			"registering": "Enregistrement de l'application...",
 			"ready_to_use": "Vous êtes prêt à utiliser l'application",
 			"go_home": "Aller à l'accueil"
