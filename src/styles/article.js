@@ -1,3 +1,4 @@
+import { colors } from './variables';
 export default {
 	date: {
 		fontSize: 11,
@@ -24,6 +25,14 @@ export default {
 			color: '#6d6f71',
 		},
 	},
+	commentsIconText: {
+		fontSize: 10,
+		textAlign: 'center',
+		width: 15,
+		height: 15,
+		color: colors.yellow,
+	},
+
 };
 
 /*

@@ -6,41 +6,45 @@ import styles from '../../styles';
 export default class CommentsIcon extends React.PureComponent {
 	constructor(props) {
 		super(props);
-
 		this.style = styles.article.commentsIconText;
-		this.tenkplus = false;
+	}
 
-		switch (props.number.toString().length) {
+	kplusstylise(previousStyle,i) {
+		let style = Object.assign({}, previousStyle);
+		switch (i.toString().length) {
 			case 0:
 			case 1:
+				break;
 			case 2:
+				style.fontSize = 9;
+				style.marginTop = 0.58;
 				break;
 			case 3:
-				this.style.fontSize = 8;
-				this.style.marginTop = 2;
+				style.fontSize = 8;
+				style.marginTop = 1.5;
 				break;
 			case 4:
-				this.style.fontSize = 6;
-				this.style.marginTop = 2.5;
+				style.fontSize = 8;
+				style.marginTop = 1.3;
 				break;
 			default:
-				// faut pas déconner
-				this.tenkplus = true;
-				this.style.fontSize = 6;
-				this.style.marginTop = 2.5;
+				// don't mess around
+				style.fontSize = 8;
+				style.marginTop = 1.3;
 				break;
 		}
+		return style;
 	}
 
 	render() {
 		const { number } = this.props;
-
+		this.style = this.kplusstylise(this.style,number);
 		return (
 			<ImageBackground
 				style={{ height: 32.99999, width: 30, flexDirection: 'row', justifyContent: 'flex-end' }}
 				source={CommentsWithNumber}
 			>
-				<Text style={this.style}>{this.tenkplus ? '10k+' : number}</Text>
+				<Text style={this.style}>{number>1000 ? 'k+' : number}</Text>
 			</ImageBackground>
 		);
 	}
