@@ -1,0 +1,139 @@
+{
+	"screens": {
+		"AppLoader": {
+			"loading": "Chargement de l'application...",
+			"check_secure_data": "Vérification des données chiffrées...",
+			"error_on_loading": "Erreur lors de la récupération des données",
+			"check_cas": "Vérification de la connexion CAS-UTC...",
+			"connect_cas": "Reconnexion au CAS-UTC...",
+			"connect_services": "Connexion aux services...",
+			"get_user_data": "Récupération des données uttilisateurs...",
+			"reset_data": "Réinitialisation des données...",
+			"reconnection": "Reconnexion...",
+			"go_intro": "Redirection vers l'introduction..."
+		},
+		"Articles": {
+			"no_articles": "Aucun article disponible",
+			"to_remove": " Lire la suite. </a>",
+			"show_more": "Afficher plus...",
+		},
+		"Associations": {
+			"no_members": "Aucun membre"
+		},
+		"Connected": {
+			"you_are_connected": "%{name}, vous êtes maintenant connecté !",
+			"you_are_not_connected": "Vous n'êtes pas connecté",
+			"personnalize": "et personnalisé le",
+			"registering": "Enregistrement de l'application...",
+			"ready_to_use": "Vous êtes prêt à utiliser l'application",
+			"go_home": "Aller à l'accueil"
+		},
+		"Connection": {
+			"connecting": "Connexion...",
+			"fill_all_inputs": "Il faut remplir les deux champs",
+			"prefer_cas": "Il est préférable de se connecter avec ses informations CAS-UTC pour profiter de toutes les fonctionnalités. Continuer ?",
+			"registering": "Enregistrement de l'application...",
+			"registering_cas": "Enregistrement des données CAS-UTC...",
+			"bad_login_password": "Mauvais login et/ou mot de passe",
+			"simple_usage": "Utiliser simplement l'application",
+			"dont_login": "Je ne veux/peux pas me connecter"
+		},
+		"Events": {
+			"add_calendar": "Ajouter à un calendrier"
+		},
+		"Notifications": {
+			"no_notifications": "Pas de nouvelle notification"
+		},
+		"FAQs": {
+			"no_questions": "Aucune question disponible"
+		},
+		"Map": {
+			"open_maps": "Ouvrir dans Maps",
+			"app_to_use": "Quelle application choisir ?"
+		},
+		"Welcome": {
+			"learn_more": "Nous voudrions en savoir plus sur vous",
+			"allow_param": "Ceci nous permettra de configurer au mieux l'application pour votre utilisation",
+			"show_utc": "Afficher les actualités UTC",
+			"show_assos": "Afficher la vie associative",
+			"utc_member": "Etes-vous un membre UTC et/ou un cotisant BDE-UTC ?",
+			"discover": "Découvrons l'application ensemble",
+			"swap_to_begin": "Glissez vers la droite pour commencer",
+			"member_news": "Suivre et être notifié des actualités de l'UTC et de vos associations préférées",
+			"member_map": "Se répérer au sein du campus",
+			"member_notif": "Etre notifié des résultats des examens et d'événements qui vous intéressent",
+			"member_calendar": "Consulter et synchroniser son agenda scolaire, associatif et personnel",
+			"interested_news": "Suivre les actualités de l'UTC",
+			"interested_map": "Se répérer au sein du campus",
+			"interested_calendar": "Consulter et synchroniser son agenda associatif et personnel",
+			"goal": "A quoi ça sert ?",
+			"goal_explanation": "En fonction de votre situation, vous pourrez découvrir quelques fonctionnalités de cette application. Elle est destinée aux associations, étudiants, personnels et enseignants de l'UTC, mais aussi aux entreprises et personnes interessées par l'UTC : entreprises, compiégnois",
+			"more_functionalities": "Et bien d'autres fonctionnalités à découvrir dans l'application !"
+		}
+	},
+	"errors": {
+		"data_loading": "Une erreur a été détectée lors de la récupération de données",
+		"no_data_provided": "Aucune donnée reçue",
+		"no_articles": "Aucun article récupéré",
+		"no_navigation": "Aucune donnée de navigation fournie",
+		"association_not_available": "Association non disponible",
+		"associations_not_available": "Associations non disponibles",
+		"get_association_error": "Une erreur est survenue lors de la récupération des associations",
+		"portail_error": "Le Portail des Associations est actuellement inaccessible",
+		"retrieving_error": "Une erreur est survenue lors de la récupération des informations",
+		"wrong_filter": "Erreur dans le filtrage",
+		"registering_error": "Une erreur a été détectée lors de l'enregistrement de l'application. Veuillez relancer l'application",
+		"registering_cas_error": "Une erreur a été rencontrée dans la sauvegarde de vos données CAS",
+		"get_question_error": "Une erreur est survenue lors de la récupération des questions",
+		"notifications_not_available": "Notifications non disponibles",
+		"get_notification_error": "Une erreur est survenue lors de la récupération des notifications"
+	},
+	"words": {
+		"loading": "chargement...",
+		"search": "rechercher...",
+		"articles": "articles",
+		"article": "article",
+		"association": "association",
+		"associations": "associations",
+		"all": "tous",
+		"ok": "ok",
+		"details": "details",
+		"member": "membre",
+		"members": "membres",
+		"connected": "connecté",
+		"connection": "connexion",
+		"registering": "enregistrement",
+		"continue": "continuer",
+		"welcome": "bienvenue",
+		"login": "se connecter",
+		"username": "login CAS-UTC ou adresse email",
+		"password": "mot de passe",
+		"contacts": "contacts",
+		"social_networks": "réseaux sociaux",
+		"calendar": "calendrier",
+		"share": "partager",
+		"confirm": "confirmer",
+		"utc": "UTC",
+		"utc_member": "membre UTC",
+		"interested": "interessé",
+		"my_account": "mon compte",
+		"disconnect": "se déconnecter",
+		"faq": "Foire aux questions",
+		"map": "plan",
+		"interactions": "intéractions",
+		"buildings": "carte",
+		"places": "lieux",
+		"cancel": "annuler",
+		"questions": "questions",
+		"categories": "catégories",
+		"actus": "actus",
+		"actualities": "actualités",
+		"notifications": "notifications",
+		"menu": "menu",
+		"others": "autres",
+		"back": "retour",
+		"here": "ici",
+		"ToU": "conditions générales d'utilisation",
+		"accept": "accepter"
+	},
+}

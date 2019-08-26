@@ -4,16 +4,21 @@ import text from './text';
 import img from './image';
 
 // Component styles
-import { bigCheckBox } from './bigCheckBox';
-import { bigButton } from './bigButton';
-import { tabBar } from './tabBar';
-import { assosListTabBar } from './assosListTabBar';
-import { assoTabBar } from './assoTabBar';
-import { article } from './article';
-import { mainLayout } from './mainLayout';
-import { comment } from './comment';
+import bigCheckBox from './bigCheckBox';
+import bigButton from './bigButton';
+import tabBar from './tabBar';
+import assosListTabBar from './assosListTabBar';
+import assoTabBar from './assoTabBar';
+import article from './article';
+import mainLayout from './mainLayout';
+import comment from './comment';
+import navigation from './navigation';
+import userProfile from './userProfile';
+import associations from './associations';
+import scrollable from './scrollable';
+import shortcut from './shortcut';
 
-const styles = {
+export default {
 	// General styles
 	...layout,
 	text,
@@ -28,16 +33,19 @@ const styles = {
 	assoTabBar,
 	mainLayout,
 	comment,
+	navigation,
+	userProfile,
+	associations,
+	scrollable,
+	shortcut,
 
 	// Getter function
-	get: function(...paths) {
-		return paths.map(path => path.split('.').reduce((acc, step) => {
-				if (acc.hasOwnProperty(step))
-					return acc[step];
+	get(...paths) {
+		return paths.map(path =>
+			path.split('.').reduce((acc, step) => {
+				if (acc.hasOwnProperty(step)) return acc[step];
 				throw new Error(`'${path}' introuvable dans styles, arrêt à ${step}`);
 			}, this)
-		)
-	}
+		);
+	},
 };
-
-export default styles;

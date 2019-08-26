@@ -1,259 +1,295 @@
+/*
+ * Récupère et affiche la liste des actualités (UTC et associatives).
+ * @author Arthur Martello <arthur.martello@etu.utc.fr>
+ *
+ * @copyright Copyright (c) 2019, SiMDE-UTC
+ * @license AGPL-3.0
+ */
+
 import React from 'react';
-import { FlatList, Text, View, ActivityIndicator } from 'react-native';
-import styles from '../../styles'
+import { FlatList, View, Platform, SearchBar } from 'react-native';
+import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import CASAuth from '../../services/CASAuth';
-import Portail from '../../services/Portail';
+import PortailApi from '../../services/Portail';
 import ActualitesUTC from '../../services/ActualitesUTC';
-
-import Generate from '../../utils/Generate'
-
-import Filter from '../../components/Filter';
 import ArticleComponent from '../../components/Articles/Article';
-import fullArticleScreen from './fullArticle';
-import {createStackNavigator} from 'react-navigation';
+import FakeItem from '../../components/FakeItem';
+import styles from '../../styles';
+import { stringDate } from '../../utils/Generate';
+import { _, e } from '../../utils/i18n';
 
-const DEFAULT_ARTICLES_PAGINATION = 6; //debug pour bien vérifier le chargement en plusieurs fois
-//seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
+// seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.4;
+const MAX_PER_PAGE = 50;
+const MAX_DAYS = 7;
 
-export default class ArticlesScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Articles',
+export default class Articles extends React.Component {
+	static navigationOptions = () => ({
+		title: _('actualities'),
 		headerStyle: {
-			display: 'none',
+			backgroundColor: '#fff',
+		},
+		headerTintColor: '#007383',
+		headerForceInset: { top: 'never' },
+	});
+
+	static sortArticles(a, b) {
+		let aDate;
+		let bDate;
+
+		if (a.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			aDate = new Date(a.created_at);
+		} else {
+			aDate = new Date(a.date);
 		}
-	};
+
+		if (b.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
+			bDate = new Date(b.created_at);
+		} else {
+			bDate = new Date(b.date);
+		}
+
+		return aDate.getTime() < bDate.getTime();
+	}
+
+	constructor(props) {
+		super(props);
+
+		const date = new Date();
+		date.setDate(date.getDate() - MAX_DAYS);
+
+		this.willUnmount = false;
+		this.state = {
+			date,
+			noArticlesCounter: 0,
+			articles: [],
+			portailArticles: [],
+			utcArticles: [],
+			filters: [
+				{ displayName: _('all'), filterTag: 'all' },
+				{ displayName: _('utc'), filterTag: ArticleComponent.UTC_ARTICLE_TYPE },
+				{ displayName: _('associations'), filterTag: ArticleComponent.PORTAIL_ARTICLE_TYPE },
+			],
+			selectedFilterIndex: 0,
+			loading: false,
+			search: '',
+		};
+	}
+
+	componentDidMount() {
+		this.loadMoreContent();
+	}
 
 	componentWillUnmount() {
 		this.willUnmount = true;
 	}
 
-	constructor(props) {
-		super(props);
-		this.willUnmount = false;
-		this.state = {
-			page: 0,
-			pagination: DEFAULT_ARTICLES_PAGINATION,
-			canLoadMoreUTCArticles: true,
-			canLoadMorePortailArticles: true,
-			articles: [],
-			filters: [
-				{
-					id: 'utc',
-					name: 'utc',
-				},
-				{
-					id: 'assos',
-					name: 'assos',
-				},
-			],
-			selectedFilters: [],
-			loading: false,
-			search: '',
-		};
+	loadPortailArticles(page = 0) {
+		const { date } = this.state;
 
-		if (CASAuth.isConnected())
-			this.state.selectedFilters.push('utc')
+		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(
+			([articles]) => {
+				articles.map(article => {
+					article.article_type = ArticleComponent.PORTAIL_ARTICLE_TYPE;
+					article.created_at = article.created_at.replace(' ', 'T');
 
-		if (Portail.isConnected())
-			this.state.selectedFilters.push('assos')
-
-		this.props.articleHeight = 100;
-	}
-
-	componentDidMount() {
-		this._loadMoreContentAsync()
-	}
-
-	_loadMoreContentAsync() {
-		if(this.willUnmount) {return;} //à tester avant chaque setstate pour éviter les re-render inutiles et les "memory leaks" (d'après expo). Si on avait une biblio de gestion de l'état on aurait pas besoin de faire ça
-		if (!this.state.canLoadMorePortailArticles || this.state.loading) return
-
-		var promises = []
-
-		if (CASAuth.isConnected() && this.state.canLoadMoreUTCArticles) {
-			var UTCArticles = this._loadUTCArticles()
-
-			promises.push(UTCArticles)
-		}
-
-		if (Portail.isConnected() && this.state.canLoadMorePortailArticles) {
-			var PortailArticles = this._loadPortailArticles()
-
-			promises.push(PortailArticles)
-		}
-
-		if(this.willUnmount) {return;}
-		if (promises) {
-			this.setState(prevState => ({ ...prevState, loading: true }))
-
-			return new Promise.all(promises).then(([articles, articles2]) => {
-
-				if (!(articles || articles2)) return
-
-				if (articles && articles2)
-					articles = articles.concat(articles2)
-				else
-					articles = articles || articles2
-
-				articles.sort((article1, article2) => {
-					return new Date(article1.created_at || article1.date_gmt) > new Date(article2.created_at || article2.date_gmt) ? -1 : 1
-				})
-				if(this.willUnmount) {return;}
-				this.setState(prevState => {
-					prevState.page++;
-					return prevState;
-				},
-				() => {
-					//il faut être sûr d'incrémenter la pagination avant d'autoriser le chargement de nouveaux articles
-					if(this.willUnmount) {return;}
-					this.setState( prevState => {
-						prevState.articles = prevState.articles.concat(articles);
-						prevState.loading = false;
-						return prevState;
-					});
+					return article;
 				});
-			}).catch((e) => {console.warn(e); if(this.willUnmount) {return;} this.setState(prevState => ({ ...prevState, loading: false })) })
-		}
-	}
 
-	_loadUTCArticles() {
-		return CASAuth.getService(process.env.ACTUS_UTC_FEED_LOGIN).then(([serviceTicket]) => {
-			var actus = new ActualitesUTC(serviceTicket)
+				this.setState(prevState => ({
+					...prevState,
+					portailArticles: prevState.portailArticles.concat(articles),
+				}));
 
-			return actus.loadArticles().then(() => {
-				return actus.getArticles(this.state.pagination, this.state.page + 1, 'latest').map((article) => {
-					article['article_type'] = 'utc'
-
-					return article
-				})
-			}).catch(([response, status]) => {
-				if(this.willUnmount) {return;}
-				switch(status) {
-					case 416:
-						this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-						break
-					case 523:
-					default:
-						//TODO: afficher réseau ou inconnue
-						console.warn([response, status])
-						this.setState(prevState => ({ ...prevState, canLoadMoreUTCArticles: false }));
-						break
+				// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+				if (articles.length === MAX_PER_PAGE) {
+					return MAX_PER_PAGE + this.loadPortailArticles(page + 1);
 				}
 
-				return []
-			})
-		}).catch(() => {
-			return []
-		})
+				// Tout a été chargé pour la semaine demandée.
+				return articles.length;
+			}
+		);
 	}
 
-	_loadPortailArticles() {
-		return Portail.getArticles(this.state.pagination, this.state.page + 1, 'latest').then(([response, status]) => {
-			return response.map((article) => {
-				article['article_type'] = 'assos'
-				article["created_at"] = article["created_at"].replace(' ', 'T')
+	loadUTCArticles(page = 1) {
+		const { date } = this.state;
+		const beforeDate = new Date(date);
+		beforeDate.setDate(beforeDate.getDate() + MAX_DAYS);
 
-				return article
-			})
-		}).catch(([response, status]) => {
-			if(this.willUnmount) {return;}
-			if (status === 416)
-				this.setState(prevState => ({ ...prevState, canLoadMorePortailArticles: false }))
+		const queries = {
+			per_page: MAX_PER_PAGE,
+			page,
+			before: stringDate(beforeDate),
+			after: stringDate(date),
+		};
 
-			return []
-		})
+		return ActualitesUTC.getArticles(queries).then(([articles]) => {
+			articles.map(article => {
+				article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
+
+				return article;
+			});
+
+			this.setState(prevState => ({
+				...prevState,
+				portailArticles: prevState.portailArticles.concat(articles),
+			}));
+
+			// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
+			if (articles.length === MAX_PER_PAGE) {
+				return MAX_PER_PAGE + this.loadUTCArticles(page + 1);
+			}
+
+			return articles.length;
+		});
 	}
 
-	unselectFilter(name) {
-		if(this.willUnmount) {return;}
-		this.setState(prevState => {
-			if (prevState.selectedFilters.length === 1 && prevState.selectedFilters.includes(name))
-				return prevState
+	loadMoreContent() {
+		const { loading } = this.state;
 
-			var index = prevState.selectedFilters.indexOf(name)
+		// On fait bien attention à ne pas demander de charger plusieurs fois en même temps.
+		if (loading || this.willUnmount) {
+			return;
+		}
 
-			if (index > -1)
-				prevState.selectedFilters.splice(index, 1)
+		const promises = [];
 
-			return prevState
-		})
+		if (ActualitesUTC.isConnected()) {
+			const UTCPromise = this.loadUTCArticles();
+
+			promises.push(UTCPromise);
+		}
+
+		if (PortailApi.isConnected()) {
+			const PortailPromise = this.loadPortailArticles();
+
+			promises.push(PortailPromise);
+		}
+
+		if (promises.length) {
+			this.setState({ loading: true });
+
+			new Promise.all(promises).then(nbrNewArticles => {
+				const { noArticlesCounter, date } = this.state;
+				const sumNbr = nbrNewArticles.reduce((acc, val) => acc + (val || 0), 0);
+				date.setDate(date.getDate() - MAX_DAYS);
+
+				// On a chargé aucun nouvel article, chargeons pour les dates suivantes.
+				if (sumNbr === 0) {
+					// Eviter le chargement infini.
+					if (noArticlesCounter < 5) {
+						return this.setState(
+							prevState => ({
+								...prevState,
+								loading: false,
+								noArticlesCounter: prevState.noArticlesCounter + 1,
+							}),
+							() => this.loadMoreContent()
+						);
+					}
+				}
+
+				this.setState(prevState => {
+					return {
+						...prevState,
+						articles: prevState.articles
+							.concat(prevState.portailArticles, prevState.utcArticles)
+							.sort(Articles.sortArticles),
+						portailArticles: [],
+						utcArticles: [],
+						loading: false,
+						noArticlesCounter: 0,
+					};
+				});
+			});
+		}
 	}
 
-	onlySelectFilter(name) {
-		if(this.willUnmount) {return;}
-		this.setState(prevState => {
-			prevState.selectedFilters = [name]
+	renderFilters() {
+		const { selectedFilterIndex, filters } = this.state;
 
-			return prevState
-		})
+		if (filters.length <= 0) {
+			throw e('no_filters');
+		}
+
+		return (
+			<View
+				style={{
+					padding: 10,
+					backgroundColor: '#fff',
+					borderBottomWidth: 1,
+					borderBottomColor: '#f1f1f1',
+				}}
+			>
+				<SegmentedControlTab
+					tabStyle={{ backgroundColor: 'transparent', borderColor: '#007383' }}
+					tabTextStyle={{ color: '#007383' }}
+					activeTabStyle={{ backgroundColor: '#007383' }}
+					values={filters.map(filter => filter.displayName)}
+					selectedIndex={selectedFilterIndex}
+					onTabPress={index => {
+						this.setState({ selectedFilterIndex: index });
+					}}
+				/>
+			</View>
+		);
 	}
 
-	selectFilter(name) {
-		if(this.willUnmount) {return;}
-		this.setState(prevState => {
-			prevState.selectedFilters.push(name)
+	renderSearchBar() {
+		const { search } = this.state;
 
-			return prevState
-		})
-	}
-
-	onSearchTextChange(text) {
-		text = Generate.searchText(text)
-		this.setState((prevState) => {
-			prevState.search = text
-
-			return prevState
-		})
-
-		return text
+		return (
+			<SearchBar
+				placeholder={_('search')}
+				platform={Platform.OS}
+				value={search}
+				onChangeText={search => this.setState({ search })}
+				lightTheme
+				containerStyle={{ backgroundColor: '#fff' }}
+				inputContainerStyle={{ backgroundColor: '#f4f4f4' }}
+				cancelButtonTitle={_('cancel')}
+				cancelButtonProps={{ buttonTextStyle: { color: '#007383' } }}
+				round
+			/>
+		);
 	}
 
 	render() {
-		const toMatch = this.state.search.toLowerCase().split(' ')
+		const { navigation } = this.props;
+		const { articles, utcArticles, portailArticles, filters, selectedFilterIndex } = this.state;
 
-		const data = this.state.articles.filter((article) => {
-			if (!this.state.selectedFilters.includes(article['article_type']))
-				return false
+		const newArticles = [].concat(portailArticles, utcArticles).sort(Articles.sortArticles);
+		const resultedArticles = [].concat(articles, newArticles);
 
-			for (let i = 0; i < toMatch.length; i++) {
-				if (toMatch[i][0] === '#') {
-					console.log(toMatch[i] + ' à faire')
-					continue // TODO: il faudrait checker les tags
-				}
-				else if (
-					article.title.toLowerCase().indexOf(toMatch[i]) < 0
-					&& (article.description || article.excerpt).toLowerCase().indexOf(toMatch[i]) < 0
-					&& article.content.toLowerCase().indexOf(toMatch[i]) < 0
-				)
-					return false
-			}
+		const filteredArticles =
+			selectedFilterIndex === 0
+				? resultedArticles
+				: resultedArticles.filter(
+						article => article.article_type === filters[selectedFilterIndex].filterTag
+				  );
 
-			return true
-		})
+		// TODO: filtrer en fonction de la recherche (barre de recherche dans this.renderSearchBar
 
 		return (
-			<View style={ styles.article.articlesFeedContainer }>
-				<Filter
-					filters={ this.state.filters }
-					selectedFilters={ this.state.selectedFilters }
-					onFilterUnselected={ this.unselectFilter.bind(this) }
-					onFilterSelected={ this.selectFilter.bind(this) }
-					onFilterLongPressed={ this.onlySelectFilter.bind(this) }
-					searchButton={ false }
-					onSearchTextChange={ this.onSearchTextChange.bind(this) }
-				/>
-				<FlatList
-					ref={(component) => ( this.flatList = component )}
-					data={ data }
-					renderItem={({item}) => <ArticleComponent navigation={this.props.navigation} data={item} portailInstance={Portail} fullActions={true} /> }
-					onEndReached={ this._loadMoreContentAsync.bind(this) }
-					onEndReachedThreshold = {THRESHOLD}
-					keyExtractor={ (article) => article['article_type'] + '_' + article['id'] }
-					ListFooterComponent = { <View style={ styles.article.loadingIndicatorContainer }>{ this.state.loading && <ActivityIndicator size="small" color="#0000ff" /> }</View> }
-				/>
-			</View>
+			<FlatList
+				style={styles.scrollable.list}
+				data={filteredArticles}
+				renderItem={item => <ArticleComponent data={item} navigation={navigation} />}
+				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
+				onEndReached={() => this.loadMoreContent()}
+				onEndReachedThreshold={THRESHOLD}
+				keyExtractor={article => `${article.article_type}_${article.id}`}
+				ListHeaderComponent={this.renderFilters()}
+				ListFooterComponent={
+					<View>
+						{filteredArticles.length > 0 ? (
+							<View style={styles.scrollable.sectionSeparator} />
+						) : null}
+						<FakeItem title={_('loading')} />
+					</View>
+				}
+			/>
 		);
 	}
 }

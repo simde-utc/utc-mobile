@@ -1,0 +1,32 @@
+[
+  {
+    "title": "LinkedIn",
+    "icon": "linkedin",
+    "subtitle": "Université de Technologie de Compiègne",
+    "url": "https://www.linkedin.com/school/universit-de-technologie-de-compi-gne/"
+  },
+  {
+    "title": "Twitter",
+    "icon": "twitter",
+    "subtitle": "@utcompiegne",
+    "url": "https://twitter.com/utcompiegne"
+  },
+  {
+    "title": "YouTube",
+    "icon": "youtube",
+    "subtitle": "KomUTC",
+    "url": "https://www.youtube.com/user/KomUTC"
+  },
+  {
+    "title": "Facebook",
+    "icon": "facebook",
+    "subtitle": "Université de Technologie de Compiègne",
+    "url": "https://www.facebook.com/utcompiegne/"
+  },
+  {
+    "title": "Instagram",
+    "icon": "instagram",
+    "subtitle": "@utcompiegne",
+    "url": "https://www.instagram.com/utcompiegne/"
+  }
+]

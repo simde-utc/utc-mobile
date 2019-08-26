@@ -1,24 +1,25 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
-import styles from '../../styles'
+import { Alert, View } from 'react-native';
 
-// Components
 import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
 import BigButton from '../../components/BigButton';
+import styles from '../../styles';
+import Preferences from '../../utils/Preferences';
+import { _, Welcome as t } from '../../utils/i18n';
 
 export default class SetPreferencesScreen extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 
 		this.state = {
 			checked: {
-				utcNews: true,
-				assoLife: true,
-				utcMember: false,
-			}
+				SHOW_UTC_ACTUALITIES: Preferences.SHOW_UTC_ACTUALITIES,
+				SHOW_ASSOS_ACTUALITIES: Preferences.SHOW_ASSOS_ACTUALITIES,
+				IS_UTC_BDE_MEMBER: Preferences.IS_UTC_BDE_MEMBER,
+			},
 		};
-		
+
 		this.toggleCheck = this.toggleCheck.bind(this);
 	}
 
@@ -27,55 +28,59 @@ export default class SetPreferencesScreen extends React.Component {
 			...prevState,
 			checked: {
 				...prevState.checked,
-				[key]: force == null ? !prevState.checked[key] : force
-			}
-		})
-		);
+				[key]: force == null ? !prevState.checked[key] : force,
+			},
+		}));
 	}
 
 	validate() {
-		if (this.state.checked.utcMember)
-			this.props.navigation.navigate('Connection')
-		else
-			this.props.navigation.navigate('Connected')
+		const { checked } = this.state;
+		const { navigation } = this.props;
+
+		for (const key in checked) {
+			Preferences[key] = checked[key];
+		}
+
+		navigation.navigate('ToU');
 	}
 
 	render() {
+		const { checked } = this.state;
+		const { container, text, mt } = styles;
+
 		const viewStyle = [
 			styles.get('container.center', 'mt.xl', 'mb.xxl'),
-			{ flex: 7, justifyContent: 'center', marginTop: 0 } 
-		]
-{/*** définir une margin : hack pour que la première bigcheckbox ne soit pas rognée ***/}
+			{ flex: 7, justifyContent: 'center', marginTop: 0 },
+		];
+
 		return (
-			<View style={ styles.container.default }>
-				<HeaderView
-					title="Nous aimerions mieux vous connaître"
-					subtitle="Cela nous permettra de paramétrer au mieux l'application selon vos préférences"
-				/>
-				<View style={ viewStyle}>
-					<BigCheckBox 
-						checked={ this.state.checked.utcNews }
-						labelStyle={ styles.text.h5 }
-						label={"Afficher les actualités UTC"}
-						onChange={() => this.toggleCheck('utcNews')}
+			<View style={container.default}>
+				<HeaderView title={t('learn_more')} subtitle={t('allow_param')} />
+				<View style={viewStyle}>
+					<BigCheckBox
+						checked={checked.SHOW_UTC_ACTUALITIES}
+						labelStyle={text.h5}
+						label={t('show_utc')}
+						onPress={() => this.toggleCheck('SHOW_UTC_ACTUALITIES')}
 					/>
-					<BigCheckBox 
-						checked={ this.state.checked.assoLife }
-						labelStyle={ styles.text.h5 }
-						label={"Afficher la vie associative"}
-						onChange={() => this.toggleCheck('assoLife')}
+					<BigCheckBox
+						checked={checked.SHOW_ASSOS_ACTUALITIES}
+						labelStyle={text.h5}
+						label={t('show_assos')}
+						onPress={() => this.toggleCheck('SHOW_ASSOS_ACTUALITIES')}
 					/>
-					<BigCheckBox 
-						checked={ this.state.checked.utcMember }
-						labelStyle={ styles.text.h5 }
-						label={"Etes-vous un membre UTC/BDE ?"}
-						onChange={() => this.toggleCheck('utcMember')}
+					<BigCheckBox
+						checked={checked.IS_UTC_BDE_MEMBER}
+						labelStyle={text.h5}
+						label={t('utc_member')}
+						onPress={() =>
+							Alert.alert(
+								'Mode de connexion',
+								"La connexion extérieure n'est pas disponible pour la Beta"
+							)
+						}
 					/>
-					<BigButton
-						label={ "Valider" }
-						style={ styles.mt.lg }
-						onPress={ this.validate.bind(this) }
-					/>
+					<BigButton label={_('confirm')} style={mt.lg} onPress={this.validate.bind(this)} />
 				</View>
 			</View>
 		);

@@ -1,271 +1,226 @@
 /**
- * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app
+ * Affiche la page de connexion gérant l'interconnexion entre les comptes CAS et exté/app.
+ *
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
  * @copyright Copyright (c) 2018, SiMDE-UTC
- * @license AGPL-3.0
-**/
+ * @license GPL-3.0
+ */
 
-import React from 'react'
-import { View, Image, Text, TextInput, Alert } from 'react-native'
-import Button from 'react-native-button'
-import styles from '../../styles'
-import Spinner from 'react-native-loading-spinner-overlay'
+import React from 'react';
+import { View, TextInput, Alert } from 'react-native';
+import Button from 'react-native-button';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-// Components
-import BigButton from '../../components/BigButton'
-import HeaderView from '../../components/HeaderView'
-
-// API
-import PortailApi from '../../services/Portail'
-import CASAuth from '../../services/CASAuth'
+import BigButton from '../../components/BigButton';
+import HeaderView from '../../components/HeaderView';
+import PortailApi from '../../services/Portail';
+import CASAuth from '../../services/CASAuth';
+import styles from '../../styles';
+import { _, Connection as t } from '../../utils/i18n';
 
 export default class ConnectionScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Connexion',
+	static navigationOptions = () => ({
+		title: _('connection'),
 		headerStyle: {
 			display: 'none',
-		}
-	};
+		},
+	});
 
-	constructor (props) {
-		super(props)
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			emailOrLogin: '',
 			password: '',
 			allowEmail: false,
-			forceCreation: false,
 			loading: false,
-			loadingText: 'Connexion en cours...',
-		}
+			loadingText: t('connecting'),
+		};
 	}
 
-	tryToConnect () {
-		if (this.state.emailOrLogin.length === 0 || this.state.password.length === 0) {
-			Alert.alert(
-				'Connexion',
-				'Il est nécessaire de remplir les deux champs',
-				[
-					{ text: 'Continuer' },
-				],
-				{ cancelable: true }
-			)
-		}
-		else if (this.state.emailOrLogin.contains('@') && !this.state.allowEmail) {
+	tryToConnect() {
+		const { emailOrLogin, password, allowEmail } = this.state;
+
+		if (emailOrLogin.length === 0 || password.length === 0) {
+			Alert.alert(_('connection'), t('fill_all_inputs'), [{ text: _('continue') }], {
+				cancelable: true,
+			});
+		} else if (emailOrLogin.includes('@') && !allowEmail) {
 			this.setState(prevState => {
-				prevState.allowEmail = true
+				prevState.allowEmail = true;
 
-				return prevState
-			})
+				return prevState;
+			});
 
-			Alert.alert(
-				'Connexion',
-				'Il est préférable de se connecter via son compte CAS. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-				[
-					{ text: 'Continuer' },
-				],
-				{ cancelable: true }
-			)
+			Alert.alert(_('connection'), t('prefer_cas'), [{ text: _('continue') }], {
+				cancelable: true,
+			});
+		} else {
+			this.connect();
 		}
-		else
-			this.connect()
 	}
 
-	connect () {
+	connect() {
+		const { emailOrLogin, password } = this.state;
+
 		this.setState(prevState => {
-			prevState.loading = true
+			prevState.loading = true;
 
-			return prevState
-		})
+			return prevState;
+		});
 
-		new Promise(() => {
-			if (PortailApi.isConnected() && !this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
-				if (this.state.emailOrLogin.contains('@') && !this.state.forceCreation) {
-					this.setState(prevState => {
-						prevState.forceCreation = true
-						prevState.loading = false
-
-						return prevState
-					})
-
-					Alert.alert(
-						'Connexion',
-						'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-						[
-							{ text: 'Continuer' },
-						],
-						{ cancelable: false }
-					)
-				}
-				else {
-					return PortailApi.createCasAuthentification(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
-						if (status === 400) {
-							this.badLogin()
-
-							return;
-						}
-
-						this.setState(prevState => {
-							prevState.forceCreation = true
-							prevState.loading = false
-
-							return prevState
-						})
-
-						Alert.alert(
-							'Connexion',
-							'En vous connectant, vous allez perdre toutes vos préférences sur cette appareil et récupérer celles du compte. Cliquez sur continuer et sur "Se connecter" pour vous connecter',
-							[
-								{ text: 'Continuer' },
-							],
-							{ cancelable: false }
-						)
-					})
-				}
-			}
-			else {
-				return PortailApi.login(
-					this.state.emailOrLogin,
-					this.state.password
-				).then(() => {
-					this.setState(prevState => {
-						prevState.loadingText = 'Enregistrement de l\'appareil...'
-
-						return prevState
-					})
-
-					return PortailApi.createAppAuthentification().then(() => {
-						return this.register()
-					}).catch(([response, status]) => {
-						this.setState(prevState => {
-							prevState.loading = false
-
-							return prevState
-						})
-
-						Alert.alert(
-							'Connexion',
-							'Une erreur a été rencontrée lors de l\'enregistrement de l\'application. Réessayez',
-							[
-								{ text: 'Continuer' },
-							],
-							{ cancelable: false }
-						)
-					})
-				}).catch(() => {
-					this.badLogin()
-				})
-			}
-		}).then(this.register)
-	}
-
-	register () {
-		new Promise((resolve, reject) => {
-			if (!this.state.emailOrLogin.contains('@')) {
+		return PortailApi.login(emailOrLogin, password)
+			.then(() => {
 				this.setState(prevState => {
-					prevState.loadingText = 'Enregistrement des données CAS...'
+					prevState.loadingText = t('registering');
 
-					return prevState
-				})
+					return prevState;
+				});
 
-				return CASAuth.setData(this.state.emailOrLogin, this.state.password).catch(([response, status]) => {
-					this.setState(prevState => {
-						prevState.loading = false
-
-						return prevState
+				return PortailApi.createAppAuthentification()
+					.then(() => {
+						return this.register();
 					})
+					.catch(e => {
+						console.warn(e);
+						this.setState(prevState => {
+							prevState.loading = false;
 
-					Alert.alert(
-						'Connexion',
-						'Une erreur a été rencontrée dans la sauvegarde de vos données CAS',
-						[
-							{ text: 'Continuer' },
-						],
-						{ cancelable: false }
-					)
+							return prevState;
+						});
 
-					this.props.navigation.navigate('Connected')
-				}).then(() => {
-					this.setState(prevState => {
-						prevState.loading = false
-
-						return prevState
-					})
-
-					this.props.navigation.navigate('Connected')
-				})
-			}
-
-			this.setState(prevState => {
-				prevState.loading = false
-
-				return prevState
+						Alert.alert(_('connection'), e('registering_error'), [{ text: _('continue') }], {
+							cancelable: false,
+						});
+					});
 			})
-
-			this.props.navigation.navigate('Connected')
-		})
+			.catch(e => {
+				console.log(e);
+				this.badLogin();
+			});
 	}
 
-	badLogin () {
+	register() {
+		const { navigation } = this.props;
+		const { emailOrLogin, password } = this.state;
+
+		if (!emailOrLogin.includes('@')) {
+			this.setState(prevState => {
+				prevState.loadingText = t('registering_cas');
+
+				return prevState;
+			});
+
+			return CASAuth.setData(emailOrLogin, password)
+				.catch(e => {
+					console.log(e);
+
+					this.setState(prevState => {
+						prevState.loading = false;
+
+						return prevState;
+					});
+
+					Alert.alert(_('connection'), e('registering_cas_error'), [{ text: _('continue') }], {
+						cancelable: false,
+					});
+
+					navigation.navigate('Connected');
+				})
+				.then(() => {
+					this.setState(prevState => {
+						prevState.loading = false;
+
+						return prevState;
+					});
+
+					navigation.navigate('Connected');
+				});
+		}
+
 		this.setState(prevState => {
-			prevState.loading = false
+			prevState.loading = false;
 
-			return prevState
-		})
+			return prevState;
+		});
 
-		Alert.alert(
-			'Connexion',
-			'Votre login et/ou votre mot de passe est incorrect',
-			[
-				{ text: 'Continuer' },
-			],
-			{ cancelable: true }
-		)
+		navigation.navigate('Connected');
+	}
+
+	badLogin() {
+		this.setState(prevState => {
+			prevState.loading = false;
+
+			return prevState;
+		});
+
+		Alert.alert(_('connection'), t('bad_login_password'), [{ text: _('continue') }], {
+			cancelable: true,
+		});
 	}
 
 	render() {
-		const viewStyle = [
-			styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'),
-			{ flex: 7 }
-		];
+		// const { navigation } = this.props;
+		const { loading, loadingText, emailOrLogin, password } = this.state;
+		const viewStyle = [styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'), { flex: 7 }];
 
 		return (
 			<View style={styles.container.default}>
 				<View>
-					<Spinner visible={this.state.loading} textContent={ this.state.loadingText } textStyle={{ color: '#FFF' }} />
+					<Spinner
+						visible={loading}
+						textContent={loadingText}
+						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
+					/>
 				</View>
-				<HeaderView
-					title="Connectez-vous"
-					subtitle="pour utiliser pleinement l'application"
-				/>
-				<View style={ viewStyle }>
-					<TextInput style={ styles.bigButton }
-						underlineColorAndroid='transparent'
-						placeholder="Login CAS / Email"
-						value={ this.state.emailOrLogin }
-						onChangeText={(text) => this.setState(() => { return { emailOrLogin: text } })}
+				<HeaderView title={_('login')} subtitle={t('simple_usage')} />
+				<View style={viewStyle}>
+					<TextInput
+						style={styles.bigButton}
+						underlineColorAndroid="transparent"
+						placeholder={_('username')}
+						value={emailOrLogin}
+						onChangeText={text =>
+							this.setState(() => {
+								return { emailOrLogin: text };
+							})
+						}
 						keyboardType="email-address"
 						autoCapitalize="none"
-						autoCorrect={ false }
+						autoCorrect={false}
 					/>
-					<TextInput style={ styles.bigButton }
-						underlineColorAndroid='transparent'
-						placeholder="Mot de passe"
-						value={ this.state.password }
-						onChangeText={(text) => this.setState(() => { return { password: text } })}
+					<TextInput
+						style={styles.bigButton}
+						underlineColorAndroid="transparent"
+						placeholder={_('password')}
+						value={password}
+						onChangeText={text =>
+							this.setState(() => {
+								return { password: text };
+							})
+						}
 						autoCapitalize="none"
-						autoCorrect={ false }
-						secureTextEntry={ true }
+						autoCorrect={false}
+						secureTextEntry
 					/>
-					<BigButton label={ "Se connecter" }
-						style={ styles.get('mt.lg', 'mb.md') }
-						onPress={() => this.tryToConnect() }
+					<BigButton
+						label={_('login')}
+						style={styles.get('mt.lg', 'mb.md')}
+						onPress={() => this.tryToConnect()}
 					/>
-					<Button style={ styles.lightBlueText }
-						onPress={ (checked) => this.props.navigation.navigate('Connected') }
+				</View>
+				<View style={{ position: 'absolute', bottom: 20, width: '90%' }}>
+					<Button
+						style={styles.get('text.lightBlue', 'text.h5')}
+						onPress={() =>
+							Alert.alert(
+								'Mode de connexion',
+								"La connexion extérieure n'est pas disponible pour la Beta"
+							)
+						}
 					>
-						Je ne souhaite pas me connecter
+						{t('dont_login')}
 					</Button>
 				</View>
 			</View>

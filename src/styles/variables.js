@@ -8,13 +8,16 @@ import { StyleSheet } from 'react-native';
  * @param      {string}     property  La propriété à régler pour chaque clé
  * @return     {StyleSheet}
  */
-export const createStyleFromList = (list, property) => StyleSheet.create(Object.keys(list).reduce((acc, key) => {
-	acc[key] = { [property]: list[key] };
-	return acc;
-}, {}));
-
+export const createStyleFromList = (list, property) =>
+	StyleSheet.create(
+		Object.keys(list).reduce((acc, key) => {
+			acc[key] = { [property]: list[key] };
+			return acc;
+		}, {})
+	);
 
 export const colors = {
+	background: '#f1f1f1',
 	white: '#fff',
 	yellow: '#ffd515',
 	lightBlue: '#007d94',
@@ -28,7 +31,6 @@ export const colors = {
 	pvdcBack: '#fed41a',
 	psecBack: '#95bd0c',
 	poleFore: '#f6f8f4',
-	
 };
 
 export const spaces = {
@@ -38,5 +40,5 @@ export const spaces = {
 	md: 15,
 	lg: 25,
 	xl: 50,
-	xxl: 75
-}
+	xxl: 75,
+};

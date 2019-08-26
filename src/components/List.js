@@ -1,28 +1,24 @@
 /**
  * Affiche une liste
- * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>, Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Alexandre Brasseur <alexandre.brasseur@etu.utc.fr>
+ * @author Romain Maliach-Auguste <r.maliach@live.fr>
+ * @author Samy Nastuzzi <samy@nastuzzi.fr>
  *
- * @copyright Copyright (c) 2017, SiMDE-UTC
+ * @copyright Copyright (c) 2018, SiMDE-UTC
  * @license AGPL-3.0
-**/
+ * */
 
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import Icon from './Icon';
-import News from '../img/icons/news.png'
-import Map from '../img/icons/map.png'
-import Bell from '../img/icons/bell.png'
-import Calendar from '../img/icons/calendar.png'
-import Arrow from '../img/icons/arrow_yellow.png'
-
-const nativeIcons = ["news", "map", "bell", "calendar"]
+import i18n from '../utils/i18n';
 
 const listStyle = StyleSheet.create({
 	container: {
 		justifyContent: 'center',
 		paddingHorizontal: 20,
-		paddingVertical: 20
+		paddingVertical: 20,
 	},
 	elementView: {
 		flexDirection: 'row',
@@ -33,81 +29,61 @@ const listStyle = StyleSheet.create({
 		marginRight: 80,
 	},
 	iconContainer: {
-		marginRight: 15
+		marginRight: 15,
 	},
 	rowWithArrowView: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	text: {
-		fontSize: 14
+		fontSize: 14,
 	},
 
-	arrowStyle: {
+	arrowStyle: {},
 
-	},
-
-	icon: {
-
-	},
+	icon: {},
 });
 
 export default class List extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this._renderItem = this._renderItem.bind(this);
-		this._isNativeIcon = this._isNativeIcon.bind(this);
-		this._iconKeyToSvg = this._iconKeyToSvg.bind(this);
-		listStyle = this.props.style || listStyle;
-	}
-
-	_keyExtractor(item, index) {
+	static keyExtractor(item, index) {
 		return String(index);
 	}
 
-	_iconKeyToSvg(key) {
-		switch (key) {
-			case "news":
-				return News;
-				break;
-			case "map":
-				return Map;
-				break;
-			case "bell":
-				return Bell;
-				break;
-			case "calendar":
-				return Calendar;
-				break;
-		}
+	constructor(props) {
+		super(props);
+
+		this.renderItem = this.renderItem.bind(this);
 	}
 
-	_isNativeIcon(icon) {
-		return nativeIcons.includes(icon);
-	}
+	renderItem({ item: { onPress, icon, text, lazyText, customElmtStyle } }) {
+		const { arrow } = this.props;
 
-	_renderItem({ item }) {
-
-		return (<TouchableHighlight underlayColor='#ffffff' activeOpacity={50} onPress={item.onPress}>
-			<View style={item.customElmtStyle || listStyle.rowWithArrowView}>
-				<View style={ listStyle.elementView }>
-					<View style={listStyle.iconContainer}>{item.icon && (this._isNativeIcon(item.icon) ? <Icon style={listStyle.icon} height={25} width={25} image={this._iconKeyToSvg(item.icon)} /> : <Image source={item.icon} style={{height : 25, width : 25}}/> )}</View>
-					<Text style={ listStyle.text }>{ item.text }</Text>
+		return (
+			<TouchableHighlight underlayColor="#ffffff" activeOpacity={50} onPress={onPress}>
+				<View style={customElmtStyle || listStyle.rowWithArrowView}>
+					<View style={listStyle.elementView}>
+						<View style={listStyle.iconContainer}>
+							<Image source={icon} style={{ height: 24, width: 24 }} />
+						</View>
+						<Text style={listStyle.text}>{text || i18n.t(lazyText)}</Text>
+					</View>
+					{arrow && <FontAwesomeIcon style={['fas', 'arrow-right']} size={25} />}
 				</View>
-				{this.props.arrow && <Icon style={listStyle.arrowStyle} height={25} width={25} image={Arrow} />}
-			</View>
 			</TouchableHighlight>
 		);
 	}
 
 	render() {
-		return <FlatList
-					contentContainerStyle={ listStyle.container }
-					data={ this.props.data }
-					keyExtractor={ this.props.keyExtractor ? this.props.keyExtractor : this._keyExtractor }
-					renderItem={ this.props.renderItem ? this.props.renderItem : this._renderItem }
-				/>;
+		const { data, keyExtractor, renderItem } = this.props;
+
+		return (
+			<FlatList
+				contentContainerStyle={listStyle.container}
+				data={data}
+				keyExtractor={keyExtractor || List.keyExtractor}
+				renderItem={renderItem || this.renderItem}
+			/>
+		);
 	}
 }

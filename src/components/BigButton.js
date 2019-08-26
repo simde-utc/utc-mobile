@@ -1,16 +1,18 @@
 import React from 'react';
-import Button from 'react-native-button';
+import { TouchableHighlight, Text } from 'react-native';
 
-import styles from '../styles'
+import styles from '../styles';
 
+const BigButton = ({ label, onPress, style }) => {
+	const btnStyle = [styles.get('bigButton', 'bg.lightBlue'), style];
 
-export default class BigButton extends React.Component {
-	render() {
-		const btnStyle = [ styles.get('bigButton', 'bg.lightBlue', 'text.white'), this.props.style ];
-		return (
-			<Button	style={ btnStyle } onPress={ (checked) => this.props.onPress(checked) }>
-				{ this.props.label }
-			</Button>
-		);
-	}
-}
+	return (
+		<TouchableHighlight style={btnStyle} onPress={checked => onPress(checked)}>
+			<Text style={[styles.get('text.white', 'text.h4'), { width: '100%', textAlign: 'center' }]}>
+				{label}
+			</Text>
+		</TouchableHighlight>
+	);
+};
+
+export default BigButton;

@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Image, Text, ScrollView, Button } from 'react-native';
-import styles from '../../styles'
-import { colors } from '../../styles/variables';
-import Storage from '../../services/Storage';
+import { ScrollView } from 'react-native';
 
+import ArticlesCaroussel from '../../components/Home/ArticlesCaroussel';
+import ShortcutGrid from '../../components/Home/ShortcutGrid';
+import styles from '../../styles';
 
-export default class HomeScreen extends React.Component {
-	render() {
-		return (
-			<Text>Home</Text>
-		);
-	}
-}
+const Home = ({ navigation }) => (
+	<ScrollView style={styles.bg.background}>
+		<ArticlesCaroussel navigation={navigation} />
+		<ShortcutGrid navigation={navigation} />
+	</ScrollView>
+);
 
+export default Home;
