@@ -26,6 +26,9 @@ import WelcomeScreen from './src/screens/Welcome';
 import ToUScreen from './src/screens/ToU';
 import MainLayout from './src/screens/MainLayout';
 
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
+
 const AuthStack = createStackNavigator({
 	Welcome: WelcomeScreen,
 	ToU: ToUScreen,
@@ -71,11 +74,12 @@ export default class App extends React.Component {
 	}
 
 	render() {
-		return (
-			<SafeAreaView style={{ flex: 1, paddingTop }} forceInset={{ bottom: 'never' }}>
-				<StatusBar translucent />
-				<AppSwitch />
-			</SafeAreaView>
+		return (<Provider store={store}>
+				<SafeAreaView style={{ flex: 1, paddingTop }} forceInset={{ bottom: 'never' }}>
+					<StatusBar translucent />
+					<AppSwitch />
+				</SafeAreaView>
+			</Provider>
 		);
 	}
 }
