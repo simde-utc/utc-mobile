@@ -1,6 +1,5 @@
 /**
  * Télécharger des données depuis le WP des actualités internes de l'UTC
- * Cette classe ne doit PAS être utilisée directement, mais via la classe Portail
  *
  * @author Romain Maliach-Auguste <r.maliach@live.fr>
  * @author Samy Nastuzzi <samy@nastuzzi.fr>
