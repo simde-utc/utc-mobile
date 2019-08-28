@@ -12,7 +12,7 @@ export function addNotification(payload) {
 export function reactToPortailArticle(id, like = false, dislike = false) {
 	return {
 		type: actionTypes.REACT_TO_PORTAIL_ARTICLE,
-		{
+		payload: {
 			"id": id,
 			reaction: {"like": like, "dislike": dislike, syncState: syncStates.LOCAL}
 		}
@@ -21,16 +21,16 @@ export function reactToPortailArticle(id, like = false, dislike = false) {
 export function updatePortailArticleReactionSyncState(id, syncState) {
 	return {
 		type: actionTypes.UPDATE_PORTAIL_ARTICLE_REACTION_SYNC_STATE,
-		{
+		payload: {
 			"id": id,
 			"syncState": syncState
 		}
 	}
 }
 export function commentPortailArticle(id, commentBody, visibilityId, syncStateSubscriberId) {
-	PortailApi.postArticleTopLevelComment(id, comment, visibilityId).then([response, status] => {
+	PortailApi.postArticleTopLevelComment(id, comment, visibilityId).then(([response, status]) => {
 			updatePortailArticleCommentDataAndSyncState(id, syncStateSubscriberId, response, syncStates.UPLOADED);
-		}).catch([response, status] => {
+		}).catch(([response, status]) => {
 			if(status == 523) {
 				updatePortailArticleCommentSyncState(id, syncStateSubscriberId, syncStates.NETWORK_FAILED);
 			}
@@ -40,7 +40,7 @@ export function commentPortailArticle(id, commentBody, visibilityId, syncStateSu
 		});
 	return {
 		type: actionTypes.COMMENT_PORTAIL_ARTICLE,
-		{
+		payload: {
 			"id": id,
 			"comment": {
 				"comment": {"commentBody": commentBody, "visibilityId": visibilityId},
@@ -53,7 +53,7 @@ export function commentPortailArticle(id, commentBody, visibilityId, syncStateSu
 export function commentUTCArticle(id, comment, syncStateSubscriberId) {
 	return {
 		type: actionTypes.COMMENT_UTC_ARTICLE,
-		{
+		payload: {
 			"id": id,
 			"comment": {
 				"comment": {"commentBody": commentBody},
@@ -66,7 +66,7 @@ export function commentUTCArticle(id, comment, syncStateSubscriberId) {
 export function updatePortailArticleCommentSyncState(articleId, syncStateSubscriberId, syncState) {
 	return {
 		type: actionTypes.UPDATE_PORTAIL_ARTICLE_COMMENT_SYNC_STATE,
-		{
+		payload: {
 			"articleId": articleId,
 			"syncStateSubscriberId": syncStateSubscriberId,
 			"syncState": syncState
@@ -76,7 +76,7 @@ export function updatePortailArticleCommentSyncState(articleId, syncStateSubscri
 export function updatePortailArticleCommentDataAndSyncState(articleId, syncStateSubscriberId, upStreamData, syncState) {
 	return {
 		type: actionTypes.UPDATE_PORTAIL_ARTICLE_COMMENT_DATA_AND_SYNC_STATE,
-		{
+		payload: {
 			"articleId": articleId,
 			"syncStateSubscriberId": syncStateSubscriberId,
 			"upStreamData": upStreamData,
@@ -87,7 +87,7 @@ export function updatePortailArticleCommentDataAndSyncState(articleId, syncState
 export function updateUTCArticleCommentSyncState(articleId, syncStateSubscriberId, syncState) {
 	return {
 		type: actionTypes.UPDATE_UTC_ARTICLE_COMMENT_SYNC_STATE,
-		{
+		payload: {
 			"articleId": articleId,
 			"syncStateSubscriberId": syncStateSubscriberId,
 			"syncState": syncState
@@ -97,7 +97,7 @@ export function updateUTCArticleCommentSyncState(articleId, syncStateSubscriberI
 export function updateUTCArticleCommentDataAndSyncState(articleId, syncStateSubscriberId, upStreamData, syncState) {
 	return {
 		type: actionTypes.UPDATE_UTC_ARTICLE_COMMENT_DATA_AND_SYNC_STATE,
-		{
+		payload: {
 			"articleId": articleId,
 			"syncStateSubscriberId": syncStateSubscriberId,
 			"upStreamData": upStreamData,
