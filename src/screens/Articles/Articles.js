@@ -18,6 +18,10 @@ import styles from '../../styles';
 import { stringDate } from '../../utils/Generate';
 import { _, e } from '../../utils/i18n';
 
+import store from "../../redux/store";
+import { addPortailArticle, addUTCArticle } from "../../redux/actions/index";
+import { connect } from "react-redux";
+
 // seuil qui définit le chargement de nouveaux articles : si THRESHOLD = 0.1 alors on commence à charger de nouveaux articles quand on atteint les 10 derniers pourcents
 const THRESHOLD = 0.4;
 const MAX_PER_PAGE = 50;
@@ -37,16 +41,17 @@ export default class Articles extends React.Component {
 		let aDate;
 		let bDate;
 
-		if (a.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
-			aDate = new Date(a.created_at);
-		} else {
+		//dirty way of characterising a UTC article
+		if (a.author) {
 			aDate = new Date(a.date);
+		} else {
+			aDate = new Date(a.created_at);
 		}
 
-		if (b.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
-			bDate = new Date(b.created_at);
-		} else {
+		if (b.author) {
 			bDate = new Date(b.date);
+		} else {
+			bDate = new Date(b.created_at);
 		}
 
 		return aDate.getTime() < bDate.getTime();
@@ -62,9 +67,6 @@ export default class Articles extends React.Component {
 		this.state = {
 			date,
 			noArticlesCounter: 0,
-			articles: [],
-			portailArticles: [],
-			utcArticles: [],
 			filters: [
 				{ displayName: _('all'), filterTag: 'all' },
 				{ displayName: _('utc'), filterTag: ArticleComponent.UTC_ARTICLE_TYPE },
@@ -89,17 +91,13 @@ export default class Articles extends React.Component {
 
 		return PortailApi.getArticles(MAX_PER_PAGE, page, 'latest', date.getTime()).then(
 			([articles]) => {
-				articles.map(article => {
-					article.article_type = ArticleComponent.PORTAIL_ARTICLE_TYPE;
-					article.created_at = article.created_at.replace(' ', 'T');
 
-					return article;
+				articles.forEach( article => {
+				let formattedArticle = Object.assign({}, article);
+				formattedArticle.created_at = article.created_at.replace(' ', 'T');
+				store.dispatch( addPortailArticle(article) );
 				});
 
-				this.setState(prevState => ({
-					...prevState,
-					portailArticles: prevState.portailArticles.concat(articles),
-				}));
 
 				// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
 				if (articles.length === MAX_PER_PAGE) {
@@ -125,16 +123,9 @@ export default class Articles extends React.Component {
 		};
 
 		return ActualitesUTC.getArticles(queries).then(([articles]) => {
-			articles.map(article => {
-				article.article_type = ArticleComponent.UTC_ARTICLE_TYPE;
-
-				return article;
+			articles.forEach(article => {
+				store.dispatch( addUTCArticle(article));
 			});
-
-			this.setState(prevState => ({
-				...prevState,
-				portailArticles: prevState.portailArticles.concat(articles),
-			}));
 
 			// Si on a chargé le maximum d'articles par page, on suppose qu'il en reste.
 			if (articles.length === MAX_PER_PAGE) {
@@ -146,28 +137,26 @@ export default class Articles extends React.Component {
 	}
 
 	loadMoreContent() {
-		const { loading } = this.state;
+		const { selectedFilterIndex } = this.state;
 
-		// On fait bien attention à ne pas demander de charger plusieurs fois en même temps.
-		if (loading || this.willUnmount) {
+		// Do not launch network I/O while react is trying to kill the component
+		if (this.willUnmount) {
 			return;
 		}
 
 		const promises = [];
 
-		if (ActualitesUTC.isConnected()) {
+		if (ActualitesUTC.isConnected() && (selectedFilterIndex == 0 || selectedFilterIndex == 1)) {
 			const UTCPromise = this.loadUTCArticles();
-
 			promises.push(UTCPromise);
 		}
 
-		if (PortailApi.isConnected()) {
+		if (PortailApi.isConnected() && (selectedFilterIndex == 0 || selectedFilterIndex == 2)) {
 			const PortailPromise = this.loadPortailArticles();
-
 			promises.push(PortailPromise);
 		}
 
-		if (promises.length) {
+		if (promises.length != 0) {
 			this.setState({ loading: true });
 
 			new Promise.all(promises).then(nbrNewArticles => {
@@ -193,11 +182,6 @@ export default class Articles extends React.Component {
 				this.setState(prevState => {
 					return {
 						...prevState,
-						articles: prevState.articles
-							.concat(prevState.portailArticles, prevState.utcArticles)
-							.sort(Articles.sortArticles),
-						portailArticles: [],
-						utcArticles: [],
 						loading: false,
 						noArticlesCounter: 0,
 					};
@@ -257,39 +241,41 @@ export default class Articles extends React.Component {
 
 	render() {
 		const { navigation } = this.props;
-		const { articles, utcArticles, portailArticles, filters, selectedFilterIndex } = this.state;
+		const { filters, selectedFilterIndex } = this.state;
 
-		const newArticles = [].concat(portailArticles, utcArticles).sort(Articles.sortArticles);
-		const resultedArticles = [].concat(articles, newArticles);
-
-		const filteredArticles =
-			selectedFilterIndex === 0
-				? resultedArticles
-				: resultedArticles.filter(
-						article => article.article_type === filters[selectedFilterIndex].filterTag
-				  );
+		const mapStateToProps = state => {
+			switch(selectedFilterIndex) {
+				case 1:
+					return {articles: Array.from(state.UTCArticles.values()).filter(elmt => elmt !== undefined)};
+				case 2:
+					return {articles: Array.from(state.PortailArticles.values()).filter(elmt => elmt !== undefined)};
+				default:
+					return {articles: Array.from(state.portailArticles.values()).concat(Array.from(state.UTCArticles.values())).sort(this.sortArticles).filter(elmt => elmt !== undefined)};
+			}
+		}
 
 		// TODO: filtrer en fonction de la recherche (barre de recherche dans this.renderSearchBar
 
-		return (
+		const FList = ({articles}) => (
 			<FlatList
 				style={styles.scrollable.list}
-				data={filteredArticles}
+				data={articles}
 				renderItem={item => <ArticleComponent data={item} navigation={navigation} />}
 				ItemSeparatorComponent={() => <View style={styles.scrollable.sectionSeparator} />}
 				onEndReached={() => this.loadMoreContent()}
 				onEndReachedThreshold={THRESHOLD}
-				keyExtractor={article => `${article.article_type}_${article.id}`}
+				keyExtractor={article => {return `${article.id}`}}
 				ListHeaderComponent={this.renderFilters()}
 				ListFooterComponent={
 					<View>
-						{filteredArticles.length > 0 ? (
+						{articles.length > 0 ? (
 							<View style={styles.scrollable.sectionSeparator} />
 						) : null}
 						<FakeItem title={_('loading')} />
 					</View>
 				}
-			/>
-		);
+			/>);
+		ConnectedFList = connect(mapStateToProps)(FList);
+		return (<ConnectedFList />);
 	}
 }

@@ -83,52 +83,49 @@ export default class ArticleComponent extends React.PureComponent {
 	getTitle() {
 		const { data } = this.props;
 
-		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
-			return data.item.title;
+		if (data.item.title.rendered) {
+			return data.item.title.rendered;
 		}
 
-		return data.item.title.rendered;
+		return data.item.title;
 	}
 
 	getActionsAndComments() {
 		const { data } = this.props;
 
-		if (data.item.article_type === ArticleComponent.PORTAIL_ARTICLE_TYPE) {
-			Promise.all([
-				PortailApi.getUserArticleActions(data.item.id),
-				PortailApi.getArticleRootComments(data.item.id),
-			])
-				.then(([[responseActions], [responseComments]]) => {
-					let liked;
-					let disliked;
-					if (!responseActions.liked) {
-						liked = false;
+		Promise.all([
+			PortailApi.getUserArticleActions(data.item.id),
+			PortailApi.getArticleTopLevelComments(data.item.id),
+		])
+			.then(([[responseActions], [responseComments]]) => {
+				let liked;
+				let disliked;
+				if (!responseActions.liked) {
+					liked = false;
+					disliked = false;
+				} else {
+					if (responseActions.liked === 'true') {
+						liked = true;
 						disliked = false;
-					} else {
-						if (responseActions.liked === 'true') {
-							liked = true;
-							disliked = false;
-						}
-						if (responseActions.liked === 'false') {
-							liked = false;
-							disliked = true;
-						}
 					}
-
-					this.comments = responseComments;
-					if (!this.unmounted) {
-						this.setState(prevState => ({
-							...prevState,
-							comments: responseComments.length,
-							liked,
-							disliked,
-						}));
+					if (responseActions.liked === 'false') {
+						liked = false;
+						disliked = true;
 					}
-				})
-				.catch(([{ message }, code]) =>
-					console.warn(`Error ${code} while loading actions and comments : ${message}`)
-				);
-		}
+				}
+				this.comments = responseComments;
+				if (!this.unmounted) {
+					this.setState(prevState => ({
+						...prevState,
+						comments: responseComments.length,
+						liked,
+						disliked,
+					}));
+				}
+			})
+			.catch(([{ message }, code]) =>
+				console.warn(`Error ${code} while loading actions and comments : ${message}`)
+			);
 	}
 
 	touchLike() {
