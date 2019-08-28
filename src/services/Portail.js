@@ -475,18 +475,20 @@ export class Portail extends Api {
 		return this.call(`${Portail.API_V1}user/articles/${uuid}/actions/`, Api.GET);
 	}
 
-	getArticleRootComments(uuid) {
+	getArticleTopLevelComments(uuid) {
 		this.checkConnected();
 
 		return this.call(`${Portail.API_V1}articles/${uuid}/comments/`, Api.GET);
 	}
 
-	setArticleRootComment(uuid, body, visibilityId) {
+	postArticleTopLevelComment(uuid, body, visibilityId) {
 		this.checkConnected();
 
 		return this.call(`${Portail.API_V1}articles/${uuid}/comments/`, Api.POST, {
-			body,
+			"body": body,
 			visibility_id: visibilityId,
+			created_by_type: "user",
+			created_by_id: this.user.id
 		});
 	}
 
