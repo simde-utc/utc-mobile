@@ -10,17 +10,17 @@ function rootReducer(state = initialState, action) {
 	//TODO: factorize adds
 	if (action.type === actionTypes.ADD_PORTAIL_ARTICLE) {
 		return Object.assign({}, state, {
-			portailArticles: new Map([state.portailArticles, [action.payload.id, action.payload]])
+			portailArticles: new Map([...state.portailArticles, [action.payload.id, action.payload]])
 		});
 	}
 	if (action.type === actionTypes.ADD_UTC_ARTICLE) {
 		return Object.assign({}, state, {
-			UTCArticles: new Map([state.UTCArticles, [action.payload.id, action.payload]])
+			UTCArticles: new Map([...state.UTCArticles, [action.payload.id, action.payload]])
 		});
 	}
 	if (action.type === actionTypes.ADD_NOTIFICATION) {
 		return Object.assign({}, state, {
-			Notifications: new Map([state.Notifications, [action.payload.id, action.payload]])
+			Notifications: new Map([...state.Notifications, [action.payload.id, action.payload]])
 		});
 	}
 	//reactions to articles
@@ -28,7 +28,7 @@ function rootReducer(state = initialState, action) {
 		article = Object.assign({}, state.portailArticles.get(action.payload.id));
 		article.actions = action.payload.reaction;
 		return Object.assign({}, state, {
-			PortailArticles: new Map([state.PortailArticles, [article.id, article]])
+			PortailArticles: new Map([...state.PortailArticles, [article.id, article]])
 		});
 	}
 	//comments
@@ -37,7 +37,7 @@ function rootReducer(state = initialState, action) {
 		if(article.comments == null) {article.comments = [];}
 		article.comments.push(action.payload.comment);
 		return Object.assign({}, state, {
-			PortailArticles: new Map([state.PortailArticles, [article.id, article]])
+			PortailArticles: new Map([...state.PortailArticles, [article.id, article]])
 		});
 	}
 	if (action.type === actionTypes.COMMENT_UTC_ARTICLE) {
@@ -45,7 +45,7 @@ function rootReducer(state = initialState, action) {
 		if(article.comments == null) {article.comments = [];}
 		article.comments.push(action.payload.comment);
 		return Object.assign({}, state, {
-			UTCArticles: new Map([state.UTCArticles, [article.id, article]])
+			UTCArticles: new Map([...state.UTCArticles, [article.id, article]])
 		});
 	}
 	//update data after sync (once the comment has been posted, notify if failed, or add extra data such as server-side generated uuid of comment)
@@ -69,12 +69,12 @@ function rootReducer(state = initialState, action) {
 		updatedArticle.comments = localComments;
 		if (sourcePortail) {
 			return Object.assign({}, state, {
-				PortailArticles : new Map([ArticlesStore, [updatedArticle.id, updatedArticle]])
+				PortailArticles : new Map([...ArticlesStore, [updatedArticle.id, updatedArticle]])
 			});
 		}
 		else {
 			return Object.assign({}, state, {
-				UTCArticles : new Map([ArticlesStore, [updatedArticle.id, updatedArticle]])
+				UTCArticles : new Map([...ArticlesStore, [updatedArticle.id, updatedArticle]])
 			});
 		}
 	}
