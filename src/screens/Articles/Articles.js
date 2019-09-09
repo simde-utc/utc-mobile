@@ -248,7 +248,7 @@ export default class Articles extends React.Component {
 				case 1:
 					return {articles: Array.from(state.UTCArticles.values()).filter(elmt => elmt !== undefined)};
 				case 2:
-					return {articles: Array.from(state.PortailArticles.values()).filter(elmt => elmt !== undefined)};
+					return {articles: Array.from(state.portailArticles.values()).filter(elmt => elmt !== undefined)};
 				default:
 					return {articles: Array.from(state.portailArticles.values()).concat(Array.from(state.UTCArticles.values())).sort(this.sortArticles).filter(elmt => elmt !== undefined)};
 			}
