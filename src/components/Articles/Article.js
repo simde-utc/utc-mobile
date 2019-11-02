@@ -40,16 +40,19 @@ export default class ArticleComponent extends React.PureComponent {
 	}
 
 	static prettyDate(string, locale) {
+		var regex = /(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})/gi;
+		string = string.replace(regex, '$1T$2');
 		const date = new Date(string);
+		// getMounth renvoi le numéro du mois en partant de 0 pour janvier
 		switch (locale) {
 			case 'fr-FR':
 				return ArticleComponent.renderDate(
-					`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+					`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
 				);
 			case 'en-US':
 			default:
 				return ArticleComponent.renderDate(
-					`${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`
+					`${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}`
 				);
 		}
 	}
