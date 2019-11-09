@@ -45,6 +45,7 @@ export default class WelcomeScreen extends React.Component {
 				activeDotStyle={styles.bg.yellow}
 				showNextButton={false}
 				showDoneButton={false}
+				paginationStyle = {{bottom: 0}}
 			/>
 		);
 	}

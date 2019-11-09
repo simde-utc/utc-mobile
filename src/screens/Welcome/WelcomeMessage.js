@@ -14,7 +14,7 @@ const WelcomeMessageScreen = () => (
 		<Image source={utcLogo} style={styles.img.logoStyle} resizeMode="center" />
 		<Text style={titleStyle}>{_('welcome')} !</Text>
 		<Text style={[subtitleStyle, { marginBottom: '12.5%' }]}>{t('discover')}</Text>
-		<View style={{ position: 'absolute', bottom: '12.5%' }}>
+		<View style={{ position: 'absolute', bottom: 55 }}>
 			<Text style={subsubtitleStyle}>{t('swap_to_begin')}</Text>
 		</View>
 	</View>

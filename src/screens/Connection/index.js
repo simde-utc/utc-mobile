@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { View, TextInput, Alert } from 'react-native';
+import { ScrollView, View, TextInput, Alert } from 'react-native';
 import Button from 'react-native-button';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -163,7 +163,6 @@ export default class ConnectionScreen extends React.Component {
 	render() {
 		// const { navigation } = this.props;
 		const { loading, loadingText, emailOrLogin, password } = this.state;
-		const viewStyle = [styles.get('container.default', 'bg.white', 'pt.xl', 'pb.xxl'), { flex: 7 }];
 
 		return (
 			<View style={styles.container.default}>
@@ -174,8 +173,11 @@ export default class ConnectionScreen extends React.Component {
 						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
 					/>
 				</View>
-				<HeaderView title={_('login')} subtitle={t('simple_usage')} />
-				<View style={viewStyle}>
+				<HeaderView title={_('login')} subtitle={t('simple_usage')} style={{ flex: 1 }} />
+				<ScrollView
+					style={ styles.get('pt.sm', 'pb.xs'), { flex: 1, width: '100%' }}
+					contentContainerStyle={{ alignItems: 'center' }}
+				>
 					<TextInput
 						style={styles.bigButton}
 						underlineColorAndroid="transparent"
@@ -204,15 +206,16 @@ export default class ConnectionScreen extends React.Component {
 						autoCorrect={false}
 						secureTextEntry
 					/>
+				</ScrollView>
+				<View style={{ flex: 0 }}>
 					<BigButton
 						label={_('login')}
-						style={styles.get('mt.lg', 'mb.md')}
 						onPress={() => this.tryToConnect()}
 					/>
 				</View>
-				<View style={{ position: 'absolute', bottom: 20, width: '90%' }}>
+				<View style={{ flex: 0 }}>
 					<Button
-						style={styles.get('text.lightBlue', 'text.h5')}
+						style={styles.get('text.lightBlue', 'text.h5', 'mb.xs')}
 						onPress={() =>
 							Alert.alert(
 								'Mode de connexion',

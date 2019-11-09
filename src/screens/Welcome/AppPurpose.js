@@ -55,21 +55,14 @@ const PurposeTabs = createMaterialTopTabNavigator(
 	}
 );
 
-const bottomStyle = {
-	flex: 2,
-	justifyContent: 'center',
-	paddingHorizontal: 15,
-	marginBottom: '15%',
-};
-
 const AppPurposeScreen = () => (
 	<View style={styles.container.default}>
-		<HeaderView style={{ flex: 3 }} title={t('goal')} subtitle={t('goal_explanation')} />
-		<View style={{ flex: 7, justifyContent: 'space-between', width: '100%' }}>
-			<View style={{ flex: 6, marginLeft: 0 }}>
+		<HeaderView style={{ flex: 0 }} title={t('goal')} subtitle={t('goal_explanation')} />
+		<View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
+			<View style={{ flex: 1, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>
-			<View style={bottomStyle}>
+			<View style={{ flex: 0, marginBottom: 55 }}>
 				<Text style={endMessageStyle}>{t('more_functionalities')}</Text>
 			</View>
 		</View>
