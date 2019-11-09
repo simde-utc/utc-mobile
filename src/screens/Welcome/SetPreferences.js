@@ -51,7 +51,10 @@ export default class SetPreferencesScreen extends React.Component {
 		return (
 			<View style={container.default}>
 				<HeaderView title={t('learn_more')} style={{flex: 1}} subtitle={t('allow_param')} />
-				<ScrollView style={styles.get('mt.xs', 'mb.xs'), { flex: 1, width: '100%' }} contentContainerStyle={{alignItems: 'center'}}>
+				<ScrollView
+					style={styles.get('mt.xs', 'mb.xs'), { flex: 1, width: '100%' }}
+					contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-evenly', flexGrow: 1 }}
+				>
 					<BigCheckBox
 						checked={checked.SHOW_UTC_ACTUALITIES}
 						labelStyle={text.h5}

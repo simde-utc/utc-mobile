@@ -176,7 +176,7 @@ export default class ConnectionScreen extends React.Component {
 				<HeaderView title={_('login')} subtitle={t('simple_usage')} style={{ flex: 1 }} />
 				<ScrollView
 					style={ styles.get('pt.sm', 'pb.xs'), { flex: 1, width: '100%' }}
-					contentContainerStyle={{ alignItems: 'center' }}
+					contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-evenly', flexGrow: 1 }}
 				>
 					<TextInput
 						style={styles.bigButton}
