@@ -1,7 +1,6 @@
 import React from 'react';
 import { Alert, View, ScrollView } from 'react-native';
 
-import HeaderView from '../../components/HeaderView';
 import BigCheckBox from '../../components/BigCheckBox';
 import BigButton from '../../components/BigButton';
 import styles from '../../styles';
@@ -50,10 +49,9 @@ export default class SetPreferencesScreen extends React.Component {
 
 		return (
 			<View style={container.default}>
-				<HeaderView title={t('learn_more')} style={{flex: 1}} subtitle={t('allow_param')} />
 				<ScrollView
 					style={styles.get('mt.xs', 'mb.xs'), { flex: 1, width: '100%' }}
-					contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-evenly', flexGrow: 1 }}
+					contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
 				>
 					<BigCheckBox
 						checked={checked.SHOW_UTC_ACTUALITIES}
@@ -79,8 +77,8 @@ export default class SetPreferencesScreen extends React.Component {
 						}
 					/>
 				</ScrollView>
-				{/*Permet d'avoir une taille fixe de 115px pour le bouton et l'espace avec les bulles*/ }
-				<View style={{ flex: 0,	flexBasis: 115 }}>
+				{/*Permet d'avoir une taille fixe de 150px pour le bouton et l'espace avec les bulles*/ }
+				<View style={{ flex: 0,	flexBasis: 150 }}>
 					<BigButton label={_('confirm')} onPress={this.validate.bind(this)} />
 				</View>
 			</View>

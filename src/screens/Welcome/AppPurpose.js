@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 
 import List from '../../components/List';
-import HeaderView from '../../components/HeaderView';
 import styles from '../../styles';
 import { _, Welcome as t } from '../../utils/i18n';
 
@@ -57,7 +56,6 @@ const PurposeTabs = createMaterialTopTabNavigator(
 
 const AppPurposeScreen = () => (
 	<View style={styles.container.default}>
-		<HeaderView style={{ flex: 0 }} title={t('goal')} subtitle={t('goal_explanation')} />
 		<View style={{ flex: 1, justifyContent: 'flex-start', width: '100%' }}>
 			<View style={{ flex: 1, marginLeft: 0 }}>
 				<PurposeTabs />

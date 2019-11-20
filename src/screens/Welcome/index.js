@@ -2,7 +2,9 @@ import React from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 import WelcomeMessageScreen from './WelcomeMessage';
+import AppPurposeHeaderScreen from './AppPurposeHeader';
 import AppPurposeScreen from './AppPurpose';
+import SetPreferencesHeaderScreen from './SetPreferencesHeader';
 import SetPreferencesScreen from './SetPreferences';
 import styles from '../../styles';
 import { _ } from '../../utils/i18n';
@@ -13,8 +15,16 @@ const slides = [
 		screen: WelcomeMessageScreen,
 	},
 	{
+		key: 'AppPurposeHeader',
+		screen: AppPurposeHeaderScreen,
+	},
+	{
 		key: 'AppPurpose',
 		screen: AppPurposeScreen,
+	},
+	{
+		key: 'SetPreferencesHeader',
+		screen: SetPreferencesHeaderScreen,
 	},
 	{
 		key: 'SetPreferences',
