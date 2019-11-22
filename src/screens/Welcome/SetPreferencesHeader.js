@@ -7,11 +7,11 @@ export default class SetPreferencesHeaderScreen extends React.Component {
     constructor(props){
         super(props);
     }
-    
+
     render() {
         return (
             <HeaderView
-                style={{flex: 1}}
+                style={{flex: 1, paddingBottom: 60}}
                 title={t('learn_more')}
                 subtitle={t('allow_param')}
             />

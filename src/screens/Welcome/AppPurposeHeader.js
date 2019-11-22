@@ -11,7 +11,7 @@ export default class AppPurposeHeaderScreen extends React.Component {
     render(){
         return (
             <HeaderView
-                style={{ flex: 1 }}
+                style={{ flex: 1, paddingBottom: 60 }}
                 title={t('goal')}
                 subtitle={t('goal_explanation')}
             />

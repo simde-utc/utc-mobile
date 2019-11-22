@@ -54,6 +54,7 @@
 		"Welcome": {
 			"learn_more": "Nous voudrions en savoir plus sur vous",
 			"allow_param": "Ceci nous permettra de configurer au mieux l'application pour votre utilisation",
+			"choose_features": "Veuillez cocher les éléments qui vous correspondent",
 			"show_utc": "Afficher les actualités UTC",
 			"show_assos": "Afficher la vie associative",
 			"utc_member": "Etes-vous un membre UTC et/ou un cotisant BDE-UTC ?",
