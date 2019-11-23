@@ -51,7 +51,7 @@ export default class SetPreferencesScreen extends React.Component {
 		return (
 			<View style={container.default}>
 				<ScrollView
-					style={styles.get('mt.xs', 'mb.xs'), { flex: 1, width: '100%' }}
+					style={styles.get('mt.xs', 'mb.xs'), { flex: 1, width: '100%', marginBottom: 60 }}
 					contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
 				>
 					<Text style={subsubtitleStyle}>{t('choose_features')}</Text>
@@ -78,11 +78,12 @@ export default class SetPreferencesScreen extends React.Component {
 							)
 						}
 					/>
+					<BigButton
+						label={_('confirm')}
+						onPress={this.validate.bind(this)}
+						style={{ marginTop: 15 }}
+					/>
 				</ScrollView>
-				{/*Permet d'avoir une taille fixe de 150px pour le bouton et l'espace avec les bulles*/ }
-				<View style={{ flex: 0,	flexBasis: 115 }}>
-					<BigButton label={_('confirm')} onPress={this.validate.bind(this)} />
-				</View>
 			</View>
 		);
 	}

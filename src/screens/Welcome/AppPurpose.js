@@ -39,7 +39,7 @@ const PurposeTabs = createMaterialTopTabNavigator(
 		Interested: {
 			screen: () => ListData(forInterestedData),
 			navigationOptions: () => ({
-				title: _('interested'),
+				title: _('outsider'),
 			}),
 		},
 	},
@@ -60,7 +60,7 @@ const AppPurposeScreen = () => (
 			<View style={{ flex: 1, marginLeft: 0 }}>
 				<PurposeTabs />
 			</View>
-			<View style={{ flex: 0, marginBottom: 55 }}>
+			<View style={{ flex: 0, marginBottom: 65 }}>
 				<Text style={endMessageStyle}>{t('more_functionalities')}</Text>
 			</View>
 		</View>

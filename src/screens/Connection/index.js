@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { ScrollView, View, TextInput, Alert } from 'react-native';
+import { ScrollView, View, TextInput, Alert, Text } from 'react-native';
 import Button from 'react-native-button';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -164,8 +164,32 @@ export default class ConnectionScreen extends React.Component {
 		// const { navigation } = this.props;
 		const { loading, loadingText, emailOrLogin, password } = this.state;
 
+		const titleStyle = [
+			styles.get('text.yellow', 'text.h2', 'text.center', 'p.sm', 'bg.lightBlue')
+		];
+
+		const titleViewStyle = [
+			styles.get('bg.lightBlue'),
+			{
+				flex: 1,
+				flexGrow: 1,
+				width: '100%',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}
+		];
+
+		const viewStyle = [
+			styles.container.default,
+			{
+				flexGrow: 1,
+				alignItems: 'center',
+				justifyContent: 'center'
+			}
+		]
+
 		return (
-			<View style={styles.container.default}>
+			<View style={viewStyle}>
 				<View>
 					<Spinner
 						visible={loading}
@@ -173,10 +197,12 @@ export default class ConnectionScreen extends React.Component {
 						textStyle={{ width: 250, textAlign: 'center', color: '#FFF' }}
 					/>
 				</View>
-				<HeaderView title={_('login')} subtitle={t('simple_usage')} style={{ flex: 1 }} />
+				<View style={titleViewStyle}>
+					<Text style={titleStyle}>{_('login')}</Text>
+				</View>
 				<ScrollView
-					style={ styles.get('pt.sm', 'pb.xs'), { flex: 1, width: '100%' }}
-					contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-evenly', flexGrow: 1 }}
+					style={ styles.get('pt.sm', 'pb.xs'), { flex: 1, width: '100%', flexGrow: 5, marginTop: 20 }}
+					contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
 				>
 					<TextInput
 						style={styles.bigButton}
@@ -206,14 +232,11 @@ export default class ConnectionScreen extends React.Component {
 						autoCorrect={false}
 						secureTextEntry
 					/>
-				</ScrollView>
-				<View style={{ flex: 0 }}>
 					<BigButton
 						label={_('login')}
 						onPress={() => this.tryToConnect()}
+						style={{marginTop: 15}}
 					/>
-				</View>
-				<View style={{ flex: 0 }}>
 					<Button
 						style={styles.get('text.lightBlue', 'text.h5', 'mb.xs')}
 						onPress={() =>
@@ -225,7 +248,7 @@ export default class ConnectionScreen extends React.Component {
 					>
 						{t('dont_login')}
 					</Button>
-				</View>
+				</ScrollView>
 			</View>
 		);
 	}
