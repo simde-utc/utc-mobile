@@ -17,7 +17,9 @@
 			"show_more": "Show more...",
 		},
 		"Associations": {
-			"no_members": "No members"
+			"no_members": "No members",
+			"list_validated_Members": "Members List",
+			"list_non_validated_Members": "Non validated members list",
 		},
 		"Connected": {
 			"you_are_connected": "%{name}, you are connected !",
