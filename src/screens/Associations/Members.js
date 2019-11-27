@@ -3,6 +3,7 @@ import { FlatList, Image, ScrollView, Text, View } from 'react-native';
 
 import PortailApi from '../../services/Portail';
 import styles from '../../styles';
+import { colors } from '../../styles/variables';
 import pictureIcon from '../../img/icons/picture.png';
 import { _, Associations as t } from '../../utils/i18n';
 
@@ -79,11 +80,21 @@ class FakeMember extends React.PureComponent {
 	}
 }
 
+const textStyle = [
+	styles.associations.details.textView.subtitle,
+	{
+		fontSize: 18,
+		margin: 5,
+	}
+];
+
 export default class Members extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			members: [],
+			validatedMembers: [],
+			nonValidatedMembers: [],
 			loading: true,
 		};
 	}
@@ -93,12 +104,13 @@ export default class Members extends React.PureComponent {
 		const associationId = navigation.state.params.id;
 
 		PortailApi.getAssoMembers(associationId)
-			.then(members =>
+			.then(members => {
 				this.setState({
-					members: members.sort((a, b) => a.name.localeCompare(b.name)),
+					members: members,
 					loading: false,
-				})
-			)
+				});
+				this.orderMembers();
+			})
 			.catch(reason => {
 				console.warn(reason);
 				this.setState({ loading: false });
@@ -109,8 +121,50 @@ export default class Members extends React.PureComponent {
 		if (PortailApi !== undefined) PortailApi.abortRequest();
 	}
 
+	orderMembers() {
+		const { members } = this.state;
+
+		validatedMembers = [];
+		nonValidatedMembers = [];
+		members.forEach(
+			(member) => member.pivot.validated_by_id ? validatedMembers.push(member) : nonValidatedMembers.push(member)
+		);
+
+		this.setState({
+			validatedMembers: validatedMembers.sort((a, b) => a.name.localeCompare(b.name)),
+			nonValidatedMembers : nonValidatedMembers.sort((a, b) => a.name.localeCompare(b.name))
+		});
+	}
+
+	renderNonValidatedMembers() {
+		if (this.state.nonValidatedMembers.length == 0)
+			return(null);
+		return (
+			<View style={{flex:1, flexGrow: 1}}>
+				<Text style={textStyle}>{t('list_non_validated_Members')}</Text>
+				<FlatList
+					style={styles.scrollable.list, {flexGrow: 1}}
+					data={this.state.nonValidatedMembers.map(member => {
+						return { key: member.id, member };
+					})}
+					renderItem={({ item }) => {
+						return <Member member={item.member} />;
+					}}
+					ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+					ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
+				/>
+			</View>
+		);
+	}
+
 	render() {
-		const { loading, members } = this.state;
+		const { loading, validatedMembers, nonValidatedMembers } = this.state;
+
+		const viewStyle = {
+			flex: 1,
+			backgroundColor: colors.white,
+			width: '100%',
+		}
 
 		if (loading)
 			return (
@@ -119,17 +173,23 @@ export default class Members extends React.PureComponent {
 				</ScrollView>
 			);
 		return (
-			<FlatList
-				style={styles.scrollable.list}
-				data={members.map(member => {
-					return { key: member.id, member };
-				})}
-				renderItem={({ item }) => {
-					return <Member member={item.member} />;
-				}}
-				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-				ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
-			/>
+			<View style={viewStyle}>
+				<View style={{flex: 1, flexGrow: 1}}>
+					<Text style={textStyle}>{t('list_validated_Members')}</Text>
+					<FlatList
+						style={styles.scrollable.list, {flexGrow: 2}}
+						data={validatedMembers.map(member => {
+							return { key: member.id, member };
+						})}
+						renderItem={({ item }) => {
+							return <Member member={item.member} />;
+						}}
+						ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+						ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
+					/>
+				</View>
+				{this.renderNonValidatedMembers()}
+			</View>
 		);
 	}
 }
