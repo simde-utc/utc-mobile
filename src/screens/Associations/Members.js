@@ -12,6 +12,7 @@ export class Member extends React.PureComponent {
 		super(props);
 		this.state = {
 			role: null,
+			validated: false,
 		};
 	}
 
@@ -23,6 +24,8 @@ export class Member extends React.PureComponent {
 			.catch(reason => {
 				console.warn(reason);
 			});
+		member.pivot.validated_by_id == null ? validated = false : validated = true;
+		this.setState({ validated });
 	}
 
 	componentWillUnmount() {
@@ -46,12 +49,13 @@ export class Member extends React.PureComponent {
 
 	render() {
 		const { member } = this.props;
-		const { role } = this.state;
+		const { role, validated } = this.state;
 
 		return (
 			<View style={styles.associations.block.view}>
 				{this.renderImage()}
 				<View style={styles.associations.block.details}>
+					{validated ? null : <Text style={styles.scrollable.item.subsubtitle}>{t('non_validated_member')}</Text>}
 					<Text style={styles.scrollable.item.title}>{member.name}</Text>
 					{role ? <Text style={styles.scrollable.item.subtitle}>{role.name}</Text> : null}
 				</View>
@@ -80,21 +84,11 @@ class FakeMember extends React.PureComponent {
 	}
 }
 
-const textStyle = [
-	styles.associations.details.textView.subtitle,
-	{
-		fontSize: 18,
-		margin: 5,
-	}
-];
-
 export default class Members extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
 			members: [],
-			validatedMembers: [],
-			nonValidatedMembers: [],
 			loading: true,
 		};
 	}
@@ -124,47 +118,25 @@ export default class Members extends React.PureComponent {
 	orderMembers() {
 		const { members } = this.state;
 
-		validatedMembers = [];
+		orderedMembers = [];
 		nonValidatedMembers = [];
+
 		members.forEach(
-			(member) => member.pivot.validated_by_id ? validatedMembers.push(member) : nonValidatedMembers.push(member)
+			(member) => member.pivot.validated_by_id ? orderedMembers.push(member) : nonValidatedMembers.push(member)
 		);
 
+		orderedMembers.sort((a, b) => a.name.localeCompare(b.name));
+		nonValidatedMembers.sort((a, b) => a.name.localeCompare(b.name));
+
+		nonValidatedMembers.forEach((member) => orderedMembers.push(member));
+
 		this.setState({
-			validatedMembers: validatedMembers.sort((a, b) => a.name.localeCompare(b.name)),
-			nonValidatedMembers : nonValidatedMembers.sort((a, b) => a.name.localeCompare(b.name))
+			members: orderedMembers
 		});
 	}
 
-	renderNonValidatedMembers() {
-		if (this.state.nonValidatedMembers.length == 0)
-			return(null);
-		return (
-			<View style={{flex:1, flexGrow: 1}}>
-				<Text style={textStyle}>{t('list_non_validated_Members')}</Text>
-				<FlatList
-					style={styles.scrollable.list, {flexGrow: 1}}
-					data={this.state.nonValidatedMembers.map(member => {
-						return { key: member.id, member };
-					})}
-					renderItem={({ item }) => {
-						return <Member member={item.member} />;
-					}}
-					ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-					ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
-				/>
-			</View>
-		);
-	}
-
 	render() {
-		const { loading, validatedMembers, nonValidatedMembers } = this.state;
-
-		const viewStyle = {
-			flex: 1,
-			backgroundColor: colors.white,
-			width: '100%',
-		}
+		const { loading, members } = this.state;
 
 		if (loading)
 			return (
@@ -173,23 +145,17 @@ export default class Members extends React.PureComponent {
 				</ScrollView>
 			);
 		return (
-			<View style={viewStyle}>
-				<View style={{flex: 1, flexGrow: 1}}>
-					<Text style={textStyle}>{t('list_validated_Members')}</Text>
-					<FlatList
-						style={styles.scrollable.list, {flexGrow: 2}}
-						data={validatedMembers.map(member => {
-							return { key: member.id, member };
-						})}
-						renderItem={({ item }) => {
-							return <Member member={item.member} />;
-						}}
-						ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
-						ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
-					/>
-				</View>
-				{this.renderNonValidatedMembers()}
-			</View>
+			<FlatList
+				style={styles.scrollable.list, {flexGrow: 2}}
+				data={members.map(member => {
+					return { key: member.id, member };
+				})}
+				renderItem={({ item }) => {
+					return <Member member={item.member} />;
+				}}
+				ItemSeparatorComponent={() => <View style={styles.scrollable.itemSeparator} />}
+				ListEmptyComponent={() => <FakeMember title={t('no_members')} />}
+			/>
 		);
 	}
 }
