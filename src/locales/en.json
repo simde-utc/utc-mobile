@@ -19,7 +19,7 @@
 		"Associations": {
 			"no_members": "No members",
 			"list_validated_Members": "Members List",
-			"list_non_validated_Members": "Non validated members list",
+			"non_validated_member": "awaiting validation",
 		},
 		"Connected": {
 			"you_are_connected": "%{name}, you are connected !",
