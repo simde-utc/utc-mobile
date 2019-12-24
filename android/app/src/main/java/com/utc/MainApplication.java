@@ -3,9 +3,13 @@ package com.utc;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.horcrux.svg.SvgPackage;
+
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import li.yunqi.rnsecurestorage.RNSecureStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -30,8 +34,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
-            new RNCViewPagerPackage(),
-            new VectorIconsPackage(),
+        new RNFirebasePackage(),
+        new RNFirebaseMessagingPackage(),
+        new RNFirebaseNotificationsPackage(),
+        new RNCViewPagerPackage(),
+        new VectorIconsPackage(),
         new SvgPackage(),
         new RNSecureStoragePackage(),
         new RNGestureHandlerPackage()
