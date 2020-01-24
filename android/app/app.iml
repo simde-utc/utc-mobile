@@ -191,5 +191,11 @@
     <orderEntry type="module" module-name="react-native-vector-icons" />
     <orderEntry type="module" module-name="react-native-gesture-handler" />
     <orderEntry type="module" module-name="react-native-svg" />
+    <orderEntry type="module" module-name="@react-native-community_viewpager" />
+    <orderEntry type="module" module-name="react-native-firebase" />
+    <orderEntry type="module" module-name="react-native-secure-storage" />
+    <orderEntry type="module" module-name="react-native-vector-icons" />
+    <orderEntry type="module" module-name="react-native-gesture-handler" />
+    <orderEntry type="module" module-name="react-native-svg" />
   </component>
 </module>
