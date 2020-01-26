@@ -10,6 +10,8 @@ import styles from '../../styles';
 
 import firebase from 'react-native-firebase';
 
+import {Token} from '../../services/Token';
+
 const fcmChannelID = 'fcm_default_channel';
 
 export default class Home extends React.Component {
@@ -43,7 +45,10 @@ export default class Home extends React.Component {
 
 	async getToken() {
 		let fcmToken = await AsyncStorage.getItem('fcmToken');
-		console.log(fcmToken);
+		Token.getTokens().then(tokens => {
+			tokens.forEach(entity => console.warn(entity.login_utc));
+		});
+
 		if (!fcmToken) {
 			fcmToken = await firebase.messaging().getToken();
 			if (fcmToken) {
@@ -92,11 +97,3 @@ export default class Home extends React.Component {
 		);
 	}
 }
-/*const Home = ({ navigation }) => (
-	<ScrollView style={styles.bg.background}>
-		<ArticlesCaroussel navigation={navigation} />
-		<ShortcutGrid navigation={navigation} />
-	</ScrollView>
-);
-
-export default Home;*/
