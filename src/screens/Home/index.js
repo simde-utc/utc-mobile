@@ -10,10 +10,6 @@ import styles from '../../styles';
 
 import firebase from 'react-native-firebase';
 
-import {Token} from '../../services/Token';
-
-const fcmChannelID = 'fcm_default_channel';
-
 export default class Home extends React.Component {
 
 	constructor(props) {
@@ -45,9 +41,6 @@ export default class Home extends React.Component {
 
 	async getToken() {
 		let fcmToken = await AsyncStorage.getItem('fcmToken');
-		Token.getTokens().then(tokens => {
-			tokens.forEach(entity => console.warn(entity.login_utc));
-		});
 
 		if (!fcmToken) {
 			fcmToken = await firebase.messaging().getToken();
@@ -69,7 +62,6 @@ export default class Home extends React.Component {
 
 	addNotificationListeners() {
 		this.notificationInitialListener = firebase.notifications().getInitialNotification().then((notificationOpen) => {
-			console.log("initialNotification");
 			const { data } = notificationOpen.notification;
 			if (data.body != null) {
 				Alert.alert("Résultat enseignement", data.body);
@@ -77,7 +69,6 @@ export default class Home extends React.Component {
 		});
 
 		this.notificationListener = firebase.notifications().onNotification((notification) => {
-			console.warn("onNotification");
 			Alert.alert("Résultat enseignement",notification.body);
 		});
 	}
