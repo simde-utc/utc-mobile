@@ -25,3 +25,7 @@ yarn-error.log*
 
 # Xcode
 xcuserdata/
+
+
+# Google Services
+/android/app/google-services.json
